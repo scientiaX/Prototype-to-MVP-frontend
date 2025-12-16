@@ -1,0 +1,56 @@
+{
+  "name": "Achievement",
+  "type": "object",
+  "properties": {
+    "achievement_id": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "archetype_at_achievement": {
+      "type": "string",
+      "enum": [
+        "risk_taker",
+        "analyst",
+        "builder",
+        "strategist"
+      ]
+    },
+    "difficulty_level": {
+      "type": "integer",
+      "description": "Difficulty level when achieved"
+    },
+    "problem_id": {
+      "type": "string"
+    },
+    "achieved_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "badge_type": {
+      "type": "string",
+      "enum": [
+        "first_blood",
+        "difficulty_jump",
+        "risk_confronted",
+        "streak_breaker",
+        "domain_master"
+      ],
+      "description": "Type of badge/scar earned"
+    },
+    "is_highest": {
+      "type": "boolean",
+      "default": false,
+      "description": "Is this the highest achievement"
+    }
+  },
+  "required": [
+    "title",
+    "archetype_at_achievement",
+    "difficulty_level"
+  ]
+}
