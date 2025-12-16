@@ -1,0 +1,74 @@
+{
+  "name": "ArenaSession",
+  "type": "object",
+  "properties": {
+    "problem_id": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "in_progress",
+        "submitted",
+        "evaluated",
+        "abandoned"
+      ],
+      "default": "in_progress"
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "submitted_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "solution_text": {
+      "type": "string",
+      "description": "User's submitted solution"
+    },
+    "difficulty_at_start": {
+      "type": "integer"
+    },
+    "archetype_at_start": {
+      "type": "string"
+    },
+    "xp_earned": {
+      "type": "integer",
+      "default": 0
+    },
+    "xp_breakdown": {
+      "type": "object",
+      "description": "XP per archetype earned this session"
+    },
+    "level_up_achieved": {
+      "type": "boolean",
+      "default": false
+    },
+    "criteria_met": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Which level-up criteria were met"
+    },
+    "ai_evaluation": {
+      "type": "string",
+      "description": "AI mentor's evaluation"
+    },
+    "ai_insight": {
+      "type": "string",
+      "description": "AI-generated insight (max 3 sentences)"
+    },
+    "time_spent_seconds": {
+      "type": "integer"
+    },
+    "mentor_interventions": {
+      "type": "integer",
+      "default": 0
+    }
+  },
+  "required": [
+    "problem_id"
+  ]
+}
