@@ -1,0 +1,104 @@
+{
+  "name": "UserProfile",
+  "type": "object",
+  "properties": {
+    "language": {
+      "type": "string",
+      "enum": [
+        "id",
+        "en"
+      ],
+      "default": "id",
+      "description": "User's preferred language"
+    },
+    "risk_appetite": {
+      "type": "number",
+      "description": "0.0-1.0 appetite for risk"
+    },
+    "decision_speed": {
+      "type": "number",
+      "description": "0.0-1.0 speed of decision making"
+    },
+    "ambiguity_tolerance": {
+      "type": "number",
+      "description": "0.0-1.0 tolerance for ambiguity"
+    },
+    "experience_depth": {
+      "type": "number",
+      "description": "0.0-1.0 depth of experience"
+    },
+    "current_difficulty": {
+      "type": "integer",
+      "description": "Current problem difficulty level 1-10",
+      "default": 1
+    },
+    "primary_archetype": {
+      "type": "string",
+      "enum": [
+        "risk_taker",
+        "analyst",
+        "builder",
+        "strategist"
+      ],
+      "description": "Current primary archetype"
+    },
+    "xp_risk_taker": {
+      "type": "integer",
+      "default": 0
+    },
+    "xp_analyst": {
+      "type": "integer",
+      "default": 0
+    },
+    "xp_builder": {
+      "type": "integer",
+      "default": 0
+    },
+    "xp_strategist": {
+      "type": "integer",
+      "default": 0
+    },
+    "total_arenas_completed": {
+      "type": "integer",
+      "default": 0
+    },
+    "highest_difficulty_conquered": {
+      "type": "integer",
+      "default": 0
+    },
+    "calibration_completed": {
+      "type": "boolean",
+      "default": false
+    },
+    "domain": {
+      "type": "string",
+      "description": "User's primary domain/field"
+    },
+    "aspiration": {
+      "type": "string",
+      "description": "User's goal/aspiration"
+    },
+    "thinking_style": {
+      "type": "string",
+      "enum": [
+        "fast",
+        "accurate",
+        "explorative"
+      ]
+    },
+    "last_stuck_experience": {
+      "type": "string"
+    },
+    "avoided_risk": {
+      "type": "string"
+    },
+    "common_regret": {
+      "type": "string",
+      "enum": [
+        "too_slow",
+        "too_reckless"
+      ]
+    }
+  },
+  "required": []
+}
