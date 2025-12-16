@@ -1,0 +1,49 @@
+{
+  "name": "Artifact",
+  "type": "object",
+  "properties": {
+    "problem_id": {
+      "type": "string"
+    },
+    "problem_title": {
+      "type": "string"
+    },
+    "difficulty": {
+      "type": "integer"
+    },
+    "archetype_role": {
+      "type": "string",
+      "enum": [
+        "risk_taker",
+        "analyst",
+        "builder",
+        "strategist"
+      ]
+    },
+    "solution_summary": {
+      "type": "string",
+      "description": "Filtered solution summary"
+    },
+    "insight": {
+      "type": "string",
+      "description": "AI-guided reflective insight (max 3 sentences)"
+    },
+    "level_up_verified": {
+      "type": "boolean",
+      "default": false
+    },
+    "arena_session_id": {
+      "type": "string"
+    },
+    "conquered_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "problem_id",
+    "problem_title",
+    "difficulty",
+    "archetype_role"
+  ]
+}
