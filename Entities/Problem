@@ -1,0 +1,68 @@
+{
+  "name": "Problem",
+  "type": "object",
+  "properties": {
+    "problem_id": {
+      "type": "string",
+      "description": "Unique problem identifier e.g. AMB-DEC-04"
+    },
+    "title": {
+      "type": "string"
+    },
+    "context": {
+      "type": "string",
+      "description": "Real-world situation description"
+    },
+    "objective": {
+      "type": "string",
+      "description": "What needs to be decided/solved"
+    },
+    "constraints": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Hard constraints (data, time, risk, trade-offs)"
+    },
+    "difficulty": {
+      "type": "integer",
+      "description": "1-10 difficulty level"
+    },
+    "level_up_criteria": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Criteria to level up, not right/wrong"
+    },
+    "domain": {
+      "type": "string",
+      "description": "Problem domain (business, tech, strategy, etc)"
+    },
+    "estimated_time_minutes": {
+      "type": "integer",
+      "default": 25
+    },
+    "archetype_focus": {
+      "type": "string",
+      "enum": [
+        "risk_taker",
+        "analyst",
+        "builder",
+        "strategist"
+      ],
+      "description": "Primary archetype this problem tests"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "problem_id",
+    "title",
+    "context",
+    "objective",
+    "difficulty"
+  ]
+}
