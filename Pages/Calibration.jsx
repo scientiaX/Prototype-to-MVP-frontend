@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { base44 } from '@/api/base44Client';
+import apiClient from '@/api/apiClient';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import CalibrationQuestion from '@/components/calibration/CalibrationQuestion';
@@ -176,8 +176,8 @@ export default function Calibration() {
   }, []);
 
   const checkExistingProfile = async () => {
-    const user = await base44.auth.me();
-    const profiles = await base44.entities.UserProfile.filter({ created_by: user.email });
+    const user = await apiClient.auth.me();
+    const profiles = await apiClient.entities.UserProfile.filter({ created_by: user.email });
     if (profiles.length > 0 && profiles[0].calibration_completed) {
       setExistingProfile(profiles[0]);
     }
@@ -205,21 +205,10 @@ export default function Calibration() {
 
   const processCalibration = async (finalAnswers) => {
     setIsProcessing(true);
-    const calculatedProfile = {
-      ...calculateProfile(finalAnswers),
-      language: selectedLanguage
-    };
     
-    const user = await base44.auth.me();
-    const existingProfiles = await base44.entities.UserProfile.filter({ created_by: user.email });
+    const profile = await apiClient.api.profiles.calibrate(finalAnswers, selectedLanguage);
     
-    if (existingProfiles.length > 0) {
-      await base44.entities.UserProfile.update(existingProfiles[0].id, calculatedProfile);
-    } else {
-      await base44.entities.UserProfile.create(calculatedProfile);
-    }
-    
-    setProfile(calculatedProfile);
+    setProfile(profile);
     setView('result');
     setIsProcessing(false);
   };

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { base44 } from '@/api/base44Client';
+import apiClient from '@/api/apiClient';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import ArchetypeRadar from '@/components/profile/ArchetypeRadar';
@@ -27,9 +27,9 @@ export default function Profile() {
   }, []);
 
   const loadProfile = async () => {
-    const user = await base44.auth.me();
+    const user = await apiClient.auth.me();
     
-    const profiles = await base44.entities.UserProfile.filter({ created_by: user.email });
+    const profiles = await apiClient.entities.UserProfile.filter({ created_by: user.email });
     if (profiles.length === 0 || !profiles[0].calibration_completed) {
       navigate(createPageUrl('Calibration'));
       return;
@@ -37,9 +37,8 @@ export default function Profile() {
     
     setProfile(profiles[0]);
     
-    // Load achievements and artifacts
-    const userAchievements = await base44.entities.Achievement.filter({ created_by: user.email }, '-achieved_at');
-    const userArtifacts = await base44.entities.Artifact.filter({ created_by: user.email }, '-conquered_at');
+    const userAchievements = await apiClient.api.user.getAchievements(user.email);
+    const userArtifacts = await apiClient.api.user.getArtifacts(user.email);
     
     setAchievements(userAchievements);
     setArtifacts(userArtifacts);

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { base44 } from '@/api/base44Client';
+import apiClient from '@/api/apiClient';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Trophy, Zap, TrendingUp, Target, Brain, Wrench, Crown } from 'lucide-react';
 import { cn } from "@/lib/utils";
@@ -23,10 +23,10 @@ export default function Leaderboard() {
   }, []);
 
   const loadLeaderboard = async () => {
-    const user = await base44.auth.me();
+    const user = await apiClient.auth.me();
     setCurrentUser(user);
     
-    const allProfiles = await base44.entities.UserProfile.filter({ calibration_completed: true });
+    const allProfiles = await apiClient.api.profiles.getLeaderboard();
     setProfiles(allProfiles);
   };
 

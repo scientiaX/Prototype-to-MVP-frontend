@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Clock, AlertTriangle, Send, X, MessageCircle } from 'lucide-react';
 import { cn } from "@/lib/utils";
-import { base44 } from '@/api/base44Client';
+import apiClient from '@/api/apiClient';
 import AdaptiveAIMentor from './AdaptiveAIMentor';
 
 export default function ArenaBattle({ problem, session, onSubmit, onAbandon, profile }) {
@@ -63,28 +63,9 @@ export default function ArenaBattle({ problem, session, onSubmit, onAbandon, pro
   const generateInitialQuestion = async () => {
     setIsThinking(true);
     
-    const prompt = `Kamu adalah mentor Socratic. User baru mulai problem:
-
-PROBLEM: ${problem.title}
-CONTEXT: ${problem.context}
-OBJECTIVE: ${problem.objective}
-
-User archetype: ${profile?.primary_archetype}
-Thinking style: ${profile?.thinking_style}
-
-Generate 1 pertanyaan pembuka yang:
-1. Memaksa user breakdown masalah inti
-2. Tidak terlalu luas, tidak terlalu sempit
-3. Socratic - buat user berpikir sendiri
-4. 1 kalimat saja
-
-Contoh: "Apa satu hal yang paling kamu takutkan kalau keputusan ini salah?"
-
-Output hanya pertanyaan dalam Bahasa Indonesia.`;
-
-    const response = await base44.integrations.Core.InvokeLLM({ prompt });
-    setCurrentQuestion(response);
-    setQuestionHistory([response]);
+    const question = await apiClient.api.mentor.generateQuestion(problem.problem_id, 'initial');
+    setCurrentQuestion(question);
+    setQuestionHistory([question]);
     setIsThinking(false);
   };
 
@@ -162,31 +143,11 @@ Output hanya pertanyaan dalam Bahasa Indonesia.`;
     setMentorStage(null);
     clearInterval(countdownTimerRef.current);
 
-    const prompt = `User stuck dengan pertanyaan: "${currentQuestion}"
-
-Problem context: ${problem.context}
-Objective: ${problem.objective}
-User's response so far: ${solution || 'belum menulis apa-apa'}
-
-User archetype: ${profile?.primary_archetype}
-
-Generate pertanyaan baru yang:
-1. Lebih spesifik dan mengarahkan (leading)
-2. Breakdown pertanyaan sebelumnya jadi lebih konkret
-3. Menstimulasi dengan contoh atau skenario mini
-4. 1-2 kalimat
-
-Contoh evolution:
-Dari: "Apa risiko terbesarnya?"
-Jadi: "Kalau 6 bulan dari sekarang ternyata keputusan ini salah, apa kerugian konkret yang harus kamu tanggung?"
-
-Output hanya pertanyaan baru dalam Bahasa Indonesia.`;
-
-    const response = await base44.integrations.Core.InvokeLLM({ prompt });
-    setCurrentQuestion(response);
-    setQuestionHistory(prev => [...prev, response]);
+    const question = await apiClient.api.mentor.generateQuestion(problem.problem_id, 'pause');
+    setCurrentQuestion(question);
+    setQuestionHistory(prev => [...prev, question]);
     setIsThinking(false);
-    interventionCountRef.current = 0; // Reset intervention count
+    interventionCountRef.current = 0;
   };
 
   const handleSolutionChange = (e) => {
@@ -206,20 +167,8 @@ Output hanya pertanyaan baru dalam Bahasa Indonesia.`;
     setIsThinking(true);
     setMentorStage('over_analysis_warning');
 
-    const prompt = `User meminta bantuan mentor saat working on problem.
-
-Current question: ${currentQuestion}
-User's response: ${solution || 'belum menulis'}
-
-Berikan 1 pertanyaan Socratic yang:
-- Challenge assumption user
-- Atau poke blind spot yang mungkin terlewat
-- Atau hint untuk deeper thinking
-
-1 kalimat saja, dalam Bahasa Indonesia.`;
-
-    const response = await base44.integrations.Core.InvokeLLM({ prompt });
-    setMentorMessage(response);
+    const question = await apiClient.api.mentor.generateQuestion(problem.problem_id, 'pause');
+    setMentorMessage(question);
     setIsThinking(false);
 
     setTimeout(() => setMentorStage(null), 8000);

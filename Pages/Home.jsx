@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import { base44 } from '@/api/base44Client';
+import apiClient from '@/api/apiClient';
 import { Button } from "@/components/ui/button";
 import { 
   Zap, 
@@ -24,19 +24,19 @@ export default function Home() {
   }, []);
 
   const checkAuth = async () => {
-    const authenticated = await base44.auth.isAuthenticated();
+    const authenticated = await apiClient.auth.isAuthenticated();
     setIsAuthenticated(authenticated);
     
     if (authenticated) {
-      const user = await base44.auth.me();
-      const profiles = await base44.entities.UserProfile.filter({ created_by: user.email });
+      const user = await apiClient.auth.me();
+      const profiles = await apiClient.entities.UserProfile.filter({ created_by: user.email });
       setHasProfile(profiles.length > 0 && profiles[0].calibration_completed);
     }
   };
 
   const handleStart = () => {
     if (!isAuthenticated) {
-      base44.auth.redirectToLogin(createPageUrl('Calibration'));
+      apiClient.auth.redirectToLogin(createPageUrl('Calibration'));
     } else if (hasProfile) {
       navigate(createPageUrl('Arena'));
     } else {

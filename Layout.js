@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
-import { base44 } from '@/api/base44Client';
+import apiClient from '@/api/apiClient';
 import { 
   Swords, 
   User, 
@@ -23,12 +23,13 @@ export default function Layout({ children, currentPageName }) {
   }, []);
 
   const checkAuth = async () => {
-    const auth = await base44.auth.isAuthenticated();
+    const auth = await apiClient.auth.isAuthenticated();
     setIsAuthenticated(auth);
   };
 
   const handleLogout = () => {
-    base44.auth.logout(createPageUrl('Home'));
+    apiClient.auth.logout();
+    window.location.href = createPageUrl('Home');
   };
 
   const navItems = [

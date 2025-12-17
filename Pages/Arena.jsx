@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { base44 } from '@/api/base44Client';
+import apiClient from '@/api/apiClient';
 import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import ProblemCard from '@/components/arena/ProblemCard';
@@ -28,10 +28,9 @@ export default function Arena() {
 
   const loadData = async () => {
     setIsLoading(true);
-    const user = await base44.auth.me();
+    const user = await apiClient.auth.me();
     
-    // Check if calibrated
-    const profiles = await base44.entities.UserProfile.filter({ created_by: user.email });
+    const profiles = await apiClient.entities.UserProfile.filter({ created_by: user.email });
     if (profiles.length === 0 || !profiles[0].calibration_completed) {
       navigate(createPageUrl('Calibration'));
       return;
@@ -39,8 +38,7 @@ export default function Arena() {
     
     setProfile(profiles[0]);
     
-    // Load available problems for user's difficulty range
-    const allProblems = await base44.entities.Problem.filter({ is_active: true });
+    const allProblems = await apiClient.api.problems.list({ is_active: true });
     const relevantProblems = allProblems.filter(p => 
       p.difficulty >= profiles[0].current_difficulty - 1 && 
       p.difficulty <= profiles[0].current_difficulty + 2
@@ -53,91 +51,7 @@ export default function Arena() {
   const generateProblem = async (customization = null) => {
     setIsGenerating(true);
     
-    let prompt;
-    
-    if (customization) {
-      // Custom generation with user parameters
-      const domainText = customization.domains.join(', ');
-      const problemTypeText = customization.problemType 
-        ? `Focus on ${customization.problemType} scenario.` 
-        : '';
-      const contextText = customization.customContext 
-        ? `\n\nUser context: ${customization.customContext}` 
-        : '';
-      const constraintsText = customization.specificConstraints
-        ? `\n\nSpecific constraints to include: ${customization.specificConstraints}`
-        : '';
-      
-      prompt = `Generate a challenging real-world problem for someone with:
-- Profile archetype: ${profile.primary_archetype}
-- Current level: ${profile.current_difficulty}
-- Risk appetite: ${profile.risk_appetite}
-- Thinking style: ${profile.thinking_style}
-
-USER CUSTOMIZATION:
-- Domains: ${domainText}
-- Target difficulty: ${customization.minDifficulty}-${customization.maxDifficulty}
-- Time limit: ${customization.timeLimit} minutes
-${problemTypeText}${contextText}${constraintsText}
-
-Create a REAL-WORLD problem that:
-1. Has incomplete data
-2. Requires a decisive action (not just analysis)
-3. Has clear trade-offs that hurt
-4. Cannot be solved with a "safe" answer
-5. Reflects the user's specified domains and constraints
-6. Is challenging but solvable within the time limit
-
-The difficulty should be between ${customization.minDifficulty} and ${customization.maxDifficulty}.
-If multiple domains are specified, create a problem that intersects them (e.g., tech + business = technical product decision with business impact).
-
-CRITICAL: This is for a platform that confronts users with hard choices. Don't soften the problem. Make it realistic and uncomfortable.
-
-Respond in Indonesian.`;
-    } else {
-      // Quick generation based on profile
-      prompt = `Generate a business/strategy problem for someone with:
-- Domain: ${profile.domain}
-- Archetype: ${profile.primary_archetype}
-- Current difficulty level: ${profile.current_difficulty}
-- Risk appetite: ${profile.risk_appetite}
-- Thinking style: ${profile.thinking_style}
-
-Create a REAL-WORLD problem that:
-1. Has incomplete data
-2. Requires a decisive action
-3. Has clear trade-offs
-4. Cannot be solved with a "safe" answer
-
-The problem should be solvable in 20-30 minutes.
-
-Respond in Indonesian.`;
-    }
-
-    const response = await base44.integrations.Core.InvokeLLM({
-      prompt,
-      response_json_schema: {
-        type: "object",
-        properties: {
-          problem_id: { type: "string" },
-          title: { type: "string" },
-          context: { type: "string" },
-          objective: { type: "string" },
-          constraints: { type: "array", items: { type: "string" } },
-          difficulty: { type: "integer" },
-          level_up_criteria: { type: "array", items: { type: "string" } },
-          domain: { type: "string" },
-          archetype_focus: { type: "string" },
-          estimated_time_minutes: { type: "integer" }
-        }
-      }
-    });
-
-    // Save to database
-    const newProblem = await base44.entities.Problem.create({
-      ...response,
-      is_active: true
-    });
+    const newProblem = await apiClient.api.problems.generate(profile, customization);
     
     setProblems(prev => [newProblem, ...prev]);
     setIsGenerating(false);
@@ -146,14 +60,7 @@ Respond in Indonesian.`;
   const startProblem = async (problem) => {
     setSelectedProblem(problem);
     
-    // Create arena session
-    const session = await base44.entities.ArenaSession.create({
-      problem_id: problem.problem_id,
-      status: 'in_progress',
-      started_at: new Date().toISOString(),
-      difficulty_at_start: profile.current_difficulty,
-      archetype_at_start: profile.primary_archetype
-    });
+    const session = await apiClient.api.arena.start(problem.problem_id);
     
     setCurrentSession(session);
     setView('battle');
@@ -162,152 +69,17 @@ Respond in Indonesian.`;
   const handleSubmit = async (solution, timeElapsed) => {
     setIsLoading(true);
     
-    // AI Evaluation
-    const evaluationPrompt = `Kamu adalah mentor yang menguji keputusan. Evaluasi solusi berikut:
-
-MASALAH:
-${selectedProblem.title}
-${selectedProblem.context}
-
-OBJECTIVE:
-${selectedProblem.objective}
-
-CONSTRAINTS:
-${selectedProblem.constraints?.join(', ')}
-
-KRITERIA NAIK LEVEL:
-${selectedProblem.level_up_criteria?.join(', ')}
-
-SOLUSI USER:
-${solution}
-
-WAKTU: ${Math.floor(timeElapsed / 60)} menit
-
-Evaluasi dengan tajam dan singkat. Tentukan:
-1. Apakah user menghadapi risiko inti atau bermain aman?
-2. Apakah trade-off dijelaskan eksplisit?
-3. Apakah ada keputusan nyata atau hanya deskripsi?
-
-Berikan evaluasi yang konfrontatif, bukan memuji.`;
-
-    const evaluation = await base44.integrations.Core.InvokeLLM({
-      prompt: evaluationPrompt,
-      response_json_schema: {
-        type: "object",
-        properties: {
-          evaluation: { type: "string" },
-          insight: { type: "string" },
-          criteria_met: { type: "array", items: { type: "string" } },
-          level_up_achieved: { type: "boolean" },
-          quality_score: { type: "number" },
-          xp_risk_taker: { type: "integer" },
-          xp_analyst: { type: "integer" },
-          xp_builder: { type: "integer" },
-          xp_strategist: { type: "integer" }
-        }
-      }
-    });
-
-    // Calculate XP based on difficulty jump
-    let totalXp = 0;
-    const xpBreakdown = {
-      risk_taker: evaluation.xp_risk_taker || 0,
-      analyst: evaluation.xp_analyst || 0,
-      builder: evaluation.xp_builder || 0,
-      strategist: evaluation.xp_strategist || 0
-    };
+    const response = await apiClient.api.arena.submit(currentSession._id, solution, timeElapsed);
     
-    // XP only increases if difficulty increased
-    if (selectedProblem.difficulty > profile.current_difficulty && evaluation.level_up_achieved) {
-      const difficultyDelta = selectedProblem.difficulty - profile.current_difficulty;
-      const multiplier = evaluation.quality_score || 1;
-      totalXp = Math.round(difficultyDelta * multiplier * 10);
-      
-      // Distribute XP to archetypes
-      Object.keys(xpBreakdown).forEach(key => {
-        xpBreakdown[key] = Math.round(xpBreakdown[key] * multiplier);
-      });
-    }
-
-    // Update session
-    await base44.entities.ArenaSession.update(currentSession.id, {
-      status: 'evaluated',
-      submitted_at: new Date().toISOString(),
-      solution_text: solution,
-      xp_earned: totalXp,
-      xp_breakdown: xpBreakdown,
-      level_up_achieved: evaluation.level_up_achieved,
-      criteria_met: evaluation.criteria_met,
-      ai_evaluation: evaluation.evaluation,
-      ai_insight: evaluation.insight,
-      time_spent_seconds: timeElapsed
-    });
-
-    // Update profile
-    const newProfile = {
-      ...profile,
-      xp_risk_taker: (profile.xp_risk_taker || 0) + (xpBreakdown.risk_taker || 0),
-      xp_analyst: (profile.xp_analyst || 0) + (xpBreakdown.analyst || 0),
-      xp_builder: (profile.xp_builder || 0) + (xpBreakdown.builder || 0),
-      xp_strategist: (profile.xp_strategist || 0) + (xpBreakdown.strategist || 0),
-      total_arenas_completed: (profile.total_arenas_completed || 0) + 1
-    };
-    
-    if (evaluation.level_up_achieved && selectedProblem.difficulty > profile.current_difficulty) {
-      newProfile.current_difficulty = selectedProblem.difficulty;
-      newProfile.highest_difficulty_conquered = Math.max(
-        profile.highest_difficulty_conquered || 0, 
-        selectedProblem.difficulty
-      );
-      
-      // Create achievement
-      await base44.entities.Achievement.create({
-        achievement_id: `ACH-${Date.now()}`,
-        title: `Conquered Level ${selectedProblem.difficulty}`,
-        description: `Menyelesaikan ${selectedProblem.title} di difficulty ${selectedProblem.difficulty}`,
-        archetype_at_achievement: profile.primary_archetype,
-        difficulty_level: selectedProblem.difficulty,
-        problem_id: selectedProblem.problem_id,
-        achieved_at: new Date().toISOString(),
-        badge_type: 'difficulty_jump',
-        is_highest: selectedProblem.difficulty > (profile.highest_difficulty_conquered || 0)
-      });
-      
-      // Create artifact
-      await base44.entities.Artifact.create({
-        problem_id: selectedProblem.problem_id,
-        problem_title: selectedProblem.title,
-        difficulty: selectedProblem.difficulty,
-        archetype_role: profile.primary_archetype,
-        solution_summary: solution.substring(0, 500),
-        insight: evaluation.insight,
-        level_up_verified: true,
-        arena_session_id: currentSession.id,
-        conquered_at: new Date().toISOString()
-      });
-    }
-    
-    // Update archetype based on highest XP
-    const xpValues = {
-      risk_taker: newProfile.xp_risk_taker,
-      analyst: newProfile.xp_analyst,
-      builder: newProfile.xp_builder,
-      strategist: newProfile.xp_strategist
-    };
-    newProfile.primary_archetype = Object.entries(xpValues).reduce((a, b) => 
-      xpValues[a[0]] > xpValues[b[0]] ? a : b
-    )[0];
-    
-    await base44.entities.UserProfile.update(profile.id, newProfile);
-    setProfile(newProfile);
+    setProfile(response.updated_profile);
 
     setResult({
-      xp_earned: totalXp,
-      xp_breakdown: xpBreakdown,
-      level_up_achieved: evaluation.level_up_achieved,
-      criteria_met: evaluation.criteria_met,
-      ai_evaluation: evaluation.evaluation,
-      ai_insight: evaluation.insight,
+      xp_earned: response.xp_earned,
+      xp_breakdown: response.xp_breakdown,
+      level_up_achieved: response.evaluation.level_up_achieved,
+      criteria_met: response.evaluation.criteria_met,
+      ai_evaluation: response.evaluation.evaluation,
+      ai_insight: response.evaluation.insight,
       time_spent_seconds: timeElapsed
     });
     
@@ -317,9 +89,7 @@ Berikan evaluasi yang konfrontatif, bukan memuji.`;
 
   const handleAbandon = async () => {
     if (currentSession) {
-      await base44.entities.ArenaSession.update(currentSession.id, {
-        status: 'abandoned'
-      });
+      await apiClient.api.arena.abandon(currentSession._id);
     }
     setView('selection');
     setSelectedProblem(null);
