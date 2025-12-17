@@ -6,66 +6,70 @@ import { createPageUrl } from '@/utils';
 import CalibrationQuestion from '@/components/calibration/CalibrationQuestion';
 import CalibrationResult from '@/components/calibration/CalibrationResult';
 import { Loader2 } from 'lucide-react';
+import { getTranslation } from '../components/utils/translations';
 
-const CALIBRATION_QUESTIONS = [
-  {
-    id: 'domain',
-    question: "Bidang apa yang paling menarik perhatianmu saat ini?",
-    options: [
-      { value: 'business', label: 'Bisnis & Entrepreneurship' },
-      { value: 'tech', label: 'Teknologi & Product' },
-      { value: 'creative', label: 'Kreatif & Design' },
-      { value: 'leadership', label: 'Leadership & Management' }
-    ]
-  },
-  {
-    id: 'aspiration',
-    question: "Dalam 2 tahun ke depan, kamu ingin dikenal sebagai apa?",
-    options: [
-      { value: 'founder', label: 'Founder yang membangun sesuatu dari nol' },
-      { value: 'expert', label: 'Expert yang menguasai bidangnya' },
-      { value: 'leader', label: 'Leader yang menggerakkan tim besar' },
-      { value: 'innovator', label: 'Innovator yang mengubah cara kerja' }
-    ]
-  },
-  {
-    id: 'thinking_style',
-    question: "Bagaimana kamu biasanya mengambil keputusan?",
-    options: [
-      { value: 'fast', label: 'Cepat - Ambil keputusan, koreksi nanti' },
-      { value: 'accurate', label: 'Akurat - Kumpulkan data dulu, baru putuskan' },
-      { value: 'explorative', label: 'Eksploratif - Coba banyak opsi sebelum commit' }
-    ]
-  },
-  {
-    id: 'stuck_experience',
-    question: "Kapan terakhir kamu merasa stuck dan tidak bisa maju?",
-    options: [
-      { value: 'decision', label: 'Saat harus memilih antara dua pilihan sulit' },
-      { value: 'execution', label: 'Saat tahu harus apa tapi tidak bisa eksekusi' },
-      { value: 'direction', label: 'Saat tidak tahu arah yang benar' },
-      { value: 'resource', label: 'Saat kekurangan resource atau dukungan' }
-    ]
-  },
-  {
-    id: 'avoided_risk',
-    question: "Risiko apa yang paling sering kamu hindari?",
-    options: [
-      { value: 'financial', label: 'Risiko finansial - kehilangan uang' },
-      { value: 'reputation', label: 'Risiko reputasi - terlihat gagal' },
-      { value: 'time', label: 'Risiko waktu - membuang waktu untuk hal salah' },
-      { value: 'relationship', label: 'Risiko relasi - mengecewakan orang lain' }
-    ]
-  },
-  {
-    id: 'regret',
-    question: "Penyesalan mana yang lebih sering kamu rasakan?",
-    options: [
-      { value: 'too_slow', label: 'Terlalu lambat mengambil peluang' },
-      { value: 'too_reckless', label: 'Terlalu nekat tanpa pertimbangan matang' }
-    ]
-  }
-];
+const getCalibrationQuestions = (lang) => {
+  const t = getTranslation(lang);
+  return [
+    {
+      id: 'domain',
+      question: t.calibration.questions.domain.question,
+      options: [
+        { value: 'business', label: t.calibration.questions.domain.options.business },
+        { value: 'tech', label: t.calibration.questions.domain.options.tech },
+        { value: 'creative', label: t.calibration.questions.domain.options.creative },
+        { value: 'leadership', label: t.calibration.questions.domain.options.leadership }
+      ]
+    },
+    {
+      id: 'aspiration',
+      question: t.calibration.questions.aspiration.question,
+      options: [
+        { value: 'founder', label: t.calibration.questions.aspiration.options.founder },
+        { value: 'expert', label: t.calibration.questions.aspiration.options.expert },
+        { value: 'leader', label: t.calibration.questions.aspiration.options.leader },
+        { value: 'innovator', label: t.calibration.questions.aspiration.options.innovator }
+      ]
+    },
+    {
+      id: 'thinking_style',
+      question: t.calibration.questions.thinking_style.question,
+      options: [
+        { value: 'fast', label: t.calibration.questions.thinking_style.options.fast },
+        { value: 'accurate', label: t.calibration.questions.thinking_style.options.accurate },
+        { value: 'explorative', label: t.calibration.questions.thinking_style.options.explorative }
+      ]
+    },
+    {
+      id: 'stuck_experience',
+      question: t.calibration.questions.stuck_experience.question,
+      options: [
+        { value: 'decision', label: t.calibration.questions.stuck_experience.options.decision },
+        { value: 'execution', label: t.calibration.questions.stuck_experience.options.execution },
+        { value: 'direction', label: t.calibration.questions.stuck_experience.options.direction },
+        { value: 'resource', label: t.calibration.questions.stuck_experience.options.resource }
+      ]
+    },
+    {
+      id: 'avoided_risk',
+      question: t.calibration.questions.avoided_risk.question,
+      options: [
+        { value: 'financial', label: t.calibration.questions.avoided_risk.options.financial },
+        { value: 'reputation', label: t.calibration.questions.avoided_risk.options.reputation },
+        { value: 'time', label: t.calibration.questions.avoided_risk.options.time },
+        { value: 'relationship', label: t.calibration.questions.avoided_risk.options.relationship }
+      ]
+    },
+    {
+      id: 'regret',
+      question: t.calibration.questions.regret.question,
+      options: [
+        { value: 'too_slow', label: t.calibration.questions.regret.options.too_slow },
+        { value: 'too_reckless', label: t.calibration.questions.regret.options.too_reckless }
+      ]
+    }
+  ];
+};
 
 function calculateProfile(answers) {
   let risk_appetite = 0.5;
@@ -164,6 +168,8 @@ export default function Calibration() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [existingProfile, setExistingProfile] = useState(null);
   const navigate = useNavigate();
+  
+  const CALIBRATION_QUESTIONS = selectedLanguage ? getCalibrationQuestions(selectedLanguage) : [];
 
   useEffect(() => {
     checkExistingProfile();
@@ -223,23 +229,30 @@ export default function Calibration() {
   };
 
   if (existingProfile) {
+    const t = getTranslation(existingProfile.language);
     return (
       <div className="min-h-screen bg-black flex items-center justify-center p-6">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-white mb-4">Kamu sudah ter-kalibrasi.</h2>
-          <p className="text-zinc-400 mb-6">Langsung masuk ke arena atau lihat progress kamu.</p>
+          <h2 className="text-2xl font-bold text-white mb-4">
+            {existingProfile.language === 'en' ? 'You are already calibrated.' : 'Kamu sudah ter-kalibrasi.'}
+          </h2>
+          <p className="text-zinc-400 mb-6">
+            {existingProfile.language === 'en' 
+              ? 'Go straight to the arena or check your progress.' 
+              : 'Langsung masuk ke arena atau lihat progress kamu.'}
+          </p>
           <div className="flex gap-4 justify-center">
             <button 
               onClick={() => navigate(createPageUrl('Arena'))}
               className="bg-orange-500 hover:bg-orange-600 text-black font-bold px-6 py-3 rounded-lg"
             >
-              Masuk Arena
+              {t.arena.title}
             </button>
             <button 
               onClick={() => navigate(createPageUrl('Profile'))}
               className="bg-zinc-800 hover:bg-zinc-700 text-white font-bold px-6 py-3 rounded-lg"
             >
-              Lihat Profile
+              {t.profile.title}
             </button>
           </div>
         </div>
@@ -256,7 +269,9 @@ export default function Calibration() {
         >
           <Loader2 className="w-12 h-12 text-orange-500" />
         </motion.div>
-        <p className="text-zinc-400 ml-4">Mengkalibrasi profil...</p>
+        <p className="text-zinc-400 ml-4">
+          {selectedLanguage === 'en' ? 'Calibrating profile...' : 'Mengkalibrasi profil...'}
+        </p>
       </div>
     );
   }
@@ -319,10 +334,11 @@ export default function Calibration() {
         ) : view === 'result' ? (
           <CalibrationResult 
             key="result"
-            profile={profile} 
+            profile={profile}
+            language={selectedLanguage}
             onEnterArena={handleEnterArena} 
           />
-        ) : (
+        ) : CALIBRATION_QUESTIONS.length > 0 && CALIBRATION_QUESTIONS[currentQuestion] ? (
           <CalibrationQuestion
             key={currentQuestion}
             question={CALIBRATION_QUESTIONS[currentQuestion].question}
@@ -332,7 +348,7 @@ export default function Calibration() {
             totalQuestions={CALIBRATION_QUESTIONS.length}
             selectedValue={answers[CALIBRATION_QUESTIONS[currentQuestion].id]}
           />
-        )}
+        ) : null}
       </AnimatePresence>
     </div>
   );
