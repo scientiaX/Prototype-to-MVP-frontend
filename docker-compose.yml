@@ -37,6 +37,8 @@ services:
       JWT_SECRET: ${JWT_SECRET}
       JWT_EXPIRE: 7d
       CORS_ORIGIN: http://localhost
+    env_file:
+      - ../Prototype-to-MVP-backend/.env
     depends_on:
       mongodb:
         condition: service_healthy

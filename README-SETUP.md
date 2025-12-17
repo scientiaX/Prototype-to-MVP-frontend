@@ -17,17 +17,33 @@ Folder `backend-structure` sudah di-copy ke `../Prototype-to-MVP-backend`. Hapus
 rmdir /S /Q backend-structure
 ```
 
-### 2. Setup Environment Variables
+### 2. Setup Backend Environment Variables
+
+**PENTING: API keys dan secrets harus ada di backend `.env`, BUKAN di frontend!**
 
 ```bash
-# Copy template
-copy .env.docker .env
+cd ..\Prototype-to-MVP-backend
+copy .env.example .env
 ```
 
-Edit file `.env`:
+Edit file `../Prototype-to-MVP-backend/.env`:
 ```env
+NODE_ENV=production
+PORT=3001
+
+# Comet API
 OPENAI_API_KEY=sk-your-comet-api-key-here
+OPENAI_BASE_URL=https://api.cometapi.com/v1
+
+# MongoDB
+MONGODB_URI=mongodb://mongodb:27017/prototype-mvp
+
+# JWT
 JWT_SECRET=your-secure-random-string-min-32-chars
+JWT_EXPIRE=7d
+
+# CORS
+CORS_ORIGIN=http://localhost
 ```
 
 **Cara generate JWT_SECRET:**
@@ -38,7 +54,21 @@ JWT_SECRET=your-secure-random-string-min-32-chars
 # Atau manual: random string 32+ characters
 ```
 
-### 3. Build dan Run dengan Docker Compose
+### 3. Setup Frontend Environment (Optional)
+
+Frontend `.env` hanya untuk public config (API URL):
+
+```bash
+cd ..\Prototype-to-MVP-frontend
+copy .env.example .env
+```
+
+File `.env` frontend:
+```env
+VITE_API_BASE_URL=http://localhost/api
+```
+
+### 4. Build dan Run dengan Docker Compose
 
 ```bash
 # Build dan start semua services (MongoDB, Backend, Frontend)

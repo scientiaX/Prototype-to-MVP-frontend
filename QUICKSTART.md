@@ -6,23 +6,34 @@
 
 ## Langkah-langkah
 
-### 1️⃣ Setup Environment
+### 1️⃣ Setup Backend Environment
 ```bash
-copy .env.docker .env
+cd ..\Prototype-to-MVP-backend
+copy .env.example .env
 ```
 
-Edit `.env`:
+Edit `../Prototype-to-MVP-backend/.env`:
 ```env
 OPENAI_API_KEY=sk-your-comet-api-key
 JWT_SECRET=random-32-char-string
+MONGODB_URI=mongodb://mongodb:27017/prototype-mvp
 ```
 
-### 2️⃣ Deploy
+### 2️⃣ Setup Frontend Environment (Optional)
 ```bash
+cd ..\Prototype-to-MVP-frontend
+copy .env.example .env
+```
+
+File `.env` frontend hanya untuk config public (API URL), tidak ada secrets.
+
+### 3️⃣ Deploy
+```bash
+# Dari folder frontend
 docker-compose up -d --build
 ```
 
-### 3️⃣ Set User (di browser console)
+### 4️⃣ Set User (di browser console)
 ```javascript
 localStorage.setItem('current_user', JSON.stringify({
   email: 'user@example.com',
@@ -30,7 +41,7 @@ localStorage.setItem('current_user', JSON.stringify({
 }));
 ```
 
-### 4️⃣ Akses
+### 5️⃣ Akses
 http://localhost
 
 ---
@@ -54,6 +65,24 @@ docker-compose restart backend
 
 ---
 
+## Environment Variables Explained
+
+### Frontend `.env` (Public - No Secrets)
+```env
+VITE_API_BASE_URL=http://localhost/api
+```
+
+### Backend `.env` (Private - Contains Secrets)
+```env
+OPENAI_API_KEY=sk-xxx
+JWT_SECRET=xxx
+MONGODB_URI=mongodb://...
+```
+
+**⚠️ Backend `.env` TIDAK pernah di-commit ke Git!**
+
+---
+
 ## Troubleshooting
 
 **Check status:**
@@ -73,4 +102,4 @@ docker-compose logs frontend
 
 ---
 
-✨ **Tidak perlu `npm install`! Semua dependency otomatis di-install di dalam Docker container.**
+✨ **Secrets (API key, JWT) harus ada di backend `.env`, bukan frontend!**

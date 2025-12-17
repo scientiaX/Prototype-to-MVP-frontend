@@ -31,23 +31,39 @@ C:\Users\user\
 
 ## Setup & Deployment
 
-### 1. Setup Environment
+### 1. Setup Backend Environment
+
+**PENTING: Secrets harus ada di backend `.env`, bukan frontend!**
 
 ```bash
-# Dari folder frontend
-cd C:\Users\user\Prototype-to-MVP-frontend
+# Pindah ke folder backend
+cd C:\Users\user\Prototype-to-MVP-backend
 
 # Copy environment template
-copy .env.docker .env
+copy .env.example .env
 ```
 
-### 2. Edit Environment Variables
+### 2. Edit Backend Environment Variables
 
-Buka file `.env` dan isi:
+Buka file `C:\Users\user\Prototype-to-MVP-backend\.env` dan isi:
 
 ```env
+NODE_ENV=production
+PORT=3001
+
+# Comet API Configuration
 OPENAI_API_KEY=sk-your-comet-api-key-here
+OPENAI_BASE_URL=https://api.cometapi.com/v1
+
+# MongoDB Configuration
+MONGODB_URI=mongodb://mongodb:27017/prototype-mvp
+
+# JWT Configuration
 JWT_SECRET=your-secure-random-string-min-32-characters
+JWT_EXPIRE=7d
+
+# CORS Configuration
+CORS_ORIGIN=http://localhost
 ```
 
 **Cara generate JWT_SECRET (PowerShell):**
@@ -55,7 +71,23 @@ JWT_SECRET=your-secure-random-string-min-32-characters
 -join ((65..90) + (97..122) + (48..57) | Get-Random -Count 32 | % {[char]$_})
 ```
 
-### 3. Build dan Run
+### 3. Setup Frontend Environment (Optional)
+
+Frontend `.env` hanya untuk public configuration, tidak ada secrets:
+
+```bash
+cd C:\Users\user\Prototype-to-MVP-frontend
+
+# Copy template
+copy .env.example .env
+```
+
+File `.env` frontend:
+```env
+VITE_API_BASE_URL=http://localhost/api
+```
+
+### 4. Build dan Run
 
 ```bash
 # Build semua images dan start containers

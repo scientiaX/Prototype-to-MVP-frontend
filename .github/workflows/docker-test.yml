@@ -1,0 +1,72 @@
+name: Docker Compose Test
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'docker-compose.yml'
+      - 'Dockerfile'
+      - 'nginx.conf'
+      - '.github/workflows/docker-test.yml'
+
+jobs:
+  test-docker-compose:
+    name: Test Full Stack with Docker Compose
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout Frontend
+      uses: actions/checkout@v4
+      path: frontend
+      
+    - name: Checkout Backend
+      uses: actions/checkout@v4
+      with:
+        repository: scientiaX/Prototype-to-MVP-backend
+        path: backend
+        token: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Create test environment
+      working-directory: frontend
+      run: |
+        cp .env.docker .env
+        echo "OPENAI_API_KEY=test-key" >> .env
+        echo "JWT_SECRET=test-jwt-secret-min-32-characters-long" >> .env
+        
+    - name: Start services
+      working-directory: frontend
+      run: |
+        docker-compose up -d
+        sleep 30
+        
+    - name: Check services health
+      working-directory: frontend
+      run: |
+        docker-compose ps
+        docker-compose logs backend
+        docker-compose logs frontend
+        
+    - name: Test Backend health endpoint
+      run: |
+        curl -f http://localhost:3001/health || exit 1
+        
+    - name: Test Frontend
+      run: |
+        curl -f http://localhost || exit 1
+        
+    - name: Test MongoDB connection
+      working-directory: frontend
+      run: |
+        docker-compose exec -T mongodb mongosh --eval "db.runCommand('ping')"
+        
+    - name: Show logs on failure
+      if: failure()
+      working-directory: frontend
+      run: |
+        docker-compose logs
+        
+    - name: Cleanup
+      if: always()
+      working-directory: frontend
+      run: |
+        docker-compose down -v
