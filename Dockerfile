@@ -2,7 +2,7 @@ FROM node:18-alpine as build
 
 WORKDIR /app
 
-COPY backend-structure/package*.json ./
+COPY backend-structure/package.json backend-structure/package-lock.json ./
 
 RUN npm ci
 
