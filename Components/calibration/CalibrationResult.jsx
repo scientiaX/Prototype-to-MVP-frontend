@@ -2,43 +2,57 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from "@/components/ui/button";
 import { Target, Zap, Brain, Wrench, ArrowRight } from 'lucide-react';
+import { getTranslation } from '../utils/translations';
 
-const archetypeConfig = {
-  risk_taker: {
-    icon: Zap,
-    label: "Risk Taker",
-    color: "text-red-500",
-    bgColor: "bg-red-500/10",
-    borderColor: "border-red-500/30",
-    description: "Kamu cenderung mengambil risiko besar. Sistemnya akan menguji seberapa terukur keberanianmu."
-  },
-  analyst: {
-    icon: Brain,
-    label: "Analyst",
-    color: "text-blue-500",
-    bgColor: "bg-blue-500/10",
-    borderColor: "border-blue-500/30",
-    description: "Kamu suka data dan ketelitian. Sistemnya akan memaksa kamu memutuskan dengan data tidak lengkap."
-  },
-  builder: {
-    icon: Wrench,
-    label: "Builder",
-    color: "text-green-500",
-    bgColor: "bg-green-500/10",
-    borderColor: "border-green-500/30",
-    description: "Kamu fokus pada eksekusi. Sistemnya akan menguji seberapa adaptif solusimu."
-  },
-  strategist: {
-    icon: Target,
-    label: "Strategist",
-    color: "text-purple-500",
-    bgColor: "bg-purple-500/10",
-    borderColor: "border-purple-500/30",
-    description: "Kamu berpikir jangka panjang. Sistemnya akan menguji ketegasan keputusanmu di bawah tekanan."
-  }
+const getArchetypeConfig = (lang) => {
+  const isEnglish = lang === 'en';
+  return {
+    risk_taker: {
+      icon: Zap,
+      label: "Risk Taker",
+      color: "text-red-500",
+      bgColor: "bg-red-500/10",
+      borderColor: "border-red-500/30",
+      description: isEnglish 
+        ? "You tend to take big risks. The system will test how calculated your courage is."
+        : "Kamu cenderung mengambil risiko besar. Sistemnya akan menguji seberapa terukur keberanianmu."
+    },
+    analyst: {
+      icon: Brain,
+      label: "Analyst",
+      color: "text-blue-500",
+      bgColor: "bg-blue-500/10",
+      borderColor: "border-blue-500/30",
+      description: isEnglish
+        ? "You like data and precision. The system will force you to decide with incomplete data."
+        : "Kamu suka data dan ketelitian. Sistemnya akan memaksa kamu memutuskan dengan data tidak lengkap."
+    },
+    builder: {
+      icon: Wrench,
+      label: "Builder",
+      color: "text-green-500",
+      bgColor: "bg-green-500/10",
+      borderColor: "border-green-500/30",
+      description: isEnglish
+        ? "You focus on execution. The system will test how adaptive your solutions are."
+        : "Kamu fokus pada eksekusi. Sistemnya akan menguji seberapa adaptif solusimu."
+    },
+    strategist: {
+      icon: Target,
+      label: "Strategist",
+      color: "text-purple-500",
+      bgColor: "bg-purple-500/10",
+      borderColor: "border-purple-500/30",
+      description: isEnglish
+        ? "You think long-term. The system will test the firmness of your decisions under pressure."
+        : "Kamu berpikir jangka panjang. Sistemnya akan menguji ketegasan keputusanmu di bawah tekanan."
+    }
+  };
 };
 
-export default function CalibrationResult({ profile, onEnterArena }) {
+export default function CalibrationResult({ profile, language, onEnterArena }) {
+  const t = getTranslation(language || profile.language);
+  const archetypeConfig = getArchetypeConfig(language || profile.language);
   const archetype = archetypeConfig[profile.primary_archetype] || archetypeConfig.analyst;
   const Icon = archetype.icon;
 
@@ -63,7 +77,9 @@ export default function CalibrationResult({ profile, onEnterArena }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
       >
-        <p className="text-zinc-500 text-sm font-mono mb-2">INITIAL ARCHETYPE</p>
+        <p className="text-zinc-500 text-sm font-mono mb-2">
+          {(language || profile.language) === 'en' ? 'INITIAL ARCHETYPE' : 'ARKETIPE AWAL'}
+        </p>
         <h1 className={`text-4xl font-bold ${archetype.color} mb-4`}>
           {archetype.label}
         </h1>
@@ -80,13 +96,17 @@ export default function CalibrationResult({ profile, onEnterArena }) {
         className="grid grid-cols-2 gap-4 mb-8"
       >
         <div className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-4">
-          <p className="text-zinc-500 text-xs font-mono mb-1">STARTING DIFFICULTY</p>
+          <p className="text-zinc-500 text-xs font-mono mb-1">
+            {t.calibration.result.startingDifficulty.toUpperCase()}
+          </p>
           <p className="text-2xl font-bold text-white">
             Level {profile.current_difficulty}
           </p>
         </div>
         <div className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-4">
-          <p className="text-zinc-500 text-xs font-mono mb-1">RISK APPETITE</p>
+          <p className="text-zinc-500 text-xs font-mono mb-1">
+            {t.calibration.result.riskAppetite.toUpperCase()}
+          </p>
           <p className="text-2xl font-bold text-orange-500">
             {Math.round(profile.risk_appetite * 100)}%
           </p>
@@ -101,9 +121,12 @@ export default function CalibrationResult({ profile, onEnterArena }) {
         className="bg-zinc-900/30 border border-zinc-800 rounded-lg p-4 mb-8 text-left"
       >
         <p className="text-zinc-500 text-sm">
-          <span className="text-orange-500 font-bold">Peringatan:</span> Archetype bukan label permanen. 
-          Sistem akan mengubahnya berdasarkan perilaku nyata di arena. 
-          Tidak ada jalan pintas. Tidak ada grind.
+          <span className="text-orange-500 font-bold">
+            {(language || profile.language) === 'en' ? 'Warning:' : 'Peringatan:'}
+          </span>{' '}
+          {(language || profile.language) === 'en' 
+            ? 'Archetype is not a permanent label. The system will change it based on real behavior in the arena. No shortcuts. No grind.'
+            : 'Archetype bukan label permanen. Sistem akan mengubahnya berdasarkan perilaku nyata di arena. Tidak ada jalan pintas. Tidak ada grind.'}
         </p>
       </motion.div>
 
@@ -111,7 +134,7 @@ export default function CalibrationResult({ profile, onEnterArena }) {
         onClick={onEnterArena}
         className="bg-orange-500 hover:bg-orange-600 text-black font-bold px-8 py-6 text-lg"
       >
-        Masuk Arena
+        {t.calibration.result.enterArena}
         <ArrowRight className="ml-2 w-5 h-5" />
       </Button>
     </motion.div>
