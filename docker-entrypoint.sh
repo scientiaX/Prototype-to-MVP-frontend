@@ -10,6 +10,7 @@ server {
     listen ${PORT};
     server_name _;
     root /usr/share/nginx/html;
+    include /etc/nginx/mime.types;
     index index.html;
 
     error_log /dev/stdout info;
