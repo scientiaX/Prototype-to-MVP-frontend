@@ -20,10 +20,10 @@ WORKDIR /app
 RUN npm install -g serve
 
 COPY --from=build /app/dist ./dist
-COPY start.sh ./start.sh
-
-RUN chmod +x start.sh
+# Removed start.sh dependency to separate concerns and avoid line-ending issues
+# COPY start.sh ./start.sh
+# RUN chmod +x start.sh
 
 EXPOSE 3000
 
-CMD ["./start.sh"]
+CMD ["/bin/sh", "-c", "serve -s dist -l ${PORT:-3000}"]
