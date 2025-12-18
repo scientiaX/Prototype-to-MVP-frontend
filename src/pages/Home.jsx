@@ -168,12 +168,12 @@ export default function Home() {
                   transition={{ delay: 0.2, duration: 0.5 }}
                 >
                   <div className="w-2 h-2 rounded-full bg-orange-400 animate-pulse" />
-                  <span className="text-xs font-semibold text-orange-400 tracking-wider uppercase font-mono">Novax Arena</span>
+                  <span className="text-xs font-semibold text-orange-400 tracking-wider uppercase font-mono">Novax Trial</span>
                 </motion.div>
 
                 {/* Headline */}
                 <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-[0.95] tracking-tight">
-                  <span className="text-white block">Problem</span>
+                  <span className="text-white block">NovaX</span>
                   <span className="text-gradient-fire block">Arena</span>
                 </h1>
 
