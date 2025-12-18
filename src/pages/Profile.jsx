@@ -5,14 +5,14 @@ import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import ArchetypeRadar from '@/components/profile/ArchetypeRadar';
 import BadgeDisplay from '@/components/profile/BadgeDisplay';
-import { Loader2, Zap, Target, Brain, Wrench, Trophy, TrendingUp, Clock } from 'lucide-react';
+import { Loader2, Zap, Target, Brain, Wrench, Trophy, TrendingUp, Award } from 'lucide-react';
 import { cn } from "@/lib/utils";
 
 const archetypeConfig = {
-  risk_taker: { icon: Zap, label: 'Risk Taker', color: 'text-red-500' },
-  analyst: { icon: Brain, label: 'Analyst', color: 'text-blue-500' },
-  builder: { icon: Wrench, label: 'Builder', color: 'text-green-500' },
-  strategist: { icon: Target, label: 'Strategist', color: 'text-purple-500' }
+  risk_taker: { icon: Zap, label: 'Risk Taker', color: 'var(--danger-400)', bg: 'rgba(244, 63, 94, 0.15)' },
+  analyst: { icon: Brain, label: 'Analyst', color: 'var(--accent-400)', bg: 'rgba(6, 182, 212, 0.15)' },
+  builder: { icon: Wrench, label: 'Builder', color: 'var(--success-400)', bg: 'rgba(16, 185, 129, 0.15)' },
+  strategist: { icon: Target, label: 'Strategist', color: 'var(--violet-400)', bg: 'rgba(139, 92, 246, 0.15)' }
 };
 
 export default function Profile() {
@@ -28,18 +28,18 @@ export default function Profile() {
 
   const loadProfile = async () => {
     const user = await apiClient.auth.me();
-    
+
     const profiles = await apiClient.entities.UserProfile.filter({ created_by: user.email });
     if (profiles.length === 0 || !profiles[0].calibration_completed) {
       navigate(createPageUrl('Calibration'));
       return;
     }
-    
+
     setProfile(profiles[0]);
-    
+
     const userAchievements = await apiClient.api.user.getAchievements(user.email);
     const userArtifacts = await apiClient.api.user.getArtifacts(user.email);
-    
+
     setAchievements(userAchievements);
     setArtifacts(userArtifacts);
     setIsLoading(false);
@@ -47,85 +47,70 @@ export default function Profile() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <Loader2 className="w-8 h-8 text-orange-500 animate-spin" />
+      <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--black)' }}>
+        <div className="flex items-center gap-3">
+          <Loader2 className="w-6 h-6 animate-spin" style={{ color: 'var(--primary-500)' }} />
+          <span style={{ color: 'var(--gray-400)' }}>Loading profile...</span>
+        </div>
       </div>
     );
   }
 
   const archetype = archetypeConfig[profile.primary_archetype] || archetypeConfig.analyst;
   const Icon = archetype.icon;
-  const totalXp = (profile.xp_risk_taker || 0) + (profile.xp_analyst || 0) + 
-                  (profile.xp_builder || 0) + (profile.xp_strategist || 0);
+  const totalXp = (profile.xp_risk_taker || 0) + (profile.xp_analyst || 0) +
+    (profile.xp_builder || 0) + (profile.xp_strategist || 0);
+
+  const stats = [
+    { icon: Trophy, value: profile.current_difficulty, label: 'Current Level', color: 'var(--primary-400)' },
+    { icon: Zap, value: totalXp, label: 'Total XP', color: 'var(--warning-400)' },
+    { icon: TrendingUp, value: profile.highest_difficulty_conquered || 0, label: 'Highest Conquered', color: 'var(--success-400)' },
+    { icon: Target, value: profile.total_arenas_completed || 0, label: 'Arenas Completed', color: 'var(--accent-400)' }
+  ];
 
   return (
-    <div className="min-h-screen bg-black p-4 md:p-6">
-      <div className="max-w-4xl mx-auto">
-        {/* Header */}
+    <div className="min-h-screen" style={{ background: 'var(--black)' }}>
+      <div className="container py-8 max-w-4xl">
+        {/* Profile Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-8"
+          className="text-center mb-12"
         >
-          <div className={cn(
-            "inline-flex items-center justify-center w-20 h-20 rounded-2xl mb-4",
-            "bg-zinc-900 border-2 border-zinc-800"
-          )}>
-            <Icon className={cn("w-10 h-10", archetype.color)} />
+          <div
+            className="w-24 h-24 rounded-2xl flex items-center justify-center mx-auto mb-6"
+            style={{ background: archetype.bg }}
+          >
+            <Icon className="w-12 h-12" style={{ color: archetype.color }} />
           </div>
-          <h1 className={cn("text-3xl font-bold", archetype.color)}>
+
+          <h1
+            className="font-bold mb-2"
+            style={{ color: archetype.color, fontSize: 'var(--heading-page)' }}
+          >
             {archetype.label}
           </h1>
-          <p className="text-zinc-500 mt-1 capitalize">
+
+          <p style={{ color: 'var(--gray-500)' }}>
             {profile.domain?.replace('_', ' ')} • {profile.aspiration?.replace('_', ' ')}
           </p>
         </motion.div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-4 text-center"
-          >
-            <Trophy className="w-5 h-5 text-orange-500 mx-auto mb-2" />
-            <p className="text-2xl font-bold text-white">{profile.current_difficulty}</p>
-            <p className="text-zinc-500 text-xs">Current Level</p>
-          </motion.div>
-          
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-4 text-center"
-          >
-            <Zap className="w-5 h-5 text-yellow-500 mx-auto mb-2" />
-            <p className="text-2xl font-bold text-white">{totalXp}</p>
-            <p className="text-zinc-500 text-xs">Total XP</p>
-          </motion.div>
-          
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-4 text-center"
-          >
-            <TrendingUp className="w-5 h-5 text-green-500 mx-auto mb-2" />
-            <p className="text-2xl font-bold text-white">{profile.highest_difficulty_conquered || 0}</p>
-            <p className="text-zinc-500 text-xs">Highest Conquered</p>
-          </motion.div>
-          
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-4 text-center"
-          >
-            <Target className="w-5 h-5 text-blue-500 mx-auto mb-2" />
-            <p className="text-2xl font-bold text-white">{profile.total_arenas_completed || 0}</p>
-            <p className="text-zinc-500 text-xs">Arenas Completed</p>
-          </motion.div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+          {stats.map((stat, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.1 }}
+              className="card p-5 text-center"
+            >
+              <stat.icon className="w-5 h-5 mx-auto mb-3" style={{ color: stat.color }} />
+              <p className="text-2xl font-bold text-white font-mono mb-1">{stat.value}</p>
+              <p className="text-xs" style={{ color: 'var(--gray-500)' }}>{stat.label}</p>
+            </motion.div>
+          ))}
         </div>
 
         {/* Archetype Radar */}
@@ -133,33 +118,36 @@ export default function Profile() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}
-          className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 mb-8"
+          className="card p-8 mb-8"
         >
-          <h2 className="text-white font-semibold mb-4">Archetype Distribution</h2>
+          <h2 className="text-white font-bold text-lg mb-6">Archetype Distribution</h2>
           <ArchetypeRadar profile={profile} />
-          
-          {/* XP breakdown */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+
+          {/* XP Breakdown */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8 pt-6" style={{ borderTop: '1px solid var(--gray-800)' }}>
             {Object.entries(archetypeConfig).map(([key, config]) => {
               const xp = profile[`xp_${key}`] || 0;
               return (
                 <div key={key} className="text-center">
-                  <p className={cn("font-mono text-lg font-bold", config.color)}>{xp}</p>
-                  <p className="text-zinc-600 text-xs">{config.label}</p>
+                  <p className="font-mono text-xl font-bold" style={{ color: config.color }}>{xp}</p>
+                  <p className="text-xs" style={{ color: 'var(--gray-600)' }}>{config.label}</p>
                 </div>
               );
             })}
           </div>
         </motion.div>
 
-        {/* Badges / Achievements */}
+        {/* Badges */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6 }}
-          className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 mb-8"
+          className="card p-8 mb-8"
         >
-          <h2 className="text-white font-semibold mb-4">Badges (Scars)</h2>
+          <div className="flex items-center gap-3 mb-6">
+            <Award className="w-5 h-5" style={{ color: 'var(--primary-400)' }} />
+            <h2 className="text-white font-bold text-lg">Badges (Scars)</h2>
+          </div>
           <BadgeDisplay achievements={achievements} />
         </motion.div>
 
@@ -168,57 +156,76 @@ export default function Profile() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.7 }}
-          className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6"
+          className="card p-8"
         >
-          <h2 className="text-white font-semibold mb-4">Portfolio Artifacts</h2>
-          
+          <h2 className="text-white font-bold text-lg mb-6">Portfolio Artifacts</h2>
+
           {artifacts.length > 0 ? (
             <div className="space-y-4">
               {artifacts.map((artifact) => (
-                <div 
+                <div
                   key={artifact.id}
-                  className="bg-zinc-950 border border-zinc-800 rounded-lg p-4"
+                  className="p-5 rounded-xl"
+                  style={{ background: 'var(--gray-900)', border: '1px solid var(--gray-800)' }}
                 >
-                  <div className="flex items-start justify-between mb-2">
-                    <div>
-                      <span className="text-zinc-600 font-mono text-xs">{artifact.problem_id}</span>
-                      <h3 className="text-white font-semibold">{artifact.problem_title}</h3>
-                    </div>
-                    <div className="text-right">
-                      <span className={cn(
-                        "inline-block px-2 py-1 rounded text-xs font-mono",
-                        artifact.difficulty <= 3 ? "bg-green-500/20 text-green-500" :
-                        artifact.difficulty <= 6 ? "bg-yellow-500/20 text-yellow-500" :
-                        "bg-red-500/20 text-red-500"
-                      )}>
-                        Difficulty {artifact.difficulty}
+                  <div className="flex items-start justify-between gap-4 mb-3">
+                    <div className="flex-1 min-w-0">
+                      <span className="font-mono text-xs" style={{ color: 'var(--gray-600)' }}>
+                        {artifact.problem_id}
                       </span>
+                      <h3 className="text-white font-semibold truncate">{artifact.problem_title}</h3>
                     </div>
+                    <span
+                      className="badge shrink-0"
+                      style={{
+                        background: artifact.difficulty <= 3 ? 'rgba(16, 185, 129, 0.15)' :
+                          artifact.difficulty <= 6 ? 'rgba(245, 158, 11, 0.15)' :
+                            'rgba(244, 63, 94, 0.15)',
+                        color: artifact.difficulty <= 3 ? 'var(--success-400)' :
+                          artifact.difficulty <= 6 ? 'var(--warning-400)' :
+                            'var(--danger-400)'
+                      }}
+                    >
+                      Difficulty {artifact.difficulty}
+                    </span>
                   </div>
-                  
-                  <p className="text-zinc-400 text-sm mb-2">
-                    Ditaklukkan sebagai <span className="text-orange-500 capitalize">{artifact.archetype_role?.replace('_', ' ')}</span>
+
+                  <p style={{ color: 'var(--gray-400)' }} className="text-sm mb-2">
+                    Conquered as{' '}
+                    <span style={{ color: 'var(--primary-400)' }} className="capitalize">
+                      {artifact.archetype_role?.replace('_', ' ')}
+                    </span>
                   </p>
-                  
+
                   {artifact.insight && (
-                    <p className="text-zinc-500 text-sm italic">
+                    <p className="text-sm italic" style={{ color: 'var(--gray-500)' }}>
                       "{artifact.insight}"
                     </p>
                   )}
-                  
+
                   {artifact.level_up_verified && (
-                    <div className="flex items-center gap-1 mt-2">
-                      <TrendingUp className="w-3 h-3 text-green-500" />
-                      <span className="text-green-500 text-xs">Level Up Verified</span>
+                    <div className="flex items-center gap-1.5 mt-3">
+                      <TrendingUp className="w-3.5 h-3.5" style={{ color: 'var(--success-400)' }} />
+                      <span className="text-xs" style={{ color: 'var(--success-400)' }}>
+                        Level Up Verified
+                      </span>
                     </div>
                   )}
                 </div>
               ))}
             </div>
           ) : (
-            <p className="text-zinc-600 text-center py-8">
-              Belum ada artifact. Selesaikan arena dan naik level untuk mengumpulkannya.
-            </p>
+            <div className="text-center py-12">
+              <div
+                className="w-14 h-14 rounded-xl mx-auto mb-4 flex items-center justify-center"
+                style={{ background: 'var(--gray-800)' }}
+              >
+                <Trophy className="w-7 h-7" style={{ color: 'var(--gray-600)' }} />
+              </div>
+              <p style={{ color: 'var(--gray-500)' }}>
+                Belum ada artifact. Selesaikan arena untuk mengumpulkannya.
+              </p>
+            </div>
           )}
         </motion.div>
       </div>

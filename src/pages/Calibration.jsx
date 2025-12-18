@@ -5,8 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import CalibrationQuestion from '@/components/calibration/CalibrationQuestion';
 import CalibrationResult from '@/components/calibration/CalibrationResult';
-import { Loader2 } from 'lucide-react';
+import { Loader2, Globe, Flame } from 'lucide-react';
 import { getTranslation } from '../components/utils/translations';
+import { Button } from "@/components/ui/button";
 
 const getCalibrationQuestions = (lang) => {
   const t = getTranslation(lang);
@@ -77,7 +78,6 @@ function calculateProfile(answers) {
   let ambiguity_tolerance = 0.5;
   let experience_depth = 0.5;
 
-  // Thinking style affects decision speed
   if (answers.thinking_style === 'fast') {
     decision_speed = 0.8;
     risk_appetite += 0.1;
@@ -89,14 +89,12 @@ function calculateProfile(answers) {
     decision_speed = 0.5;
   }
 
-  // Regret pattern affects risk appetite
   if (answers.regret === 'too_slow') {
     risk_appetite -= 0.15;
   } else {
     risk_appetite += 0.15;
   }
 
-  // Avoided risk affects profile
   if (answers.avoided_risk === 'financial') {
     risk_appetite -= 0.1;
   } else if (answers.avoided_risk === 'reputation') {
@@ -105,25 +103,21 @@ function calculateProfile(answers) {
     decision_speed += 0.1;
   }
 
-  // Aspiration affects experience depth
   if (answers.aspiration === 'expert') {
     experience_depth = 0.7;
   } else if (answers.aspiration === 'founder') {
     risk_appetite += 0.1;
   }
 
-  // Normalize values
   risk_appetite = Math.max(0.1, Math.min(0.9, risk_appetite));
   decision_speed = Math.max(0.1, Math.min(0.9, decision_speed));
   ambiguity_tolerance = Math.max(0.1, Math.min(0.9, ambiguity_tolerance));
   experience_depth = Math.max(0.1, Math.min(0.9, experience_depth));
 
-  // Calculate starting difficulty (1-5) based on overall scores
   const avgScore = (risk_appetite + decision_speed + ambiguity_tolerance + experience_depth) / 4;
   let starting_difficulty = Math.ceil(avgScore * 5);
   starting_difficulty = Math.max(1, Math.min(5, starting_difficulty));
 
-  // Determine archetype
   let primary_archetype = 'analyst';
   const scores = {
     risk_taker: risk_appetite + (decision_speed * 0.5),
@@ -131,8 +125,8 @@ function calculateProfile(answers) {
     builder: decision_speed + (1 - ambiguity_tolerance) * 0.5,
     strategist: ambiguity_tolerance + experience_depth
   };
-  
-  primary_archetype = Object.entries(scores).reduce((a, b) => 
+
+  primary_archetype = Object.entries(scores).reduce((a, b) =>
     scores[a[0]] > scores[b[0]] ? a : b
   )[0];
 
@@ -160,7 +154,7 @@ function calculateProfile(answers) {
 }
 
 export default function Calibration() {
-  const [view, setView] = useState('language'); // 'language', 'questions', 'result'
+  const [view, setView] = useState('language');
   const [selectedLanguage, setSelectedLanguage] = useState(null);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState({});
@@ -168,7 +162,7 @@ export default function Calibration() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [existingProfile, setExistingProfile] = useState(null);
   const navigate = useNavigate();
-  
+
   const CALIBRATION_QUESTIONS = selectedLanguage ? getCalibrationQuestions(selectedLanguage) : [];
 
   useEffect(() => {
@@ -193,7 +187,7 @@ export default function Calibration() {
   const handleSelect = (value) => {
     const questionId = CALIBRATION_QUESTIONS[currentQuestion].id;
     setAnswers(prev => ({ ...prev, [questionId]: value }));
-    
+
     setTimeout(() => {
       if (currentQuestion < CALIBRATION_QUESTIONS.length - 1) {
         setCurrentQuestion(prev => prev + 1);
@@ -205,9 +199,7 @@ export default function Calibration() {
 
   const processCalibration = async (finalAnswers) => {
     setIsProcessing(true);
-    
     const profile = await apiClient.api.profiles.calibrate(finalAnswers, selectedLanguage);
-    
     setProfile(profile);
     setView('result');
     setIsProcessing(false);
@@ -220,29 +212,39 @@ export default function Calibration() {
   if (existingProfile) {
     const t = getTranslation(existingProfile.language);
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center p-6">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold text-white mb-4">
+      <div className="min-h-screen flex items-center justify-center p-6" style={{ background: 'var(--black)' }}>
+        <div className="text-center max-w-md">
+          <div
+            className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6"
+            style={{ background: 'var(--gradient-fire)' }}
+          >
+            <Flame className="w-10 h-10 text-black" />
+          </div>
+
+          <h2 className="text-2xl font-bold text-white mb-3">
             {existingProfile.language === 'en' ? 'You are already calibrated.' : 'Kamu sudah ter-kalibrasi.'}
           </h2>
-          <p className="text-zinc-400 mb-6">
-            {existingProfile.language === 'en' 
-              ? 'Go straight to the arena or check your progress.' 
+          <p className="mb-8" style={{ color: 'var(--gray-400)' }}>
+            {existingProfile.language === 'en'
+              ? 'Go straight to the arena or check your progress.'
               : 'Langsung masuk ke arena atau lihat progress kamu.'}
           </p>
-          <div className="flex gap-4 justify-center">
-            <button 
+
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Button
               onClick={() => navigate(createPageUrl('Arena'))}
-              className="bg-orange-500 hover:bg-orange-600 text-black font-bold px-6 py-3 rounded-lg"
+              variant="gradient"
+              size="lg"
             >
               {t.arena.title}
-            </button>
-            <button 
+            </Button>
+            <Button
               onClick={() => navigate(createPageUrl('Profile'))}
-              className="bg-zinc-800 hover:bg-zinc-700 text-white font-bold px-6 py-3 rounded-lg"
+              variant="outline"
+              size="lg"
             >
               {t.profile.title}
-            </button>
+            </Button>
           </div>
         </div>
       </div>
@@ -251,14 +253,14 @@ export default function Calibration() {
 
   if (isProcessing) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+      <div className="min-h-screen flex flex-col items-center justify-center gap-4" style={{ background: 'var(--black)' }}>
+        <div
+          className="w-16 h-16 rounded-2xl flex items-center justify-center glow-fire"
+          style={{ background: 'var(--gradient-fire)' }}
         >
-          <Loader2 className="w-12 h-12 text-orange-500" />
-        </motion.div>
-        <p className="text-zinc-400 ml-4">
+          <Loader2 className="w-8 h-8 text-black animate-spin" />
+        </div>
+        <p style={{ color: 'var(--gray-400)' }}>
           {selectedLanguage === 'en' ? 'Calibrating profile...' : 'Mengkalibrasi profil...'}
         </p>
       </div>
@@ -266,10 +268,15 @@ export default function Calibration() {
   }
 
   return (
-    <div className="min-h-screen bg-black flex flex-col items-center justify-center p-6">
-      {/* Background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 via-transparent to-red-500/5 pointer-events-none" />
-      
+    <div className="min-h-screen flex flex-col items-center justify-center p-6" style={{ background: 'var(--black)' }}>
+      {/* Background */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full blur-3xl opacity-10"
+          style={{ background: 'var(--primary-600)' }}
+        />
+      </div>
+
       <AnimatePresence mode="wait">
         {view === 'language' ? (
           <motion.div
@@ -284,48 +291,55 @@ export default function Calibration() {
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ delay: 0.2, type: "spring" }}
-                className="w-20 h-20 bg-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-6"
+                className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6"
+                style={{ background: 'var(--gradient-fire)' }}
               >
-                <span className="text-4xl">🌐</span>
+                <Globe className="w-10 h-10 text-black" />
               </motion.div>
-              <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+
+              <h1
+                className="text-white font-bold mb-3"
+                style={{ fontSize: 'var(--heading-page)' }}
+              >
                 Choose Your Language
               </h1>
-              <p className="text-zinc-400 text-lg">
+              <p style={{ color: 'var(--gray-400)' }}>
                 Pilih Bahasamu
               </p>
             </div>
 
             <div className="grid md:grid-cols-2 gap-4">
               <motion.button
-                whileHover={{ scale: 1.02 }}
+                whileHover={{ scale: 1.02, y: -2 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => handleLanguageSelect('en')}
-                className="bg-zinc-900 hover:bg-zinc-800 border-2 border-zinc-800 hover:border-orange-500 rounded-xl p-8 transition-all text-left"
+                className="card p-8 text-left transition-all"
+                style={{ borderColor: 'var(--gray-700)' }}
               >
                 <div className="text-4xl mb-4">🇬🇧</div>
-                <h3 className="text-2xl font-bold text-white mb-2">English</h3>
-                <p className="text-zinc-500 text-sm">Continue in English</p>
+                <h3 className="text-xl font-bold text-white mb-2">English</h3>
+                <p style={{ color: 'var(--gray-500)' }}>Continue in English</p>
               </motion.button>
 
               <motion.button
-                whileHover={{ scale: 1.02 }}
+                whileHover={{ scale: 1.02, y: -2 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => handleLanguageSelect('id')}
-                className="bg-zinc-900 hover:bg-zinc-800 border-2 border-zinc-800 hover:border-orange-500 rounded-xl p-8 transition-all text-left"
+                className="card p-8 text-left transition-all"
+                style={{ borderColor: 'var(--gray-700)' }}
               >
                 <div className="text-4xl mb-4">🇮🇩</div>
-                <h3 className="text-2xl font-bold text-white mb-2">Bahasa Indonesia</h3>
-                <p className="text-zinc-500 text-sm">Lanjutkan dalam Bahasa Indonesia</p>
+                <h3 className="text-xl font-bold text-white mb-2">Bahasa Indonesia</h3>
+                <p style={{ color: 'var(--gray-500)' }}>Lanjutkan dalam Bahasa Indonesia</p>
               </motion.button>
             </div>
           </motion.div>
         ) : view === 'result' ? (
-          <CalibrationResult 
+          <CalibrationResult
             key="result"
             profile={profile}
             language={selectedLanguage}
-            onEnterArena={handleEnterArena} 
+            onEnterArena={handleEnterArena}
           />
         ) : CALIBRATION_QUESTIONS.length > 0 && CALIBRATION_QUESTIONS[currentQuestion] ? (
           <CalibrationQuestion

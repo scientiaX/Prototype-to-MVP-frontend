@@ -9,7 +9,8 @@ import {
   Home,
   LogOut,
   Menu,
-  X
+  X,
+  Flame
 } from 'lucide-react';
 import { cn } from "@/lib/utils";
 
@@ -39,83 +40,106 @@ export default function Layout({ children, currentPageName }) {
     { name: 'Leaderboard', icon: Trophy, page: 'Leaderboard' }
   ];
 
-  // Hide nav on calibration page
   const hideNav = currentPageName === 'Calibration';
 
   if (hideNav) {
     return (
-      <div className="min-h-screen bg-black">
+      <div className="min-h-screen" style={{ background: 'var(--black)' }}>
         {children}
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-black">
-      {/* Desktop Nav - Compact Modern */}
-      <nav className="hidden md:flex fixed top-0 left-0 right-0 z-50 backdrop-blur-xl border-b border-zinc-900" style={{ background: 'var(--glass-darker)' }}>
-        <div className="max-w-[1600px] mx-auto w-full px-12 lg:px-16 py-3 flex items-center justify-between">
-          <Link to={createPageUrl('Home')} className="flex items-center gap-2.5 group">
-            <div className="w-9 h-9 rounded-lg flex items-center justify-center relative overflow-hidden transition-all duration-300 group-hover:scale-110 glow-orange" style={{ background: 'var(--gradient-primary)' }}>
-              <span className="text-black font-black text-base relative z-10">N</span>
+    <div className="min-h-screen" style={{ background: 'var(--black)' }}>
+      {/* Desktop Navigation */}
+      <nav className="hidden md:block fixed top-0 left-0 right-0 z-50 glass">
+        <div className="container">
+          <div className="flex items-center justify-between h-16">
+            {/* Logo */}
+            <Link to={createPageUrl('Home')} className="flex items-center gap-3 group">
+              <div
+                className="w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-105 glow-fire"
+                style={{ background: 'var(--gradient-fire)' }}
+              >
+                <Flame className="w-5 h-5 text-black" />
+              </div>
+              <div className="flex flex-col">
+                <span className="font-bold text-white text-lg leading-none">NOVAX</span>
+                <span className="text-xs font-mono" style={{ color: 'var(--gray-500)' }}>ARENA</span>
+              </div>
+            </Link>
+
+            {/* Nav Links */}
+            <div className="flex items-center gap-1">
+              {navItems.map((item) => {
+                const Icon = item.icon;
+                const isActive = currentPageName === item.page;
+                return (
+                  <Link
+                    key={item.page}
+                    to={createPageUrl(item.page)}
+                    className={cn(
+                      "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200",
+                      isActive
+                        ? "text-white"
+                        : "text-gray-400 hover:text-white hover:bg-white/5"
+                    )}
+                    style={isActive ? {
+                      background: 'rgba(249, 115, 22, 0.12)',
+                      color: 'var(--primary-400)'
+                    } : {}}
+                  >
+                    <Icon className="w-4 h-4" />
+                    <span>{item.name}</span>
+                  </Link>
+                );
+              })}
             </div>
-            <span className="text-white font-bold text-base transition-colors group-hover:text-orange-500">Novax</span>
-          </Link>
 
-          <div className="flex items-center gap-2">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = currentPageName === item.page;
-              return (
-                <Link
-                  key={item.page}
-                  to={createPageUrl(item.page)}
-                  className={cn(
-                    "flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 text-sm",
-                    isActive
-                      ? "bg-orange-500/10 text-orange-500 shadow-[0_0_15px_rgba(255,107,53,0.3)]"
-                      : "text-zinc-400 hover:text-white hover:bg-zinc-900/50 hover:scale-105"
-                  )}
-                >
-                  <Icon className={cn("w-4 h-4", isActive && "animate-glow-pulse")} />
-                  <span className="font-medium">{item.name}</span>
-                </Link>
-              );
-            })}
+            {/* Auth */}
+            {isAuthenticated && (
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-2 px-4 py-2 text-sm transition-all duration-200 rounded-lg hover:bg-white/5"
+                style={{ color: 'var(--gray-400)' }}
+              >
+                <LogOut className="w-4 h-4" />
+                <span>Keluar</span>
+              </button>
+            )}
           </div>
-
-          {isAuthenticated && (
-            <button
-              onClick={handleLogout}
-              className="flex items-center gap-2 px-4 py-2 text-zinc-500 hover:text-red-500 transition-all duration-200 hover:scale-105 text-sm"
-            >
-              <LogOut className="w-4 h-4" />
-              <span>Keluar</span>
-            </button>
-          )}
         </div>
       </nav>
 
-      {/* Mobile Nav */}
-      <nav className="md:hidden fixed top-0 left-0 right-0 z-50 backdrop-blur-xl border-b border-zinc-900" style={{ background: 'var(--glass-darker)' }}>
-        <div className="px-4 py-4 flex items-center justify-between">
-          <Link to={createPageUrl('Home')} className="flex items-center gap-2 group">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center relative overflow-hidden transition-all duration-300 group-hover:scale-110 glow-orange" style={{ background: 'var(--gradient-primary)' }}>
-              <span className="text-black font-bold text-sm">N</span>
+      {/* Mobile Top Bar */}
+      <nav className="md:hidden fixed top-0 left-0 right-0 z-50 glass">
+        <div className="flex items-center justify-between h-14 px-4">
+          <Link to={createPageUrl('Home')} className="flex items-center gap-2">
+            <div
+              className="w-9 h-9 rounded-lg flex items-center justify-center glow-fire"
+              style={{ background: 'var(--gradient-fire)' }}
+            >
+              <Flame className="w-5 h-5 text-black" />
             </div>
-            <span className="text-white font-bold">Novax</span>
+            <span className="font-bold text-white">NOVAX</span>
           </Link>
 
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 text-zinc-400 hover:text-white transition-colors"
+            className="p-2 rounded-lg transition-colors"
+            style={{ color: 'var(--gray-400)' }}
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
 
+        {/* Mobile Menu Dropdown */}
         {mobileMenuOpen && (
-          <div className="border-t border-zinc-900 bg-black px-4 py-4 space-y-2">
+          <div className="border-t px-4 py-4 space-y-1" style={{
+            background: 'var(--gray-900)',
+            borderColor: 'var(--gray-800)'
+          }}>
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = currentPageName === item.page;
@@ -125,14 +149,17 @@ export default function Layout({ children, currentPageName }) {
                   to={createPageUrl(item.page)}
                   onClick={() => setMobileMenuOpen(false)}
                   className={cn(
-                    "flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200",
-                    isActive
-                      ? "bg-orange-500/10 text-orange-500"
-                      : "text-zinc-400 hover:text-white hover:bg-zinc-900"
+                    "flex items-center gap-3 px-4 py-3 rounded-lg text-base font-medium transition-all"
                   )}
+                  style={isActive ? {
+                    background: 'rgba(249, 115, 22, 0.12)',
+                    color: 'var(--primary-400)'
+                  } : {
+                    color: 'var(--gray-300)'
+                  }}
                 >
                   <Icon className="w-5 h-5" />
-                  <span className="font-medium">{item.name}</span>
+                  <span>{item.name}</span>
                 </Link>
               );
             })}
@@ -143,19 +170,20 @@ export default function Layout({ children, currentPageName }) {
                   setMobileMenuOpen(false);
                   handleLogout();
                 }}
-                className="w-full flex items-center gap-3 px-4 py-3 text-zinc-500 hover:text-red-500 transition-colors"
+                className="w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors"
+                style={{ color: 'var(--danger-400)' }}
               >
                 <LogOut className="w-5 h-5" />
-                <span className="font-medium">Keluar</span>
+                <span>Keluar</span>
               </button>
             )}
           </div>
         )}
       </nav>
 
-      {/* Mobile Bottom Nav */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 backdrop-blur-xl border-t border-zinc-900" style={{ background: 'var(--glass-darker)' }}>
-        <div className="flex items-center justify-around py-2">
+      {/* Mobile Bottom Navigation */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 glass border-t" style={{ borderColor: 'var(--gray-800)' }}>
+        <div className="flex items-center justify-around h-16 px-2">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = currentPageName === item.page;
@@ -164,12 +192,16 @@ export default function Layout({ children, currentPageName }) {
                 key={item.page}
                 to={createPageUrl(item.page)}
                 className={cn(
-                  "flex flex-col items-center gap-1 p-2 rounded-lg transition-all duration-200",
-                  isActive ? "text-orange-500 scale-110" : "text-zinc-500 hover:text-zinc-300"
+                  "flex flex-col items-center justify-center gap-1 py-2 px-4 rounded-xl transition-all duration-200"
                 )}
+                style={isActive ? {
+                  color: 'var(--primary-400)'
+                } : {
+                  color: 'var(--gray-500)'
+                }}
               >
                 <Icon className="w-5 h-5" />
-                <span className="text-xs">{item.name}</span>
+                <span className="text-xs font-medium">{item.name}</span>
               </Link>
             );
           })}
@@ -177,7 +209,7 @@ export default function Layout({ children, currentPageName }) {
       </nav>
 
       {/* Main Content */}
-      <main className="pt-14 md:pt-16 pb-20 md:pb-0">
+      <main className="page-wrapper">
         {children}
       </main>
     </div>

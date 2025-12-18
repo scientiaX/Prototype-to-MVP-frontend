@@ -5,13 +5,15 @@ import { createPageUrl } from '@/utils';
 import apiClient from '@/api/apiClient';
 import { Button } from "@/components/ui/button";
 import {
+  ChevronRight,
   Target,
-  ArrowRight,
-  Skull,
+  Flame,
   Shield,
   TrendingUp,
   Sparkles,
-  Flame
+  Zap,
+  Users,
+  BarChart3
 } from 'lucide-react';
 
 export default function Home() {
@@ -44,209 +46,240 @@ export default function Home() {
     }
   };
 
-  return (
-    <div className="min-h-screen bg-black overflow-hidden relative">
-      {/* Modern Asymmetric Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 via-transparent to-red-500/5" />
-      <div className="absolute top-[-10%] right-[-5%] w-[1000px] h-[1000px] bg-orange-500/15 rounded-full blur-3xl opacity-30" />
-      <div className="absolute bottom-[-20%] left-[-10%] w-[800px] h-[800px] bg-purple-500/10 rounded-full blur-3xl opacity-20" />
+  const features = [
+    {
+      icon: Target,
+      title: "Adaptive Matching",
+      description: "AI mencocokkan masalah dengan archetype dan level-mu",
+      gradient: "var(--gradient-fire)",
+      glow: "glow-fire"
+    },
+    {
+      icon: TrendingUp,
+      title: "XP = Difficulty",
+      description: "Progression berbasis challenge, bukan grinding",
+      gradient: "var(--gradient-success)",
+      glow: "glow-success"
+    },
+    {
+      icon: Shield,
+      title: "Scar Badges",
+      description: "Badge adalah bukti kamu bertarung, bukan partisipasi",
+      gradient: "var(--gradient-magic)",
+      glow: "glow-magic"
+    }
+  ];
 
-      {/* Grid Pattern */}
-      <div className="absolute inset-0 opacity-[0.03]" style={{
-        backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
-        backgroundSize: '100px 100px'
-      }} />
+  const stats = [
+    { value: "247", label: "Active Battles", icon: Zap },
+    { value: "7.2", label: "Avg Difficulty", icon: BarChart3 },
+    { value: "1.2k", label: "Warriors", icon: Users }
+  ];
+
+  return (
+    <div className="min-h-screen relative overflow-hidden" style={{ background: 'var(--black)' }}>
+      {/* Background Effects */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div
+          className="absolute top-[-20%] right-[-10%] w-[800px] h-[800px] rounded-full blur-3xl opacity-20"
+          style={{ background: 'var(--primary-600)' }}
+        />
+        <div
+          className="absolute bottom-[-30%] left-[-15%] w-[600px] h-[600px] rounded-full blur-3xl opacity-10"
+          style={{ background: 'var(--violet-600)' }}
+        />
+        {/* Grid Pattern */}
+        <div
+          className="absolute inset-0 opacity-[0.02]"
+          style={{
+            backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), 
+                             linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
+            backgroundSize: '60px 60px'
+          }}
+        />
+      </div>
 
       <div className="relative z-10">
-        {/* Hero Section - Asymmetric Layout */}
-        <div className="min-h-[85vh] flex items-center" style={{ paddingTop: 'var(--space-section)', paddingBottom: 'var(--space-element)' }}>
-          <div className="w-full max-w-[1600px] mx-auto px-8 md:px-12 lg:px-16">
-            <div className="grid lg:grid-cols-12 gap-12 items-center">
-              {/* Left Column - Text Content */}
-              <div className="lg:col-span-7">
-                <motion.div
-                  initial={{ opacity: 0, x: -30 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6 }}
+        {/* Hero Section */}
+        <section className="container">
+          <div className="min-h-[85vh] flex items-center py-20">
+            <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center w-full">
+              {/* Left - Content */}
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6 }}
+              >
+                {/* Badge */}
+                <div className="badge badge-primary mb-8">
+                  <Flame className="w-3.5 h-3.5" />
+                  <span>Novax Arena</span>
+                </div>
+
+                {/* Headline */}
+                <h1
+                  className="font-bold mb-6 leading-[0.95] tracking-tight"
+                  style={{ fontSize: 'var(--heading-hero)' }}
                 >
-                  {/* Badge */}
-                  <div className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full mb-8 glass-card">
-                    <Flame className="w-4 h-4 text-orange-500 animate-glow-pulse" />
-                    <span className="text-zinc-400 text-xs font-mono font-bold tracking-[0.2em] uppercase">Novax Trial</span>
-                  </div>
+                  <span className="text-white block">Problem</span>
+                  <span className="text-gradient-fire block">Arena</span>
+                </h1>
 
-                  {/* Oversized Title */}
-                  <h1 className="font-black tracking-tight mb-6" style={{
-                    fontSize: 'var(--text-hero)',
-                    lineHeight: '0.9',
-                    letterSpacing: '-0.02em'
-                  }}>
-                    <span className="block text-white">PROBLEM</span>
-                    <span className="block gradient-text-primary-animated">ARENA</span>
-                  </h1>
+                {/* Description */}
+                <p
+                  className="mb-10 max-w-lg leading-relaxed"
+                  style={{ color: 'var(--gray-400)', fontSize: 'var(--text-lg)' }}
+                >
+                  Belajar yang sebenarnya terjadi lewat{' '}
+                  <span style={{ color: 'var(--primary-400)' }}>konfrontasi masalah nyata</span>.
+                  Bukan materi. Bukan teori. Bukan validasi.
+                </p>
 
-                  {/* Subtitle - Asymmetrically Positioned */}
-                  <div className="ml-2 mb-12 max-w-xl">
-                    <p className="text-zinc-400 leading-relaxed mb-2" style={{ fontSize: 'var(--text-body-lg)' }}>
-                      Belajar terjadi lewat <span className="text-orange-500 font-bold">masalah nyata</span>.
-                    </p>
-                    <p className="text-zinc-600 text-base">
-                      Bukan materi. Bukan teori. Bukan validasi.
-                    </p>
-                  </div>
+                {/* CTA */}
+                <div className="flex flex-wrap items-center gap-4">
+                  <Button
+                    onClick={handleStart}
+                    variant="gradient"
+                    size="xl"
+                    className="group"
+                  >
+                    {hasProfile ? 'Masuk Arena' : 'Mulai Kalibrasi'}
+                    <ChevronRight className="w-5 h-5 ml-1 group-hover:translate-x-1 transition-transform" />
+                  </Button>
 
-                  {/* CTA - Left Aligned */}
-                  <div className="flex flex-col sm:flex-row items-start gap-4">
-                    <Button
-                      onClick={handleStart}
-                      variant="gradient"
-                      size="xl"
-                      className="group text-base px-10"
+                  <span className="text-sm" style={{ color: 'var(--gray-500)' }}>
+                    {isAuthenticated
+                      ? hasProfile ? '⚔️ Ready to battle' : '🎯 5-7 menit'
+                      : '🔑 Login dulu'}
+                  </span>
+                </div>
+              </motion.div>
+
+              {/* Right - Stats Card */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="lg:justify-self-end w-full max-w-md"
+              >
+                <div
+                  className="card-glass p-8 relative overflow-hidden"
+                  style={{ borderColor: 'rgba(249, 115, 22, 0.2)' }}
+                >
+                  {/* Decorative */}
+                  <div
+                    className="absolute top-0 right-0 w-32 h-32 rounded-full blur-2xl opacity-20"
+                    style={{ background: 'var(--primary-500)' }}
+                  />
+
+                  <div className="relative z-10">
+                    <div className="flex items-center justify-between mb-8">
+                      <div>
+                        <h3 className="text-white font-bold text-lg">Live Stats</h3>
+                        <p className="text-sm" style={{ color: 'var(--gray-500)' }}>Real-time arena</p>
+                      </div>
+                      <Sparkles className="w-5 h-5" style={{ color: 'var(--violet-400)' }} />
+                    </div>
+
+                    <div className="space-y-6">
+                      {stats.map((stat, i) => (
+                        <div key={i} className="flex items-center justify-between">
+                          <div className="flex items-center gap-3">
+                            <div
+                              className="icon-box"
+                              style={{ background: 'var(--gray-800)' }}
+                            >
+                              <stat.icon className="w-5 h-5" style={{ color: 'var(--gray-400)' }} />
+                            </div>
+                            <span style={{ color: 'var(--gray-400)' }}>{stat.label}</span>
+                          </div>
+                          <span className="font-mono font-bold text-2xl text-white">
+                            {stat.value}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div
+                      className="mt-8 pt-6 border-t"
+                      style={{ borderColor: 'var(--gray-800)' }}
                     >
-                      {hasProfile ? 'Masuk Arena' : 'Mulai Kalibrasi'}
-                      <ArrowRight className="ml-3 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                    </Button>
-
-                    <div className="flex items-center gap-2 px-4 py-3">
-                      <span className="text-zinc-600 text-sm">
-                        {isAuthenticated
-                          ? hasProfile
-                            ? '⚔️ Siap bertarung?'
-                            : '5-7 menit kalibrasi'
-                          : '🔑 Login dulu'}
-                      </span>
-                    </div>
-                  </div>
-                </motion.div>
-              </div>
-
-              {/* Right Column - Floating Stats Card */}
-              <div className="lg:col-span-5">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3, duration: 0.6 }}
-                  className="glass-card rounded-2xl p-8 border-2 border-orange-500/20"
-                >
-                  <div className="flex items-start justify-between mb-6">
-                    <div>
-                      <h3 className="text-white font-bold text-xl mb-1">Live Stats</h3>
-                      <p className="text-zinc-500 text-sm">Real-time performance</p>
-                    </div>
-                    <Sparkles className="w-6 h-6 text-purple-500" />
-                  </div>
-
-                  <div className="space-y-6">
-                    <div>
-                      <div className="flex items-baseline justify-between mb-2">
-                        <span className="text-zinc-400 text-sm">Active Battles</span>
-                        <span className="text-white font-bold text-3xl gradient-text-primary">247</span>
-                      </div>
-                      <div className="h-1.5 bg-zinc-900 rounded-full overflow-hidden">
-                        <div className="h-full bg-gradient-to-r from-orange-500 to-red-500 w-[73%]" />
-                      </div>
-                    </div>
-
-                    <div>
-                      <div className="flex items-baseline justify-between mb-2">
-                        <span className="text-zinc-400 text-sm">Avg Difficulty</span>
-                        <span className="text-white font-bold text-3xl gradient-text-accent">7.2</span>
-                      </div>
-                      <div className="h-1.5 bg-zinc-900 rounded-full overflow-hidden">
-                        <div className="h-full bg-gradient-to-r from-cyan-500 to-blue-500 w-[72%]" />
-                      </div>
-                    </div>
-
-                    <div className="pt-4 border-t border-zinc-800">
-                      <p className="text-zinc-600 text-xs italic">
+                      <p className="text-sm italic" style={{ color: 'var(--gray-600)' }}>
                         "No comfort zone. Only growth zone."
                       </p>
                     </div>
                   </div>
-                </motion.div>
-              </div>
+                </div>
+              </motion.div>
             </div>
           </div>
-        </div>
+        </section>
 
-        {/* Features Section - Bento Grid */}
-        <div style={{ paddingTop: 'var(--space-section)', paddingBottom: 'var(--space-section)' }}>
-          <div className="w-full max-w-[1600px] mx-auto px-8 md:px-12 lg:px-16">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
+        {/* Features Section */}
+        <section className="container section-lg">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+          >
+            {/* Section Header */}
+            <div className="mb-16">
+              <h2
+                className="text-white font-bold mb-4"
+                style={{ fontSize: 'var(--heading-page)' }}
+              >
+                Sistem Berbasis <span className="text-gradient-magic">Konfrontasi</span>
+              </h2>
+              <p style={{ color: 'var(--gray-500)', maxWidth: '600px' }}>
+                Bukan gamifikasi kosmetik. Setiap elemen dirancang untuk growth melalui pressure.
+              </p>
+            </div>
+
+            {/* Features Grid */}
+            <div className="grid md:grid-cols-3 gap-6">
+              {features.map((feature, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                  className="card p-8 group"
+                >
+                  <div
+                    className={`icon-box-lg mb-6 ${feature.glow} transition-transform group-hover:scale-110`}
+                    style={{ background: feature.gradient }}
+                  >
+                    <feature.icon className="w-7 h-7 text-black" />
+                  </div>
+
+                  <h3 className="text-white font-bold text-xl mb-3">
+                    {feature.title}
+                  </h3>
+
+                  <p style={{ color: 'var(--gray-400)' }}>
+                    {feature.description}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Warning */}
+            <div
+              className="mt-16 card p-6 text-center max-w-2xl mx-auto"
+              style={{
+                borderColor: 'rgba(244, 63, 94, 0.2)',
+                background: 'rgba(244, 63, 94, 0.05)'
+              }}
             >
-              {/* Section Header */}
-              <div className="mb-16">
-                <h2 className="text-white font-bold mb-3" style={{ fontSize: 'var(--text-heading)' }}>
-                  Sistem Berbasis <span className="gradient-text-secondary">Konfrontasi</span>
-                </h2>
-                <p className="text-zinc-500 max-w-2xl" style={{ fontSize: 'var(--text-body-lg)' }}>
-                  Bukan gamifikasi kosmetik. Setiap elemen dirancang untuk growth lewat pressure.
-                </p>
-              </div>
-
-              {/* Bento Grid - Irregular Sizes */}
-              <div className="grid md:grid-cols-12 gap-6">
-                {/* Feature 1 - Large */}
-                <div className="md:col-span-7 glass-card rounded-2xl p-10 group hover:border-orange-500/30 transition-all duration-300 overflow-hidden relative">
-                  <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <div className="relative z-10">
-                    <div className="w-16 h-16 rounded-xl flex items-center justify-center mb-6 glow-orange transition-all group-hover:scale-110" style={{ background: 'var(--gradient-primary)' }}>
-                      <Target className="w-8 h-8 text-black" />
-                    </div>
-                    <h3 className="text-white font-bold text-2xl mb-4">Adaptive Matchmaking</h3>
-                    <p className="text-zinc-400 leading-relaxed text-base max-w-md">
-                      Sistem AI mencocokkan archetype kognitif dan level kesulitan. Orang ↔ Masalah.
-                      Tidak ada random. Tidak ada autopilot.
-                    </p>
-                  </div>
-                </div>
-
-                {/* Feature 2 - Medium */}
-                <div className="md:col-span-5 glass-card rounded-2xl p-10 group hover:border-green-500/30 transition-all duration-300 overflow-hidden relative">
-                  <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <div className="relative z-10">
-                    <div className="w-16 h-16 rounded-xl flex items-center justify-center mb-6 glow-green transition-all group-hover:scale-110" style={{ background: 'var(--gradient-success)' }}>
-                      <TrendingUp className="w-8 h-8 text-black" />
-                    </div>
-                    <h3 className="text-white font-bold text-2xl mb-4">XP = Difficulty</h3>
-                    <p className="text-zinc-400 leading-relaxed text-base">
-                      XP hanya naik jika difficulty naik. No grind. No shortcuts. Pure skill progression.
-                    </p>
-                  </div>
-                </div>
-
-                {/* Feature 3 - Medium */}
-                <div className="md:col-span-5 glass-card rounded-2xl p-10 group hover:border-purple-500/30 transition-all duration-300 overflow-hidden relative md:row-span-1">
-                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <div className="relative z-10">
-                    <div className="w-16 h-16 rounded-xl flex items-center justify-center mb-6 transition-all group-hover:scale-110" style={{ background: 'var(--gradient-secondary)', boxShadow: 'var(--glow-purple)' }}>
-                      <Shield className="w-8 h-8 text-white" />
-                    </div>
-                    <h3 className="text-white font-bold text-2xl mb-4">Scar Badges</h3>
-                    <p className="text-zinc-400 leading-relaxed text-base">
-                      Badge = bukti kamu hadapi risiko nyata. Bukan kosmetik. Bukan partisipasi trophy.
-                    </p>
-                  </div>
-                </div>
-
-                {/* Warning Box */}
-                <div className="md:col-span-7 glass-card rounded-2xl p-10 border-2 border-red-500/20 relative overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-transparent" />
-                  <div className="relative z-10">
-                    <Skull className="w-12 h-12 text-red-500 mb-4 opacity-50" />
-                    <p className="text-zinc-400 text-lg leading-relaxed">
-                      <span className="text-red-400 font-bold">⚠️ Warning:</span> Ini bukan platform untuk merasa nyaman.
-                      Jika kamu mencari validasi atau safe space, ini <span className="text-white font-semibold">bukan tempatnya</span>.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
+              <p style={{ color: 'var(--gray-400)' }}>
+                <span style={{ color: 'var(--danger-400)' }}>⚠️ Warning:</span>{' '}
+                Ini bukan platform untuk merasa nyaman.
+                Jika mencari validasi, ini <span className="text-white font-medium">bukan tempatnya</span>.
+              </p>
+            </div>
+          </motion.div>
+        </section>
       </div>
     </div>
   );

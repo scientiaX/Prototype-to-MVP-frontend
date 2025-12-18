@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { motion } from 'framer-motion';
-import { LogIn } from 'lucide-react';
+import { LogIn, Mail, User, ArrowRight, Flame } from 'lucide-react';
 import apiClient from '@/api/apiClient';
 
 export default function Login() {
@@ -19,73 +19,106 @@ export default function Login() {
             return;
         }
 
-        // Set user in localStorage
         apiClient.auth.setUser({ email, name });
 
-        // Redirect to intended page or calibration
         const redirectTo = searchParams.get('redirect') || '/calibration';
         navigate(redirectTo);
     };
 
     return (
-        <div className="min-h-screen bg-black flex items-center justify-center px-6">
-            <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 via-transparent to-red-500/5" />
+        <div className="min-h-screen flex items-center justify-center p-6" style={{ background: 'var(--black)' }}>
+            {/* Background */}
+            <div className="absolute inset-0 pointer-events-none">
+                <div
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-3xl opacity-10"
+                    style={{ background: 'var(--primary-600)' }}
+                />
+            </div>
 
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="relative z-10 w-full max-w-md"
             >
-                <div className="bg-zinc-900/30 border border-zinc-800 rounded-xl p-8">
+                <div className="card p-8">
+                    {/* Header */}
                     <div className="text-center mb-8">
-                        <h1 className="text-3xl font-bold text-white mb-2">
-                            Login to <span className="text-orange-500">Arena</span>
+                        <div
+                            className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 glow-fire"
+                            style={{ background: 'var(--gradient-fire)' }}
+                        >
+                            <Flame className="w-8 h-8 text-black" />
+                        </div>
+
+                        <h1 className="text-2xl font-bold text-white mb-2">
+                            Welcome to <span className="text-gradient-fire">Arena</span>
                         </h1>
-                        <p className="text-zinc-400 text-sm">
+                        <p style={{ color: 'var(--gray-500)' }}>
                             Enter your details to continue
                         </p>
                     </div>
 
-                    <form onSubmit={handleLogin} className="space-y-6">
+                    {/* Form */}
+                    <form onSubmit={handleLogin} className="space-y-5">
                         <div>
-                            <label className="block text-sm font-medium text-zinc-300 mb-2">
+                            <label
+                                className="block text-sm font-medium mb-2"
+                                style={{ color: 'var(--gray-300)' }}
+                            >
                                 Email
                             </label>
-                            <input
-                                type="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                className="w-full px-4 py-3 bg-zinc-800/50 border border-zinc-700 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-orange-500"
-                                placeholder="your@email.com"
-                                required
-                            />
+                            <div className="relative">
+                                <Mail
+                                    className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5"
+                                    style={{ color: 'var(--gray-500)' }}
+                                />
+                                <input
+                                    type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    className="input pl-12"
+                                    placeholder="your@email.com"
+                                    required
+                                />
+                            </div>
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-zinc-300 mb-2">
+                            <label
+                                className="block text-sm font-medium mb-2"
+                                style={{ color: 'var(--gray-300)' }}
+                            >
                                 Name
                             </label>
-                            <input
-                                type="text"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                                className="w-full px-4 py-3 bg-zinc-800/50 border border-zinc-700 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-orange-500"
-                                placeholder="Your Name"
-                                required
-                            />
+                            <div className="relative">
+                                <User
+                                    className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5"
+                                    style={{ color: 'var(--gray-500)' }}
+                                />
+                                <input
+                                    type="text"
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                    className="input pl-12"
+                                    placeholder="Your Name"
+                                    required
+                                />
+                            </div>
                         </div>
 
                         <Button
                             type="submit"
-                            className="w-full bg-orange-500 hover:bg-orange-600 text-black font-bold py-3 rounded-lg"
+                            variant="gradient"
+                            size="lg"
+                            className="w-full mt-2"
                         >
-                            <LogIn className="w-5 h-5 mr-2" />
                             Continue
+                            <ArrowRight className="w-5 h-5 ml-2" />
                         </Button>
                     </form>
 
-                    <p className="text-zinc-600 text-xs text-center mt-6">
-                        This is a mock login for development purposes
+                    <p className="text-center mt-6 text-xs" style={{ color: 'var(--gray-600)' }}>
+                        Mock login for development
                     </p>
                 </div>
             </motion.div>
