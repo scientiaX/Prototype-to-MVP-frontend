@@ -9,15 +9,15 @@ const Button = React.forwardRef(({
   ...props
 }, ref) => {
 
-  const baseStyles = "inline-flex items-center justify-center gap-2 font-semibold transition-all duration-200 disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 active:scale-[0.98]";
+  const baseStyles = "inline-flex items-center justify-center gap-2 font-semibold transition-all duration-200 disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black active:scale-[0.98]";
 
   const variants = {
-    default: "bg-[var(--primary-500)] text-black hover:bg-[var(--primary-600)] focus-visible:ring-[var(--primary-500)]",
-    gradient: "text-black hover:shadow-[var(--glow-primary)] hover:-translate-y-0.5",
-    outline: "border border-[var(--gray-700)] bg-transparent text-[var(--gray-200)] hover:bg-[var(--gray-800)] hover:border-[var(--gray-600)]",
-    ghost: "text-[var(--gray-300)] hover:bg-[var(--gray-800)] hover:text-white",
-    destructive: "bg-[var(--danger-500)] text-white hover:bg-[var(--danger-600)] hover:shadow-[0_0_30px_rgba(244,63,94,0.4)]",
-    secondary: "bg-[var(--gray-800)] text-[var(--gray-200)] border border-[var(--gray-700)] hover:bg-[var(--gray-700)]"
+    default: "bg-orange-500 text-black hover:bg-orange-600 focus-visible:ring-orange-500",
+    gradient: "bg-gradient-to-r from-orange-500 to-red-600 text-black hover:shadow-[0_0_30px_rgba(249,115,22,0.4)] hover:-translate-y-0.5",
+    outline: "border border-zinc-700 bg-transparent text-zinc-200 hover:bg-zinc-800 hover:border-zinc-600",
+    ghost: "text-zinc-300 hover:bg-zinc-800 hover:text-white",
+    destructive: "bg-red-500 text-white hover:bg-red-600 hover:shadow-[0_0_30px_rgba(239,68,68,0.4)]",
+    secondary: "bg-zinc-800 text-zinc-200 border border-zinc-700 hover:bg-zinc-700"
   };
 
   const sizes = {
@@ -28,10 +28,6 @@ const Button = React.forwardRef(({
     icon: "h-10 w-10 rounded-lg"
   };
 
-  const gradientStyle = variant === "gradient"
-    ? { background: 'var(--gradient-fire)' }
-    : {};
-
   return (
     <button
       className={cn(
@@ -40,7 +36,6 @@ const Button = React.forwardRef(({
         sizes[size],
         className
       )}
-      style={gradientStyle}
       ref={ref}
       {...props}
     >

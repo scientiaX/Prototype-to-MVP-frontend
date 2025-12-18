@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { motion } from 'framer-motion';
-import { LogIn, Mail, User, ArrowRight, Flame } from 'lucide-react';
+import { Mail, User, ArrowRight, Flame } from 'lucide-react';
 import apiClient from '@/api/apiClient';
 
 export default function Login() {
@@ -26,13 +26,10 @@ export default function Login() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center p-6" style={{ background: 'var(--black)' }}>
+        <div className="min-h-screen bg-black flex items-center justify-center p-6">
             {/* Background */}
             <div className="absolute inset-0 pointer-events-none">
-                <div
-                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-3xl opacity-10"
-                    style={{ background: 'var(--primary-600)' }}
-                />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-orange-600/10 rounded-full blur-3xl" />
             </div>
 
             <motion.div
@@ -40,20 +37,17 @@ export default function Login() {
                 animate={{ opacity: 1, y: 0 }}
                 className="relative z-10 w-full max-w-md"
             >
-                <div className="card p-8">
+                <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8">
                     {/* Header */}
                     <div className="text-center mb-8">
-                        <div
-                            className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 glow-fire"
-                            style={{ background: 'var(--gradient-fire)' }}
-                        >
+                        <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl flex items-center justify-center mx-auto mb-6 glow-fire">
                             <Flame className="w-8 h-8 text-black" />
                         </div>
 
                         <h1 className="text-2xl font-bold text-white mb-2">
                             Welcome to <span className="text-gradient-fire">Arena</span>
                         </h1>
-                        <p style={{ color: 'var(--gray-500)' }}>
+                        <p className="text-zinc-500">
                             Enter your details to continue
                         </p>
                     </div>
@@ -61,22 +55,16 @@ export default function Login() {
                     {/* Form */}
                     <form onSubmit={handleLogin} className="space-y-5">
                         <div>
-                            <label
-                                className="block text-sm font-medium mb-2"
-                                style={{ color: 'var(--gray-300)' }}
-                            >
+                            <label className="block text-sm font-medium text-zinc-300 mb-2">
                                 Email
                             </label>
                             <div className="relative">
-                                <Mail
-                                    className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5"
-                                    style={{ color: 'var(--gray-500)' }}
-                                />
+                                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
                                 <input
                                     type="email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
-                                    className="input pl-12"
+                                    className="w-full pl-12 pr-4 py-4 bg-zinc-800 border border-zinc-700 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all"
                                     placeholder="your@email.com"
                                     required
                                 />
@@ -84,22 +72,16 @@ export default function Login() {
                         </div>
 
                         <div>
-                            <label
-                                className="block text-sm font-medium mb-2"
-                                style={{ color: 'var(--gray-300)' }}
-                            >
+                            <label className="block text-sm font-medium text-zinc-300 mb-2">
                                 Name
                             </label>
                             <div className="relative">
-                                <User
-                                    className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5"
-                                    style={{ color: 'var(--gray-500)' }}
-                                />
+                                <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
                                 <input
                                     type="text"
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
-                                    className="input pl-12"
+                                    className="w-full pl-12 pr-4 py-4 bg-zinc-800 border border-zinc-700 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all"
                                     placeholder="Your Name"
                                     required
                                 />
@@ -117,7 +99,7 @@ export default function Login() {
                         </Button>
                     </form>
 
-                    <p className="text-center mt-6 text-xs" style={{ color: 'var(--gray-600)' }}>
+                    <p className="text-center mt-6 text-xs text-zinc-600">
                         Mock login for development
                     </p>
                 </div>

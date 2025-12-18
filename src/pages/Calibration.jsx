@@ -212,19 +212,16 @@ export default function Calibration() {
   if (existingProfile) {
     const t = getTranslation(existingProfile.language);
     return (
-      <div className="min-h-screen flex items-center justify-center p-6" style={{ background: 'var(--black)' }}>
+      <div className="min-h-screen bg-black flex items-center justify-center p-6">
         <div className="text-center max-w-md">
-          <div
-            className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6"
-            style={{ background: 'var(--gradient-fire)' }}
-          >
+          <div className="w-20 h-20 bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl flex items-center justify-center mx-auto mb-6 glow-fire">
             <Flame className="w-10 h-10 text-black" />
           </div>
 
           <h2 className="text-2xl font-bold text-white mb-3">
             {existingProfile.language === 'en' ? 'You are already calibrated.' : 'Kamu sudah ter-kalibrasi.'}
           </h2>
-          <p className="mb-8" style={{ color: 'var(--gray-400)' }}>
+          <p className="text-zinc-400 mb-8">
             {existingProfile.language === 'en'
               ? 'Go straight to the arena or check your progress.'
               : 'Langsung masuk ke arena atau lihat progress kamu.'}
@@ -253,14 +250,11 @@ export default function Calibration() {
 
   if (isProcessing) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center gap-4" style={{ background: 'var(--black)' }}>
-        <div
-          className="w-16 h-16 rounded-2xl flex items-center justify-center glow-fire"
-          style={{ background: 'var(--gradient-fire)' }}
-        >
+      <div className="min-h-screen bg-black flex flex-col items-center justify-center gap-4">
+        <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl flex items-center justify-center glow-fire">
           <Loader2 className="w-8 h-8 text-black animate-spin" />
         </div>
-        <p style={{ color: 'var(--gray-400)' }}>
+        <p className="text-zinc-400">
           {selectedLanguage === 'en' ? 'Calibrating profile...' : 'Mengkalibrasi profil...'}
         </p>
       </div>
@@ -268,13 +262,10 @@ export default function Calibration() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-6" style={{ background: 'var(--black)' }}>
+    <div className="min-h-screen bg-black flex flex-col items-center justify-center p-6">
       {/* Background */}
       <div className="absolute inset-0 pointer-events-none">
-        <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full blur-3xl opacity-10"
-          style={{ background: 'var(--primary-600)' }}
-        />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-orange-600/10 rounded-full blur-3xl" />
       </div>
 
       <AnimatePresence mode="wait">
@@ -291,19 +282,15 @@ export default function Calibration() {
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ delay: 0.2, type: "spring" }}
-                className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6"
-                style={{ background: 'var(--gradient-fire)' }}
+                className="w-20 h-20 bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl flex items-center justify-center mx-auto mb-6 glow-fire"
               >
                 <Globe className="w-10 h-10 text-black" />
               </motion.div>
 
-              <h1
-                className="text-white font-bold mb-3"
-                style={{ fontSize: 'var(--heading-page)' }}
-              >
+              <h1 className="text-3xl md:text-4xl text-white font-bold mb-3">
                 Choose Your Language
               </h1>
-              <p style={{ color: 'var(--gray-400)' }}>
+              <p className="text-zinc-400">
                 Pilih Bahasamu
               </p>
             </div>
@@ -313,24 +300,22 @@ export default function Calibration() {
                 whileHover={{ scale: 1.02, y: -2 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => handleLanguageSelect('en')}
-                className="card p-8 text-left transition-all"
-                style={{ borderColor: 'var(--gray-700)' }}
+                className="bg-zinc-900 border border-zinc-800 hover:border-orange-500/50 rounded-2xl p-8 text-left transition-all"
               >
                 <div className="text-4xl mb-4">🇬🇧</div>
                 <h3 className="text-xl font-bold text-white mb-2">English</h3>
-                <p style={{ color: 'var(--gray-500)' }}>Continue in English</p>
+                <p className="text-zinc-500">Continue in English</p>
               </motion.button>
 
               <motion.button
                 whileHover={{ scale: 1.02, y: -2 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => handleLanguageSelect('id')}
-                className="card p-8 text-left transition-all"
-                style={{ borderColor: 'var(--gray-700)' }}
+                className="bg-zinc-900 border border-zinc-800 hover:border-orange-500/50 rounded-2xl p-8 text-left transition-all"
               >
                 <div className="text-4xl mb-4">🇮🇩</div>
                 <h3 className="text-xl font-bold text-white mb-2">Bahasa Indonesia</h3>
-                <p style={{ color: 'var(--gray-500)' }}>Lanjutkan dalam Bahasa Indonesia</p>
+                <p className="text-zinc-500">Lanjutkan dalam Bahasa Indonesia</p>
               </motion.button>
             </div>
           </motion.div>

@@ -98,10 +98,10 @@ export default function Arena() {
 
   if (isLoading && view === 'selection') {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--black)' }}>
+      <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="flex items-center gap-3">
-          <Loader2 className="w-6 h-6 animate-spin" style={{ color: 'var(--primary-500)' }} />
-          <span style={{ color: 'var(--gray-400)' }}>Loading arena...</span>
+          <Loader2 className="w-6 h-6 text-orange-500 animate-spin" />
+          <span className="text-zinc-400">Loading arena...</span>
         </div>
       </div>
     );
@@ -134,42 +134,39 @@ export default function Arena() {
     (profile?.xp_builder || 0) + (profile?.xp_strategist || 0);
 
   return (
-    <div className="min-h-screen" style={{ background: 'var(--black)' }}>
-      <div className="container py-8">
+    <div className="min-h-screen bg-black">
+      <div className="max-w-6xl mx-auto px-6 md:px-8 py-8">
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-10">
           <div>
-            <div className="badge badge-primary mb-4">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Arena Mode</span>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-500/15 border border-orange-500/30 mb-4">
+              <Sparkles className="w-3.5 h-3.5 text-orange-400" />
+              <span className="text-xs font-semibold text-orange-400 tracking-wider uppercase font-mono">Arena Mode</span>
             </div>
-            <h1
-              className="text-white font-bold mb-2"
-              style={{ fontSize: 'var(--heading-page)' }}
-            >
+            <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
               Problem Arena
             </h1>
-            <p style={{ color: 'var(--gray-500)' }}>
+            <p className="text-zinc-500">
               Pilih masalah. Hadapi. Naik level.
             </p>
           </div>
 
           {profile && (
             <div className="flex items-center gap-4">
-              <div className="card px-5 py-3 flex items-center gap-3">
-                <Trophy className="w-5 h-5" style={{ color: 'var(--primary-400)' }} />
+              <div className="bg-zinc-900 border border-zinc-800 rounded-xl px-5 py-3 flex items-center gap-3">
+                <Trophy className="w-5 h-5 text-orange-400" />
                 <div>
                   <p className="text-white font-mono font-bold text-lg">
                     Level {profile.current_difficulty}
                   </p>
-                  <p className="text-xs" style={{ color: 'var(--gray-500)' }}>Current</p>
+                  <p className="text-xs text-zinc-500">Current</p>
                 </div>
               </div>
-              <div className="card px-5 py-3 flex items-center gap-3">
-                <Zap className="w-5 h-5" style={{ color: 'var(--warning-400)' }} />
+              <div className="bg-zinc-900 border border-zinc-800 rounded-xl px-5 py-3 flex items-center gap-3">
+                <Zap className="w-5 h-5 text-yellow-400" />
                 <div>
                   <p className="text-white font-mono font-bold text-lg">{totalXp}</p>
-                  <p className="text-xs" style={{ color: 'var(--gray-500)' }}>Total XP</p>
+                  <p className="text-xs text-zinc-500">Total XP</p>
                 </div>
               </div>
             </div>
@@ -228,17 +225,14 @@ export default function Arena() {
             </AnimatePresence>
           </div>
         ) : (
-          <div className="card p-16 text-center">
-            <div
-              className="w-16 h-16 rounded-2xl mx-auto mb-6 flex items-center justify-center"
-              style={{ background: 'var(--gray-800)' }}
-            >
-              <Sparkles className="w-8 h-8" style={{ color: 'var(--gray-500)' }} />
+          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-16 text-center">
+            <div className="w-16 h-16 bg-zinc-800 rounded-2xl mx-auto mb-6 flex items-center justify-center">
+              <Sparkles className="w-8 h-8 text-zinc-500" />
             </div>
-            <p className="text-lg mb-2" style={{ color: 'var(--gray-400)' }}>
+            <p className="text-lg text-zinc-400 mb-2">
               Belum ada masalah untuk level-mu
             </p>
-            <p className="mb-6" style={{ color: 'var(--gray-600)' }}>
+            <p className="text-zinc-600 mb-6">
               Generate masalah pertama untuk mulai bertarung
             </p>
             <Button

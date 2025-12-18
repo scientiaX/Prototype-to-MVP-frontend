@@ -51,22 +51,22 @@ export default function Home() {
       icon: Target,
       title: "Adaptive Matching",
       description: "AI mencocokkan masalah dengan archetype dan level-mu",
-      gradient: "var(--gradient-fire)",
-      glow: "glow-fire"
+      iconBg: "bg-gradient-to-br from-orange-500 to-red-600",
+      glowClass: "glow-fire"
     },
     {
       icon: TrendingUp,
       title: "XP = Difficulty",
       description: "Progression berbasis challenge, bukan grinding",
-      gradient: "var(--gradient-success)",
-      glow: "glow-success"
+      iconBg: "bg-gradient-to-br from-emerald-500 to-green-600",
+      glowClass: "glow-success"
     },
     {
       icon: Shield,
       title: "Scar Badges",
       description: "Badge adalah bukti kamu bertarung, bukan partisipasi",
-      gradient: "var(--gradient-magic)",
-      glow: "glow-magic"
+      iconBg: "bg-gradient-to-br from-violet-500 to-purple-600",
+      glowClass: "glow-magic"
     }
   ];
 
@@ -77,20 +77,14 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen relative overflow-hidden" style={{ background: 'var(--black)' }}>
+    <div className="min-h-screen bg-black relative overflow-hidden">
       {/* Background Effects */}
       <div className="absolute inset-0 pointer-events-none">
-        <div
-          className="absolute top-[-20%] right-[-10%] w-[800px] h-[800px] rounded-full blur-3xl opacity-20"
-          style={{ background: 'var(--primary-600)' }}
-        />
-        <div
-          className="absolute bottom-[-30%] left-[-15%] w-[600px] h-[600px] rounded-full blur-3xl opacity-10"
-          style={{ background: 'var(--violet-600)' }}
-        />
+        <div className="absolute top-[-20%] right-[-10%] w-[800px] h-[800px] bg-orange-600/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-[-30%] left-[-15%] w-[600px] h-[600px] bg-violet-600/10 rounded-full blur-3xl" />
         {/* Grid Pattern */}
         <div
-          className="absolute inset-0 opacity-[0.02]"
+          className="absolute inset-0 opacity-[0.03]"
           style={{
             backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), 
                              linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
@@ -101,9 +95,9 @@ export default function Home() {
 
       <div className="relative z-10">
         {/* Hero Section */}
-        <section className="container">
+        <section className="max-w-6xl mx-auto px-6 md:px-8">
           <div className="min-h-[85vh] flex items-center py-20">
-            <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center w-full">
+            <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 items-center w-full">
               {/* Left - Content */}
               <motion.div
                 initial={{ opacity: 0, x: -30 }}
@@ -111,27 +105,21 @@ export default function Home() {
                 transition={{ duration: 0.6 }}
               >
                 {/* Badge */}
-                <div className="badge badge-primary mb-8">
-                  <Flame className="w-3.5 h-3.5" />
-                  <span>Novax Arena</span>
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-500/15 border border-orange-500/30 mb-8">
+                  <Flame className="w-4 h-4 text-orange-400" />
+                  <span className="text-xs font-semibold text-orange-400 tracking-wider uppercase font-mono">Novax Arena</span>
                 </div>
 
                 {/* Headline */}
-                <h1
-                  className="font-bold mb-6 leading-[0.95] tracking-tight"
-                  style={{ fontSize: 'var(--heading-hero)' }}
-                >
+                <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-[0.95] tracking-tight">
                   <span className="text-white block">Problem</span>
                   <span className="text-gradient-fire block">Arena</span>
                 </h1>
 
                 {/* Description */}
-                <p
-                  className="mb-10 max-w-lg leading-relaxed"
-                  style={{ color: 'var(--gray-400)', fontSize: 'var(--text-lg)' }}
-                >
+                <p className="text-lg text-zinc-400 mb-10 max-w-lg leading-relaxed">
                   Belajar yang sebenarnya terjadi lewat{' '}
-                  <span style={{ color: 'var(--primary-400)' }}>konfrontasi masalah nyata</span>.
+                  <span className="text-orange-400 font-medium">konfrontasi masalah nyata</span>.
                   Bukan materi. Bukan teori. Bukan validasi.
                 </p>
 
@@ -147,7 +135,7 @@ export default function Home() {
                     <ChevronRight className="w-5 h-5 ml-1 group-hover:translate-x-1 transition-transform" />
                   </Button>
 
-                  <span className="text-sm" style={{ color: 'var(--gray-500)' }}>
+                  <span className="text-sm text-zinc-500">
                     {isAuthenticated
                       ? hasProfile ? '⚔️ Ready to battle' : '🎯 5-7 menit'
                       : '🔑 Login dulu'}
@@ -162,36 +150,27 @@ export default function Home() {
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className="lg:justify-self-end w-full max-w-md"
               >
-                <div
-                  className="card-glass p-8 relative overflow-hidden"
-                  style={{ borderColor: 'rgba(249, 115, 22, 0.2)' }}
-                >
+                <div className="bg-zinc-900/80 backdrop-blur-xl border border-orange-500/20 rounded-2xl p-8 relative overflow-hidden">
                   {/* Decorative */}
-                  <div
-                    className="absolute top-0 right-0 w-32 h-32 rounded-full blur-2xl opacity-20"
-                    style={{ background: 'var(--primary-500)' }}
-                  />
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-orange-500/20 rounded-full blur-2xl" />
 
                   <div className="relative z-10">
                     <div className="flex items-center justify-between mb-8">
                       <div>
                         <h3 className="text-white font-bold text-lg">Live Stats</h3>
-                        <p className="text-sm" style={{ color: 'var(--gray-500)' }}>Real-time arena</p>
+                        <p className="text-sm text-zinc-500">Real-time arena</p>
                       </div>
-                      <Sparkles className="w-5 h-5" style={{ color: 'var(--violet-400)' }} />
+                      <Sparkles className="w-5 h-5 text-violet-400" />
                     </div>
 
                     <div className="space-y-6">
                       {stats.map((stat, i) => (
                         <div key={i} className="flex items-center justify-between">
                           <div className="flex items-center gap-3">
-                            <div
-                              className="icon-box"
-                              style={{ background: 'var(--gray-800)' }}
-                            >
-                              <stat.icon className="w-5 h-5" style={{ color: 'var(--gray-400)' }} />
+                            <div className="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center">
+                              <stat.icon className="w-5 h-5 text-zinc-400" />
                             </div>
-                            <span style={{ color: 'var(--gray-400)' }}>{stat.label}</span>
+                            <span className="text-zinc-400">{stat.label}</span>
                           </div>
                           <span className="font-mono font-bold text-2xl text-white">
                             {stat.value}
@@ -200,11 +179,8 @@ export default function Home() {
                       ))}
                     </div>
 
-                    <div
-                      className="mt-8 pt-6 border-t"
-                      style={{ borderColor: 'var(--gray-800)' }}
-                    >
-                      <p className="text-sm italic" style={{ color: 'var(--gray-600)' }}>
+                    <div className="mt-8 pt-6 border-t border-zinc-800">
+                      <p className="text-sm italic text-zinc-600">
                         "No comfort zone. Only growth zone."
                       </p>
                     </div>
@@ -216,7 +192,7 @@ export default function Home() {
         </section>
 
         {/* Features Section */}
-        <section className="container section-lg">
+        <section className="max-w-6xl mx-auto px-6 md:px-8 py-20">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -224,13 +200,10 @@ export default function Home() {
           >
             {/* Section Header */}
             <div className="mb-16">
-              <h2
-                className="text-white font-bold mb-4"
-                style={{ fontSize: 'var(--heading-page)' }}
-              >
+              <h2 className="text-3xl md:text-4xl text-white font-bold mb-4">
                 Sistem Berbasis <span className="text-gradient-magic">Konfrontasi</span>
               </h2>
-              <p style={{ color: 'var(--gray-500)', maxWidth: '600px' }}>
+              <p className="text-zinc-500 max-w-xl">
                 Bukan gamifikasi kosmetik. Setiap elemen dirancang untuk growth melalui pressure.
               </p>
             </div>
@@ -244,12 +217,9 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1 }}
-                  className="card p-8 group"
+                  className="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 hover:border-zinc-700 transition-all duration-300 hover:-translate-y-1 group"
                 >
-                  <div
-                    className={`icon-box-lg mb-6 ${feature.glow} transition-transform group-hover:scale-110`}
-                    style={{ background: feature.gradient }}
-                  >
+                  <div className={`w-14 h-14 rounded-xl ${feature.iconBg} ${feature.glowClass} flex items-center justify-center mb-6 transition-transform group-hover:scale-110`}>
                     <feature.icon className="w-7 h-7 text-black" />
                   </div>
 
@@ -257,7 +227,7 @@ export default function Home() {
                     {feature.title}
                   </h3>
 
-                  <p style={{ color: 'var(--gray-400)' }}>
+                  <p className="text-zinc-400">
                     {feature.description}
                   </p>
                 </motion.div>
@@ -265,15 +235,9 @@ export default function Home() {
             </div>
 
             {/* Warning */}
-            <div
-              className="mt-16 card p-6 text-center max-w-2xl mx-auto"
-              style={{
-                borderColor: 'rgba(244, 63, 94, 0.2)',
-                background: 'rgba(244, 63, 94, 0.05)'
-              }}
-            >
-              <p style={{ color: 'var(--gray-400)' }}>
-                <span style={{ color: 'var(--danger-400)' }}>⚠️ Warning:</span>{' '}
+            <div className="mt-16 bg-zinc-900/50 border border-red-500/20 rounded-2xl p-6 text-center max-w-2xl mx-auto">
+              <p className="text-zinc-400">
+                <span className="text-red-400 font-medium">⚠️ Warning:</span>{' '}
                 Ini bukan platform untuk merasa nyaman.
                 Jika mencari validasi, ini <span className="text-white font-medium">bukan tempatnya</span>.
               </p>

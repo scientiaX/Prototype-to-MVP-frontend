@@ -1,21 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import apiClient from '@/api/apiClient';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Trophy, Zap, TrendingUp, Target, Brain, Wrench, Crown, Medal } from 'lucide-react';
 import { cn } from "@/lib/utils";
 
 const archetypeConfig = {
-  risk_taker: { icon: Zap, label: 'Risk Taker', color: 'var(--danger-400)', bg: 'rgba(244, 63, 94, 0.15)' },
-  analyst: { icon: Brain, label: 'Analyst', color: 'var(--accent-400)', bg: 'rgba(6, 182, 212, 0.15)' },
-  builder: { icon: Wrench, label: 'Builder', color: 'var(--success-400)', bg: 'rgba(16, 185, 129, 0.15)' },
-  strategist: { icon: Target, label: 'Strategist', color: 'var(--violet-400)', bg: 'rgba(139, 92, 246, 0.15)' }
+  risk_taker: { icon: Zap, label: 'Risk Taker', color: 'text-red-400', bg: 'bg-red-500/15' },
+  analyst: { icon: Brain, label: 'Analyst', color: 'text-cyan-400', bg: 'bg-cyan-500/15' },
+  builder: { icon: Wrench, label: 'Builder', color: 'text-emerald-400', bg: 'bg-emerald-500/15' },
+  strategist: { icon: Target, label: 'Strategist', color: 'text-violet-400', bg: 'bg-violet-500/15' }
 };
 
-const rankStyles = [
-  { color: 'var(--warning-400)', bg: 'rgba(251, 191, 36, 0.15)' },  // Gold
-  { color: 'var(--gray-300)', bg: 'rgba(161, 161, 170, 0.15)' },     // Silver
-  { color: '#CD7F32', bg: 'rgba(205, 127, 50, 0.15)' }              // Bronze
+const rankColors = [
+  'text-yellow-400', // Gold
+  'text-zinc-300',   // Silver  
+  'text-amber-600'   // Bronze
+];
+
+const rankBgs = [
+  'bg-yellow-400/15',
+  'bg-zinc-300/15',
+  'bg-amber-600/15'
 ];
 
 export default function Leaderboard() {
@@ -56,39 +61,33 @@ export default function Leaderboard() {
     : sortedProfiles.filter(p => p.primary_archetype === archetypeFilter);
 
   return (
-    <div className="min-h-screen" style={{ background: 'var(--black)' }}>
-      <div className="container py-8 max-w-4xl">
+    <div className="min-h-screen bg-black">
+      <div className="max-w-4xl mx-auto px-6 md:px-8 py-8">
         {/* Header */}
         <div className="text-center mb-10">
-          <div className="badge badge-primary mb-4 mx-auto">
-            <Medal className="w-3.5 h-3.5" />
-            <span>Rankings</span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-500/15 border border-orange-500/30 mb-4">
+            <Medal className="w-3.5 h-3.5 text-orange-400" />
+            <span className="text-xs font-semibold text-orange-400 tracking-wider uppercase font-mono">Rankings</span>
           </div>
-          <h1
-            className="text-white font-bold mb-3"
-            style={{ fontSize: 'var(--heading-page)' }}
-          >
+          <h1 className="text-3xl md:text-4xl font-bold text-white mb-3">
             Leaderboard
           </h1>
-          <p style={{ color: 'var(--gray-500)' }}>
+          <p className="text-zinc-500">
             Bukan ranking kepintaran. Ranking konfrontasi.
           </p>
         </div>
 
         {/* Mode Tabs */}
-        <div className="card p-1.5 mb-6">
+        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-1.5 mb-6">
           <div className="grid grid-cols-2 gap-1.5">
             <button
               onClick={() => setActiveTab('growth')}
               className={cn(
-                "flex items-center justify-center gap-2 py-3 px-4 rounded-lg text-sm font-medium transition-all"
+                "flex items-center justify-center gap-2 py-3 px-4 rounded-lg text-sm font-medium transition-all",
+                activeTab === 'growth'
+                  ? "bg-gradient-to-r from-orange-500 to-red-600 text-black"
+                  : "text-zinc-400 hover:text-white"
               )}
-              style={activeTab === 'growth' ? {
-                background: 'var(--gradient-fire)',
-                color: 'var(--black)'
-              } : {
-                color: 'var(--gray-400)'
-              }}
             >
               <TrendingUp className="w-4 h-4" />
               Growth (2 Minggu)
@@ -96,14 +95,11 @@ export default function Leaderboard() {
             <button
               onClick={() => setActiveTab('reliability')}
               className={cn(
-                "flex items-center justify-center gap-2 py-3 px-4 rounded-lg text-sm font-medium transition-all"
+                "flex items-center justify-center gap-2 py-3 px-4 rounded-lg text-sm font-medium transition-all",
+                activeTab === 'reliability'
+                  ? "bg-gradient-to-r from-orange-500 to-red-600 text-black"
+                  : "text-zinc-400 hover:text-white"
               )}
-              style={activeTab === 'reliability' ? {
-                background: 'var(--gradient-fire)',
-                color: 'var(--black)'
-              } : {
-                color: 'var(--gray-400)'
-              }}
             >
               <Trophy className="w-4 h-4" />
               All-Time Reliability
@@ -115,14 +111,12 @@ export default function Leaderboard() {
         <div className="flex flex-wrap gap-2 mb-8">
           <button
             onClick={() => setArchetypeFilter('all')}
-            className="px-4 py-2 rounded-lg text-sm font-medium transition-all"
-            style={archetypeFilter === 'all' ? {
-              background: 'var(--white)',
-              color: 'var(--black)'
-            } : {
-              background: 'var(--gray-800)',
-              color: 'var(--gray-400)'
-            }}
+            className={cn(
+              "px-4 py-2 rounded-lg text-sm font-medium transition-all",
+              archetypeFilter === 'all'
+                ? "bg-white text-black"
+                : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700"
+            )}
           >
             Semua
           </button>
@@ -132,14 +126,12 @@ export default function Leaderboard() {
               <button
                 key={key}
                 onClick={() => setArchetypeFilter(key)}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all"
-                style={archetypeFilter === key ? {
-                  background: config.bg,
-                  color: config.color
-                } : {
-                  background: 'var(--gray-800)',
-                  color: 'var(--gray-400)'
-                }}
+                className={cn(
+                  "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all",
+                  archetypeFilter === key
+                    ? `${config.bg} ${config.color}`
+                    : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700"
+                )}
               >
                 <Icon className="w-4 h-4" />
                 {config.label}
@@ -163,58 +155,53 @@ export default function Leaderboard() {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: index * 0.03 }}
-                className="card flex items-center gap-4 p-4"
-                style={isCurrentUser ? {
-                  background: 'rgba(249, 115, 22, 0.08)',
-                  borderColor: 'rgba(249, 115, 22, 0.3)'
-                } : {}}
+                className={cn(
+                  "bg-zinc-900 border rounded-xl flex items-center gap-4 p-4 transition-all hover:border-zinc-700",
+                  isCurrentUser
+                    ? "border-orange-500/30 bg-orange-500/5"
+                    : "border-zinc-800"
+                )}
               >
                 {/* Rank */}
                 <div className="w-12 text-center shrink-0">
                   {isTopThree ? (
-                    <div
-                      className="w-10 h-10 rounded-lg flex items-center justify-center mx-auto"
-                      style={{ background: rankStyles[index].bg }}
-                    >
-                      <Crown className="w-5 h-5" style={{ color: rankStyles[index].color }} />
+                    <div className={cn("w-10 h-10 rounded-lg flex items-center justify-center mx-auto", rankBgs[index])}>
+                      <Crown className={cn("w-5 h-5", rankColors[index])} />
                     </div>
                   ) : (
-                    <span className="font-mono text-lg" style={{ color: 'var(--gray-500)' }}>
+                    <span className="font-mono text-lg text-zinc-500">
                       {index + 1}
                     </span>
                   )}
                 </div>
 
                 {/* Archetype Icon */}
-                <div
-                  className="w-11 h-11 rounded-lg flex items-center justify-center shrink-0"
-                  style={{ background: archetype.bg }}
-                >
-                  <Icon className="w-5 h-5" style={{ color: archetype.color }} />
+                <div className={cn("w-11 h-11 rounded-lg flex items-center justify-center shrink-0", archetype.bg)}>
+                  <Icon className={cn("w-5 h-5", archetype.color)} />
                 </div>
 
                 {/* Info */}
                 <div className="flex-1 min-w-0">
-                  <p
-                    className="font-semibold truncate"
-                    style={{ color: isCurrentUser ? 'var(--primary-400)' : 'var(--white)' }}
-                  >
+                  <p className={cn(
+                    "font-semibold truncate",
+                    isCurrentUser ? "text-orange-400" : "text-white"
+                  )}>
                     {isCurrentUser ? 'Kamu' : `Player ${profile.id.slice(-4)}`}
                   </p>
-                  <p className="text-sm" style={{ color: 'var(--gray-500)' }}>
+                  <p className="text-sm text-zinc-500">
                     Level {profile.current_difficulty} • {profile.total_arenas_completed || 0} arenas
                   </p>
                 </div>
 
                 {/* Score */}
                 <div className="text-right shrink-0">
-                  <p
-                    className="text-xl font-bold font-mono"
-                    style={{ color: isTopThree ? rankStyles[index].color : 'var(--white)' }}
-                  >
+                  <p className={cn(
+                    "text-xl font-bold font-mono",
+                    isTopThree ? rankColors[index] : "text-white"
+                  )}>
                     {score}
                   </p>
-                  <p className="text-xs" style={{ color: 'var(--gray-600)' }}>
+                  <p className="text-xs text-zinc-600">
                     {activeTab === 'growth' ? 'XP' : 'Reliability'}
                   </p>
                 </div>
@@ -224,18 +211,15 @@ export default function Leaderboard() {
         </div>
 
         {filteredProfiles.length === 0 && (
-          <div className="card p-16 text-center">
-            <p style={{ color: 'var(--gray-500)' }}>Belum ada data untuk ditampilkan.</p>
+          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-16 text-center">
+            <p className="text-zinc-500">Belum ada data untuk ditampilkan.</p>
           </div>
         )}
 
         {/* Info Note */}
-        <div
-          className="card p-5 mt-8"
-          style={{ borderColor: 'rgba(249, 115, 22, 0.2)' }}
-        >
-          <p className="text-sm" style={{ color: 'var(--gray-500)' }}>
-            <span style={{ color: 'var(--primary-400)' }} className="font-semibold">📊 Note:</span>{' '}
+        <div className="bg-zinc-900/50 border border-orange-500/20 rounded-xl p-5 mt-8">
+          <p className="text-sm text-zinc-500">
+            <span className="text-orange-400 font-semibold">📊 Note:</span>{' '}
             {activeTab === 'growth'
               ? 'Growth leaderboard di-reset setiap 2 minggu. Berdasarkan lonjakan difficulty dan XP delta.'
               : 'All-Time Reliability tidak pernah reset. Berdasarkan konsistensi menghadapi masalah berat.'
