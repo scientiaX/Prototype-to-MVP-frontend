@@ -25,7 +25,9 @@ COPY --from=build /app/dist .
 
 # Copy entrypoint script
 COPY docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod +x /docker-entrypoint.sh
+
+# Fix line endings (CRLF -> LF) for Windows deployments
+RUN apk add --no-cache dos2unix && dos2unix /docker-entrypoint.sh && chmod +x /docker-entrypoint.sh
 
 EXPOSE 80
 
