@@ -52,17 +52,17 @@ export default function Layout({ children, currentPageName }) {
 
   return (
     <div className="min-h-screen bg-black">
-      {/* Desktop Nav */}
+      {/* Desktop Nav - Compact Modern */}
       <nav className="hidden md:flex fixed top-0 left-0 right-0 z-50 backdrop-blur-xl border-b border-zinc-900" style={{ background: 'var(--glass-darker)' }}>
-        <div className="max-w-6xl mx-auto w-full px-6 py-4 flex items-center justify-between">
-          <Link to={createPageUrl('Home')} className="flex items-center gap-2 group">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center relative overflow-hidden transition-all duration-300 group-hover:scale-110 glow-orange" style={{ background: 'var(--gradient-primary)' }}>
-              <span className="text-black font-bold text-sm relative z-10">N</span>
+        <div className="max-w-[1600px] mx-auto w-full px-12 lg:px-16 py-3 flex items-center justify-between">
+          <Link to={createPageUrl('Home')} className="flex items-center gap-2.5 group">
+            <div className="w-9 h-9 rounded-lg flex items-center justify-center relative overflow-hidden transition-all duration-300 group-hover:scale-110 glow-orange" style={{ background: 'var(--gradient-primary)' }}>
+              <span className="text-black font-black text-base relative z-10">N</span>
             </div>
-            <span className="text-white font-bold transition-colors group-hover:text-orange-500">Novax Arena</span>
+            <span className="text-white font-bold text-base transition-colors group-hover:text-orange-500">Novax</span>
           </Link>
 
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-2">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = currentPageName === item.page;
@@ -71,14 +71,14 @@ export default function Layout({ children, currentPageName }) {
                   key={item.page}
                   to={createPageUrl(item.page)}
                   className={cn(
-                    "flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200",
+                    "flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200 text-sm",
                     isActive
                       ? "bg-orange-500/10 text-orange-500 shadow-[0_0_15px_rgba(255,107,53,0.3)]"
-                      : "text-zinc-400 hover:text-white hover:bg-zinc-900 hover:scale-105"
+                      : "text-zinc-400 hover:text-white hover:bg-zinc-900/50 hover:scale-105"
                   )}
                 >
                   <Icon className={cn("w-4 h-4", isActive && "animate-glow-pulse")} />
-                  <span className="text-sm font-medium">{item.name}</span>
+                  <span className="font-medium">{item.name}</span>
                 </Link>
               );
             })}
@@ -87,10 +87,10 @@ export default function Layout({ children, currentPageName }) {
           {isAuthenticated && (
             <button
               onClick={handleLogout}
-              className="flex items-center gap-2 px-4 py-2 text-zinc-500 hover:text-red-500 transition-all duration-200 hover:scale-105"
+              className="flex items-center gap-2 px-4 py-2 text-zinc-500 hover:text-red-500 transition-all duration-200 hover:scale-105 text-sm"
             >
               <LogOut className="w-4 h-4" />
-              <span className="text-sm">Keluar</span>
+              <span>Keluar</span>
             </button>
           )}
         </div>
@@ -177,7 +177,7 @@ export default function Layout({ children, currentPageName }) {
       </nav>
 
       {/* Main Content */}
-      <main className="pt-16 md:pt-20 pb-20 md:pb-0">
+      <main className="pt-14 md:pt-16 pb-20 md:pb-0">
         {children}
       </main>
     </div>

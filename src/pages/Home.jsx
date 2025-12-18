@@ -5,14 +5,13 @@ import { createPageUrl } from '@/utils';
 import apiClient from '@/api/apiClient';
 import { Button } from "@/components/ui/button";
 import {
-  Zap,
   Target,
-  Trophy,
   ArrowRight,
   Skull,
   Shield,
   TrendingUp,
-  Sparkles
+  Sparkles,
+  Flame
 } from 'lucide-react';
 
 export default function Home() {
@@ -47,133 +46,207 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-black overflow-hidden relative">
-      {/* Enhanced Background effects */}
-      <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 via-transparent to-red-500/10" />
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-orange-500/20 rounded-full blur-3xl opacity-20 animate-float" />
-      <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-purple-500/10 rounded-full blur-3xl opacity-20" />
+      {/* Modern Asymmetric Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 via-transparent to-red-500/5" />
+      <div className="absolute top-[-10%] right-[-5%] w-[1000px] h-[1000px] bg-orange-500/15 rounded-full blur-3xl opacity-30" />
+      <div className="absolute bottom-[-20%] left-[-10%] w-[800px] h-[800px] bg-purple-500/10 rounded-full blur-3xl opacity-20" />
 
-      <div className="relative z-10 min-h-screen flex flex-col">
-        {/* Hero Section */}
-        <div className="flex-1 flex items-center justify-center px-6 py-12">
-          <div className="max-w-4xl mx-auto text-center">
-            {/* Logo/Brand */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
-              className="mb-8"
-            >
-              <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full mb-6 glass-card">
-                <Skull className="w-5 h-5 text-orange-500 animate-glow-pulse" />
-                <span className="text-zinc-400 text-sm font-mono font-semibold tracking-wider">NOVAX TRIAL</span>
-                <Sparkles className="w-4 h-4 text-purple-500" />
+      {/* Grid Pattern */}
+      <div className="absolute inset-0 opacity-[0.03]" style={{
+        backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
+        backgroundSize: '100px 100px'
+      }} />
+
+      <div className="relative z-10">
+        {/* Hero Section - Asymmetric Layout */}
+        <div className="min-h-[85vh] flex items-center" style={{ paddingTop: 'var(--space-section)', paddingBottom: 'var(--space-element)' }}>
+          <div className="w-full max-w-[1600px] mx-auto px-8 md:px-12 lg:px-16">
+            <div className="grid lg:grid-cols-12 gap-12 items-center">
+              {/* Left Column - Text Content */}
+              <div className="lg:col-span-7">
+                <motion.div
+                  initial={{ opacity: 0, x: -30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6 }}
+                >
+                  {/* Badge */}
+                  <div className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full mb-8 glass-card">
+                    <Flame className="w-4 h-4 text-orange-500 animate-glow-pulse" />
+                    <span className="text-zinc-400 text-xs font-mono font-bold tracking-[0.2em] uppercase">Novax Trial</span>
+                  </div>
+
+                  {/* Oversized Title */}
+                  <h1 className="font-black tracking-tight mb-6" style={{
+                    fontSize: 'var(--text-hero)',
+                    lineHeight: '0.9',
+                    letterSpacing: '-0.02em'
+                  }}>
+                    <span className="block text-white">PROBLEM</span>
+                    <span className="block gradient-text-primary-animated">ARENA</span>
+                  </h1>
+
+                  {/* Subtitle - Asymmetrically Positioned */}
+                  <div className="ml-2 mb-12 max-w-xl">
+                    <p className="text-zinc-400 leading-relaxed mb-2" style={{ fontSize: 'var(--text-body-lg)' }}>
+                      Belajar terjadi lewat <span className="text-orange-500 font-bold">masalah nyata</span>.
+                    </p>
+                    <p className="text-zinc-600 text-base">
+                      Bukan materi. Bukan teori. Bukan validasi.
+                    </p>
+                  </div>
+
+                  {/* CTA - Left Aligned */}
+                  <div className="flex flex-col sm:flex-row items-start gap-4">
+                    <Button
+                      onClick={handleStart}
+                      variant="gradient"
+                      size="xl"
+                      className="group text-base px-10"
+                    >
+                      {hasProfile ? 'Masuk Arena' : 'Mulai Kalibrasi'}
+                      <ArrowRight className="ml-3 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                    </Button>
+
+                    <div className="flex items-center gap-2 px-4 py-3">
+                      <span className="text-zinc-600 text-sm">
+                        {isAuthenticated
+                          ? hasProfile
+                            ? '⚔️ Siap bertarung?'
+                            : '5-7 menit kalibrasi'
+                          : '🔑 Login dulu'}
+                      </span>
+                    </div>
+                  </div>
+                </motion.div>
               </div>
 
-              <h1 className="text-5xl md:text-7xl font-bold text-white mb-4">
-                Problem <span className="gradient-text-primary-animated">Arena</span>
-              </h1>
+              {/* Right Column - Floating Stats Card */}
+              <div className="lg:col-span-5">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3, duration: 0.6 }}
+                  className="glass-card rounded-2xl p-8 border-2 border-orange-500/20"
+                >
+                  <div className="flex items-start justify-between mb-6">
+                    <div>
+                      <h3 className="text-white font-bold text-xl mb-1">Live Stats</h3>
+                      <p className="text-zinc-500 text-sm">Real-time performance</p>
+                    </div>
+                    <Sparkles className="w-6 h-6 text-purple-500" />
+                  </div>
 
-              <p className="text-xl md:text-2xl text-zinc-400 max-w-2xl mx-auto leading-relaxed">
-                Belajar terjadi lewat <span className="text-orange-500 font-semibold">masalah nyata</span>.
-                <br />
-                <span className="text-zinc-600">Bukan materi. Bukan teori.</span>
-              </p>
-            </motion.div>
+                  <div className="space-y-6">
+                    <div>
+                      <div className="flex items-baseline justify-between mb-2">
+                        <span className="text-zinc-400 text-sm">Active Battles</span>
+                        <span className="text-white font-bold text-3xl gradient-text-primary">247</span>
+                      </div>
+                      <div className="h-1.5 bg-zinc-900 rounded-full overflow-hidden">
+                        <div className="h-full bg-gradient-to-r from-orange-500 to-red-500 w-[73%]" />
+                      </div>
+                    </div>
 
-            {/* CTA */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-            >
-              <Button
-                onClick={handleStart}
-                variant="gradient"
-                size="xl"
-                className="group"
-              >
-                {hasProfile ? 'Masuk Arena' : 'Mulai Kalibrasi'}
-                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Button>
+                    <div>
+                      <div className="flex items-baseline justify-between mb-2">
+                        <span className="text-zinc-400 text-sm">Avg Difficulty</span>
+                        <span className="text-white font-bold text-3xl gradient-text-accent">7.2</span>
+                      </div>
+                      <div className="h-1.5 bg-zinc-900 rounded-full overflow-hidden">
+                        <div className="h-full bg-gradient-to-r from-cyan-500 to-blue-500 w-[72%]" />
+                      </div>
+                    </div>
 
-              <p className="text-zinc-600 text-sm mt-4 font-medium">
-                {isAuthenticated
-                  ? hasProfile
-                    ? '⚔️ Siap untuk konfrontasi berikutnya?'
-                    : '🎯 5-7 pertanyaan singkat untuk menentukan starting point'
-                  : '🔑 Login untuk memulai perjalanan'}
-              </p>
-            </motion.div>
+                    <div className="pt-4 border-t border-zinc-800">
+                      <p className="text-zinc-600 text-xs italic">
+                        "No comfort zone. Only growth zone."
+                      </p>
+                    </div>
+                  </div>
+                </motion.div>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Features */}
-        <div className="px-6 pb-16">
-          <div className="max-w-4xl mx-auto">
+        {/* Features Section - Bento Grid */}
+        <div style={{ paddingTop: 'var(--space-section)', paddingBottom: 'var(--space-section)' }}>
+          <div className="w-full max-w-[1600px] mx-auto px-8 md:px-12 lg:px-16">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
-              className="grid md:grid-cols-3 gap-6"
             >
-              <div className="glass-card rounded-xl p-6 group overflow-hidden relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                <div className="relative z-10">
-                  <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4 glow-orange" style={{ background: 'var(--gradient-primary)' }}>
-                    <Target className="w-6 h-6 text-black" />
-                  </div>
-                  <h3 className="text-white font-bold mb-2 text-lg">Matchmaking</h3>
-                  <p className="text-zinc-500 text-sm leading-relaxed">
-                    Orang ↔ Masalah. Sistem mencocokkan level dan archetype-mu dengan masalah yang tepat.
-                  </p>
-                </div>
+              {/* Section Header */}
+              <div className="mb-16">
+                <h2 className="text-white font-bold mb-3" style={{ fontSize: 'var(--text-heading)' }}>
+                  Sistem Berbasis <span className="gradient-text-secondary">Konfrontasi</span>
+                </h2>
+                <p className="text-zinc-500 max-w-2xl" style={{ fontSize: 'var(--text-body-lg)' }}>
+                  Bukan gamifikasi kosmetik. Setiap elemen dirancang untuk growth lewat pressure.
+                </p>
               </div>
 
-              <div className="glass-card rounded-xl p-6 group overflow-hidden relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                <div className="relative z-10">
-                  <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4 glow-green" style={{ background: 'var(--gradient-success)' }}>
-                    <TrendingUp className="w-6 h-6 text-black" />
+              {/* Bento Grid - Irregular Sizes */}
+              <div className="grid md:grid-cols-12 gap-6">
+                {/* Feature 1 - Large */}
+                <div className="md:col-span-7 glass-card rounded-2xl p-10 group hover:border-orange-500/30 transition-all duration-300 overflow-hidden relative">
+                  <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <div className="relative z-10">
+                    <div className="w-16 h-16 rounded-xl flex items-center justify-center mb-6 glow-orange transition-all group-hover:scale-110" style={{ background: 'var(--gradient-primary)' }}>
+                      <Target className="w-8 h-8 text-black" />
+                    </div>
+                    <h3 className="text-white font-bold text-2xl mb-4">Adaptive Matchmaking</h3>
+                    <p className="text-zinc-400 leading-relaxed text-base max-w-md">
+                      Sistem AI mencocokkan archetype kognitif dan level kesulitan. Orang ↔ Masalah.
+                      Tidak ada random. Tidak ada autopilot.
+                    </p>
                   </div>
-                  <h3 className="text-white font-bold mb-2 text-lg">XP Berbasis Kesulitan</h3>
-                  <p className="text-zinc-500 text-sm leading-relaxed">
-                    XP hanya naik jika difficulty naik. Tidak ada grind. Tidak ada jalan pintas.
-                  </p>
                 </div>
-              </div>
 
-              <div className="glass-card rounded-xl p-6 group overflow-hidden relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                <div className="relative z-10">
-                  <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style={{ background: 'var(--gradient-secondary)', boxShadow: 'var(--glow-purple)' }}>
-                    <Shield className="w-6 h-6 text-white" />
+                {/* Feature 2 - Medium */}
+                <div className="md:col-span-5 glass-card rounded-2xl p-10 group hover:border-green-500/30 transition-all duration-300 overflow-hidden relative">
+                  <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <div className="relative z-10">
+                    <div className="w-16 h-16 rounded-xl flex items-center justify-center mb-6 glow-green transition-all group-hover:scale-110" style={{ background: 'var(--gradient-success)' }}>
+                      <TrendingUp className="w-8 h-8 text-black" />
+                    </div>
+                    <h3 className="text-white font-bold text-2xl mb-4">XP = Difficulty</h3>
+                    <p className="text-zinc-400 leading-relaxed text-base">
+                      XP hanya naik jika difficulty naik. No grind. No shortcuts. Pure skill progression.
+                    </p>
                   </div>
-                  <h3 className="text-white font-bold mb-2 text-lg">Scar-Based Badges</h3>
-                  <p className="text-zinc-500 text-sm leading-relaxed">
-                    Badge bukan kosmetik. Badge adalah bukti kamu menghadapi risiko nyata.
-                  </p>
+                </div>
+
+                {/* Feature 3 - Medium */}
+                <div className="md:col-span-5 glass-card rounded-2xl p-10 group hover:border-purple-500/30 transition-all duration-300 overflow-hidden relative md:row-span-1">
+                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <div className="relative z-10">
+                    <div className="w-16 h-16 rounded-xl flex items-center justify-center mb-6 transition-all group-hover:scale-110" style={{ background: 'var(--gradient-secondary)', boxShadow: 'var(--glow-purple)' }}>
+                      <Shield className="w-8 h-8 text-white" />
+                    </div>
+                    <h3 className="text-white font-bold text-2xl mb-4">Scar Badges</h3>
+                    <p className="text-zinc-400 leading-relaxed text-base">
+                      Badge = bukti kamu hadapi risiko nyata. Bukan kosmetik. Bukan partisipasi trophy.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Warning Box */}
+                <div className="md:col-span-7 glass-card rounded-2xl p-10 border-2 border-red-500/20 relative overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-transparent" />
+                  <div className="relative z-10">
+                    <Skull className="w-12 h-12 text-red-500 mb-4 opacity-50" />
+                    <p className="text-zinc-400 text-lg leading-relaxed">
+                      <span className="text-red-400 font-bold">⚠️ Warning:</span> Ini bukan platform untuk merasa nyaman.
+                      Jika kamu mencari validasi atau safe space, ini <span className="text-white font-semibold">bukan tempatnya</span>.
+                    </p>
+                  </div>
                 </div>
               </div>
             </motion.div>
           </div>
         </div>
-
-        {/* Warning */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.7 }}
-          className="px-6 pb-8"
-        >
-          <div className="max-w-2xl mx-auto text-center">
-            <div className="inline-block px-6 py-3 rounded-full glass-card border-red-500/20">
-              <p className="text-zinc-700 text-sm font-medium">
-                ⚠️ Ini bukan platform untuk merasa nyaman.
-                Jika kamu mencari validasi, ini bukan tempatnya.
-              </p>
-            </div>
-          </div>
-        </motion.div>
       </div>
     </div>
   );
