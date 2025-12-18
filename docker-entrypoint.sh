@@ -36,4 +36,4 @@ EOF
 echo "Nginx will listen on port: ${PORT}"
 cat /etc/nginx/conf.d/default.conf
 
-exec "\$@"
+exec "$@"
