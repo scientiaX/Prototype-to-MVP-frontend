@@ -4,14 +4,15 @@ import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import apiClient from '@/api/apiClient';
 import { Button } from "@/components/ui/button";
-import { 
-  Zap, 
-  Target, 
-  Trophy, 
-  ArrowRight, 
+import {
+  Zap,
+  Target,
+  Trophy,
+  ArrowRight,
   Skull,
   Shield,
-  TrendingUp
+  TrendingUp,
+  Sparkles
 } from 'lucide-react';
 
 export default function Home() {
@@ -26,7 +27,7 @@ export default function Home() {
   const checkAuth = async () => {
     const authenticated = await apiClient.auth.isAuthenticated();
     setIsAuthenticated(authenticated);
-    
+
     if (authenticated) {
       const user = await apiClient.auth.me();
       const profiles = await apiClient.entities.UserProfile.filter({ created_by: user.email });
@@ -45,11 +46,12 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-black overflow-hidden">
-      {/* Background effects */}
-      <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 via-transparent to-red-500/5" />
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-orange-500/10 rounded-full blur-3xl opacity-30" />
-      
+    <div className="min-h-screen bg-black overflow-hidden relative">
+      {/* Enhanced Background effects */}
+      <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 via-transparent to-red-500/10" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-orange-500/20 rounded-full blur-3xl opacity-20 animate-float" />
+      <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-purple-500/10 rounded-full blur-3xl opacity-20" />
+
       <div className="relative z-10 min-h-screen flex flex-col">
         {/* Hero Section */}
         <div className="flex-1 flex items-center justify-center px-6 py-12">
@@ -61,17 +63,18 @@ export default function Home() {
               transition={{ duration: 0.5 }}
               className="mb-8"
             >
-              <div className="inline-flex items-center gap-3 px-6 py-3 bg-zinc-900/50 border border-zinc-800 rounded-full mb-6">
-                <Skull className="w-5 h-5 text-orange-500" />
-                <span className="text-zinc-400 text-sm font-mono">NOVAX TRIAL</span>
+              <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full mb-6 glass-card">
+                <Skull className="w-5 h-5 text-orange-500 animate-glow-pulse" />
+                <span className="text-zinc-400 text-sm font-mono font-semibold tracking-wider">NOVAX TRIAL</span>
+                <Sparkles className="w-4 h-4 text-purple-500" />
               </div>
-              
+
               <h1 className="text-5xl md:text-7xl font-bold text-white mb-4">
-                Problem <span className="text-orange-500">Arena</span>
+                Problem <span className="gradient-text-primary-animated">Arena</span>
               </h1>
-              
-              <p className="text-xl md:text-2xl text-zinc-400 max-w-2xl mx-auto">
-                Belajar terjadi lewat masalah nyata.
+
+              <p className="text-xl md:text-2xl text-zinc-400 max-w-2xl mx-auto leading-relaxed">
+                Belajar terjadi lewat <span className="text-orange-500 font-semibold">masalah nyata</span>.
                 <br />
                 <span className="text-zinc-600">Bukan materi. Bukan teori.</span>
               </p>
@@ -85,18 +88,20 @@ export default function Home() {
             >
               <Button
                 onClick={handleStart}
-                className="bg-orange-500 hover:bg-orange-600 text-black font-bold px-8 py-6 text-lg rounded-xl"
+                variant="gradient"
+                size="xl"
+                className="group"
               >
                 {hasProfile ? 'Masuk Arena' : 'Mulai Kalibrasi'}
-                <ArrowRight className="ml-2 w-5 h-5" />
+                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Button>
-              
-              <p className="text-zinc-600 text-sm mt-4">
-                {isAuthenticated 
-                  ? hasProfile 
-                    ? 'Siap untuk konfrontasi berikutnya?' 
-                    : '5-7 pertanyaan singkat untuk menentukan starting point'
-                  : 'Login untuk memulai perjalanan'}
+
+              <p className="text-zinc-600 text-sm mt-4 font-medium">
+                {isAuthenticated
+                  ? hasProfile
+                    ? '⚔️ Siap untuk konfrontasi berikutnya?'
+                    : '🎯 5-7 pertanyaan singkat untuk menentukan starting point'
+                  : '🔑 Login untuk memulai perjalanan'}
               </p>
             </motion.div>
           </div>
@@ -111,28 +116,43 @@ export default function Home() {
               transition={{ delay: 0.5 }}
               className="grid md:grid-cols-3 gap-6"
             >
-              <div className="bg-zinc-900/30 border border-zinc-800 rounded-xl p-6">
-                <Target className="w-8 h-8 text-orange-500 mb-4" />
-                <h3 className="text-white font-semibold mb-2">Matchmaking</h3>
-                <p className="text-zinc-500 text-sm">
-                  Orang ↔ Masalah. Sistem mencocokkan level dan archetype-mu dengan masalah yang tepat.
-                </p>
+              <div className="glass-card rounded-xl p-6 group overflow-hidden relative">
+                <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="relative z-10">
+                  <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4 glow-orange" style={{ background: 'var(--gradient-primary)' }}>
+                    <Target className="w-6 h-6 text-black" />
+                  </div>
+                  <h3 className="text-white font-bold mb-2 text-lg">Matchmaking</h3>
+                  <p className="text-zinc-500 text-sm leading-relaxed">
+                    Orang ↔ Masalah. Sistem mencocokkan level dan archetype-mu dengan masalah yang tepat.
+                  </p>
+                </div>
               </div>
-              
-              <div className="bg-zinc-900/30 border border-zinc-800 rounded-xl p-6">
-                <TrendingUp className="w-8 h-8 text-green-500 mb-4" />
-                <h3 className="text-white font-semibold mb-2">XP Berbasis Kesulitan</h3>
-                <p className="text-zinc-500 text-sm">
-                  XP hanya naik jika difficulty naik. Tidak ada grind. Tidak ada jalan pintas.
-                </p>
+
+              <div className="glass-card rounded-xl p-6 group overflow-hidden relative">
+                <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="relative z-10">
+                  <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4 glow-green" style={{ background: 'var(--gradient-success)' }}>
+                    <TrendingUp className="w-6 h-6 text-black" />
+                  </div>
+                  <h3 className="text-white font-bold mb-2 text-lg">XP Berbasis Kesulitan</h3>
+                  <p className="text-zinc-500 text-sm leading-relaxed">
+                    XP hanya naik jika difficulty naik. Tidak ada grind. Tidak ada jalan pintas.
+                  </p>
+                </div>
               </div>
-              
-              <div className="bg-zinc-900/30 border border-zinc-800 rounded-xl p-6">
-                <Shield className="w-8 h-8 text-red-500 mb-4" />
-                <h3 className="text-white font-semibold mb-2">Scar-Based Badges</h3>
-                <p className="text-zinc-500 text-sm">
-                  Badge bukan kosmetik. Badge adalah bukti kamu menghadapi risiko nyata.
-                </p>
+
+              <div className="glass-card rounded-xl p-6 group overflow-hidden relative">
+                <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="relative z-10">
+                  <div className="w-12 h-12 rounded-lg flex items-center justify-center mb-4" style={{ background: 'var(--gradient-secondary)', boxShadow: 'var(--glow-purple)' }}>
+                    <Shield className="w-6 h-6 text-white" />
+                  </div>
+                  <h3 className="text-white font-bold mb-2 text-lg">Scar-Based Badges</h3>
+                  <p className="text-zinc-500 text-sm leading-relaxed">
+                    Badge bukan kosmetik. Badge adalah bukti kamu menghadapi risiko nyata.
+                  </p>
+                </div>
               </div>
             </motion.div>
           </div>
@@ -146,10 +166,12 @@ export default function Home() {
           className="px-6 pb-8"
         >
           <div className="max-w-2xl mx-auto text-center">
-            <p className="text-zinc-700 text-sm">
-              ⚠️ Ini bukan platform untuk merasa nyaman. 
-              Jika kamu mencari validasi, ini bukan tempatnya.
-            </p>
+            <div className="inline-block px-6 py-3 rounded-full glass-card border-red-500/20">
+              <p className="text-zinc-700 text-sm font-medium">
+                ⚠️ Ini bukan platform untuk merasa nyaman.
+                Jika kamu mencari validasi, ini bukan tempatnya.
+              </p>
+            </div>
           </div>
         </motion.div>
       </div>

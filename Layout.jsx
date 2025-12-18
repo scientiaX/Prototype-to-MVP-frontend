@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import apiClient from '@/api/apiClient';
-import { 
-  Swords, 
-  User, 
-  Trophy, 
+import {
+  Swords,
+  User,
+  Trophy,
   Home,
   LogOut,
   Menu,
@@ -53,13 +53,13 @@ export default function Layout({ children, currentPageName }) {
   return (
     <div className="min-h-screen bg-black">
       {/* Desktop Nav */}
-      <nav className="hidden md:flex fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-xl border-b border-zinc-900">
+      <nav className="hidden md:flex fixed top-0 left-0 right-0 z-50 backdrop-blur-xl border-b border-zinc-900" style={{ background: 'var(--glass-darker)' }}>
         <div className="max-w-6xl mx-auto w-full px-6 py-4 flex items-center justify-between">
-          <Link to={createPageUrl('Home')} className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
-              <span className="text-black font-bold text-sm">N</span>
+          <Link to={createPageUrl('Home')} className="flex items-center gap-2 group">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center relative overflow-hidden transition-all duration-300 group-hover:scale-110 glow-orange" style={{ background: 'var(--gradient-primary)' }}>
+              <span className="text-black font-bold text-sm relative z-10">N</span>
             </div>
-            <span className="text-white font-bold">Novax Arena</span>
+            <span className="text-white font-bold transition-colors group-hover:text-orange-500">Novax Arena</span>
           </Link>
 
           <div className="flex items-center gap-1">
@@ -71,13 +71,13 @@ export default function Layout({ children, currentPageName }) {
                   key={item.page}
                   to={createPageUrl(item.page)}
                   className={cn(
-                    "flex items-center gap-2 px-4 py-2 rounded-lg transition-colors",
-                    isActive 
-                      ? "bg-orange-500/10 text-orange-500" 
-                      : "text-zinc-400 hover:text-white hover:bg-zinc-900"
+                    "flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-200",
+                    isActive
+                      ? "bg-orange-500/10 text-orange-500 shadow-[0_0_15px_rgba(255,107,53,0.3)]"
+                      : "text-zinc-400 hover:text-white hover:bg-zinc-900 hover:scale-105"
                   )}
                 >
-                  <Icon className="w-4 h-4" />
+                  <Icon className={cn("w-4 h-4", isActive && "animate-glow-pulse")} />
                   <span className="text-sm font-medium">{item.name}</span>
                 </Link>
               );
@@ -87,7 +87,7 @@ export default function Layout({ children, currentPageName }) {
           {isAuthenticated && (
             <button
               onClick={handleLogout}
-              className="flex items-center gap-2 px-4 py-2 text-zinc-500 hover:text-red-500 transition-colors"
+              className="flex items-center gap-2 px-4 py-2 text-zinc-500 hover:text-red-500 transition-all duration-200 hover:scale-105"
             >
               <LogOut className="w-4 h-4" />
               <span className="text-sm">Keluar</span>
@@ -97,10 +97,10 @@ export default function Layout({ children, currentPageName }) {
       </nav>
 
       {/* Mobile Nav */}
-      <nav className="md:hidden fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-xl border-b border-zinc-900">
+      <nav className="md:hidden fixed top-0 left-0 right-0 z-50 backdrop-blur-xl border-b border-zinc-900" style={{ background: 'var(--glass-darker)' }}>
         <div className="px-4 py-4 flex items-center justify-between">
-          <Link to={createPageUrl('Home')} className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
+          <Link to={createPageUrl('Home')} className="flex items-center gap-2 group">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center relative overflow-hidden transition-all duration-300 group-hover:scale-110 glow-orange" style={{ background: 'var(--gradient-primary)' }}>
               <span className="text-black font-bold text-sm">N</span>
             </div>
             <span className="text-white font-bold">Novax</span>
@@ -108,7 +108,7 @@ export default function Layout({ children, currentPageName }) {
 
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 text-zinc-400"
+            className="p-2 text-zinc-400 hover:text-white transition-colors"
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
@@ -125,9 +125,9 @@ export default function Layout({ children, currentPageName }) {
                   to={createPageUrl(item.page)}
                   onClick={() => setMobileMenuOpen(false)}
                   className={cn(
-                    "flex items-center gap-3 px-4 py-3 rounded-lg transition-colors",
-                    isActive 
-                      ? "bg-orange-500/10 text-orange-500" 
+                    "flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200",
+                    isActive
+                      ? "bg-orange-500/10 text-orange-500"
                       : "text-zinc-400 hover:text-white hover:bg-zinc-900"
                   )}
                 >
@@ -136,7 +136,7 @@ export default function Layout({ children, currentPageName }) {
                 </Link>
               );
             })}
-            
+
             {isAuthenticated && (
               <button
                 onClick={() => {
@@ -154,7 +154,7 @@ export default function Layout({ children, currentPageName }) {
       </nav>
 
       {/* Mobile Bottom Nav */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-xl border-t border-zinc-900">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 backdrop-blur-xl border-t border-zinc-900" style={{ background: 'var(--glass-darker)' }}>
         <div className="flex items-center justify-around py-2">
           {navItems.map((item) => {
             const Icon = item.icon;
@@ -164,8 +164,8 @@ export default function Layout({ children, currentPageName }) {
                 key={item.page}
                 to={createPageUrl(item.page)}
                 className={cn(
-                  "flex flex-col items-center gap-1 p-2 rounded-lg transition-colors",
-                  isActive ? "text-orange-500" : "text-zinc-500"
+                  "flex flex-col items-center gap-1 p-2 rounded-lg transition-all duration-200",
+                  isActive ? "text-orange-500 scale-110" : "text-zinc-500 hover:text-zinc-300"
                 )}
               >
                 <Icon className="w-5 h-5" />
