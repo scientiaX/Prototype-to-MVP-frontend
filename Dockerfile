@@ -13,16 +13,17 @@ ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
 
 RUN npm run build
 
-FROM nginx:alpine
+FROM node:18-alpine
 
-RUN apk add --no-cache bash
+WORKDIR /app
 
-COPY --from=build /app/dist /usr/share/nginx/html
+RUN npm install -g serve
 
-COPY docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod +x /docker-entrypoint.sh
+COPY --from=build /app/dist ./dist
+COPY start.sh ./start.sh
 
-EXPOSE 80
+RUN chmod +x start.sh
 
-ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["nginx", "-g", "daemon off;"]
+EXPOSE 3000
+
+CMD ["./start.sh"]
