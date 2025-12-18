@@ -10,8 +10,20 @@ server {
     listen ${PORT};
     server_name _;
     root /usr/share/nginx/html;
-    include /etc/nginx/mime.types;
     index index.html;
+    
+    # Explicit MIME types for web assets
+    types {
+        text/html html htm;
+        text/css css;
+        application/javascript js mjs;
+        image/svg+xml svg svgz;
+        image/x-icon ico;
+        image/png png;
+        image/jpeg jpg jpeg;
+        application/json json;
+    }
+    default_type application/octet-stream;
 
     error_log /dev/stdout info;
     access_log /dev/stdout;
