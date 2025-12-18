@@ -172,7 +172,7 @@ export default function Arena() {
               NovaX Arena
             </h1>
             <p className="text-zinc-500 text-lg">
-              Pilih mode permainan untuk memulai tantangan
+              Pilih arena untuk memulai tantangan
             </p>
           </motion.div>
 
