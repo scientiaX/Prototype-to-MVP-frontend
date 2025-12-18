@@ -6,6 +6,7 @@ import Arena from './pages/Arena.jsx';
 import Profile from './pages/Profile.jsx';
 import Leaderboard from './pages/Leaderboard.jsx';
 import Calibration from './pages/Calibration.jsx';
+import Login from './pages/Login.jsx';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Route path="/arena" element={<Layout currentPageName="Arena"><Arena /></Layout>} />
       <Route path="/profile" element={<Layout currentPageName="Profile"><Profile /></Layout>} />
       <Route path="/leaderboard" element={<Layout currentPageName="Leaderboard"><Leaderboard /></Layout>} />
+      <Route path="/login" element={<Login />} />
       <Route path="/calibration" element={<Layout currentPageName="Calibration"><Calibration /></Layout>} />
     </Routes>
   );
