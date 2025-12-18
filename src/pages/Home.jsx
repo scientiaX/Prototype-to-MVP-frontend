@@ -51,21 +51,21 @@ export default function Home() {
     {
       icon: Target,
       title: "Adaptive Matching",
-      description: "AI mencocokkan masalah dengan archetype dan level-mu",
+      description: "AI mencocokkan masalah dengan archetype dan level-capability mu",
       gradient: "from-orange-500 to-red-600",
       glow: "shadow-orange-500/30"
     },
     {
       icon: TrendingUp,
       title: "XP = Difficulty",
-      description: "Progression berbasis challenge, bukan grinding",
+      description: "Progression berbasis challenge dan growth capability nyata, bukan grinding",
       gradient: "from-emerald-500 to-green-600",
       glow: "shadow-emerald-500/30"
     },
     {
       icon: Shield,
       title: "Scar Badges",
-      description: "Badge adalah bukti kamu bertarung, bukan partisipasi",
+      description: "Badge adalah bukti kamu bertarung dan berkembang, bukan partisipasi",
       gradient: "from-violet-500 to-purple-600",
       glow: "shadow-violet-500/30"
     }
@@ -290,7 +290,7 @@ export default function Home() {
                   Sistem Berbasis <span className="text-gradient-magic">Konfrontasi</span>
                 </h2>
                 <p className="text-zinc-500 max-w-xl mx-auto text-lg">
-                  Bukan gamifikasi kosmetik. Setiap elemen dirancang untuk growth melalui pressure.
+                  Backed by science. Setiap elemen dirancang untuk growth melalui pressure.
                 </p>
               </motion.div>
             </div>

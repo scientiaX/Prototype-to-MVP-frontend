@@ -7,7 +7,7 @@ import ProblemCard from '@/components/arena/ProblemCard';
 import ArenaBattle from '@/components/arena/ArenaBattle';
 import ArenaResult from '@/components/arena/ArenaResult';
 import ProblemGeneratorModal from '@/components/arena/ProblemGeneratorModal';
-import { Loader2, RefreshCw, Trophy, Zap, Sparkles, Plus, Swords, Target } from 'lucide-react';
+import { Loader2, RefreshCw, Trophy, Zap, Sparkles, Plus, Swords, Target, Users, User, Clock, Lock } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 
 export default function Arena() {
@@ -20,6 +20,7 @@ export default function Arena() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [showGeneratorModal, setShowGeneratorModal] = useState(false);
   const [view, setView] = useState('selection');
+  const [gameMode, setGameMode] = useState(null); // null = mode selection, 'solo' = solo mode, 'multiplayer' = coming soon
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -146,6 +147,188 @@ export default function Arena() {
   const totalXp = (profile?.xp_risk_taker || 0) + (profile?.xp_analyst || 0) +
     (profile?.xp_builder || 0) + (profile?.xp_strategist || 0);
 
+  // Mode Selection Screen
+  if (gameMode === null) {
+    return (
+      <div className="min-h-screen bg-black relative">
+        {/* Background effects */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-orange-600/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-[-20%] left-[-10%] w-[500px] h-[500px] bg-violet-600/8 rounded-full blur-3xl" />
+        </div>
+
+        <div className="relative z-10 max-w-4xl mx-auto px-6 md:px-8 py-16">
+          {/* Header */}
+          <motion.div
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-gradient-to-r from-orange-500/15 to-red-500/10 border border-orange-500/25 mb-6">
+              <div className="w-2 h-2 rounded-full bg-orange-400 animate-pulse" />
+              <span className="text-xs font-semibold text-orange-400 tracking-wider uppercase font-mono">Choose Mode</span>
+            </div>
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+              NovaX Arena
+            </h1>
+            <p className="text-zinc-500 text-lg">
+              Pilih mode permainan untuk memulai tantangan
+            </p>
+          </motion.div>
+
+          {/* Mode Cards */}
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Solo Mode */}
+            <motion.button
+              onClick={() => setGameMode('solo')}
+              className="group relative bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-2xl p-8 text-left hover:border-orange-500/50 transition-all duration-300"
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              {/* Glow Effect */}
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-orange-500 to-red-600 rounded-2xl blur-lg opacity-0 group-hover:opacity-20 transition-opacity duration-500" />
+
+              <div className="relative z-10">
+                <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <User className="w-8 h-8 text-black" />
+                </div>
+
+                <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-orange-400 transition-colors">
+                  Solo Mode
+                </h3>
+                <p className="text-zinc-400 mb-6 leading-relaxed">
+                  Hadapi masalah secara mandiri. Generate problem yang sesuai dengan level dan archetype-mu. Tingkatkan skill step-by-step.
+                </p>
+
+                <div className="flex items-center gap-2 text-orange-400 font-medium">
+                  <span>Mulai Solo</span>
+                  <Swords className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </div>
+            </motion.button>
+
+            {/* Multiplayer Mode */}
+            <motion.button
+              onClick={() => setGameMode('multiplayer')}
+              className="group relative bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-2xl p-8 text-left hover:border-violet-500/50 transition-all duration-300"
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.3 }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              {/* Glow Effect */}
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-violet-500 to-purple-600 rounded-2xl blur-lg opacity-0 group-hover:opacity-20 transition-opacity duration-500" />
+
+              <div className="relative z-10">
+                <div className="w-16 h-16 bg-gradient-to-br from-violet-500 to-purple-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <Users className="w-8 h-8 text-black" />
+                </div>
+
+                <div className="flex items-center gap-3 mb-3">
+                  <h3 className="text-2xl font-bold text-white group-hover:text-violet-400 transition-colors">
+                    Multiplayer
+                  </h3>
+                  <span className="px-2.5 py-1 bg-violet-500/15 border border-violet-500/30 rounded-full text-xs font-semibold text-violet-400 uppercase tracking-wider">
+                    Soon
+                  </span>
+                </div>
+                <p className="text-zinc-400 mb-6 leading-relaxed">
+                  Compete atau collaborate dengan player lain dalam real-time battle. Uji skill-mu melawan sesama warrior.
+                </p>
+
+                <div className="flex items-center gap-2 text-violet-400 font-medium">
+                  <span>Lihat Preview</span>
+                  <Clock className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </div>
+            </motion.button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Multiplayer Coming Soon Screen
+  if (gameMode === 'multiplayer') {
+    return (
+      <div className="min-h-screen bg-black relative flex items-center justify-center">
+        {/* Background effects */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute top-[-20%] left-[30%] w-[600px] h-[600px] bg-violet-600/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-[-20%] right-[20%] w-[500px] h-[500px] bg-purple-600/8 rounded-full blur-3xl" />
+        </div>
+
+        <div className="relative z-10 max-w-2xl mx-auto px-6 text-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            {/* Icon */}
+            <div className="relative inline-block mb-8">
+              <div className="w-24 h-24 bg-gradient-to-br from-violet-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto">
+                <Users className="w-12 h-12 text-black" />
+              </div>
+              <motion.div
+                className="absolute inset-0 rounded-2xl bg-violet-500/30"
+                animate={{ scale: [1, 1.3, 1], opacity: [0.5, 0, 0.5] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              />
+              {/* Lock Badge */}
+              <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-zinc-900 border-2 border-violet-500 rounded-xl flex items-center justify-center">
+                <Lock className="w-5 h-5 text-violet-400" />
+              </div>
+            </div>
+
+            {/* Content */}
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+              Coming <span className="text-violet-400">Soon</span>
+            </h2>
+            <p className="text-xl text-zinc-400 mb-8 max-w-md mx-auto">
+              Mode Multiplayer sedang dalam pengembangan. Bersiaplah untuk berkompetisi dengan player lain!
+            </p>
+
+            {/* Features Preview */}
+            <div className="grid grid-cols-2 gap-4 mb-10 max-w-sm mx-auto">
+              <div className="bg-zinc-900/80 border border-zinc-800 rounded-xl p-4">
+                <Swords className="w-6 h-6 text-violet-400 mx-auto mb-2" />
+                <p className="text-sm text-zinc-400">1v1 Battle</p>
+              </div>
+              <div className="bg-zinc-900/80 border border-zinc-800 rounded-xl p-4">
+                <Users className="w-6 h-6 text-violet-400 mx-auto mb-2" />
+                <p className="text-sm text-zinc-400">Team Mode</p>
+              </div>
+              <div className="bg-zinc-900/80 border border-zinc-800 rounded-xl p-4">
+                <Trophy className="w-6 h-6 text-violet-400 mx-auto mb-2" />
+                <p className="text-sm text-zinc-400">Ranked Match</p>
+              </div>
+              <div className="bg-zinc-900/80 border border-zinc-800 rounded-xl p-4">
+                <Zap className="w-6 h-6 text-violet-400 mx-auto mb-2" />
+                <p className="text-sm text-zinc-400">Quick Match</p>
+              </div>
+            </div>
+
+            {/* Back Button */}
+            <Button
+              onClick={() => setGameMode(null)}
+              variant="outline"
+              size="lg"
+              className="group"
+            >
+              <Swords className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" />
+              Kembali ke Mode Selection
+            </Button>
+          </motion.div>
+        </div>
+      </div>
+    );
+  }
+
+  // Solo Mode - Original Arena Content
   return (
     <div className="min-h-screen bg-black relative">
       {/* Background effects */}
@@ -161,15 +344,25 @@ export default function Arena() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-gradient-to-r from-orange-500/15 to-red-500/10 border border-orange-500/25 mb-4">
-              <div className="w-2 h-2 rounded-full bg-orange-400 animate-pulse" />
-              <span className="text-xs font-semibold text-orange-400 tracking-wider uppercase font-mono">Arena Mode</span>
+            <div className="flex items-center gap-3 mb-4">
+              <button
+                onClick={() => setGameMode(null)}
+                className="w-10 h-10 rounded-xl bg-zinc-800 hover:bg-zinc-700 flex items-center justify-center text-zinc-400 hover:text-white transition-all duration-200"
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+              <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-gradient-to-r from-orange-500/15 to-red-500/10 border border-orange-500/25">
+                <User className="w-3.5 h-3.5 text-orange-400" />
+                <span className="text-xs font-semibold text-orange-400 tracking-wider uppercase font-mono">Solo Mode</span>
+              </div>
             </div>
             <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
-              Problem Arena
+              NovaX Arena
             </h1>
             <p className="text-zinc-500">
-              Pilih masalah. Hadapi. Naik level.
+              Hadapi masalah. Belajar. Naik level.
             </p>
           </motion.div>
 
