@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import apiClient from '@/api/apiClient';
-import { Trophy, Zap, TrendingUp, Target, Brain, Wrench, Crown, Medal } from 'lucide-react';
+import { Trophy, Zap, TrendingUp, Target, Brain, Wrench, Crown, Medal, Sparkles, Users } from 'lucide-react';
 import { cn } from "@/lib/utils";
 
 const archetypeConfig = {
@@ -11,16 +11,10 @@ const archetypeConfig = {
   strategist: { icon: Target, label: 'Strategist', color: 'text-violet-400', bg: 'bg-violet-500/15' }
 };
 
-const rankColors = [
-  'text-yellow-400', // Gold
-  'text-zinc-300',   // Silver  
-  'text-amber-600'   // Bronze
-];
-
-const rankBgs = [
-  'bg-yellow-400/15',
-  'bg-zinc-300/15',
-  'bg-amber-600/15'
+const rankConfig = [
+  { color: 'text-yellow-400', bg: 'bg-yellow-400/15', border: 'border-yellow-400/30', gradient: 'from-yellow-500 to-amber-600' },
+  { color: 'text-zinc-300', bg: 'bg-zinc-300/15', border: 'border-zinc-400/30', gradient: 'from-zinc-400 to-zinc-500' },
+  { color: 'text-amber-600', bg: 'bg-amber-600/15', border: 'border-amber-600/30', gradient: 'from-amber-600 to-orange-700' }
 ];
 
 export default function Leaderboard() {
@@ -28,16 +22,19 @@ export default function Leaderboard() {
   const [currentUser, setCurrentUser] = useState(null);
   const [activeTab, setActiveTab] = useState('growth');
   const [archetypeFilter, setArchetypeFilter] = useState('all');
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     loadLeaderboard();
   }, []);
 
   const loadLeaderboard = async () => {
+    setIsLoading(true);
     const user = await apiClient.auth.me();
     setCurrentUser(user);
     const allProfiles = await apiClient.api.profiles.getLeaderboard();
     setProfiles(allProfiles);
+    setIsLoading(false);
   };
 
   const getGrowthScore = (profile) => {
@@ -60,65 +57,126 @@ export default function Leaderboard() {
     ? sortedProfiles
     : sortedProfiles.filter(p => p.primary_archetype === archetypeFilter);
 
-  return (
-    <div className="min-h-screen bg-black">
-      <div className="max-w-4xl mx-auto px-6 md:px-8 py-8">
-        {/* Header */}
-        <div className="text-center mb-10">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-500/15 border border-orange-500/30 mb-4">
-            <Medal className="w-3.5 h-3.5 text-orange-400" />
-            <span className="text-xs font-semibold text-orange-400 tracking-wider uppercase font-mono">Rankings</span>
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <motion.div
+          className="flex flex-col items-center gap-4"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+        >
+          <div className="relative">
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-yellow-500 to-amber-600 flex items-center justify-center">
+              <Trophy className="w-8 h-8 text-black" />
+            </div>
+            <motion.div
+              className="absolute inset-0 rounded-2xl bg-yellow-500/30"
+              animate={{ scale: [1, 1.3, 1], opacity: [0.5, 0, 0.5] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+            />
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-white mb-3">
+          <p className="text-zinc-400 font-medium">Loading rankings...</p>
+        </motion.div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-black relative">
+      {/* Background effects */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-[-10%] left-[30%] w-[500px] h-[500px] bg-yellow-600/8 rounded-full blur-3xl" />
+        <div className="absolute bottom-[-20%] right-[20%] w-[400px] h-[400px] bg-orange-600/6 rounded-full blur-3xl" />
+      </div>
+
+      <div className="relative z-10 max-w-4xl mx-auto px-6 md:px-8 py-8">
+        {/* Header */}
+        <motion.div
+          className="text-center mb-10"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-gradient-to-r from-yellow-500/15 to-amber-500/10 border border-yellow-500/25 mb-4">
+            <Medal className="w-3.5 h-3.5 text-yellow-400" />
+            <span className="text-xs font-semibold text-yellow-400 tracking-wider uppercase font-mono">Rankings</span>
+          </div>
+          <h1 className="text-3xl md:text-5xl font-bold text-white mb-3">
             Leaderboard
           </h1>
-          <p className="text-zinc-500">
+          <p className="text-zinc-500 text-lg">
             Bukan ranking kepintaran. Ranking konfrontasi.
           </p>
-        </div>
+        </motion.div>
 
         {/* Mode Tabs */}
-        <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-1.5 mb-6">
-          <div className="grid grid-cols-2 gap-1.5">
+        <motion.div
+          className="bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-2xl p-2 mb-6"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+        >
+          <div className="grid grid-cols-2 gap-2">
             <button
               onClick={() => setActiveTab('growth')}
               className={cn(
-                "flex items-center justify-center gap-2 py-3 px-4 rounded-lg text-sm font-medium transition-all",
+                "relative flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl text-sm font-medium transition-all duration-300",
                 activeTab === 'growth'
-                  ? "bg-gradient-to-r from-orange-500 to-red-600 text-black"
-                  : "text-zinc-400 hover:text-white"
+                  ? "text-black"
+                  : "text-zinc-400 hover:text-white hover:bg-zinc-800/50"
               )}
             >
-              <TrendingUp className="w-4 h-4" />
-              Growth (2 Minggu)
+              {activeTab === 'growth' && (
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-orange-500 to-red-600 rounded-xl"
+                  layoutId="activeTab"
+                  transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                />
+              )}
+              <TrendingUp className="w-4 h-4 relative z-10" />
+              <span className="relative z-10">Growth (2 Minggu)</span>
             </button>
             <button
               onClick={() => setActiveTab('reliability')}
               className={cn(
-                "flex items-center justify-center gap-2 py-3 px-4 rounded-lg text-sm font-medium transition-all",
+                "relative flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl text-sm font-medium transition-all duration-300",
                 activeTab === 'reliability'
-                  ? "bg-gradient-to-r from-orange-500 to-red-600 text-black"
-                  : "text-zinc-400 hover:text-white"
+                  ? "text-black"
+                  : "text-zinc-400 hover:text-white hover:bg-zinc-800/50"
               )}
             >
-              <Trophy className="w-4 h-4" />
-              All-Time Reliability
+              {activeTab === 'reliability' && (
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-orange-500 to-red-600 rounded-xl"
+                  layoutId="activeTab"
+                  transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                />
+              )}
+              <Trophy className="w-4 h-4 relative z-10" />
+              <span className="relative z-10">All-Time Reliability</span>
             </button>
           </div>
-        </div>
+        </motion.div>
 
         {/* Archetype Filter */}
-        <div className="flex flex-wrap gap-2 mb-8">
+        <motion.div
+          className="flex flex-wrap gap-2 mb-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+        >
           <button
             onClick={() => setArchetypeFilter('all')}
             className={cn(
-              "px-4 py-2 rounded-lg text-sm font-medium transition-all",
+              "px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200",
               archetypeFilter === 'all'
                 ? "bg-white text-black"
-                : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700"
+                : "bg-zinc-800/80 text-zinc-400 hover:bg-zinc-700 hover:text-white"
             )}
           >
-            Semua
+            <span className="flex items-center gap-2">
+              <Users className="w-4 h-4" />
+              Semua
+            </span>
           </button>
           {Object.entries(archetypeConfig).map(([key, config]) => {
             const Icon = config.icon;
@@ -127,10 +185,10 @@ export default function Leaderboard() {
                 key={key}
                 onClick={() => setArchetypeFilter(key)}
                 className={cn(
-                  "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all",
+                  "flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200",
                   archetypeFilter === key
-                    ? `${config.bg} ${config.color}`
-                    : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700"
+                    ? `${config.bg} ${config.color} border border-current`
+                    : "bg-zinc-800/80 text-zinc-400 hover:bg-zinc-700 hover:text-white"
                 )}
               >
                 <Icon className="w-4 h-4" />
@@ -138,7 +196,7 @@ export default function Leaderboard() {
               </button>
             );
           })}
-        </div>
+        </motion.div>
 
         {/* Leaderboard List */}
         <div className="space-y-3">
@@ -148,61 +206,64 @@ export default function Leaderboard() {
             const score = activeTab === 'growth' ? getGrowthScore(profile) : getReliabilityScore(profile);
             const isCurrentUser = profile.created_by === currentUser?.email;
             const isTopThree = index < 3;
+            const rank = rankConfig[index] || null;
 
             return (
               <motion.div
                 key={profile.id}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.03 }}
+                transition={{ delay: 0.3 + index * 0.03 }}
                 className={cn(
-                  "bg-zinc-900 border rounded-xl flex items-center gap-4 p-4 transition-all hover:border-zinc-700",
+                  "group bg-zinc-900/80 backdrop-blur-sm border rounded-2xl flex items-center gap-4 p-4 transition-all duration-300",
                   isCurrentUser
-                    ? "border-orange-500/30 bg-orange-500/5"
-                    : "border-zinc-800"
+                    ? "border-orange-500/40 bg-orange-500/5 hover:bg-orange-500/10"
+                    : "border-zinc-800 hover:border-zinc-700"
                 )}
               >
                 {/* Rank */}
-                <div className="w-12 text-center shrink-0">
+                <div className="w-14 text-center shrink-0">
                   {isTopThree ? (
-                    <div className={cn("w-10 h-10 rounded-lg flex items-center justify-center mx-auto", rankBgs[index])}>
-                      <Crown className={cn("w-5 h-5", rankColors[index])} />
+                    <div className={cn("w-12 h-12 rounded-xl flex items-center justify-center mx-auto bg-gradient-to-br", rank.gradient, "shadow-lg")}>
+                      <Crown className="w-6 h-6 text-black" />
                     </div>
                   ) : (
-                    <span className="font-mono text-lg text-zinc-500">
+                    <span className="font-mono text-xl text-zinc-500 font-bold">
                       {index + 1}
                     </span>
                   )}
                 </div>
 
                 {/* Archetype Icon */}
-                <div className={cn("w-11 h-11 rounded-lg flex items-center justify-center shrink-0", archetype.bg)}>
-                  <Icon className={cn("w-5 h-5", archetype.color)} />
+                <div className={cn("w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-110", archetype.bg)}>
+                  <Icon className={cn("w-6 h-6", archetype.color)} />
                 </div>
 
                 {/* Info */}
                 <div className="flex-1 min-w-0">
                   <p className={cn(
-                    "font-semibold truncate",
+                    "font-semibold truncate text-lg",
                     isCurrentUser ? "text-orange-400" : "text-white"
                   )}>
                     {isCurrentUser ? 'Kamu' : `Player ${profile.id.slice(-4)}`}
                   </p>
-                  <p className="text-sm text-zinc-500">
-                    Level {profile.current_difficulty} • {profile.total_arenas_completed || 0} arenas
-                  </p>
+                  <div className="flex items-center gap-2 text-sm text-zinc-500">
+                    <span>Level {profile.current_difficulty}</span>
+                    <span className="w-1 h-1 rounded-full bg-zinc-600" />
+                    <span>{profile.total_arenas_completed || 0} arenas</span>
+                  </div>
                 </div>
 
                 {/* Score */}
                 <div className="text-right shrink-0">
                   <p className={cn(
-                    "text-xl font-bold font-mono",
-                    isTopThree ? rankColors[index] : "text-white"
+                    "text-2xl font-bold font-mono",
+                    isTopThree && rank ? rank.color : "text-white"
                   )}>
                     {score}
                   </p>
-                  <p className="text-xs text-zinc-600">
-                    {activeTab === 'growth' ? 'XP' : 'Reliability'}
+                  <p className="text-xs text-zinc-600 uppercase tracking-wide">
+                    {activeTab === 'growth' ? 'XP' : 'Score'}
                   </p>
                 </div>
               </motion.div>
@@ -211,21 +272,41 @@ export default function Leaderboard() {
         </div>
 
         {filteredProfiles.length === 0 && (
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-16 text-center">
-            <p className="text-zinc-500">Belum ada data untuk ditampilkan.</p>
-          </div>
+          <motion.div
+            className="bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-2xl p-16 text-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+          >
+            <div className="w-16 h-16 bg-zinc-800 rounded-2xl mx-auto mb-4 flex items-center justify-center">
+              <Users className="w-8 h-8 text-zinc-600" />
+            </div>
+            <p className="text-lg text-zinc-400">Belum ada data untuk ditampilkan.</p>
+          </motion.div>
         )}
 
         {/* Info Note */}
-        <div className="bg-zinc-900/50 border border-orange-500/20 rounded-xl p-5 mt-8">
-          <p className="text-sm text-zinc-500">
-            <span className="text-orange-400 font-semibold">📊 Note:</span>{' '}
-            {activeTab === 'growth'
-              ? 'Growth leaderboard di-reset setiap 2 minggu. Berdasarkan lonjakan difficulty dan XP delta.'
-              : 'All-Time Reliability tidak pernah reset. Berdasarkan konsistensi menghadapi masalah berat.'
-            }
-          </p>
-        </div>
+        <motion.div
+          className="mt-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+        >
+          <div className="relative overflow-hidden bg-zinc-900/50 border border-orange-500/20 rounded-2xl p-6">
+            <div className="absolute top-0 left-0 w-24 h-24 bg-orange-500/10 rounded-full blur-2xl" />
+            <div className="relative z-10 flex items-start gap-3">
+              <div className="w-8 h-8 rounded-lg bg-orange-500/15 flex items-center justify-center shrink-0 mt-0.5">
+                <Sparkles className="w-4 h-4 text-orange-400" />
+              </div>
+              <p className="text-sm text-zinc-400">
+                <span className="text-orange-400 font-semibold">Note: </span>
+                {activeTab === 'growth'
+                  ? 'Growth leaderboard di-reset setiap 2 minggu. Berdasarkan lonjakan difficulty dan XP delta.'
+                  : 'All-Time Reliability tidak pernah reset. Berdasarkan konsistensi menghadapi masalah berat.'
+                }
+              </p>
+            </div>
+          </div>
+        </motion.div>
       </div>
     </div>
   );

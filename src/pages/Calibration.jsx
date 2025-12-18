@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import CalibrationQuestion from '@/components/calibration/CalibrationQuestion';
 import CalibrationResult from '@/components/calibration/CalibrationResult';
-import { Loader2, Globe, Flame } from 'lucide-react';
+import { Loader2, Globe, Flame, Sparkles, Check } from 'lucide-react';
 import { getTranslation } from '../components/utils/translations';
 import { Button } from "@/components/ui/button";
 
@@ -212,26 +212,57 @@ export default function Calibration() {
   if (existingProfile) {
     const t = getTranslation(existingProfile.language);
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center p-6">
-        <div className="text-center max-w-md">
-          <div className="w-20 h-20 bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl flex items-center justify-center mx-auto mb-6 glow-fire">
-            <Flame className="w-10 h-10 text-black" />
+      <div className="min-h-screen bg-black flex items-center justify-center p-6 relative overflow-hidden">
+        {/* Background */}
+        <div className="absolute inset-0 pointer-events-none">
+          <motion.div
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full"
+            style={{
+              background: 'radial-gradient(circle, rgba(249, 115, 22, 0.1) 0%, transparent 60%)'
+            }}
+            animate={{ scale: [1, 1.1, 1], opacity: [0.6, 0.8, 0.6] }}
+            transition={{ duration: 6, repeat: Infinity }}
+          />
+        </div>
+
+        <motion.div
+          className="relative z-10 text-center max-w-md"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <div className="relative inline-block mb-8">
+            <motion.div
+              className="w-24 h-24 bg-gradient-to-br from-orange-500 to-red-600 rounded-3xl flex items-center justify-center mx-auto shadow-lg shadow-orange-500/30"
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ type: "spring", duration: 0.8 }}
+            >
+              <Flame className="w-12 h-12 text-black" />
+            </motion.div>
+            <motion.div
+              className="absolute -top-2 -right-2 w-8 h-8 bg-emerald-500 rounded-xl flex items-center justify-center"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.5 }}
+            >
+              <Check className="w-5 h-5 text-white" />
+            </motion.div>
           </div>
 
-          <h2 className="text-2xl font-bold text-white mb-3">
-            {existingProfile.language === 'en' ? 'You are already calibrated.' : 'Kamu sudah ter-kalibrasi.'}
+          <h2 className="text-3xl font-bold text-white mb-4">
+            {existingProfile.language === 'en' ? 'Already Calibrated' : 'Sudah Terkalibrasi'}
           </h2>
-          <p className="text-zinc-400 mb-8">
+          <p className="text-zinc-400 mb-10 text-lg">
             {existingProfile.language === 'en'
-              ? 'Go straight to the arena or check your progress.'
-              : 'Langsung masuk ke arena atau lihat progress kamu.'}
+              ? 'Your warrior profile is ready. Enter the arena!'
+              : 'Profil petarungmu sudah siap. Masuk ke arena!'}
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Button
               onClick={() => navigate(createPageUrl('Arena'))}
               variant="gradient"
-              size="lg"
+              size="xl"
             >
               {t.arena.title}
             </Button>
@@ -243,78 +274,148 @@ export default function Calibration() {
               {t.profile.title}
             </Button>
           </div>
-        </div>
+        </motion.div>
       </div>
     );
   }
 
   if (isProcessing) {
     return (
-      <div className="min-h-screen bg-black flex flex-col items-center justify-center gap-4">
-        <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl flex items-center justify-center glow-fire">
-          <Loader2 className="w-8 h-8 text-black animate-spin" />
+      <div className="min-h-screen bg-black flex flex-col items-center justify-center gap-6 relative overflow-hidden">
+        {/* Background pulse */}
+        <div className="absolute inset-0 pointer-events-none">
+          <motion.div
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full"
+            style={{
+              background: 'radial-gradient(circle, rgba(249, 115, 22, 0.15) 0%, transparent 60%)'
+            }}
+            animate={{ scale: [1, 1.3, 1], opacity: [0.5, 0.8, 0.5] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          />
         </div>
-        <p className="text-zinc-400">
-          {selectedLanguage === 'en' ? 'Calibrating profile...' : 'Mengkalibrasi profil...'}
-        </p>
+
+        <motion.div
+          className="relative z-10"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+        >
+          <div className="w-20 h-20 bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/30">
+            <Loader2 className="w-10 h-10 text-black animate-spin" />
+          </div>
+        </motion.div>
+
+        <motion.div
+          className="text-center"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+        >
+          <p className="text-xl text-white font-medium mb-2">
+            {selectedLanguage === 'en' ? 'Calibrating...' : 'Mengkalibrasi...'}
+          </p>
+          <p className="text-zinc-500">
+            {selectedLanguage === 'en' ? 'Building your warrior profile' : 'Membangun profil petarungmu'}
+          </p>
+        </motion.div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-black flex flex-col items-center justify-center p-6">
-      {/* Background */}
+    <div className="min-h-screen bg-black flex flex-col items-center justify-center p-6 relative overflow-hidden">
+      {/* Animated Background */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-orange-600/10 rounded-full blur-3xl" />
+        <motion.div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[900px] rounded-full"
+          style={{
+            background: 'radial-gradient(circle, rgba(249, 115, 22, 0.08) 0%, rgba(234, 88, 12, 0.04) 40%, transparent 70%)'
+          }}
+          animate={{ scale: [1, 1.1, 1], opacity: [0.6, 0.9, 0.6] }}
+          transition={{ duration: 8, repeat: Infinity }}
+        />
+        <motion.div
+          className="absolute top-[20%] right-[15%] w-[300px] h-[300px] rounded-full"
+          style={{
+            background: 'radial-gradient(circle, rgba(139, 92, 246, 0.06) 0%, transparent 60%)'
+          }}
+          animate={{ y: [-10, 10, -10] }}
+          transition={{ duration: 5, repeat: Infinity }}
+        />
+
+        {/* Grid pattern */}
+        <div
+          className="absolute inset-0 opacity-[0.015]"
+          style={{
+            backgroundImage: `linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), 
+                             linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)`,
+            backgroundSize: '60px 60px'
+          }}
+        />
       </div>
 
       <AnimatePresence mode="wait">
         {view === 'language' ? (
           <motion.div
             key="language"
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
+            exit={{ opacity: 0, y: -30 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             className="w-full max-w-2xl relative z-10"
           >
             <div className="text-center mb-12">
               <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: 0.2, type: "spring" }}
-                className="w-20 h-20 bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl flex items-center justify-center mx-auto mb-6 glow-fire"
+                initial={{ scale: 0, rotate: -180 }}
+                animate={{ scale: 1, rotate: 0 }}
+                transition={{ delay: 0.2, type: "spring", duration: 0.8 }}
+                className="relative inline-block mb-8"
               >
-                <Globe className="w-10 h-10 text-black" />
+                <div className="w-24 h-24 bg-gradient-to-br from-orange-500 to-red-600 rounded-3xl flex items-center justify-center mx-auto shadow-lg shadow-orange-500/30">
+                  <Globe className="w-12 h-12 text-black" />
+                </div>
+                <motion.div
+                  className="absolute -top-1 -right-1 w-6 h-6 bg-violet-500/20 rounded-full flex items-center justify-center"
+                  animate={{ scale: [1, 1.2, 1], opacity: [0.7, 1, 0.7] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                >
+                  <Sparkles className="w-3 h-3 text-violet-400" />
+                </motion.div>
               </motion.div>
 
-              <h1 className="text-3xl md:text-4xl text-white font-bold mb-3">
+              <h1 className="text-4xl md:text-5xl text-white font-bold mb-4">
                 Choose Your Language
               </h1>
-              <p className="text-zinc-400">
+              <p className="text-xl text-zinc-400">
                 Pilih Bahasamu
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-4">
+            <div className="grid md:grid-cols-2 gap-5">
               <motion.button
-                whileHover={{ scale: 1.02, y: -2 }}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.3 }}
+                whileHover={{ scale: 1.02, y: -4 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => handleLanguageSelect('en')}
-                className="bg-zinc-900 border border-zinc-800 hover:border-orange-500/50 rounded-2xl p-8 text-left transition-all"
+                className="group bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 hover:border-orange-500/50 rounded-2xl p-8 text-left transition-all duration-300"
               >
-                <div className="text-4xl mb-4">🇬🇧</div>
-                <h3 className="text-xl font-bold text-white mb-2">English</h3>
+                <div className="text-5xl mb-5">🇬🇧</div>
+                <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-orange-400 transition-colors">English</h3>
                 <p className="text-zinc-500">Continue in English</p>
               </motion.button>
 
               <motion.button
-                whileHover={{ scale: 1.02, y: -2 }}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.4 }}
+                whileHover={{ scale: 1.02, y: -4 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => handleLanguageSelect('id')}
-                className="bg-zinc-900 border border-zinc-800 hover:border-orange-500/50 rounded-2xl p-8 text-left transition-all"
+                className="group bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 hover:border-orange-500/50 rounded-2xl p-8 text-left transition-all duration-300"
               >
-                <div className="text-4xl mb-4">🇮🇩</div>
-                <h3 className="text-xl font-bold text-white mb-2">Bahasa Indonesia</h3>
+                <div className="text-5xl mb-5">🇮🇩</div>
+                <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-orange-400 transition-colors">Bahasa Indonesia</h3>
                 <p className="text-zinc-500">Lanjutkan dalam Bahasa Indonesia</p>
               </motion.button>
             </div>

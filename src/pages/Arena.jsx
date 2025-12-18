@@ -7,7 +7,7 @@ import ProblemCard from '@/components/arena/ProblemCard';
 import ArenaBattle from '@/components/arena/ArenaBattle';
 import ArenaResult from '@/components/arena/ArenaResult';
 import ProblemGeneratorModal from '@/components/arena/ProblemGeneratorModal';
-import { Loader2, RefreshCw, Trophy, Zap, Sparkles, Plus } from 'lucide-react';
+import { Loader2, RefreshCw, Trophy, Zap, Sparkles, Plus, Swords, Target } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 
 export default function Arena() {
@@ -99,10 +99,23 @@ export default function Arena() {
   if (isLoading && view === 'selection') {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="flex items-center gap-3">
-          <Loader2 className="w-6 h-6 text-orange-500 animate-spin" />
-          <span className="text-zinc-400">Loading arena...</span>
-        </div>
+        <motion.div
+          className="flex flex-col items-center gap-4"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+        >
+          <div className="relative">
+            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center">
+              <Swords className="w-8 h-8 text-black" />
+            </div>
+            <motion.div
+              className="absolute inset-0 rounded-2xl bg-orange-500/30"
+              animate={{ scale: [1, 1.3, 1], opacity: [0.5, 0, 0.5] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+            />
+          </div>
+          <p className="text-zinc-400 font-medium">Loading arena...</p>
+        </motion.div>
       </div>
     );
   }
@@ -134,13 +147,22 @@ export default function Arena() {
     (profile?.xp_builder || 0) + (profile?.xp_strategist || 0);
 
   return (
-    <div className="min-h-screen bg-black">
-      <div className="max-w-6xl mx-auto px-6 md:px-8 py-8">
+    <div className="min-h-screen bg-black relative">
+      {/* Background effects */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-orange-600/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-[-20%] left-[-10%] w-[500px] h-[500px] bg-violet-600/8 rounded-full blur-3xl" />
+      </div>
+
+      <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-8 py-8">
         {/* Header */}
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-10">
-          <div>
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-500/15 border border-orange-500/30 mb-4">
-              <Sparkles className="w-3.5 h-3.5 text-orange-400" />
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-gradient-to-r from-orange-500/15 to-red-500/10 border border-orange-500/25 mb-4">
+              <div className="w-2 h-2 rounded-full bg-orange-400 animate-pulse" />
               <span className="text-xs font-semibold text-orange-400 tracking-wider uppercase font-mono">Arena Mode</span>
             </div>
             <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
@@ -149,37 +171,52 @@ export default function Arena() {
             <p className="text-zinc-500">
               Pilih masalah. Hadapi. Naik level.
             </p>
-          </div>
+          </motion.div>
 
           {profile && (
-            <div className="flex items-center gap-4">
-              <div className="bg-zinc-900 border border-zinc-800 rounded-xl px-5 py-3 flex items-center gap-3">
-                <Trophy className="w-5 h-5 text-orange-400" />
+            <motion.div
+              className="flex items-center gap-3"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              <div className="bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-xl px-5 py-3.5 flex items-center gap-3 hover:border-zinc-700 transition-colors">
+                <div className="w-10 h-10 rounded-lg bg-orange-500/15 flex items-center justify-center">
+                  <Trophy className="w-5 h-5 text-orange-400" />
+                </div>
                 <div>
-                  <p className="text-white font-mono font-bold text-lg">
+                  <p className="text-white font-mono font-bold text-xl leading-none">
                     Level {profile.current_difficulty}
                   </p>
-                  <p className="text-xs text-zinc-500">Current</p>
+                  <p className="text-xs text-zinc-500 mt-0.5">Current</p>
                 </div>
               </div>
-              <div className="bg-zinc-900 border border-zinc-800 rounded-xl px-5 py-3 flex items-center gap-3">
-                <Zap className="w-5 h-5 text-yellow-400" />
+              <div className="bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-xl px-5 py-3.5 flex items-center gap-3 hover:border-zinc-700 transition-colors">
+                <div className="w-10 h-10 rounded-lg bg-yellow-500/15 flex items-center justify-center">
+                  <Zap className="w-5 h-5 text-yellow-400" />
+                </div>
                 <div>
-                  <p className="text-white font-mono font-bold text-lg">{totalXp}</p>
-                  <p className="text-xs text-zinc-500">Total XP</p>
+                  <p className="text-white font-mono font-bold text-xl leading-none">{totalXp}</p>
+                  <p className="text-xs text-zinc-500 mt-0.5">Total XP</p>
                 </div>
               </div>
-            </div>
+            </motion.div>
           )}
         </div>
 
         {/* Generate Buttons */}
-        <div className="flex flex-wrap gap-3 mb-10">
+        <motion.div
+          className="flex flex-wrap gap-3 mb-10"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        >
           <Button
             onClick={() => generateProblem()}
             disabled={isGenerating}
             variant="gradient"
             size="lg"
+            className="group"
           >
             {isGenerating ? (
               <>
@@ -188,7 +225,7 @@ export default function Arena() {
               </>
             ) : (
               <>
-                <RefreshCw className="w-4 h-4" />
+                <RefreshCw className="w-4 h-4 group-hover:rotate-180 transition-transform duration-500" />
                 Quick Generate
               </>
             )}
@@ -199,22 +236,25 @@ export default function Arena() {
             disabled={isGenerating}
             variant="outline"
             size="lg"
+            className="group"
           >
-            <Plus className="w-4 h-4" />
+            <Plus className="w-4 h-4 group-hover:rotate-90 transition-transform duration-300" />
             Custom Problem
           </Button>
-        </div>
+        </motion.div>
 
         {/* Problems Grid */}
         {problems.length > 0 ? (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <AnimatePresence>
+            <AnimatePresence mode="popLayout">
               {problems.map((problem, index) => (
                 <motion.div
                   key={problem.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.05 }}
+                  initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ delay: index * 0.05, duration: 0.3 }}
+                  layout
                 >
                   <ProblemCard
                     problem={problem}
@@ -225,24 +265,39 @@ export default function Arena() {
             </AnimatePresence>
           </div>
         ) : (
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-16 text-center">
-            <div className="w-16 h-16 bg-zinc-800 rounded-2xl mx-auto mb-6 flex items-center justify-center">
-              <Sparkles className="w-8 h-8 text-zinc-500" />
+          <motion.div
+            className="bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-2xl p-16 text-center"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+          >
+            <div className="w-20 h-20 bg-zinc-800 rounded-2xl mx-auto mb-6 flex items-center justify-center">
+              <Target className="w-10 h-10 text-zinc-600" />
             </div>
-            <p className="text-lg text-zinc-400 mb-2">
+            <p className="text-xl text-zinc-400 mb-2 font-medium">
               Belum ada masalah untuk level-mu
             </p>
-            <p className="text-zinc-600 mb-6">
-              Generate masalah pertama untuk mulai bertarung
+            <p className="text-zinc-600 mb-8 max-w-md mx-auto">
+              Generate masalah pertama untuk mulai bertarung dan menguji kemampuanmu
             </p>
             <Button
               onClick={generateProblem}
               disabled={isGenerating}
               variant="gradient"
+              size="lg"
             >
-              Generate Masalah Pertama
+              {isGenerating ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Generating...
+                </>
+              ) : (
+                <>
+                  <Sparkles className="w-4 h-4" />
+                  Generate Masalah Pertama
+                </>
+              )}
             </Button>
-          </div>
+          </motion.div>
         )}
       </div>
 
