@@ -1,130 +1,171 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { Clock, AlertTriangle, Send, X, MessageCircle } from 'lucide-react';
+import { Clock, AlertTriangle, Send, X, MessageCircle, Zap, Timer, CheckCircle, HelpCircle } from 'lucide-react';
 import { cn } from "@/lib/utils";
 import apiClient from '@/api/apiClient';
 import AdaptiveAIMentor from './AdaptiveAIMentor';
 
+/**
+ * Enhanced ArenaBattle Component
+ * 
+ * Features:
+ * - Server-driven 3-tier intervention system
+ * - Real-time keystroke tracking
+ * - Adaptive timeouts based on orchestrator
+ * - Visual pressure indicators
+ */
 export default function ArenaBattle({ problem, session, onSubmit, onAbandon, profile }) {
+  // Core state
   const [solution, setSolution] = useState('');
   const [timeElapsed, setTimeElapsed] = useState(0);
   const [currentQuestion, setCurrentQuestion] = useState(null);
-  const [mentorStage, setMentorStage] = useState(null); // null, 'over_analysis_warning', 'comprehension_check', 'countdown'
+  const [questionHistory, setQuestionHistory] = useState([]);
+
+  // Intervention state (now server-driven)
+  const [mentorStage, setMentorStage] = useState(null);
   const [mentorMessage, setMentorMessage] = useState('');
   const [countdown, setCountdown] = useState(0);
   const [isThinking, setIsThinking] = useState(false);
-  const [questionHistory, setQuestionHistory] = useState([]);
-  
+
+  // Session state
+  const [sessionInitialized, setSessionInitialized] = useState(false);
+  const [serverTimeouts, setServerTimeouts] = useState(null);
+  const [pressureLevel, setPressureLevel] = useState(1);
+
+  // Refs
   const timerRef = useRef(null);
   const startTimeRef = useRef(Date.now());
   const lastKeystrokeRef = useRef(Date.now());
-  const pauseTimerRef = useRef(null);
+  const pollingRef = useRef(null);
   const countdownTimerRef = useRef(null);
-  const interventionCountRef = useRef(0);
+  const keystrokeTrackRef = useRef([]);
 
-  // Adaptive timing based on archetype
-  const getPauseThreshold = () => {
-    if (profile?.primary_archetype === 'analyst') return 60; // 60s for analysts
-    if (profile?.primary_archetype === 'risk_taker') return 120; // 120s for risk takers
-    return 90; // 90s default
-  };
+  // ==========================================
+  // SESSION INITIALIZATION
+  // ==========================================
 
   useEffect(() => {
+    // Start timer
     timerRef.current = setInterval(() => {
       setTimeElapsed(Math.floor((Date.now() - startTimeRef.current) / 1000));
     }, 1000);
 
-    // Initial question
+    // Initialize orchestrator session
+    initializeOrchestratorSession();
+
+    // Generate initial question
     generateInitialQuestion();
 
     return () => {
       clearInterval(timerRef.current);
-      clearInterval(pauseTimerRef.current);
+      clearInterval(pollingRef.current);
       clearInterval(countdownTimerRef.current);
     };
   }, []);
 
-  // Pause detection
-  useEffect(() => {
-    pauseTimerRef.current = setInterval(() => {
-      const timeSinceLastKey = Date.now() - lastKeystrokeRef.current;
-      const threshold = getPauseThreshold() * 1000;
+  const initializeOrchestratorSession = async () => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001'}/api/arena/init-session`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          session_id: session._id,
+          problem_id: problem.problem_id,
+          user_id: profile.user_id
+        })
+      });
 
-      if (timeSinceLastKey > threshold && solution.length < 50 && !mentorStage) {
-        handlePauseDetected();
+      if (response.ok) {
+        const data = await response.json();
+        setServerTimeouts(data.timeouts);
+        setSessionInitialized(true);
+
+        // Start polling for AI actions
+        startActionPolling();
       }
-    }, 5000);
-
-    return () => clearInterval(pauseTimerRef.current);
-  }, [solution, mentorStage, profile]);
-
-  const generateInitialQuestion = async () => {
-    setIsThinking(true);
-    
-    const question = await apiClient.api.mentor.generateQuestion(problem.problem_id, 'initial');
-    setCurrentQuestion(question);
-    setQuestionHistory([question]);
-    setIsThinking(false);
-  };
-
-  const handlePauseDetected = () => {
-    interventionCountRef.current += 1;
-
-    if (interventionCountRef.current === 1) {
-      // First pause: over-analysis warning
-      triggerOverAnalysisWarning();
-    } else if (interventionCountRef.current === 2) {
-      // Second pause: comprehension check
-      triggerComprehensionCheck();
+    } catch (error) {
+      console.error('Failed to initialize orchestrator session:', error);
+      // Fallback: still mark as initialized to allow user to work
+      setSessionInitialized(true);
     }
   };
 
-  const triggerOverAnalysisWarning = async () => {
-    setIsThinking(true);
-    setMentorStage('over_analysis_warning');
+  // ==========================================
+  // SERVER-DRIVEN INTERVENTION POLLING
+  // ==========================================
 
-    const archetype = profile?.primary_archetype || 'analyst';
-    const warnings = {
-      analyst: "Kamu over-thinking. Data tidak akan lebih lengkap 10 menit lagi. Putuskan dengan informasi yang ada.",
-      risk_taker: "Sudah {0} detik tidak menulis apa-apa. Ambil keputusan, koreksi nanti.",
-      builder: "Eksekusi dimulai dari keputusan pertama. Tulis sesuatu, polish nanti.",
-      strategist: "Pola sudah terlihat. Jangan tunggu perfect clarity yang tidak akan datang."
-    };
+  const startActionPolling = () => {
+    pollingRef.current = setInterval(async () => {
+      if (mentorStage) return; // Don't poll during active intervention
 
-    const threshold = getPauseThreshold();
-    const message = warnings[archetype].replace('{0}', threshold);
-    
-    setMentorMessage(message);
-    setIsThinking(false);
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001'}/api/arena/next-action/${session._id}`
+        );
 
-    // Auto close after 5 seconds
-    setTimeout(() => {
-      setMentorStage(null);
-    }, 5000);
+        if (response.ok) {
+          const action = await response.json();
+          handleServerAction(action);
+        }
+      } catch (error) {
+        console.error('Polling error:', error);
+      }
+    }, 3000); // Poll every 3 seconds
   };
 
-  const triggerComprehensionCheck = async () => {
-    setIsThinking(true);
-    setMentorStage('comprehension_check');
+  const handleServerAction = (action) => {
+    switch (action.action) {
+      case 'show_warning':
+        setMentorStage('warning');
+        setMentorMessage(action.message);
+        // Auto-dismiss after 6 seconds
+        setTimeout(() => {
+          if (mentorStage === 'warning') setMentorStage(null);
+        }, 6000);
+        break;
 
-    const message = `Kamu belum mulai menulis. Apakah pertanyaan ini terlalu kabur? "${currentQuestion}"`;
-    setMentorMessage(message);
-    setIsThinking(false);
+      case 'comprehension_check':
+        setMentorStage('comprehension_check');
+        setMentorMessage(action.message);
+        break;
+
+      case 'start_countdown':
+        setMentorStage('countdown');
+        setMentorMessage(action.message);
+        startCountdown(action.seconds);
+        break;
+
+      case 'change_question':
+        setCurrentQuestion(action.new_question);
+        setQuestionHistory(prev => [...prev, action.new_question]);
+        setMentorStage(null);
+        break;
+
+      case 'add_pressure':
+        setPressureLevel(prev => Math.min(5, prev + 1));
+        break;
+
+      case 'none':
+      default:
+        // No action needed
+        break;
+    }
   };
 
-  const handleUnderstandClick = () => {
-    // User claims to understand but still not answering
-    setMentorStage('countdown');
-    setCountdown(30);
-    setMentorMessage("Oke. Kamu punya 30 detik untuk mulai menulis atau pertanyaan akan diganti agar lebih spesifik.");
+  // ==========================================
+  // COUNTDOWN TIMER
+  // ==========================================
+
+  const startCountdown = (seconds) => {
+    setCountdown(seconds);
 
     countdownTimerRef.current = setInterval(() => {
       setCountdown(prev => {
         if (prev <= 1) {
           clearInterval(countdownTimerRef.current);
-          evolveQuestion();
+          // Time's up - server will handle question change
           return 0;
         }
         return prev - 1;
@@ -132,61 +173,151 @@ export default function ArenaBattle({ problem, session, onSubmit, onAbandon, pro
     }, 1000);
   };
 
-  const handleNotUnderstandClick = () => {
-    // User doesn't understand - evolve question immediately
-    setMentorStage(null);
-    evolveQuestion();
-  };
+  // ==========================================
+  // KEYSTROKE TRACKING
+  // ==========================================
 
-  const evolveQuestion = async () => {
-    setIsThinking(true);
-    setMentorStage(null);
-    clearInterval(countdownTimerRef.current);
+  const trackKeystroke = useCallback(async () => {
+    if (!sessionInitialized) return;
 
-    const question = await apiClient.api.mentor.generateQuestion(problem.problem_id, 'pause');
-    setCurrentQuestion(question);
-    setQuestionHistory(prev => [...prev, question]);
-    setIsThinking(false);
-    interventionCountRef.current = 0;
-  };
+    const now = Date.now();
+    keystrokeTrackRef.current.push(now);
+    lastKeystrokeRef.current = now;
+
+    // Debounced tracking - send to server every 2 seconds
+    // This is handled by the server through the last_keystroke update
+    try {
+      await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001'}/api/arena/track`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          session_id: session._id,
+          keystroke_data: {
+            timestamp: now,
+            solution_length: solution.length
+          }
+        })
+      });
+    } catch (error) {
+      // Silent fail - don't interrupt user
+    }
+  }, [session._id, sessionInitialized, solution.length]);
+
+  // Debounced keystroke tracker
+  const debouncedTrack = useRef(null);
 
   const handleSolutionChange = (e) => {
     setSolution(e.target.value);
-    lastKeystrokeRef.current = Date.now();
 
-    // Close mentor popup if user starts typing
-    if (mentorStage) {
+    // Clear intervention if user starts typing
+    if (mentorStage && mentorStage !== 'countdown') {
+      respondToIntervention('started_typing');
+    }
+
+    // Debounce keystroke tracking
+    if (debouncedTrack.current) {
+      clearTimeout(debouncedTrack.current);
+    }
+    debouncedTrack.current = setTimeout(() => {
+      trackKeystroke();
+    }, 1000);
+  };
+
+  // ==========================================
+  // INTERVENTION RESPONSES
+  // ==========================================
+
+  const respondToIntervention = async (responseType) => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001'}/api/arena/intervention-response`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          session_id: session._id,
+          response_type: responseType
+        })
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        handleServerAction(result);
+      }
+    } catch (error) {
+      console.error('Intervention response error:', error);
+    }
+
+    if (responseType === 'started_typing') {
       setMentorStage(null);
       clearInterval(countdownTimerRef.current);
     }
   };
 
+  const handleUnderstandClick = () => {
+    respondToIntervention('understood');
+  };
+
+  const handleNotUnderstandClick = () => {
+    respondToIntervention('not_understood');
+  };
+
+  // ==========================================
+  // QUESTION GENERATION
+  // ==========================================
+
+  const generateInitialQuestion = async () => {
+    setIsThinking(true);
+
+    try {
+      const question = await apiClient.api.mentor.generateQuestion(problem.problem_id, 'initial');
+      setCurrentQuestion(question);
+      setQuestionHistory([question]);
+    } catch (error) {
+      console.error('Failed to generate initial question:', error);
+      // Fallback question
+      setCurrentQuestion("Apa langkah pertama yang akan kamu ambil?");
+    }
+
+    setIsThinking(false);
+  };
+
   const handleManualMentorTrigger = async () => {
     if (isThinking || mentorStage) return;
-    
+
     setIsThinking(true);
-    setMentorStage('over_analysis_warning');
+    setMentorStage('warning');
 
-    const question = await apiClient.api.mentor.generateQuestion(problem.problem_id, 'pause');
-    setMentorMessage(question);
+    try {
+      const question = await apiClient.api.mentor.generateQuestion(problem.problem_id, 'pause');
+      setMentorMessage(question);
+    } catch (error) {
+      setMentorMessage("Apa yang membuatmu ragu? Tulis apa yang kamu pikirkan.");
+    }
+
     setIsThinking(false);
-
     setTimeout(() => setMentorStage(null), 8000);
   };
 
+  // ==========================================
+  // SUBMISSION
+  // ==========================================
+
   const handleSubmit = () => {
     if (solution.trim().length < 100) {
-      setMentorStage('over_analysis_warning');
+      setMentorStage('warning');
       setMentorMessage("Solusi terlalu pendek. Minimal 100 karakter untuk menjelaskan keputusan dan reasoning-mu.");
       setTimeout(() => setMentorStage(null), 5000);
       return;
     }
-    
+
     clearInterval(timerRef.current);
-    clearInterval(pauseTimerRef.current);
+    clearInterval(pollingRef.current);
     clearInterval(countdownTimerRef.current);
     onSubmit(solution, timeElapsed);
   };
+
+  // ==========================================
+  // UTILITY
+  // ==========================================
 
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60);
@@ -194,20 +325,53 @@ export default function ArenaBattle({ problem, session, onSubmit, onAbandon, pro
     return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
   };
 
+  // Get pressure color based on level
+  const getPressureColor = () => {
+    if (pressureLevel <= 2) return 'text-green-400';
+    if (pressureLevel <= 3) return 'text-yellow-400';
+    if (pressureLevel <= 4) return 'text-orange-400';
+    return 'text-red-400';
+  };
+
+  // ==========================================
+  // RENDER
+  // ==========================================
+
   return (
     <div className="min-h-screen bg-black p-4 md:p-6">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div>
-            <span className="text-zinc-600 font-mono text-xs">{problem.problem_id}</span>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-zinc-600 font-mono text-xs">{problem.problem_id}</span>
+              {problem.role_label && (
+                <span className="px-2 py-0.5 bg-violet-500/15 text-violet-400 text-xs font-medium rounded">
+                  {problem.role_label.replace('_', ' ').toUpperCase()}
+                </span>
+              )}
+            </div>
             <h1 className="text-xl md:text-2xl font-bold text-white">{problem.title}</h1>
           </div>
           <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2 px-4 py-2 rounded-lg font-mono text-lg bg-zinc-900 text-white">
+            {/* Pressure Indicator */}
+            <div className={cn(
+              "flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-900",
+              getPressureColor()
+            )}>
+              <Zap className="w-4 h-4" />
+              <span className="font-mono text-sm">{pressureLevel}</span>
+            </div>
+
+            {/* Timer */}
+            <div className={cn(
+              "flex items-center gap-2 px-4 py-2 rounded-lg font-mono text-lg bg-zinc-900",
+              timeElapsed > (serverTimeouts?.warning || 60) ? "text-orange-400" : "text-white"
+            )}>
               <Clock className="w-5 h-5" />
               {formatTime(timeElapsed)}
             </div>
+
             <Button
               variant="ghost"
               size="icon"
@@ -227,17 +391,25 @@ export default function ArenaBattle({ problem, session, onSubmit, onAbandon, pro
               <div
                 key={i}
                 className={cn(
-                  "w-3 h-3 rounded-sm",
-                  i < problem.difficulty 
-                    ? problem.difficulty <= 3 ? "bg-green-500" 
-                      : problem.difficulty <= 6 ? "bg-yellow-500" 
-                      : "bg-red-500"
+                  "w-3 h-3 rounded-sm transition-all",
+                  i < problem.difficulty
+                    ? problem.difficulty <= 3 ? "bg-green-500"
+                      : problem.difficulty <= 6 ? "bg-yellow-500"
+                        : "bg-red-500"
                     : "bg-zinc-800"
                 )}
               />
             ))}
           </div>
           <span className="text-zinc-400 font-mono ml-2">{problem.difficulty}/10</span>
+
+          {/* Server timeout indicator */}
+          {serverTimeouts && (
+            <div className="ml-4 flex items-center gap-1 text-xs text-zinc-600">
+              <Timer className="w-3 h-3" />
+              <span>Warning: {serverTimeouts.warning}s</span>
+            </div>
+          )}
         </div>
 
         {/* Problem Context */}
@@ -280,25 +452,30 @@ export default function ArenaBattle({ problem, session, onSubmit, onAbandon, pro
               </span>
             )}
           </div>
-          
-          {currentQuestion && (
-            <motion.div
-              key={currentQuestion}
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="bg-orange-500/5 border border-orange-500/20 rounded-lg p-3 mb-4"
-            >
-              <p className="text-orange-500 text-xs font-semibold mb-1">Jawab pertanyaan ini:</p>
-              <p className="text-zinc-300 text-sm italic">"{currentQuestion}"</p>
-            </motion.div>
-          )}
-          
+
+          {/* Current Question */}
+          <AnimatePresence mode="wait">
+            {currentQuestion && (
+              <motion.div
+                key={currentQuestion}
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 10 }}
+                className="bg-orange-500/5 border border-orange-500/20 rounded-lg p-3 mb-4"
+              >
+                <p className="text-orange-500 text-xs font-semibold mb-1">Jawab pertanyaan ini:</p>
+                <p className="text-zinc-300 text-sm italic">"{currentQuestion}"</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
           <Textarea
             value={solution}
             onChange={handleSolutionChange}
             placeholder="Tulis jawabanmu di sini..."
             className="min-h-[250px] bg-zinc-950 border-zinc-800 text-white placeholder:text-zinc-600 resize-none"
           />
+
           <div className="flex items-center justify-between mt-4">
             <span className={cn(
               "text-sm",
@@ -352,6 +529,17 @@ export default function ArenaBattle({ problem, session, onSubmit, onAbandon, pro
           <MessageCircle className="w-6 h-6 text-black" />
         </button>
       )}
+
+      {/* Session Status Indicator */}
+      <div className="fixed bottom-6 left-6 flex items-center gap-2">
+        <div className={cn(
+          "w-2 h-2 rounded-full",
+          sessionInitialized ? "bg-green-500" : "bg-yellow-500 animate-pulse"
+        )} />
+        <span className="text-xs text-zinc-600">
+          {sessionInitialized ? "Connected" : "Connecting..."}
+        </span>
+      </div>
     </div>
   );
 }

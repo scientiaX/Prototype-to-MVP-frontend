@@ -236,6 +236,42 @@ export const api = {
     getUserSessions: async (userId) => {
       const response = await apiClient.get(`/arena/user/${userId}`);
       return response.data;
+    },
+
+    // Real-time tracking endpoints
+    initSession: async (sessionId, problemId, userId) => {
+      const response = await apiClient.post('/arena/init-session', {
+        session_id: sessionId,
+        problem_id: problemId,
+        user_id: userId
+      });
+      return response.data;
+    },
+
+    trackKeystroke: async (sessionId, keystrokeData) => {
+      const response = await apiClient.post('/arena/track', {
+        session_id: sessionId,
+        keystroke_data: keystrokeData
+      });
+      return response.data;
+    },
+
+    getNextAction: async (sessionId) => {
+      const response = await apiClient.get(`/arena/next-action/${sessionId}`);
+      return response.data;
+    },
+
+    respondToIntervention: async (sessionId, responseType) => {
+      const response = await apiClient.post('/arena/intervention-response', {
+        session_id: sessionId,
+        response_type: responseType
+      });
+      return response.data;
+    },
+
+    getMetrics: async (sessionId) => {
+      const response = await apiClient.get(`/arena/metrics/${sessionId}`);
+      return response.data;
     }
   },
 
