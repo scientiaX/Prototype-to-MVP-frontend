@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api';
+// Ensure API_BASE_URL ends with /api
+const envUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
+const API_BASE_URL = envUrl.endsWith('/api') ? envUrl : `${envUrl}/api`;
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
@@ -42,20 +44,20 @@ export const auth = {
     }
     return user;
   },
-  
+
   isAuthenticated: () => {
     return !!localStorage.getItem('current_user');
   },
-  
+
   logout: () => {
     localStorage.removeItem('current_user');
     localStorage.removeItem('auth_token');
   },
-  
+
   redirectToLogin: () => {
     window.location.href = '/login';
   },
-  
+
   setUser: (user) => {
     localStorage.setItem('current_user', JSON.stringify(user));
   }
@@ -68,7 +70,7 @@ export const entities = {
       const response = await apiClient.get(`/profiles/${user.email}`);
       return [response.data];
     },
-    
+
     create: async (data) => {
       const user = await auth.me();
       const response = await apiClient.post('/profiles/calibrate', {
@@ -79,14 +81,14 @@ export const entities = {
       });
       return response.data;
     },
-    
+
     update: async (id, data) => {
       const user = await auth.me();
       const response = await apiClient.put(`/profiles/${user.email}`, data);
       return response.data;
     }
   },
-  
+
   Problem: {
     filter: async (params) => {
       const queryParams = new URLSearchParams();
@@ -96,7 +98,7 @@ export const entities = {
       const response = await apiClient.get(`/problems?${queryParams}`);
       return response.data;
     },
-    
+
     create: async (data) => {
       const user = await auth.me();
       const response = await apiClient.post('/problems/generate', {
@@ -106,7 +108,7 @@ export const entities = {
       return response.data;
     }
   },
-  
+
   ArenaSession: {
     create: async (data) => {
       const user = await auth.me();
@@ -116,7 +118,7 @@ export const entities = {
       });
       return response.data;
     },
-    
+
     update: async (id, data) => {
       if (data.status === 'abandoned') {
         const response = await apiClient.post('/arena/abandon', {
@@ -127,13 +129,13 @@ export const entities = {
       return { id, ...data };
     }
   },
-  
+
   Achievement: {
     create: async (data) => {
       return data;
     }
   },
-  
+
   Artifact: {
     create: async (data) => {
       return data;
@@ -161,23 +163,23 @@ export const api = {
       });
       return response.data;
     },
-    
+
     get: async (userId) => {
       const response = await apiClient.get(`/profiles/${userId}`);
       return response.data;
     },
-    
+
     update: async (userId, data) => {
       const response = await apiClient.put(`/profiles/${userId}`, data);
       return response.data;
     },
-    
+
     getLeaderboard: async () => {
       const response = await apiClient.get('/profiles');
       return response.data;
     }
   },
-  
+
   problems: {
     generate: async (profile, customization = null) => {
       const user = await auth.me();
@@ -188,23 +190,23 @@ export const api = {
       });
       return response.data;
     },
-    
+
     list: async (filters = {}) => {
       const queryParams = new URLSearchParams();
       if (filters.difficulty_min) queryParams.append('difficulty_min', filters.difficulty_min);
       if (filters.difficulty_max) queryParams.append('difficulty_max', filters.difficulty_max);
       if (filters.is_active !== undefined) queryParams.append('is_active', filters.is_active);
-      
+
       const response = await apiClient.get(`/problems?${queryParams}`);
       return response.data;
     },
-    
+
     get: async (problemId) => {
       const response = await apiClient.get(`/problems/${problemId}`);
       return response.data;
     }
   },
-  
+
   arena: {
     start: async (problemId) => {
       const user = await auth.me();
@@ -214,7 +216,7 @@ export const api = {
       });
       return response.data;
     },
-    
+
     submit: async (sessionId, solution, timeElapsed) => {
       const response = await apiClient.post('/arena/submit', {
         session_id: sessionId,
@@ -223,20 +225,20 @@ export const api = {
       });
       return response.data;
     },
-    
+
     abandon: async (sessionId) => {
       const response = await apiClient.post('/arena/abandon', {
         session_id: sessionId
       });
       return response.data;
     },
-    
+
     getUserSessions: async (userId) => {
       const response = await apiClient.get(`/arena/user/${userId}`);
       return response.data;
     }
   },
-  
+
   mentor: {
     generateQuestion: async (problemId, context = 'initial') => {
       const user = await auth.me();
@@ -248,13 +250,13 @@ export const api = {
       return response.data.question;
     }
   },
-  
+
   user: {
     getAchievements: async (userId) => {
       const response = await apiClient.get(`/user/achievements/${userId}`);
       return response.data;
     },
-    
+
     getArtifacts: async (userId) => {
       const response = await apiClient.get(`/user/artifacts/${userId}`);
       return response.data;
