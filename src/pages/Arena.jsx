@@ -212,7 +212,7 @@ export default function Arena() {
           transition={{ delay: 0.3 }}
         >
           <Button
-            onClick={() => generateProblem()}
+            onClick={() => generateProblem(null)}
             disabled={isGenerating}
             variant="gradient"
             size="lg"
@@ -280,7 +280,7 @@ export default function Arena() {
               Generate masalah pertama untuk mulai bertarung dan menguji kemampuanmu
             </p>
             <Button
-              onClick={generateProblem}
+              onClick={() => generateProblem(null)}
               disabled={isGenerating}
               variant="gradient"
               size="lg"

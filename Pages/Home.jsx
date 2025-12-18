@@ -4,11 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import apiClient from '@/api/apiClient';
 import { Button } from "@/components/ui/button";
-import { 
-  Zap, 
-  Target, 
-  Trophy, 
-  ArrowRight, 
+import {
+  Zap,
+  Target,
+  Trophy,
+  ArrowRight,
   Skull,
   Shield,
   TrendingUp
@@ -26,7 +26,7 @@ export default function Home() {
   const checkAuth = async () => {
     const authenticated = await apiClient.auth.isAuthenticated();
     setIsAuthenticated(authenticated);
-    
+
     if (authenticated) {
       const user = await apiClient.auth.me();
       const profiles = await apiClient.entities.UserProfile.filter({ created_by: user.email });
@@ -49,7 +49,7 @@ export default function Home() {
       {/* Background effects */}
       <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 via-transparent to-red-500/5" />
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-orange-500/10 rounded-full blur-3xl opacity-30" />
-      
+
       <div className="relative z-10 min-h-screen flex flex-col">
         {/* Hero Section */}
         <div className="flex-1 flex items-center justify-center px-6 py-12">
@@ -65,13 +65,13 @@ export default function Home() {
                 <Skull className="w-5 h-5 text-orange-500" />
                 <span className="text-zinc-400 text-sm font-mono">NOVAX TRIAL</span>
               </div>
-              
+
               <h1 className="text-5xl md:text-7xl font-bold text-white mb-4">
-                Problem <span className="text-orange-500">Arena</span>
+                NovaX <span className="text-orange-500">Arena</span>
               </h1>
-              
+
               <p className="text-xl md:text-2xl text-zinc-400 max-w-2xl mx-auto">
-                Belajar terjadi lewat masalah nyata.
+                Belajar terjadi lewat arena masalah nyata.
                 <br />
                 <span className="text-zinc-600">Bukan materi. Bukan teori.</span>
               </p>
@@ -90,11 +90,11 @@ export default function Home() {
                 {hasProfile ? 'Masuk Arena' : 'Mulai Kalibrasi'}
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
-              
+
               <p className="text-zinc-600 text-sm mt-4">
-                {isAuthenticated 
-                  ? hasProfile 
-                    ? 'Siap untuk konfrontasi berikutnya?' 
+                {isAuthenticated
+                  ? hasProfile
+                    ? 'Siap untuk konfrontasi berikutnya?'
                     : '5-7 pertanyaan singkat untuk menentukan starting point'
                   : 'Login untuk memulai perjalanan'}
               </p>
@@ -118,7 +118,7 @@ export default function Home() {
                   Orang ↔ Masalah. Sistem mencocokkan level dan archetype-mu dengan masalah yang tepat.
                 </p>
               </div>
-              
+
               <div className="bg-zinc-900/30 border border-zinc-800 rounded-xl p-6">
                 <TrendingUp className="w-8 h-8 text-green-500 mb-4" />
                 <h3 className="text-white font-semibold mb-2">XP Berbasis Kesulitan</h3>
@@ -126,7 +126,7 @@ export default function Home() {
                   XP hanya naik jika difficulty naik. Tidak ada grind. Tidak ada jalan pintas.
                 </p>
               </div>
-              
+
               <div className="bg-zinc-900/30 border border-zinc-800 rounded-xl p-6">
                 <Shield className="w-8 h-8 text-red-500 mb-4" />
                 <h3 className="text-white font-semibold mb-2">Scar-Based Badges</h3>
@@ -147,7 +147,7 @@ export default function Home() {
         >
           <div className="max-w-2xl mx-auto text-center">
             <p className="text-zinc-700 text-sm">
-              ⚠️ Ini bukan platform untuk merasa nyaman. 
+              ⚠️ Ini bukan platform untuk merasa nyaman.
               Jika kamu mencari validasi, ini bukan tempatnya.
             </p>
           </div>
