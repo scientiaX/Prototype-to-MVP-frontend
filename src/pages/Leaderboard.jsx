@@ -30,11 +30,17 @@ export default function Leaderboard() {
 
   const loadLeaderboard = async () => {
     setIsLoading(true);
-    const user = await apiClient.auth.me();
-    setCurrentUser(user);
-    const allProfiles = await apiClient.api.profiles.getLeaderboard();
-    setProfiles(allProfiles);
-    setIsLoading(false);
+    try {
+      const user = await apiClient.auth.me();
+      setCurrentUser(user);
+      const allProfiles = await apiClient.api.profiles.getLeaderboard();
+      setProfiles(allProfiles || []);
+    } catch (error) {
+      console.error('Error loading leaderboard:', error);
+      setProfiles([]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const getGrowthScore = (profile) => {
@@ -245,7 +251,7 @@ export default function Leaderboard() {
                     "font-semibold truncate text-lg",
                     isCurrentUser ? "text-orange-400" : "text-white"
                   )}>
-                    {isCurrentUser ? 'Kamu' : `Player ${profile.id.slice(-4)}`}
+                    {isCurrentUser ? 'Kamu' : `Player ${profile.id?.slice?.(-4) || profile.id || 'Unknown'}`}
                   </p>
                   <div className="flex items-center gap-2 text-sm text-zinc-500">
                     <span>Level {profile.current_difficulty}</span>
