@@ -220,50 +220,62 @@ export default function ArenaBattle({ problem, session, onSubmit, onAbandon, pro
     if (!solution.trim() || isAIProcessing) return;
 
     setIsAIProcessing(true);
-    setExchangeCount(prev => prev + 1);
+    const newExchangeCount = exchangeCount + 1;
+    setExchangeCount(newExchangeCount);
 
-    // Send response via WebSocket or REST
-    const success = sendWebSocketMessage({
-      type: 'user_response',
-      response: solution,
-      time_elapsed: timeElapsed,
-      exchange_count: exchangeCount + 1
-    });
+    // Store the current answer for reference
+    const currentAnswer = solution.trim();
 
-    if (!success) {
-      // Fallback to REST API
-      try {
-        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001'}/api/mentor/follow-up`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            problem_id: problem.problem_id,
-            user_response: solution,
-            exchange_count: exchangeCount + 1
-          })
-        });
+    try {
+      // Always use REST API for reliability (WebSocket for real-time tracking only)
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001'}/api/mentor/follow-up`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          problem_id: problem.problem_id,
+          user_response: currentAnswer,
+          exchange_count: newExchangeCount
+        })
+      });
 
-        if (response.ok) {
-          const data = await response.json();
+      if (response.ok) {
+        const data = await response.json();
+        console.log('Follow-up response:', data);
 
-          // Check if AI wants to conclude (after minimum exchanges)
-          if (exchangeCount >= 2 && data.should_conclude) {
-            // Conclude session
-            onSubmit(solution, timeElapsed, questionHistory);
-            return;
-          }
+        // Check if AI wants to conclude (after minimum exchanges)
+        if (newExchangeCount >= 3 && data.should_conclude) {
+          // Conclude session
+          onSubmit(currentAnswer, timeElapsed, questionHistory);
+          return;
+        }
 
-          // Update with new question
+        // Update with new question
+        if (data.question) {
           updateQuestion(data.question, data.type || 'follow_up');
           setSolution(''); // Clear for next answer
+        } else {
+          // Fallback question if none returned
+          const fallbacks = [
+            "Menarik. Bisa jelaskan lebih detail tentang reasoning-mu?",
+            "Apa trade-off terbesar dari pendekatan ini?",
+            "Bagaimana kalau asumsi utamamu ternyata salah?"
+          ];
+          updateQuestion(fallbacks[newExchangeCount % fallbacks.length], 'follow_up');
+          setSolution('');
         }
-      } catch (error) {
-        console.error('Failed to get follow-up:', error);
+      } else {
+        console.error('Follow-up API error:', response.status);
+        // Still provide a follow-up question on error
+        updateQuestion("Apa langkah selanjutnya setelah keputusan ini?", 'follow_up');
+        setSolution('');
       }
+    } catch (error) {
+      console.error('Failed to get follow-up:', error);
+      // Fallback question on network error
+      updateQuestion("Jelaskan lebih lanjut tentang reasoning-mu.", 'follow_up');
+      setSolution('');
     }
 
-    // Clear solution for next response (unless concluding)
-    setSolution('');
     setIsAIProcessing(false);
   };
 
