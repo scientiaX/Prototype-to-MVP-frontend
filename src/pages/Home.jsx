@@ -20,6 +20,7 @@ import {
 export default function Home() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [hasProfile, setHasProfile] = useState(false);
+  const [language, setLanguage] = useState('en'); // Default English until onboarding
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,7 +34,12 @@ export default function Home() {
     if (authenticated) {
       const user = await apiClient.auth.me();
       const profiles = await apiClient.entities.UserProfile.filter({ created_by: user.email });
-      setHasProfile(profiles.length > 0 && profiles[0].calibration_completed);
+      const userProfile = profiles[0];
+      setHasProfile(userProfile?.calibration_completed || false);
+      // Set language from profile if exists, otherwise keep English
+      if (userProfile?.language) {
+        setLanguage(userProfile.language);
+      }
     }
   };
 
@@ -47,25 +53,77 @@ export default function Home() {
     }
   };
 
+  // Content based on language
+  const content = {
+    en: {
+      badge: 'Novax Trial',
+      headline1: 'NovaX',
+      headline2: 'Arena',
+      description: 'Real learning happens through confronting real problems.',
+      descriptionHighlight: 'Not materials. Not theory. Not validation.',
+      ctaCalibrate: 'Start Calibration',
+      ctaArena: 'Enter Arena',
+      notLoggedIn: 'Login first',
+      calibrationTime: '5-7 min calibration',
+      readyBattle: 'Ready to battle',
+      liveStats: 'Live Stats',
+      realTimeActivity: 'Real-time arena activity',
+      quote: 'No comfort zone. Only growth zone.',
+      sectionTitle: 'Confrontation-Based System',
+      sectionSubtitle: 'Backed by science. Every element designed for growth through pressure.',
+      warning: 'This is not a platform to feel comfortable. If you are looking for validation, this is not the place.',
+      features: [
+        { title: 'Adaptive Matching', description: 'AI matches problems to your archetype and capability level' },
+        { title: 'XP = Difficulty', description: 'Progression based on real challenge and growth, not grinding' },
+        { title: 'Scar Badges', description: 'Badges prove you fought and grew, not just participated' }
+      ]
+    },
+    id: {
+      badge: 'Novax Trial',
+      headline1: 'NovaX',
+      headline2: 'Arena',
+      description: 'Belajar yang sebenarnya terjadi lewat konfrontasi masalah nyata.',
+      descriptionHighlight: 'Bukan materi. Bukan teori. Bukan validasi.',
+      ctaCalibrate: 'Mulai Kalibrasi',
+      ctaArena: 'Masuk Arena',
+      notLoggedIn: 'Login dulu',
+      calibrationTime: '5-7 menit kalibrasi',
+      readyBattle: 'Ready to battle',
+      liveStats: 'Live Stats',
+      realTimeActivity: 'Real-time arena activity',
+      quote: 'No comfort zone. Only growth zone.',
+      sectionTitle: 'Sistem Berbasis Konfrontasi',
+      sectionSubtitle: 'Backed by science. Setiap elemen dirancang untuk growth melalui pressure.',
+      warning: 'Ini bukan platform untuk merasa nyaman. Jika mencari validasi, ini bukan tempatnya.',
+      features: [
+        { title: 'Adaptive Matching', description: 'AI mencocokkan masalah dengan archetype dan level-capability mu' },
+        { title: 'XP = Difficulty', description: 'Progression berbasis challenge dan growth capability nyata, bukan grinding' },
+        { title: 'Scar Badges', description: 'Badge adalah bukti kamu bertarung dan berkembang, bukan partisipasi' }
+      ]
+    }
+  };
+
+  const t = content[language] || content.en;
+
   const features = [
     {
       icon: Target,
-      title: "Adaptive Matching",
-      description: "AI mencocokkan masalah dengan archetype dan level-capability mu",
+      title: t.features[0].title,
+      description: t.features[0].description,
       gradient: "from-orange-500 to-red-600",
       glow: "shadow-orange-500/30"
     },
     {
       icon: TrendingUp,
-      title: "XP = Difficulty",
-      description: "Progression berbasis challenge dan growth capability nyata, bukan grinding",
+      title: t.features[1].title,
+      description: t.features[1].description,
       gradient: "from-emerald-500 to-green-600",
       glow: "shadow-emerald-500/30"
     },
     {
       icon: Shield,
-      title: "Scar Badges",
-      description: "Badge adalah bukti kamu bertarung dan berkembang, bukan partisipasi",
+      title: t.features[2].title,
+      description: t.features[2].description,
       gradient: "from-violet-500 to-purple-600",
       glow: "shadow-violet-500/30"
     }
@@ -179,9 +237,8 @@ export default function Home() {
 
                 {/* Description */}
                 <p className="text-lg md:text-xl text-zinc-400 mb-10 max-w-lg leading-relaxed">
-                  Belajar yang sebenarnya terjadi lewat{' '}
-                  <span className="text-orange-400 font-medium">konfrontasi masalah nyata</span>.
-                  Bukan materi. Bukan teori. Bukan validasi.
+                  {t.description}{' '}
+                  <span className="text-orange-400 font-medium">{t.descriptionHighlight}</span>
                 </p>
 
                 {/* CTA */}
@@ -192,7 +249,7 @@ export default function Home() {
                     size="xl"
                     className="group"
                   >
-                    {hasProfile ? 'Masuk Arena' : 'Mulai Kalibrasi'}
+                    {hasProfile ? t.ctaArena : t.ctaCalibrate}
                     <ArrowRight className="w-5 h-5 ml-1 group-hover:translate-x-1.5 transition-transform duration-300" />
                   </Button>
 

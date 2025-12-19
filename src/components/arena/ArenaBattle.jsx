@@ -338,9 +338,9 @@ export default function ArenaBattle({ problem, session, onSubmit, onAbandon, pro
 
   const getQuestionTypeLabel = () => {
     switch (questionType) {
-      case 'initial': return 'Pertanyaan Awal';
-      case 'follow_up': return 'Pendalaman';
-      case 'stress_test': return 'Stress Test';
+      case 'initial': return 'Mulai';
+      case 'follow_up': return 'Menggali';
+      case 'stress_test': return 'Tekanan';
       case 'clarification': return 'Klarifikasi';
       default: return '';
     }
@@ -466,7 +466,7 @@ export default function ArenaBattle({ problem, session, onSubmit, onAbandon, pro
           >
             <div className="flex items-center justify-between mb-2">
               <h3 className="text-orange-500 text-xs font-bold uppercase tracking-wide">
-                {questionType === 'stress_test' ? '⚡ ' : ''}Jawab Pertanyaan Ini:
+                {questionType === 'stress_test' ? '⚡ CHALLENGE: ' : '💬 MENTOR: '}
               </h3>
               <span className="text-xs text-zinc-500">{getQuestionTypeLabel()}</span>
             </div>
