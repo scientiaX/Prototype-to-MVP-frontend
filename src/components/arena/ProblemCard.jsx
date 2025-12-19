@@ -77,10 +77,15 @@ export default function ProblemCard({ problem, onStart }) {
             <Clock className="w-3.5 h-3.5 text-zinc-400" />
             <span>{problem.estimated_time_minutes || 25} menit</span>
           </div>
-          <div className="flex items-center gap-1.5 px-2.5 py-1.5 bg-zinc-800/50 rounded-lg">
-            <Target className="w-3.5 h-3.5 text-zinc-400" />
-            <span className="capitalize">{problem.archetype_focus?.replace('_', ' ')}</span>
-          </div>
+          {/* Show role label instead of archetype */}
+          {(problem.role_label || problem.archetype_focus) && (
+            <div className="flex items-center gap-1.5 px-2.5 py-1.5 bg-violet-500/15 border border-violet-500/30 rounded-lg">
+              <Target className="w-3.5 h-3.5 text-violet-400" />
+              <span className="capitalize text-violet-400 font-medium">
+                {(problem.role_label || problem.archetype_focus)?.replace(/_/g, ' ')}
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Constraints preview */}

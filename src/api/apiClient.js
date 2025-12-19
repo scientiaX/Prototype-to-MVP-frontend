@@ -217,11 +217,12 @@ export const api = {
       return response.data;
     },
 
-    submit: async (sessionId, solution, timeElapsed) => {
+    submit: async (sessionId, solution, timeElapsed, metadata = null) => {
       const response = await apiClient.post('/arena/submit', {
         session_id: sessionId,
         solution,
-        time_elapsed: timeElapsed
+        time_elapsed: timeElapsed,
+        ...(metadata && { metadata })
       });
       return response.data;
     },

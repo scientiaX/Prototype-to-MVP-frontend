@@ -63,20 +63,34 @@ export default function Arena() {
     setView('battle');
   };
 
-  const handleSubmit = async (solution, timeElapsed) => {
+  const handleSubmit = async (solution, timeElapsed, conversationMessages = []) => {
     setIsLoading(true);
-    const response = await apiClient.api.arena.submit(currentSession._id, solution, timeElapsed);
-    setProfile(response.updated_profile);
-    setResult({
-      xp_earned: response.xp_earned,
-      xp_breakdown: response.xp_breakdown,
-      level_up_achieved: response.evaluation.level_up_achieved,
-      criteria_met: response.evaluation.criteria_met,
-      ai_evaluation: response.evaluation.evaluation,
-      ai_insight: response.evaluation.insight,
-      time_spent_seconds: timeElapsed
-    });
-    setView('result');
+
+    try {
+      // Include conversation history in submission
+      const response = await apiClient.api.arena.submit(
+        currentSession._id,
+        solution,
+        timeElapsed,
+        conversationMessages.length > 0 ? { conversation: conversationMessages } : null
+      );
+
+      setProfile(response.updated_profile);
+      setResult({
+        xp_earned: response.xp_earned,
+        xp_breakdown: response.xp_breakdown,
+        level_up_achieved: response.evaluation.level_up_achieved,
+        criteria_met: response.evaluation.criteria_met,
+        ai_evaluation: response.evaluation.evaluation,
+        ai_insight: response.evaluation.insight,
+        time_spent_seconds: timeElapsed,
+        exchange_count: conversationMessages.filter(m => m.role === 'user').length
+      });
+      setView('result');
+    } catch (error) {
+      console.error('Submit error:', error);
+    }
+
     setIsLoading(false);
   };
 
