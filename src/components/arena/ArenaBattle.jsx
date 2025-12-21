@@ -133,16 +133,19 @@ export default function ArenaBattle({ problem, session, onSubmit, onAbandon, pro
           return;
         }
 
-        // Show FeedbackScreen for 1 second
+        // Show toast once (stays 3 seconds like ML Savage notification)
+        showToast('tradeoff_locked', 'Decision Recorded', 3000);
+
+        // Show FeedbackScreen for 3 seconds
         setFeedbackMessage(data.feedback || 'Good reasoning');
         setIsLoading(false);
         screenManager.goToScreen(SCREENS.FEEDBACK);
 
-        // After 1 second, transition to next question
+        // After 3 seconds, transition to next question
         setTimeout(() => {
           setCurrentQuestion(data.question || "Apa langkah selanjutnya?");
           screenManager.goToScreen(SCREENS.ACTION);
-        }, 1000);
+        }, 3000);
 
       } else {
         // API error - use fallback
