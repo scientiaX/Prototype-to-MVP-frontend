@@ -81,37 +81,62 @@ export function MicroToast({ type, message, duration = 2000, onDismiss }) {
 
 /**
  * Toast Manager Hook
- * Manages queue of toasts
+ * Manages queue of toasts - max 1 at a time to prevent spam
  */
 export function useMicroToast() {
-    const [toasts, setToasts] = useState([]);
+    const [toast, setToast] = useState(null);
+    const timeoutRef = React.useRef(null);
 
     const showToast = (type, message, duration = 2000) => {
+        // Clear existing timeout
+        if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current);
+        }
+
+        // Only 1 toast at a time
         const id = Date.now();
-        setToasts(prev => [...prev, { id, type, message, duration }]);
+        setToast({ id, type, message, duration });
+
+        // Auto dismiss
+        timeoutRef.current = setTimeout(() => {
+            setToast(null);
+        }, duration);
     };
 
-    const dismissToast = (id) => {
-        setToasts(prev => prev.filter(t => t.id !== id));
+    const dismissToast = () => {
+        if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current);
+        }
+        setToast(null);
     };
 
+    // Position below header (top-20 = 80px)
     const ToastContainer = () => (
-        <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 space-y-2">
-            <AnimatePresence>
-                {toasts.map(toast => (
-                    <MicroToast
-                        key={toast.id}
-                        type={toast.type}
-                        message={toast.message}
-                        duration={toast.duration}
-                        onDismiss={() => dismissToast(toast.id)}
-                    />
-                ))}
-            </AnimatePresence>
-        </div>
+        <AnimatePresence>
+            {toast && (
+                <motion.div
+                    key={toast.id}
+                    initial={{ opacity: 0, y: -20, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -20, scale: 0.95 }}
+                    className={`fixed top-20 left-1/2 -translate-x-1/2 z-50 
+                        flex items-center gap-2 px-4 py-2 rounded-full 
+                        ${TOAST_CONFIG[toast.type]?.bg || 'bg-zinc-800'} 
+                        border ${TOAST_CONFIG[toast.type]?.border || 'border-zinc-700'} 
+                        shadow-lg`}
+                >
+                    {React.createElement(TOAST_CONFIG[toast.type]?.icon || Check, {
+                        className: `w-4 h-4 ${TOAST_CONFIG[toast.type]?.color || 'text-white'}`
+                    })}
+                    <span className={`text-sm font-medium ${TOAST_CONFIG[toast.type]?.color || 'text-white'}`}>
+                        {toast.message}
+                    </span>
+                </motion.div>
+            )}
+        </AnimatePresence>
     );
 
-    return { showToast, ToastContainer };
+    return { showToast, ToastContainer, dismissToast };
 }
 
 /**

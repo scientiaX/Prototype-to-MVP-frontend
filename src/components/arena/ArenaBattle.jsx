@@ -54,6 +54,10 @@ export default function ArenaBattle({ problem, session, onSubmit, onAbandon, pro
   const generateInitialQuestion = async () => {
     setIsLoading(true);
     try {
+      // Add timeout to prevent indefinite wait
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
+
       const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001'}/api/mentor/question`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -62,8 +66,11 @@ export default function ArenaBattle({ problem, session, onSubmit, onAbandon, pro
           problem_id: problem.problem_id,
           context: 'initial',
           visual_state: screenManager.visualState
-        })
+        }),
+        signal: controller.signal
       });
+
+      clearTimeout(timeoutId);
 
       if (response.ok) {
         const data = await response.json();
@@ -72,6 +79,7 @@ export default function ArenaBattle({ problem, session, onSubmit, onAbandon, pro
         setCurrentQuestion("Apa langkah pertama yang akan kamu ambil?");
       }
     } catch (error) {
+      console.error('Question generation error:', error);
       setCurrentQuestion("Apa langkah pertama yang akan kamu ambil?");
     }
     setIsLoading(false);
@@ -92,6 +100,10 @@ export default function ArenaBattle({ problem, session, onSubmit, onAbandon, pro
     setExchangeHistory(prev => [...prev, newExchange]);
 
     try {
+      // Add timeout to prevent indefinite wait
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 20000); // 20 second timeout
+
       // Get follow-up from AI
       const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001'}/api/mentor/follow-up`, {
         method: 'POST',
@@ -102,8 +114,11 @@ export default function ArenaBattle({ problem, session, onSubmit, onAbandon, pro
           exchange_count: exchangeHistory.length + 1,
           user_id: profile?.user_id,
           visual_state: screenManager.visualState
-        })
+        }),
+        signal: controller.signal
       });
+
+      clearTimeout(timeoutId);
 
       if (response.ok) {
         const data = await response.json();
@@ -111,35 +126,34 @@ export default function ArenaBattle({ problem, session, onSubmit, onAbandon, pro
         // Update progress status
         updateProgressStatus(exchangeHistory.length + 1);
 
-        // Show micro feedback
+        // Show micro feedback (once)
         showToast('tradeoff_locked', 'Decision recorded');
 
         // Check if should conclude
         if (data.should_conclude) {
+          setIsLoading(false);
           await handleConclude();
           return;
         }
 
-        // Set feedback for feedback screen
-        setFeedbackType('reasoning_improved');
-        setFeedbackMessage(data.feedback || 'Good reasoning');
-
-        // Go to feedback screen briefly
-        screenManager.goToScreen(SCREENS.FEEDBACK);
-
-        // Set next question
-        setTimeout(() => {
-          setCurrentQuestion(data.question);
-          screenManager.onValidSubmit();
-        }, 1500);
-
+        // Set next question immediately
+        setCurrentQuestion(data.question || "Apa langkah selanjutnya?");
+        setIsLoading(false);
+        screenManager.onValidSubmit();
+      } else {
+        // API error - use fallback
+        setCurrentQuestion("Apa pertimbangan utamamu dalam keputusan ini?");
+        setIsLoading(false);
+        screenManager.onValidSubmit();
       }
     } catch (error) {
       console.error('Submit error:', error);
-      showToast('warning', 'Network error');
+      showToast('warning', 'Timeout - retrying...');
+      // Fallback question on error
+      setCurrentQuestion("Jelaskan lebih lanjut keputusanmu.");
+      setIsLoading(false);
+      screenManager.onValidSubmit();
     }
-
-    setIsLoading(false);
   };
 
   // Update progress status based on exchanges
@@ -202,10 +216,10 @@ export default function ArenaBattle({ problem, session, onSubmit, onAbandon, pro
       {/* Toast Container */}
       <ToastContainer />
 
-      {/* Header - Always visible */}
+      {/* Header - Always visible - z-60 to be above toasts */}
       <div className={cn(
-        "fixed top-0 left-0 right-0 z-40 px-6 py-3 flex items-center justify-between",
-        "bg-black/80 backdrop-blur-sm border-b border-zinc-800/50"
+        "fixed top-0 left-0 right-0 z-[60] px-6 py-3 flex items-center justify-between",
+        "bg-black/95 backdrop-blur-sm border-b border-zinc-800/50"
       )}>
         <div className="flex items-center gap-4">
           <span className="text-zinc-600 font-mono text-xs">{problem.problem_id}</span>
