@@ -195,15 +195,22 @@ export default function Calibration() {
     }, 300);
   };
 
-  const handleSelect = (value) => {
+  const handleSelect = (value, textProof = '') => {
     const questionId = CALIBRATION_QUESTIONS[currentQuestion].id;
-    setAnswers(prev => ({ ...prev, [questionId]: value }));
+    const updatedAnswers = { ...answers, [questionId]: value };
+
+    // If this is experience_level question, also save the text proof
+    if (questionId === 'experience_level' && textProof) {
+      updatedAnswers.experience_proof = textProof;
+    }
+
+    setAnswers(updatedAnswers);
 
     setTimeout(() => {
       if (currentQuestion < CALIBRATION_QUESTIONS.length - 1) {
         setCurrentQuestion(prev => prev + 1);
       } else {
-        processCalibration({ ...answers, [questionId]: value });
+        processCalibration(updatedAnswers);
       }
     }, 300);
   };
@@ -474,6 +481,9 @@ export default function Calibration() {
             currentIndex={currentQuestion}
             totalQuestions={CALIBRATION_QUESTIONS.length}
             selectedValue={answers[CALIBRATION_QUESTIONS[currentQuestion].id]}
+            hasTextInput={CALIBRATION_QUESTIONS[currentQuestion].hasTextInput || false}
+            textInputLabel={CALIBRATION_QUESTIONS[currentQuestion].textInputLabel || ''}
+            textInputPlaceholder={CALIBRATION_QUESTIONS[currentQuestion].textInputPlaceholder || ''}
           />
         )}
       </AnimatePresence>

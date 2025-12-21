@@ -35,6 +35,20 @@ export const SMP_QUESTIONS = {
             ]
         },
         {
+            id: 'experience_level',
+            question: 'Seberapa dalam kamu di bidang itu?',
+            hasTextInput: true,
+            textInputLabel: 'Ceritain bukti/pencapaianmu (project, portfolio, pengalaman)',
+            textInputPlaceholder: 'Contoh: Udah bikin 3 website, pernah menang lomba, dll...',
+            options: [
+                { value: 'curious', label: '🌱 Baru tertarik - Belum pernah coba serius' },
+                { value: 'beginner', label: '📚 Pemula - Baru mulai belajar' },
+                { value: 'learning', label: '🔧 Belajar aktif - Udah bikin beberapa project kecil' },
+                { value: 'intermediate', label: '⚡ Menengah - Punya portfolio/project yang jadi' },
+                { value: 'advanced', label: '🏆 Advanced - Udah punya hasil nyata (uang, pengakuan)' }
+            ]
+        },
+        {
             id: 'aspiration',
             question: '10 tahun lagi, kamu mau jadi siapa?',
             options: [
@@ -103,6 +117,20 @@ export const SMP_QUESTIONS = {
                 { value: 'gaming', label: '🎮 Play games or make your own game' },
                 { value: 'social', label: '👥 Hang out, discuss, or meet new people' },
                 { value: 'explore', label: '🌍 Travel, explore, or try new things' }
+            ]
+        },
+        {
+            id: 'experience_level',
+            question: 'How deep are you in that field?',
+            hasTextInput: true,
+            textInputLabel: 'Tell us about your proof/achievements (projects, portfolio, experience)',
+            textInputPlaceholder: 'Example: Built 3 websites, won a competition, etc...',
+            options: [
+                { value: 'curious', label: '🌱 Just curious - Haven\'t tried seriously' },
+                { value: 'beginner', label: '📚 Beginner - Just started learning' },
+                { value: 'learning', label: '🔧 Actively learning - Made some small projects' },
+                { value: 'intermediate', label: '⚡ Intermediate - Have a portfolio/working project' },
+                { value: 'advanced', label: '🏆 Advanced - Have real results (money, recognition)' }
             ]
         },
         {
@@ -184,6 +212,21 @@ export const SMA_QUESTIONS = {
             ]
         },
         {
+            id: 'experience_level',
+            question: 'Seberapa advance kamu di bidang itu?',
+            hasTextInput: true,
+            textInputLabel: 'Ceritain bukti nyata (project, penghasilan, pengakuan)',
+            textInputPlaceholder: 'Contoh: Punya 10K followers, sudah pernah dapat project berbayar, dll...',
+            options: [
+                { value: 'curious', label: '🌱 Baru explore - Tertarik tapi belum action' },
+                { value: 'beginner', label: '📚 Beginner - Baru mulai belajar serius' },
+                { value: 'learning', label: '🔧 Learning - Udah punya beberapa project' },
+                { value: 'intermediate', label: '⚡ Intermediate - Punya portfolio & hasil nyata' },
+                { value: 'advanced', label: '🏆 Advanced - Udah punya penghasilan/pengakuan' },
+                { value: 'expert', label: '🌟 Expert - Diakui di komunitas/industri' }
+            ]
+        },
+        {
             id: 'aspiration',
             question: '5 tahun lagi, kamu mau jadi siapa?',
             options: [
@@ -252,6 +295,21 @@ export const SMA_QUESTIONS = {
                 { value: 'finance', label: '📈 Finance, investing, or trading' },
                 { value: 'science', label: '🔬 Science, research, or engineering' },
                 { value: 'social', label: '🌍 Social impact or community building' }
+            ]
+        },
+        {
+            id: 'experience_level',
+            question: 'How advanced are you in that field?',
+            hasTextInput: true,
+            textInputLabel: 'Tell us about your proof (projects, income, recognition)',
+            textInputPlaceholder: 'Example: 10K followers, got paid projects, etc...',
+            options: [
+                { value: 'curious', label: '🌱 Just exploring - Interested but no action yet' },
+                { value: 'beginner', label: '📚 Beginner - Just started learning seriously' },
+                { value: 'learning', label: '🔧 Learning - Have some projects' },
+                { value: 'intermediate', label: '⚡ Intermediate - Have portfolio & real results' },
+                { value: 'advanced', label: '🏆 Advanced - Have income/recognition' },
+                { value: 'expert', label: '🌟 Expert - Recognized in community/industry' }
             ]
         },
         {
@@ -333,6 +391,21 @@ export const ADULT_QUESTIONS = {
             ]
         },
         {
+            id: 'experience_level',
+            question: 'Seberapa dalam experience kamu di bidang itu?',
+            hasTextInput: true,
+            textInputLabel: 'Describe your track record (revenue, users, years, notable achievements)',
+            textInputPlaceholder: 'Contoh: 5 tahun experience, pernah exit startup, kelola tim 10 orang, dll...',
+            options: [
+                { value: 'curious', label: '🌱 Exploring - Baru tertarik, belum punya experience' },
+                { value: 'beginner', label: '📚 Beginner - <1 tahun, masih belajar fundamental' },
+                { value: 'learning', label: '🔧 Junior - 1-2 tahun, punya beberapa project' },
+                { value: 'intermediate', label: '⚡ Mid-level - 2-5 tahun, track record solid' },
+                { value: 'advanced', label: '🏆 Senior - 5+ tahun, proven results' },
+                { value: 'expert', label: '🌟 Expert - Industry recognition, significant impact' }
+            ]
+        },
+        {
             id: 'aspiration',
             question: 'Dalam 5-10 tahun, posisi apa yang kamu targetkan?',
             options: [
@@ -401,6 +474,21 @@ export const ADULT_QUESTIONS = {
                 { value: 'creative', label: '🎨 Creative - Design or Media' },
                 { value: 'leadership', label: '👔 Leadership - Management or Consulting' },
                 { value: 'product', label: '📱 Product - PM or UX' }
+            ]
+        },
+        {
+            id: 'experience_level',
+            question: 'How deep is your experience in that field?',
+            hasTextInput: true,
+            textInputLabel: 'Describe your track record (revenue, users, years, notable achievements)',
+            textInputPlaceholder: 'Example: 5 years experience, startup exit, managed 10-person team, etc...',
+            options: [
+                { value: 'curious', label: '🌱 Exploring - Just interested, no real experience' },
+                { value: 'beginner', label: '📚 Beginner - <1 year, learning fundamentals' },
+                { value: 'learning', label: '🔧 Junior - 1-2 years, some projects' },
+                { value: 'intermediate', label: '⚡ Mid-level - 2-5 years, solid track record' },
+                { value: 'advanced', label: '🏆 Senior - 5+ years, proven results' },
+                { value: 'expert', label: '🌟 Expert - Industry recognition, significant impact' }
             ]
         },
         {
