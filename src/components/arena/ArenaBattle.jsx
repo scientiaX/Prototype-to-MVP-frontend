@@ -127,7 +127,7 @@ export default function ArenaBattle({ problem, session, onSubmit, onAbandon, pro
         updateProgressStatus(exchangeHistory.length + 1);
 
         // Show micro feedback (once)
-        showToast('tradeoff_locked', 'Decision recorded');
+        showToast('tradeoff_locked', 'Recorded');
 
         // Check if should conclude
         if (data.should_conclude) {
@@ -136,23 +136,29 @@ export default function ArenaBattle({ problem, session, onSubmit, onAbandon, pro
           return;
         }
 
-        // Set next question immediately
-        setCurrentQuestion(data.question || "Apa langkah selanjutnya?");
+        // Show brief feedback screen (800ms)
+        setFeedbackMessage(data.feedback || 'Good');
         setIsLoading(false);
-        screenManager.onValidSubmit();
+        screenManager.goToScreen(SCREENS.FEEDBACK);
+
+        // Quick transition to next question after 800ms
+        setTimeout(() => {
+          setCurrentQuestion(data.question || "Apa langkah selanjutnya?");
+          screenManager.goToScreen(SCREENS.ACTION);
+        }, 800);
       } else {
         // API error - use fallback
         setCurrentQuestion("Apa pertimbangan utamamu dalam keputusan ini?");
         setIsLoading(false);
-        screenManager.onValidSubmit();
+        screenManager.goToScreen(SCREENS.ACTION);
       }
     } catch (error) {
       console.error('Submit error:', error);
-      showToast('warning', 'Timeout - retrying...');
+      showToast('warning', 'Timeout');
       // Fallback question on error
       setCurrentQuestion("Jelaskan lebih lanjut keputusanmu.");
       setIsLoading(false);
-      screenManager.onValidSubmit();
+      screenManager.goToScreen(SCREENS.ACTION);
     }
   };
 
