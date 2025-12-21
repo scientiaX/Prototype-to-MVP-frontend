@@ -397,7 +397,7 @@ export default function Home() {
                 <div className="relative z-10">
                   <p className="text-lg text-zinc-400">
                     <span className="text-red-400 font-semibold">⚠️ Important:</span>{' '}
-                    Built by students for students. Competing healthily and<span className="text-white font-medium">disrupting the world.</span>.
+                    Built by students for students. Competing healthily and<span className="text-white font-medium"> disrupting the world.</span>.
                   </p>
                 </div>
               </div>

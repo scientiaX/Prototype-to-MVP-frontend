@@ -216,10 +216,10 @@ export default function ArenaBattle({ problem, session, onSubmit, onAbandon, pro
       {/* Toast Container */}
       <ToastContainer />
 
-      {/* Header - Always visible - z-60 to be above toasts */}
+      {/* Header - Always visible - z-[100] to be above main nav */}
       <div className={cn(
-        "fixed top-0 left-0 right-0 z-[60] px-6 py-3 flex items-center justify-between",
-        "bg-black/95 backdrop-blur-sm border-b border-zinc-800/50"
+        "fixed top-0 left-0 right-0 z-[100] px-6 py-3 flex items-center justify-between",
+        "bg-black backdrop-blur-sm border-b border-zinc-800"
       )}>
         <div className="flex items-center gap-4">
           <span className="text-zinc-600 font-mono text-xs">{problem.problem_id}</span>

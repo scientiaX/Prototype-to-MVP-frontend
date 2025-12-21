@@ -119,7 +119,7 @@ export function useMicroToast() {
                     initial={{ opacity: 0, y: -20, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: -20, scale: 0.95 }}
-                    className={`fixed top-20 left-1/2 -translate-x-1/2 z-50 
+                    className={`fixed top-20 left-1/2 -translate-x-1/2 z-[90] 
                         flex items-center gap-2 px-4 py-2 rounded-full 
                         ${TOAST_CONFIG[toast.type]?.bg || 'bg-zinc-800'} 
                         border ${TOAST_CONFIG[toast.type]?.border || 'border-zinc-700'} 
