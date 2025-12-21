@@ -94,7 +94,7 @@ export default function Home() {
       quote: 'No comfort zone. Only growth zone.',
       sectionTitle: 'Sistem Berbasis Konfrontasi',
       sectionSubtitle: 'Backed by science. Setiap elemen dirancang untuk growth melalui pressure.',
-      warning: 'Ini bukan platform untuk merasa nyaman. Jika mencari validasi, ini bukan tempatnya.',
+      warning: 'Dibangun oleh pelajar untuk pelajar. Berkompetisi dengan sehat dan disrupsi dunia.',
       features: [
         { title: 'Adaptive Matching', description: 'AI mencocokkan masalah dengan archetype dan level-capability mu' },
         { title: 'XP = Difficulty', description: 'Progression berbasis challenge dan growth capability nyata, bukan grinding' },
@@ -396,9 +396,8 @@ export default function Home() {
 
                 <div className="relative z-10">
                   <p className="text-lg text-zinc-400">
-                    <span className="text-red-400 font-semibold">⚠️ Warning:</span>{' '}
-                    Ini bukan platform untuk merasa nyaman.
-                    Jika mencari validasi, ini <span className="text-white font-medium">bukan tempatnya</span>.
+                    <span className="text-red-400 font-semibold">⚠️ Important:</span>{' '}
+                    Built by students for students. Competing healthily and<span className="text-white font-medium">disrupting the world.</span>.
                   </p>
                 </div>
               </div>
