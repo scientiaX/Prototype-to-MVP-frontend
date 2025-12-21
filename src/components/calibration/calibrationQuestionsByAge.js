@@ -1,6 +1,6 @@
 /**
- * Age-Based Calibration Questions
- * Different question sets for different age groups
+ * Age-Based Calibration Questions - Aspirational Version
+ * More options, higher aspirations, dynamic based on context
  */
 
 // Age group definitions
@@ -18,347 +18,115 @@ export const getAgeGroupFromAge = (age) => {
 
 // ============================================
 // SMP QUESTIONS (12-15 tahun)
-// Konteks: Sekolah, game, teman, organisasi
+// Aspirational, not school-focused
 // ============================================
 export const SMP_QUESTIONS = {
     id: [
         {
             id: 'domain',
-            question: 'Kamu paling suka ngapain di waktu luang?',
+            question: 'Kalau kamu punya waktu seharian penuh, kamu bakal ngapain?',
             options: [
-                { value: 'academic', label: '📚 Belajar atau ngerjain PR' },
-                { value: 'gaming', label: '🎮 Main game atau nonton YouTube' },
-                { value: 'creative', label: '🎨 Gambar, musik, atau bikin konten' },
-                { value: 'social', label: '👥 Ngobrol atau main sama temen' }
+                { value: 'tech', label: '💻 Ngulik teknologi, coding, atau bikin aplikasi' },
+                { value: 'creative', label: '🎨 Bikin konten, gambar, musik, atau video' },
+                { value: 'business', label: '💰 Cari cara dapetin uang atau jualan sesuatu' },
+                { value: 'gaming', label: '🎮 Main game atau bikin game sendiri' },
+                { value: 'social', label: '👥 Ngumpul, diskusi, atau ngobrol sama orang' },
+                { value: 'explore', label: '🌍 Jalan-jalan, explore, atau coba hal baru' }
             ]
         },
         {
             id: 'aspiration',
-            question: 'Kalau bisa jadi apapun, kamu mau jadi?',
+            question: '10 tahun lagi, kamu mau jadi siapa?',
             options: [
-                { value: 'top_student', label: '🏆 Juara kelas atau olimpiade' },
-                { value: 'creator', label: '📱 Youtuber atau content creator' },
-                { value: 'leader', label: '🎖️ Ketua OSIS atau ketua kelas' },
-                { value: 'expert', label: '🧠 Ahli di bidang yang kamu suka' }
+                { value: 'founder', label: '🚀 Founder perusahaan teknologi' },
+                { value: 'creator', label: '🎬 Content creator dengan jutaan followers' },
+                { value: 'innovator', label: '💡 Penemu atau inovator yang mengubah dunia' },
+                { value: 'leader', label: '👑 Pemimpin organisasi atau komunitas besar' },
+                { value: 'expert', label: '🧠 Ahli world-class di bidang tertentu' },
+                { value: 'athlete', label: '🏆 Atlet profesional atau esports player' },
+                { value: 'artist', label: '🎤 Musisi, artis, atau entertainer terkenal' }
             ]
         },
         {
             id: 'thinking_style',
-            question: 'Waktu ulangan, kamu biasanya gimana?',
+            question: 'Kalau ada masalah, gimana cara kamu biasanya?',
             options: [
-                { value: 'fast', label: '⚡ Kerjain cepet, yang penting selesai' },
-                { value: 'accurate', label: '🎯 Pelan-pelan, yang penting bener' },
-                { value: 'explorative', label: '🤔 Coba-coba berbagai cara' }
-            ]
-        },
-        {
-            id: 'stuck_experience',
-            question: 'Kapan kamu paling bingung?',
-            options: [
-                { value: 'decision', label: '😵 Waktu harus pilih antara dua hal' },
-                { value: 'execution', label: '😓 Waktu tau caranya tapi males ngerjain' },
-                { value: 'direction', label: '🤷 Waktu ga tau harus mulai dari mana' },
-                { value: 'resource', label: '😔 Waktu butuh bantuan tapi ga tau minta siapa' }
-            ]
-        },
-        {
-            id: 'avoided_risk',
-            question: 'Apa yang paling bikin kamu takut?',
-            options: [
-                { value: 'grades', label: '📉 Nilai jelek atau ga naik kelas' },
-                { value: 'social', label: '😰 Dibully atau dijauhin temen' },
-                { value: 'time', label: '⏰ Ketinggalan pelajaran atau ga sempet main' },
-                { value: 'disappoint', label: '😢 Bikin ortu kecewa' }
-            ]
-        },
-        {
-            id: 'regret',
-            question: 'Biasanya kamu lebih sering nyesel karena...',
-            options: [
-                { value: 'too_slow', label: '🐢 Terlalu mikir lama, jadi ga jadi' },
-                { value: 'too_reckless', label: '🏃 Terlalu buru-buru, jadi salah' }
-            ]
-        }
-    ],
-    en: [
-        {
-            id: 'domain',
-            question: 'What do you enjoy doing in your free time?',
-            options: [
-                { value: 'academic', label: '📚 Studying or doing homework' },
-                { value: 'gaming', label: '🎮 Playing games or watching YouTube' },
-                { value: 'creative', label: '🎨 Drawing, music, or creating content' },
-                { value: 'social', label: '👥 Chatting or hanging out with friends' }
-            ]
-        },
-        {
-            id: 'aspiration',
-            question: 'If you could be anything, what would you be?',
-            options: [
-                { value: 'top_student', label: '🏆 Top student or olympiad winner' },
-                { value: 'creator', label: '📱 YouTuber or content creator' },
-                { value: 'leader', label: '🎖️ Student council president' },
-                { value: 'expert', label: '🧠 Expert in something you love' }
-            ]
-        },
-        {
-            id: 'thinking_style',
-            question: 'During exams, how do you usually work?',
-            options: [
-                { value: 'fast', label: '⚡ Work fast, just finish it' },
-                { value: 'accurate', label: '🎯 Take time, make sure it\'s right' },
-                { value: 'explorative', label: '🤔 Try different approaches' }
-            ]
-        },
-        {
-            id: 'stuck_experience',
-            question: 'When do you feel most confused?',
-            options: [
-                { value: 'decision', label: '😵 When choosing between two things' },
-                { value: 'execution', label: '😓 When you know how but don\'t want to' },
-                { value: 'direction', label: '🤷 When you don\'t know where to start' },
-                { value: 'resource', label: '😔 When you need help but don\'t know who to ask' }
-            ]
-        },
-        {
-            id: 'avoided_risk',
-            question: 'What scares you the most?',
-            options: [
-                { value: 'grades', label: '📉 Bad grades or failing' },
-                { value: 'social', label: '😰 Being bullied or left out' },
-                { value: 'time', label: '⏰ Falling behind or missing out' },
-                { value: 'disappoint', label: '😢 Disappointing parents' }
-            ]
-        },
-        {
-            id: 'regret',
-            question: 'You usually regret because...',
-            options: [
-                { value: 'too_slow', label: '🐢 Thought too long, didn\'t do it' },
-                { value: 'too_reckless', label: '🏃 Too rushed, made mistakes' }
-            ]
-        }
-    ]
-};
-
-// ============================================
-// SMA QUESTIONS (16-18 tahun)
-// Konteks: PTN, karir, bisnis kecil, sosial media
-// ============================================
-export const SMA_QUESTIONS = {
-    id: [
-        {
-            id: 'domain',
-            question: 'Kalau disuruh bikin project, kamu pilih yang mana?',
-            options: [
-                { value: 'academic', label: '📊 Riset atau karya ilmiah' },
-                { value: 'business', label: '💼 Bisnis kecil-kecilan' },
-                { value: 'tech', label: '💻 Coding atau teknologi' },
-                { value: 'creative', label: '🎬 Konten kreatif atau seni' }
-            ]
-        },
-        {
-            id: 'aspiration',
-            question: '5 tahun lagi, kamu mau jadi apa?',
-            options: [
-                { value: 'college', label: '🎓 Kuliah di PTN favorit' },
-                { value: 'founder', label: '🚀 Punya startup atau bisnis' },
-                { value: 'creator', label: '📱 Full-time content creator' },
-                { value: 'expert', label: '💡 Ahli di bidang tertentu' }
-            ]
-        },
-        {
-            id: 'thinking_style',
-            question: 'Cara kamu ngerjain tugas besar?',
-            options: [
-                { value: 'fast', label: '⚡ Kerjain H-1, yang penting selesai' },
-                { value: 'accurate', label: '📝 Direncanain mateng dari awal' },
-                { value: 'explorative', label: '🧪 Eksperimen dulu, revisi kemudian' }
-            ]
-        },
-        {
-            id: 'stuck_experience',
-            question: 'Kapan kamu paling stuck?',
-            options: [
-                { value: 'decision', label: '🔀 Milih jurusan atau karir' },
-                { value: 'execution', label: '📅 Punya rencana tapi ga konsisten' },
-                { value: 'direction', label: '🧭 Ga tau passion kamu apa' },
-                { value: 'resource', label: '💰 Butuh modal atau koneksi' }
-            ]
-        },
-        {
-            id: 'avoided_risk',
-            question: 'Risiko apa yang paling kamu hindari?',
-            options: [
-                { value: 'academic', label: '📉 Gagal SNBP/UTBK' },
-                { value: 'social', label: '👥 Dipermalukan di depan orang' },
-                { value: 'financial', label: '💸 Buang-buang uang' },
-                { value: 'relationship', label: '💔 Kehilangan teman atau pacar' }
-            ]
-        },
-        {
-            id: 'regret',
-            question: 'Biasanya kamu lebih sering nyesel karena...',
-            options: [
-                { value: 'too_slow', label: '🐢 Terlalu banyak mikir sampai ga gerak' },
-                { value: 'too_reckless', label: '🏃 Terlalu nekat tanpa persiapan' }
-            ]
-        }
-    ],
-    en: [
-        {
-            id: 'domain',
-            question: 'If asked to create a project, which would you choose?',
-            options: [
-                { value: 'academic', label: '📊 Research or academic paper' },
-                { value: 'business', label: '💼 Small business venture' },
-                { value: 'tech', label: '💻 Coding or technology' },
-                { value: 'creative', label: '🎬 Creative content or art' }
-            ]
-        },
-        {
-            id: 'aspiration',
-            question: 'In 5 years, what do you want to be?',
-            options: [
-                { value: 'college', label: '🎓 Student at top university' },
-                { value: 'founder', label: '🚀 Startup or business owner' },
-                { value: 'creator', label: '📱 Full-time content creator' },
-                { value: 'expert', label: '💡 Expert in a specific field' }
-            ]
-        },
-        {
-            id: 'thinking_style',
-            question: 'How do you handle big assignments?',
-            options: [
-                { value: 'fast', label: '⚡ Last minute, just get it done' },
-                { value: 'accurate', label: '📝 Plan carefully from the start' },
-                { value: 'explorative', label: '🧪 Experiment first, revise later' }
-            ]
-        },
-        {
-            id: 'stuck_experience',
-            question: 'When do you feel most stuck?',
-            options: [
-                { value: 'decision', label: '🔀 Choosing major or career' },
-                { value: 'execution', label: '📅 Have plans but not consistent' },
-                { value: 'direction', label: '🧭 Don\'t know your passion' },
-                { value: 'resource', label: '💰 Need money or connections' }
-            ]
-        },
-        {
-            id: 'avoided_risk',
-            question: 'What risk do you avoid the most?',
-            options: [
-                { value: 'academic', label: '📉 Failing entrance exams' },
-                { value: 'social', label: '👥 Being embarrassed in public' },
-                { value: 'financial', label: '💸 Wasting money' },
-                { value: 'relationship', label: '💔 Losing friends or partner' }
-            ]
-        },
-        {
-            id: 'regret',
-            question: 'You usually regret because...',
-            options: [
-                { value: 'too_slow', label: '🐢 Overthinking until you don\'t act' },
-                { value: 'too_reckless', label: '🏃 Too reckless without preparation' }
-            ]
-        }
-    ]
-};
-
-// ============================================
-// ADULT QUESTIONS (19+ tahun)
-// Konteks: Bisnis, karir, finansial, leadership
-// (Original questions with slight updates)
-// ============================================
-export const ADULT_QUESTIONS = {
-    id: [
-        {
-            id: 'domain',
-            question: 'Bidang apa yang paling menarik minatmu?',
-            options: [
-                { value: 'business', label: '💼 Bisnis & Entrepreneurship' },
-                { value: 'tech', label: '💻 Teknologi & Inovasi' },
-                { value: 'creative', label: '🎨 Kreativitas & Design' },
-                { value: 'leadership', label: '👔 Leadership & Management' }
-            ]
-        },
-        {
-            id: 'aspiration',
-            question: 'Dalam 5-10 tahun, kamu mau jadi siapa?',
-            options: [
-                { value: 'founder', label: '🚀 Founder startup atau bisnis' },
-                { value: 'expert', label: '🧠 Expert di bidang tertentu' },
-                { value: 'leader', label: '👑 Leader tim atau organisasi' },
-                { value: 'innovator', label: '💡 Inovator yang mengubah industri' }
-            ]
-        },
-        {
-            id: 'thinking_style',
-            question: 'Bagaimana gaya pengambilan keputusanmu?',
-            options: [
-                { value: 'fast', label: '⚡ Cepat bertindak, iterasi kemudian' },
-                { value: 'accurate', label: '🎯 Analisis mendalam dulu, baru eksekusi' },
-                { value: 'explorative', label: '🔍 Eksploratif, banyak opsi dulu' }
+                { value: 'fast', label: '⚡ Langsung eksekusi, perbaiki sambil jalan' },
+                { value: 'accurate', label: '🎯 Pikirin mateng-mateng dulu baru gerak' },
+                { value: 'explorative', label: '🔍 Coba berbagai cara sampai ketemu yang pas' },
+                { value: 'collaborative', label: '🤝 Diskusi sama orang lain dulu' },
+                { value: 'creative', label: '💫 Cari solusi yang beda dari biasanya' }
             ]
         },
         {
             id: 'stuck_experience',
             question: 'Kapan kamu paling sering merasa stuck?',
             options: [
-                { value: 'decision', label: '🔀 Saat harus memilih di antara banyak opsi' },
-                { value: 'execution', label: '📅 Saat tahu rencana tapi sulit konsisten' },
-                { value: 'direction', label: '🧭 Saat tidak yakin arah yang benar' },
-                { value: 'resource', label: '💰 Saat butuh modal, tim, atau koneksi' }
+                { value: 'decision', label: '🔀 Waktu harus pilih di antara banyak opsi' },
+                { value: 'execution', label: '📅 Punya rencana tapi susah konsisten' },
+                { value: 'direction', label: '🧭 Ga tau mau kemana atau tujuannya apa' },
+                { value: 'resource', label: '💰 Butuh modal, alat, atau akses' },
+                { value: 'confidence', label: '😰 Ragu sama kemampuan sendiri' },
+                { value: 'motivation', label: '🔋 Kehilangan semangat di tengah jalan' }
             ]
         },
         {
             id: 'avoided_risk',
-            question: 'Risiko apa yang paling kamu hindari?',
+            question: 'Apa yang paling bikin kamu takut gagal?',
             options: [
-                { value: 'financial', label: '💸 Risiko finansial (uang, investasi)' },
-                { value: 'reputation', label: '🏆 Risiko reputasi (nama baik)' },
-                { value: 'time', label: '⏳ Risiko waktu (opportunity cost)' },
-                { value: 'relationship', label: '🤝 Risiko relasi (network, partnership)' }
+                { value: 'financial', label: '💸 Kehilangan uang atau ga punya modal' },
+                { value: 'reputation', label: '👥 Dihujat atau dinilai jelek sama orang' },
+                { value: 'time', label: '⏰ Buang waktu untuk sesuatu yang ga worth it' },
+                { value: 'relationship', label: '💔 Kehilangan teman atau orang penting' },
+                { value: 'opportunity', label: '🚪 Kehilangan kesempatan yang lebih baik' },
+                { value: 'disappointment', label: '😢 Mengecewakan orang yang percaya sama kamu' }
             ]
         },
         {
             id: 'regret',
-            question: 'Biasanya kamu lebih sering menyesal karena...',
+            question: 'Biasanya kamu lebih sering nyesel karena...',
             options: [
-                { value: 'too_slow', label: '🐢 Terlalu lama berpikir sampai kehilangan momen' },
-                { value: 'too_reckless', label: '🏃 Terlalu nekat tanpa pertimbangan matang' }
+                { value: 'too_slow', label: '🐢 Terlalu banyak mikir sampai ga jadi' },
+                { value: 'too_reckless', label: '🏃 Terlalu nekat tanpa persiapan' },
+                { value: 'too_safe', label: '🛡️ Main terlalu aman, ga berani ambil risiko' }
             ]
         }
     ],
     en: [
         {
             id: 'domain',
-            question: 'Which field interests you the most?',
+            question: 'If you had a whole day free, what would you do?',
             options: [
-                { value: 'business', label: '💼 Business & Entrepreneurship' },
-                { value: 'tech', label: '💻 Technology & Innovation' },
-                { value: 'creative', label: '🎨 Creativity & Design' },
-                { value: 'leadership', label: '👔 Leadership & Management' }
+                { value: 'tech', label: '💻 Tinker with tech, coding, or building apps' },
+                { value: 'creative', label: '🎨 Create content, art, music, or videos' },
+                { value: 'business', label: '💰 Find ways to make money or sell something' },
+                { value: 'gaming', label: '🎮 Play games or make your own game' },
+                { value: 'social', label: '👥 Hang out, discuss, or meet new people' },
+                { value: 'explore', label: '🌍 Travel, explore, or try new things' }
             ]
         },
         {
             id: 'aspiration',
-            question: 'In 5-10 years, who do you want to become?',
+            question: 'In 10 years, who do you want to become?',
             options: [
-                { value: 'founder', label: '🚀 Startup or business founder' },
-                { value: 'expert', label: '🧠 Expert in a specific field' },
-                { value: 'leader', label: '👑 Team or organization leader' },
-                { value: 'innovator', label: '💡 Industry-changing innovator' }
+                { value: 'founder', label: '🚀 Tech company founder' },
+                { value: 'creator', label: '🎬 Content creator with millions of followers' },
+                { value: 'innovator', label: '💡 Inventor or world-changing innovator' },
+                { value: 'leader', label: '👑 Leader of a major organization or community' },
+                { value: 'expert', label: '🧠 World-class expert in a specific field' },
+                { value: 'athlete', label: '🏆 Professional athlete or esports player' },
+                { value: 'artist', label: '🎤 Famous musician, artist, or entertainer' }
             ]
         },
         {
             id: 'thinking_style',
-            question: 'How do you make decisions?',
+            question: 'When facing a problem, what\'s your usual approach?',
             options: [
-                { value: 'fast', label: '⚡ Act fast, iterate later' },
-                { value: 'accurate', label: '🎯 Deep analysis first, then execute' },
-                { value: 'explorative', label: '🔍 Explore many options first' }
+                { value: 'fast', label: '⚡ Execute immediately, fix as you go' },
+                { value: 'accurate', label: '🎯 Think it through carefully first' },
+                { value: 'explorative', label: '🔍 Try different approaches until one works' },
+                { value: 'collaborative', label: '🤝 Discuss with others first' },
+                { value: 'creative', label: '💫 Find unconventional solutions' }
             ]
         },
         {
@@ -366,27 +134,330 @@ export const ADULT_QUESTIONS = {
             question: 'When do you feel stuck the most?',
             options: [
                 { value: 'decision', label: '🔀 When choosing between many options' },
-                { value: 'execution', label: '📅 When I have plans but struggle with consistency' },
-                { value: 'direction', label: '🧭 When unsure about the right direction' },
-                { value: 'resource', label: '💰 When needing capital, team, or connections' }
+                { value: 'execution', label: '📅 Have plans but struggle to be consistent' },
+                { value: 'direction', label: '🧭 Don\'t know where to go or what the goal is' },
+                { value: 'resource', label: '💰 Need money, tools, or access' },
+                { value: 'confidence', label: '😰 Doubt my own abilities' },
+                { value: 'motivation', label: '🔋 Lose motivation midway' }
             ]
         },
         {
             id: 'avoided_risk',
-            question: 'Which risk do you avoid the most?',
+            question: 'What failure scares you the most?',
             options: [
-                { value: 'financial', label: '💸 Financial risk (money, investments)' },
-                { value: 'reputation', label: '🏆 Reputation risk (public image)' },
-                { value: 'time', label: '⏳ Time risk (opportunity cost)' },
-                { value: 'relationship', label: '🤝 Relationship risk (network, partnerships)' }
+                { value: 'financial', label: '💸 Losing money or not having capital' },
+                { value: 'reputation', label: '👥 Being judged or criticized by others' },
+                { value: 'time', label: '⏰ Wasting time on something not worth it' },
+                { value: 'relationship', label: '💔 Losing friends or important people' },
+                { value: 'opportunity', label: '🚪 Missing out on better opportunities' },
+                { value: 'disappointment', label: '😢 Disappointing people who believe in me' }
             ]
         },
         {
             id: 'regret',
             question: 'You usually regret because...',
             options: [
-                { value: 'too_slow', label: '🐢 Overthinking until missing the moment' },
-                { value: 'too_reckless', label: '🏃 Too reckless without proper consideration' }
+                { value: 'too_slow', label: '🐢 Overthinking until not doing it' },
+                { value: 'too_reckless', label: '🏃 Being reckless without preparation' },
+                { value: 'too_safe', label: '🛡️ Playing too safe, not taking risks' }
+            ]
+        }
+    ]
+};
+
+// ============================================
+// SMA QUESTIONS (16-18 tahun)
+// Career-focused but still aspirational
+// ============================================
+export const SMA_QUESTIONS = {
+    id: [
+        {
+            id: 'domain',
+            question: 'Bidang apa yang paling bikin kamu excited?',
+            options: [
+                { value: 'tech', label: '💻 Teknologi, AI, atau software' },
+                { value: 'business', label: '💼 Bisnis, startup, atau entrepreneurship' },
+                { value: 'creative', label: '🎨 Design, konten, atau industri kreatif' },
+                { value: 'finance', label: '📈 Finance, investasi, atau trading' },
+                { value: 'science', label: '🔬 Sains, riset, atau engineering' },
+                { value: 'social', label: '🌍 Social impact atau community building' }
+            ]
+        },
+        {
+            id: 'aspiration',
+            question: '5 tahun lagi, kamu mau jadi siapa?',
+            options: [
+                { value: 'founder', label: '🚀 Founder startup dengan valuasi tinggi' },
+                { value: 'creator', label: '🎬 Full-time creator dengan income 9 digit' },
+                { value: 'expert', label: '🧠 Expert yang diakui di industri' },
+                { value: 'leader', label: '👑 Leader tim di perusahaan top' },
+                { value: 'investor', label: '💰 Investor atau business owner' },
+                { value: 'innovator', label: '💡 Inovator yang bikin produk baru' },
+                { value: 'freelancer', label: '🌐 Freelancer global dengan client luar negeri' }
+            ]
+        },
+        {
+            id: 'thinking_style',
+            question: 'Gimana cara kamu biasanya approach masalah?',
+            options: [
+                { value: 'fast', label: '⚡ Eksekusi cepat, iterasi kemudian' },
+                { value: 'accurate', label: '📊 Riset dan analisis dulu, baru action' },
+                { value: 'explorative', label: '🧪 Eksperimen berbagai approach' },
+                { value: 'systematic', label: '📋 Breakdown jadi steps yang jelas' },
+                { value: 'intuitive', label: '🎯 Ikut intuisi dan gut feeling' }
+            ]
+        },
+        {
+            id: 'stuck_experience',
+            question: 'Kapan kamu paling sering merasa stuck?',
+            options: [
+                { value: 'decision', label: '🔀 Milih antara banyak opsi yang bagus' },
+                { value: 'execution', label: '📅 Punya rencana tapi ga konsisten eksekusi' },
+                { value: 'direction', label: '🧭 Ga yakin path mana yang harus diambil' },
+                { value: 'resource', label: '💰 Butuh modal, network, atau skill baru' },
+                { value: 'perfectionism', label: '✨ Pengen perfect jadinya ga pernah launch' },
+                { value: 'overwhelm', label: '🌊 Terlalu banyak yang harus dikerjain' }
+            ]
+        },
+        {
+            id: 'avoided_risk',
+            question: 'Risiko apa yang paling kamu hindari?',
+            options: [
+                { value: 'financial', label: '💸 Kehilangan uang atau gagal secara finansial' },
+                { value: 'reputation', label: '👥 Nama baik rusak atau dipermalukan' },
+                { value: 'time', label: '⏳ Buang waktu untuk hal yang salah' },
+                { value: 'relationship', label: '🤝 Kehilangan koneksi atau partner penting' },
+                { value: 'opportunity', label: '🚪 Miss opportunity yang lebih besar' },
+                { value: 'career', label: '📈 Salah pilih career path' }
+            ]
+        },
+        {
+            id: 'regret',
+            question: 'Biasanya kamu lebih sering menyesal karena...',
+            options: [
+                { value: 'too_slow', label: '🐢 Terlalu lama mikir sampai kehilangan momen' },
+                { value: 'too_reckless', label: '🏃 Terlalu cepat action tanpa strategi' },
+                { value: 'too_safe', label: '🛡️ Main terlalu aman, ga berani ambil risiko besar' }
+            ]
+        }
+    ],
+    en: [
+        {
+            id: 'domain',
+            question: 'What field excites you the most?',
+            options: [
+                { value: 'tech', label: '💻 Technology, AI, or software' },
+                { value: 'business', label: '💼 Business, startups, or entrepreneurship' },
+                { value: 'creative', label: '🎨 Design, content, or creative industry' },
+                { value: 'finance', label: '📈 Finance, investing, or trading' },
+                { value: 'science', label: '🔬 Science, research, or engineering' },
+                { value: 'social', label: '🌍 Social impact or community building' }
+            ]
+        },
+        {
+            id: 'aspiration',
+            question: 'In 5 years, who do you want to become?',
+            options: [
+                { value: 'founder', label: '🚀 Startup founder with high valuation' },
+                { value: 'creator', label: '🎬 Full-time creator with 9-figure income' },
+                { value: 'expert', label: '🧠 Recognized industry expert' },
+                { value: 'leader', label: '👑 Team leader at a top company' },
+                { value: 'investor', label: '💰 Investor or business owner' },
+                { value: 'innovator', label: '💡 Innovator creating new products' },
+                { value: 'freelancer', label: '🌐 Global freelancer with international clients' }
+            ]
+        },
+        {
+            id: 'thinking_style',
+            question: 'How do you usually approach problems?',
+            options: [
+                { value: 'fast', label: '⚡ Execute fast, iterate later' },
+                { value: 'accurate', label: '📊 Research and analyze first, then act' },
+                { value: 'explorative', label: '🧪 Experiment with different approaches' },
+                { value: 'systematic', label: '📋 Break down into clear steps' },
+                { value: 'intuitive', label: '🎯 Follow intuition and gut feeling' }
+            ]
+        },
+        {
+            id: 'stuck_experience',
+            question: 'When do you feel stuck the most?',
+            options: [
+                { value: 'decision', label: '🔀 Choosing between many good options' },
+                { value: 'execution', label: '📅 Have plans but inconsistent execution' },
+                { value: 'direction', label: '🧭 Not sure which path to take' },
+                { value: 'resource', label: '💰 Need capital, network, or new skills' },
+                { value: 'perfectionism', label: '✨ Want it perfect so never launch' },
+                { value: 'overwhelm', label: '🌊 Too many things to do' }
+            ]
+        },
+        {
+            id: 'avoided_risk',
+            question: 'What risk do you avoid the most?',
+            options: [
+                { value: 'financial', label: '💸 Losing money or financial failure' },
+                { value: 'reputation', label: '👥 Damaged reputation or embarrassment' },
+                { value: 'time', label: '⏳ Wasting time on the wrong thing' },
+                { value: 'relationship', label: '🤝 Losing important connections or partners' },
+                { value: 'opportunity', label: '🚪 Missing bigger opportunities' },
+                { value: 'career', label: '📈 Choosing the wrong career path' }
+            ]
+        },
+        {
+            id: 'regret',
+            question: 'You usually regret because...',
+            options: [
+                { value: 'too_slow', label: '🐢 Taking too long and missing the moment' },
+                { value: 'too_reckless', label: '🏃 Acting too fast without strategy' },
+                { value: 'too_safe', label: '🛡️ Playing too safe, not taking big risks' }
+            ]
+        }
+    ]
+};
+
+// ============================================
+// ADULT QUESTIONS (19+ tahun)
+// Professional and high-stakes
+// ============================================
+export const ADULT_QUESTIONS = {
+    id: [
+        {
+            id: 'domain',
+            question: 'Bidang apa yang paling menarik minatmu untuk deep dive?',
+            options: [
+                { value: 'tech', label: '💻 Tech - Software, AI, atau Blockchain' },
+                { value: 'business', label: '💼 Business - Startup atau Enterprise' },
+                { value: 'finance', label: '📈 Finance - Investasi atau Trading' },
+                { value: 'creative', label: '🎨 Creative - Design atau Media' },
+                { value: 'leadership', label: '👔 Leadership - Management atau Consulting' },
+                { value: 'product', label: '📱 Product - PM atau UX' }
+            ]
+        },
+        {
+            id: 'aspiration',
+            question: 'Dalam 5-10 tahun, posisi apa yang kamu targetkan?',
+            options: [
+                { value: 'founder', label: '🚀 Founder - Bikin company sendiri' },
+                { value: 'cxo', label: '👔 C-Level Executive - CEO, CTO, CFO' },
+                { value: 'investor', label: '💰 Investor - VC atau Angel Investor' },
+                { value: 'expert', label: '🧠 Domain Expert - Thought leader di bidangmu' },
+                { value: 'creator', label: '🎬 Creator Economy - Build personal brand' },
+                { value: 'freelancer', label: '🌐 High-value Freelancer - Premium rates globally' },
+                { value: 'acquirer', label: '🏢 Acquirer - Beli dan scale bisnis' }
+            ]
+        },
+        {
+            id: 'thinking_style',
+            question: 'Bagaimana gaya decision-making mu?',
+            options: [
+                { value: 'fast', label: '⚡ Bias to action - Eksekusi dulu, pivot kemudian' },
+                { value: 'accurate', label: '📊 Data-driven - Analisis mendalam, baru decide' },
+                { value: 'explorative', label: '🧪 Experimental - Test multiple hypotheses' },
+                { value: 'intuitive', label: '🎯 Intuitive - Trust gut feeling + experience' },
+                { value: 'collaborative', label: '🤝 Collaborative - Decide bersama tim' }
+            ]
+        },
+        {
+            id: 'stuck_experience',
+            question: 'Kapan kamu paling sering merasa bottleneck?',
+            options: [
+                { value: 'decision', label: '🔀 Analysis paralysis - Terlalu banyak opsi bagus' },
+                { value: 'execution', label: '📅 Execution gap - Strategy bagus, eksekusi lemah' },
+                { value: 'direction', label: '🧭 Strategic clarity - Ga yakin prioritas yang benar' },
+                { value: 'resource', label: '💰 Resource constraint - Modal, tim, atau waktu' },
+                { value: 'scaling', label: '📈 Scaling challenge - Growth tapi ga sustainable' },
+                { value: 'delegation', label: '👥 Delegation - Susah lepas control' }
+            ]
+        },
+        {
+            id: 'avoided_risk',
+            question: 'Risiko apa yang paling kamu manage dengan hati-hati?',
+            options: [
+                { value: 'financial', label: '💸 Financial risk - Downside protection' },
+                { value: 'reputation', label: '🏆 Reputation risk - Personal brand damage' },
+                { value: 'time', label: '⏳ Opportunity cost - Wrong bet yang makan waktu' },
+                { value: 'relationship', label: '🤝 Relationship risk - Burn bridge dengan key people' },
+                { value: 'career', label: '📈 Career risk - Wrong move yang hard to reverse' },
+                { value: 'health', label: '🏥 Burnout risk - Overwork sampai rusak kesehatan' }
+            ]
+        },
+        {
+            id: 'regret',
+            question: 'Pattern penyesalan yang sering kamu alami?',
+            options: [
+                { value: 'too_slow', label: '🐢 Missed window - Kelamaan mikir, moment hilang' },
+                { value: 'too_reckless', label: '🏃 Premature scaling - Terlalu cepat tanpa fondasi' },
+                { value: 'too_safe', label: '🛡️ Under-leveraged - Ga maximize opportunity yang ada' }
+            ]
+        }
+    ],
+    en: [
+        {
+            id: 'domain',
+            question: 'What field interests you most for deep dive?',
+            options: [
+                { value: 'tech', label: '💻 Tech - Software, AI, or Blockchain' },
+                { value: 'business', label: '💼 Business - Startup or Enterprise' },
+                { value: 'finance', label: '📈 Finance - Investing or Trading' },
+                { value: 'creative', label: '🎨 Creative - Design or Media' },
+                { value: 'leadership', label: '👔 Leadership - Management or Consulting' },
+                { value: 'product', label: '📱 Product - PM or UX' }
+            ]
+        },
+        {
+            id: 'aspiration',
+            question: 'In 5-10 years, what position are you targeting?',
+            options: [
+                { value: 'founder', label: '🚀 Founder - Build your own company' },
+                { value: 'cxo', label: '👔 C-Level Executive - CEO, CTO, CFO' },
+                { value: 'investor', label: '💰 Investor - VC or Angel Investor' },
+                { value: 'expert', label: '🧠 Domain Expert - Thought leader in your field' },
+                { value: 'creator', label: '🎬 Creator Economy - Build personal brand' },
+                { value: 'freelancer', label: '🌐 High-value Freelancer - Premium rates globally' },
+                { value: 'acquirer', label: '🏢 Acquirer - Buy and scale businesses' }
+            ]
+        },
+        {
+            id: 'thinking_style',
+            question: 'What\'s your decision-making style?',
+            options: [
+                { value: 'fast', label: '⚡ Bias to action - Execute first, pivot later' },
+                { value: 'accurate', label: '📊 Data-driven - Deep analysis, then decide' },
+                { value: 'explorative', label: '🧪 Experimental - Test multiple hypotheses' },
+                { value: 'intuitive', label: '🎯 Intuitive - Trust gut feeling + experience' },
+                { value: 'collaborative', label: '🤝 Collaborative - Decide together with team' }
+            ]
+        },
+        {
+            id: 'stuck_experience',
+            question: 'When do you feel bottlenecked the most?',
+            options: [
+                { value: 'decision', label: '🔀 Analysis paralysis - Too many good options' },
+                { value: 'execution', label: '📅 Execution gap - Good strategy, weak execution' },
+                { value: 'direction', label: '🧭 Strategic clarity - Unsure of right priorities' },
+                { value: 'resource', label: '💰 Resource constraint - Capital, team, or time' },
+                { value: 'scaling', label: '📈 Scaling challenge - Growth but not sustainable' },
+                { value: 'delegation', label: '👥 Delegation - Hard to let go of control' }
+            ]
+        },
+        {
+            id: 'avoided_risk',
+            question: 'Which risk do you manage most carefully?',
+            options: [
+                { value: 'financial', label: '💸 Financial risk - Downside protection' },
+                { value: 'reputation', label: '🏆 Reputation risk - Personal brand damage' },
+                { value: 'time', label: '⏳ Opportunity cost - Wrong bet that takes time' },
+                { value: 'relationship', label: '🤝 Relationship risk - Burn bridges with key people' },
+                { value: 'career', label: '📈 Career risk - Wrong move hard to reverse' },
+                { value: 'health', label: '🏥 Burnout risk - Overwork damaging health' }
+            ]
+        },
+        {
+            id: 'regret',
+            question: 'What regret pattern do you often experience?',
+            options: [
+                { value: 'too_slow', label: '🐢 Missed window - Thought too long, moment gone' },
+                { value: 'too_reckless', label: '🏃 Premature scaling - Too fast without foundation' },
+                { value: 'too_safe', label: '🛡️ Under-leveraged - Didn\'t maximize opportunities' }
             ]
         }
     ]
