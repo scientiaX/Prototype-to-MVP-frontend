@@ -347,7 +347,7 @@ export default function Home() {
                   Sistem Berbasis <span className="text-gradient-magic">Konfrontasi</span>
                 </h2>
                 <p className="text-zinc-500 max-w-xl mx-auto text-lg">
-                  Backed by science. Setiap elemen dirancang untuk growth melalui pressure.
+                  Backed by science. Each element is designed for growth through pressure..
                 </p>
               </motion.div>
             </div>
