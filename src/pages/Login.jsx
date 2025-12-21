@@ -2,25 +2,35 @@ import React, { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { motion } from 'framer-motion';
-import { Mail, User, ArrowRight, Flame, Sparkles } from 'lucide-react';
+import { User, Lock, ArrowRight, Flame, Sparkles } from 'lucide-react';
 import apiClient from '@/api/apiClient';
 
 export default function Login() {
-    const [email, setEmail] = useState('');
-    const [name, setName] = useState('');
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
     const [focused, setFocused] = useState(null);
+    const [error, setError] = useState('');
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
 
     const handleLogin = (e) => {
         e.preventDefault();
+        setError('');
 
-        if (!email || !name) {
-            alert('Please enter both email and name');
+        if (!username.trim()) {
+            setError('Masukkan nama');
             return;
         }
 
-        apiClient.auth.setUser({ email, name });
+        // Use username as unique identifier (no email required)
+        // Generate a simple ID from username for backend compatibility
+        const userId = username.trim().toLowerCase().replace(/\s+/g, '_');
+
+        apiClient.auth.setUser({
+            email: `${userId}@arena.local`, // Internal ID, not shown to user
+            name: username.trim(),
+            username: username.trim()
+        });
 
         const redirectTo = searchParams.get('redirect') || '/calibration';
         navigate(redirectTo);
@@ -112,10 +122,10 @@ export default function Login() {
                         </motion.div>
 
                         <h1 className="text-2xl font-bold text-white mb-2">
-                            Welcome to <span className="text-gradient-fire">Arena</span>
+                            Masuk ke <span className="text-gradient-fire">Arena</span>
                         </h1>
                         <p className="text-zinc-500">
-                            Enter your details to continue
+                            Masukkan nama dan password untuk lanjut
                         </p>
                     </div>
 
@@ -123,45 +133,51 @@ export default function Login() {
                     <form onSubmit={handleLogin} className="space-y-5 relative z-10">
                         <div>
                             <label className="block text-sm font-medium text-zinc-300 mb-2.5">
-                                Email
+                                Nama
                             </label>
                             <div className="relative group">
-                                <div className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors duration-200 ${focused === 'email' ? 'text-orange-400' : 'text-zinc-500'}`}>
-                                    <Mail className="w-5 h-5" />
+                                <div className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors duration-200 ${focused === 'username' ? 'text-orange-400' : 'text-zinc-500'}`}>
+                                    <User className="w-5 h-5" />
                                 </div>
                                 <input
-                                    type="email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    onFocus={() => setFocused('email')}
+                                    type="text"
+                                    value={username}
+                                    onChange={(e) => setUsername(e.target.value)}
+                                    onFocus={() => setFocused('username')}
                                     onBlur={() => setFocused(null)}
                                     className="w-full pl-12 pr-4 py-4 bg-zinc-800/80 border border-zinc-700 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all duration-200 hover:border-zinc-600"
-                                    placeholder="your@email.com"
-                                    required
+                                    placeholder="Nama kamu"
+                                    autoFocus
                                 />
                             </div>
                         </div>
 
                         <div>
                             <label className="block text-sm font-medium text-zinc-300 mb-2.5">
-                                Name
+                                Password
                             </label>
                             <div className="relative group">
-                                <div className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors duration-200 ${focused === 'name' ? 'text-orange-400' : 'text-zinc-500'}`}>
-                                    <User className="w-5 h-5" />
+                                <div className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors duration-200 ${focused === 'password' ? 'text-orange-400' : 'text-zinc-500'}`}>
+                                    <Lock className="w-5 h-5" />
                                 </div>
                                 <input
-                                    type="text"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                    onFocus={() => setFocused('name')}
+                                    type="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    onFocus={() => setFocused('password')}
                                     onBlur={() => setFocused(null)}
                                     className="w-full pl-12 pr-4 py-4 bg-zinc-800/80 border border-zinc-700 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all duration-200 hover:border-zinc-600"
-                                    placeholder="Your Name"
-                                    required
+                                    placeholder="Password (opsional)"
                                 />
                             </div>
+                            <p className="text-zinc-600 text-xs mt-2">
+                                Password opsional untuk development
+                            </p>
                         </div>
+
+                        {error && (
+                            <p className="text-red-500 text-sm">{error}</p>
+                        )}
 
                         <Button
                             type="submit"
@@ -169,14 +185,14 @@ export default function Login() {
                             size="xl"
                             className="w-full mt-3 group"
                         >
-                            Continue to Arena
+                            Lanjut ke Arena
                             <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
                         </Button>
                     </form>
 
                     <div className="mt-8 pt-6 border-t border-zinc-800">
                         <p className="text-center text-xs text-zinc-600">
-                            Development mode • No password required
+                            Tidak perlu email • Password opsional
                         </p>
                     </div>
                 </div>

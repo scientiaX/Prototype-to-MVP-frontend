@@ -54,11 +54,32 @@ export const auth = {
     localStorage.removeItem('auth_token');
   },
 
+  // Clear ALL stored data (use when switching accounts)
+  clearAllData: () => {
+    localStorage.removeItem('current_user');
+    localStorage.removeItem('auth_token');
+    // Clear any cached data
+    const keysToRemove = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && (key.includes('arena') || key.includes('profile') || key.includes('user'))) {
+        keysToRemove.push(key);
+      }
+    }
+    keysToRemove.forEach(key => localStorage.removeItem(key));
+  },
+
   redirectToLogin: () => {
     window.location.href = '/login';
   },
 
   setUser: (user) => {
+    // Clear old user data first when setting new user
+    const oldUser = JSON.parse(localStorage.getItem('current_user') || '{}');
+    if (oldUser.email && oldUser.email !== user.email) {
+      // Different user, clear everything
+      auth.clearAllData();
+    }
     localStorage.setItem('current_user', JSON.stringify(user));
   }
 };

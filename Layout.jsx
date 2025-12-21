@@ -37,8 +37,8 @@ export default function Layout({ children, currentPageName }) {
   };
 
   const handleLogout = () => {
-    apiClient.auth.logout();
-    window.location.href = createPageUrl('Home');
+    apiClient.auth.clearAllData(); // Clear ALL stored data
+    window.location.href = '/login';
   };
 
   const navItems = [
