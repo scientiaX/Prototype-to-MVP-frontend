@@ -92,7 +92,7 @@ export default function Home() {
       liveStats: 'Live Stats',
       realTimeActivity: 'Real-time arena activity',
       quote: 'No comfort zone. Only growth zone.',
-      sectionTitle: 'Sistem Berbasis Konfrontasi',
+      sectionTitle: 'Confrontation Based System',
       sectionSubtitle: 'Backed by science. Setiap elemen dirancang untuk growth melalui pressure.',
       warning: 'Dibangun oleh pelajar untuk pelajar. Berkompetisi dengan sehat dan disrupsi dunia.',
       features: [
@@ -344,7 +344,7 @@ export default function Home() {
                 viewport={{ once: true }}
               >
                 <h2 className="text-3xl md:text-5xl text-white font-bold mb-4">
-                  Sistem Berbasis <span className="text-gradient-magic">Konfrontasi</span>
+                  Confrontation Based <span className="text-gradient-magic">System</span>
                 </h2>
                 <p className="text-zinc-500 max-w-xl mx-auto text-lg">
                   Backed by science. Each element is designed for growth through pressure..
