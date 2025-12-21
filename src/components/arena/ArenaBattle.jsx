@@ -136,21 +136,14 @@ export default function ArenaBattle({ problem, session, onSubmit, onAbandon, pro
           return;
         }
 
-        // Show brief feedback screen (800ms)
-        setFeedbackMessage(data.feedback || 'Good');
+        // Skip feedback screen - just show toast and go to next question immediately
+        setCurrentQuestion(data.question || "Apa langkah selanjutnya?");
         setIsLoading(false);
-        screenManager.goToScreen(SCREENS.FEEDBACK);
-
-        // Quick transition to next question after 800ms
-        setTimeout(() => {
-          setCurrentQuestion(data.question || "Apa langkah selanjutnya?");
-          screenManager.goToScreen(SCREENS.ACTION);
-        }, 800);
+        // Already on ACTION screen, just update question - no screen change needed
       } else {
         // API error - use fallback
         setCurrentQuestion("Apa pertimbangan utamamu dalam keputusan ini?");
         setIsLoading(false);
-        screenManager.goToScreen(SCREENS.ACTION);
       }
     } catch (error) {
       console.error('Submit error:', error);
@@ -297,7 +290,8 @@ export default function ArenaBattle({ problem, session, onSubmit, onAbandon, pro
               feedbackMessage={feedbackMessage}
               progressStatus={progressStatus}
               onContinue={() => screenManager.goToScreen(SCREENS.ACTION)}
-              autoAdvance={1500}
+              autoAdvance={0}
+              showContinue={false}
             />
           )}
         </AnimatePresence>

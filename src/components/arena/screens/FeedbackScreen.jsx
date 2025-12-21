@@ -138,41 +138,6 @@ export default function FeedbackScreen({
                     </motion.div>
                 </motion.div>
 
-                {/* Progress Ring (subtle) */}
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.4 }}
-                    className="flex justify-center mt-6"
-                >
-                    <div className="relative w-12 h-12">
-                        <svg className="w-12 h-12 transform -rotate-90">
-                            <circle
-                                cx="24"
-                                cy="24"
-                                r="20"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                fill="none"
-                                className="text-zinc-800"
-                            />
-                            <motion.circle
-                                cx="24"
-                                cy="24"
-                                r="20"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                fill="none"
-                                className={config.color}
-                                strokeDasharray={125.6}
-                                initial={{ strokeDashoffset: 125.6 }}
-                                animate={{ strokeDashoffset: 125.6 * 0.3 }}
-                                transition={{ duration: 0.5, delay: 0.5 }}
-                            />
-                        </svg>
-                    </div>
-                </motion.div>
-
                 {/* Continue Button (if not auto-advance) */}
                 {showContinue && !autoAdvance && (
                     <motion.div
@@ -189,18 +154,6 @@ export default function FeedbackScreen({
                             <ArrowRight className="w-5 h-5 ml-2" />
                         </Button>
                     </motion.div>
-                )}
-
-                {/* Auto-advance indicator */}
-                {autoAdvance && (
-                    <motion.p
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.6 }}
-                        className="text-zinc-600 text-sm text-center mt-4"
-                    >
-                        Melanjutkan otomatis...
-                    </motion.p>
                 )}
             </div>
         </motion.div>
