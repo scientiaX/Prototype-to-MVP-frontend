@@ -126,8 +126,8 @@ export default function ArenaBattle({ problem, session, onSubmit, onAbandon, pro
         // Update progress status
         updateProgressStatus(exchangeHistory.length + 1);
 
-        // Show micro feedback (once)
-        showToast('tradeoff_locked', 'Recorded');
+        // Show micro feedback (3.5 seconds for readability)
+        showToast('tradeoff_locked', 'Decision recorded ✓', 3500);
 
         // Check if should conclude
         if (data.should_conclude) {
