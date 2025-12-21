@@ -192,10 +192,13 @@ export const api = {
     },
 
     list: async (filters = {}) => {
+      const user = await auth.me();
       const queryParams = new URLSearchParams();
       if (filters.difficulty_min) queryParams.append('difficulty_min', filters.difficulty_min);
       if (filters.difficulty_max) queryParams.append('difficulty_max', filters.difficulty_max);
       if (filters.is_active !== undefined) queryParams.append('is_active', filters.is_active);
+      // Add user_id to filter personalized problems
+      queryParams.append('user_id', user.email);
 
       const response = await apiClient.get(`/problems?${queryParams}`);
       return response.data;
