@@ -7,6 +7,7 @@ import ProblemCard from '@/components/arena/ProblemCard';
 import ArenaBattle from '@/components/arena/ArenaBattle';
 import ArenaResult from '@/components/arena/ArenaResult';
 import ProblemGeneratorModal from '@/components/arena/ProblemGeneratorModal';
+import { ArenaEntryFlow } from '@/components/arena/entry';
 import { Loader2, RefreshCw, Trophy, Zap, Sparkles, Plus, Swords, Target, Users, User, Clock, Lock } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 
@@ -19,8 +20,9 @@ export default function Arena() {
   const [isLoading, setIsLoading] = useState(true);
   const [isGenerating, setIsGenerating] = useState(false);
   const [showGeneratorModal, setShowGeneratorModal] = useState(false);
-  const [view, setView] = useState('selection');
+  const [view, setView] = useState('selection'); // 'selection' | 'entry' | 'battle' | 'result'
   const [gameMode, setGameMode] = useState(null); // null = mode selection, 'solo' = solo mode, 'multiplayer' = coming soon
+  const [entryFlowData, setEntryFlowData] = useState(null); // Data from entry flow
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -60,6 +62,19 @@ export default function Arena() {
     setSelectedProblem(problem);
     const session = await apiClient.api.arena.start(problem.problem_id);
     setCurrentSession(session);
+    // Start with entry flow first (3-minute high-impact entry)
+    setView('entry');
+  };
+
+  // Handle entry flow completion - transition to main battle
+  const handleEntryFlowComplete = (flowData) => {
+    setEntryFlowData(flowData);
+    setView('battle');
+  };
+
+  // Skip entry flow (for dev/testing)
+  const handleSkipEntryFlow = () => {
+    setEntryFlowData(null);
     setView('battle');
   };
 
@@ -135,6 +150,19 @@ export default function Arena() {
     );
   }
 
+  // Entry Flow View - 3-minute high-impact entry sequence
+  if (view === 'entry' && selectedProblem) {
+    return (
+      <ArenaEntryFlow
+        problem={selectedProblem}
+        session={currentSession}
+        profile={profile}
+        onComplete={handleEntryFlowComplete}
+        onSkip={handleSkipEntryFlow}
+      />
+    );
+  }
+
   if (view === 'battle' && selectedProblem) {
     return (
       <ArenaBattle
@@ -143,6 +171,7 @@ export default function Arena() {
         profile={profile}
         onSubmit={handleSubmit}
         onAbandon={handleAbandon}
+        entryFlowData={entryFlowData}
       />
     );
   }
