@@ -126,9 +126,6 @@ export default function ArenaBattle({ problem, session, onSubmit, onAbandon, pro
         // Update progress status
         updateProgressStatus(exchangeHistory.length + 1);
 
-        // Show micro feedback (3.5 seconds for readability)
-        showToast('tradeoff_locked', 'Decision recorded ✓', 3500);
-
         // Check if should conclude
         if (data.should_conclude) {
           setIsLoading(false);
@@ -136,10 +133,17 @@ export default function ArenaBattle({ problem, session, onSubmit, onAbandon, pro
           return;
         }
 
-        // Skip feedback screen - just show toast and go to next question immediately
-        setCurrentQuestion(data.question || "Apa langkah selanjutnya?");
+        // Show FeedbackScreen for 1 second
+        setFeedbackMessage(data.feedback || 'Good reasoning');
         setIsLoading(false);
-        // Already on ACTION screen, just update question - no screen change needed
+        screenManager.goToScreen(SCREENS.FEEDBACK);
+
+        // After 1 second, transition to next question
+        setTimeout(() => {
+          setCurrentQuestion(data.question || "Apa langkah selanjutnya?");
+          screenManager.goToScreen(SCREENS.ACTION);
+        }, 1000);
+
       } else {
         // API error - use fallback
         setCurrentQuestion("Apa pertimbangan utamamu dalam keputusan ini?");
@@ -147,11 +151,9 @@ export default function ArenaBattle({ problem, session, onSubmit, onAbandon, pro
       }
     } catch (error) {
       console.error('Submit error:', error);
-      showToast('warning', 'Timeout');
       // Fallback question on error
       setCurrentQuestion("Jelaskan lebih lanjut keputusanmu.");
       setIsLoading(false);
-      screenManager.goToScreen(SCREENS.ACTION);
     }
   };
 
