@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { motion } from 'framer-motion';
 import { User, Lock, ArrowRight, Flame, Sparkles } from 'lucide-react';
 import apiClient from '@/api/apiClient';
+import { getTranslation } from '@/components/utils/translations';
 
 export default function Login() {
     const [username, setUsername] = useState('');
@@ -13,12 +14,15 @@ export default function Login() {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
 
+    // Default to English for login page
+    const t = getTranslation('en');
+
     const handleLogin = (e) => {
         e.preventDefault();
         setError('');
 
         if (!username.trim()) {
-            setError('Masukkan nama');
+            setError(t.login.errorName);
             return;
         }
 
@@ -122,10 +126,10 @@ export default function Login() {
                         </motion.div>
 
                         <h1 className="text-2xl font-bold text-white mb-2">
-                            Masuk ke <span className="text-gradient-fire">Arena</span>
+                            {t.login.title} <span className="text-gradient-fire">{t.login.titleHighlight}</span>
                         </h1>
                         <p className="text-zinc-500">
-                            Masukkan nama dan password untuk lanjut
+                            {t.login.subtitle}
                         </p>
                     </div>
 
@@ -133,7 +137,7 @@ export default function Login() {
                     <form onSubmit={handleLogin} className="space-y-5 relative z-10">
                         <div>
                             <label className="block text-sm font-medium text-zinc-300 mb-2.5">
-                                Nama
+                                {t.login.nameLabel}
                             </label>
                             <div className="relative group">
                                 <div className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors duration-200 ${focused === 'username' ? 'text-orange-400' : 'text-zinc-500'}`}>
@@ -146,7 +150,7 @@ export default function Login() {
                                     onFocus={() => setFocused('username')}
                                     onBlur={() => setFocused(null)}
                                     className="w-full pl-12 pr-4 py-4 bg-zinc-800/80 border border-zinc-700 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all duration-200 hover:border-zinc-600"
-                                    placeholder="Nama kamu"
+                                    placeholder={t.login.namePlaceholder}
                                     autoFocus
                                 />
                             </div>
@@ -154,7 +158,7 @@ export default function Login() {
 
                         <div>
                             <label className="block text-sm font-medium text-zinc-300 mb-2.5">
-                                Password
+                                {t.login.passwordLabel}
                             </label>
                             <div className="relative group">
                                 <div className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors duration-200 ${focused === 'password' ? 'text-orange-400' : 'text-zinc-500'}`}>
@@ -167,11 +171,11 @@ export default function Login() {
                                     onFocus={() => setFocused('password')}
                                     onBlur={() => setFocused(null)}
                                     className="w-full pl-12 pr-4 py-4 bg-zinc-800/80 border border-zinc-700 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all duration-200 hover:border-zinc-600"
-                                    placeholder="Password (opsional)"
+                                    placeholder={t.login.passwordPlaceholder}
                                 />
                             </div>
                             <p className="text-zinc-600 text-xs mt-2">
-                                Password opsional untuk development
+                                {t.login.passwordHint}
                             </p>
                         </div>
 
@@ -185,14 +189,14 @@ export default function Login() {
                             size="xl"
                             className="w-full mt-3 group"
                         >
-                            Lanjut ke Arena
+                            {t.login.submitButton}
                             <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
                         </Button>
                     </form>
 
                     <div className="mt-8 pt-6 border-t border-zinc-800">
                         <p className="text-center text-xs text-zinc-600">
-                            Tidak perlu email • Password opsional
+                            {t.login.footer}
                         </p>
                     </div>
                 </div>

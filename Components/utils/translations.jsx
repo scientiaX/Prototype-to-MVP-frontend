@@ -9,6 +9,21 @@ export const translations = {
       logout: 'Logout'
     },
 
+    // Login page
+    login: {
+      title: 'Enter the',
+      titleHighlight: 'Arena',
+      subtitle: 'Enter your name and password to continue',
+      nameLabel: 'Name',
+      namePlaceholder: 'Your name',
+      passwordLabel: 'Password',
+      passwordPlaceholder: 'Password (optional)',
+      passwordHint: 'Password optional for development',
+      submitButton: 'Continue to Arena',
+      footer: 'No email needed • Password optional',
+      errorName: 'Please enter your name'
+    },
+
     // Home page
     home: {
       tagline: 'NOVAX TRIAL',
@@ -179,6 +194,21 @@ export const translations = {
       profile: 'Profile',
       leaderboard: 'Leaderboard',
       logout: 'Keluar'
+    },
+
+    // Login page
+    login: {
+      title: 'Masuk ke',
+      titleHighlight: 'Arena',
+      subtitle: 'Masukkan nama dan password untuk lanjut',
+      nameLabel: 'Nama',
+      namePlaceholder: 'Nama kamu',
+      passwordLabel: 'Password',
+      passwordPlaceholder: 'Password (opsional)',
+      passwordHint: 'Password opsional untuk development',
+      submitButton: 'Lanjut ke Arena',
+      footer: 'Tidak perlu email • Password opsional',
+      errorName: 'Masukkan nama'
     },
 
     // Home page
