@@ -13,15 +13,23 @@ export const translations = {
     login: {
       title: 'Enter the',
       titleHighlight: 'Arena',
-      subtitle: 'Enter your name and password to continue',
+      subtitle: 'Create an account or login to continue',
       nameLabel: 'Name',
-      namePlaceholder: 'Your name',
+      namePlaceholder: 'Your display name',
+      emailLabel: 'Email',
+      emailPlaceholder: 'your@email.com',
       passwordLabel: 'Password',
-      passwordPlaceholder: 'Password (optional)',
-      passwordHint: 'Password optional for development',
-      submitButton: 'Continue to Arena',
-      footer: 'No email needed • Password optional',
-      errorName: 'Please enter your name'
+      passwordPlaceholder: 'Enter password',
+      submitButton: 'Continue',
+      registerButton: 'Create Account',
+      loginButton: 'Login',
+      switchToLogin: 'Already have an account? Login',
+      switchToRegister: 'No account? Create one',
+      footer: 'Your name will be visible on leaderboard',
+      errorName: 'Please enter your name',
+      errorEmail: 'Please enter a valid email',
+      errorPassword: 'Password is required',
+      errorEmailTaken: 'Email already registered'
     },
 
     // Calibration
@@ -116,15 +124,23 @@ export const translations = {
     login: {
       title: 'Masuk ke',
       titleHighlight: 'Arena',
-      subtitle: 'Masukkan nama dan password untuk lanjut',
+      subtitle: 'Buat akun atau login untuk lanjut',
       nameLabel: 'Nama',
-      namePlaceholder: 'Nama kamu',
+      namePlaceholder: 'Nama tampilan kamu',
+      emailLabel: 'Email',
+      emailPlaceholder: 'email@kamu.com',
       passwordLabel: 'Password',
-      passwordPlaceholder: 'Password (opsional)',
-      passwordHint: 'Password opsional untuk development',
-      submitButton: 'Lanjut ke Arena',
-      footer: 'Tidak perlu email • Password opsional',
-      errorName: 'Masukkan nama'
+      passwordPlaceholder: 'Masukkan password',
+      submitButton: 'Lanjut',
+      registerButton: 'Buat Akun',
+      loginButton: 'Login',
+      switchToLogin: 'Sudah punya akun? Login',
+      switchToRegister: 'Belum punya akun? Daftar',
+      footer: 'Nama kamu akan terlihat di leaderboard',
+      errorName: 'Masukkan nama',
+      errorEmail: 'Masukkan email yang valid',
+      errorPassword: 'Password wajib diisi',
+      errorEmailTaken: 'Email sudah terdaftar'
     },
 
     // Calibration

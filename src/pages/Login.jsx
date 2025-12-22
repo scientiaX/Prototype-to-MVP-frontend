@@ -2,42 +2,73 @@ import React, { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { motion } from 'framer-motion';
-import { User, Lock, ArrowRight, Flame, Sparkles } from 'lucide-react';
+import { User, Lock, Mail, ArrowRight, Flame, Sparkles, Loader2 } from 'lucide-react';
 import apiClient from '@/api/apiClient';
 import { getTranslation } from '@/components/utils/translations';
 
 export default function Login() {
-    const [username, setUsername] = useState('');
+    const [isRegister, setIsRegister] = useState(true); // Default to register for new users
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [focused, setFocused] = useState(null);
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
 
     // Default to English for login page
     const t = getTranslation('en');
 
-    const handleLogin = (e) => {
+    const validateEmail = (email) => {
+        return /^\S+@\S+\.\S+$/.test(email);
+    };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
 
-        if (!username.trim()) {
+        // Validation
+        if (isRegister && !name.trim()) {
             setError(t.login.errorName);
             return;
         }
 
-        // Use username as unique identifier (no email required)
-        // Generate a simple ID from username for backend compatibility
-        const userId = username.trim().toLowerCase().replace(/\s+/g, '_');
+        if (!email.trim() || !validateEmail(email)) {
+            setError(t.login.errorEmail);
+            return;
+        }
 
-        apiClient.auth.setUser({
-            email: `${userId}@arena.local`, // Internal ID, not shown to user
-            name: username.trim(),
-            username: username.trim()
-        });
+        if (!password.trim()) {
+            setError(t.login.errorPassword);
+            return;
+        }
 
-        const redirectTo = searchParams.get('redirect') || '/calibration';
-        navigate(redirectTo);
+        setLoading(true);
+
+        try {
+            if (isRegister) {
+                await apiClient.auth.register(email.trim(), password, name.trim());
+            } else {
+                await apiClient.auth.login(email.trim(), password);
+            }
+
+            const redirectTo = searchParams.get('redirect') || '/calibration';
+            navigate(redirectTo);
+        } catch (err) {
+            console.error('Auth error:', err);
+            const errorMsg = err.response?.data?.error || err.message || 'Authentication failed';
+
+            if (errorMsg.includes('already registered') || errorMsg.includes('Email already')) {
+                setError(t.login.errorEmailTaken);
+            } else if (errorMsg.includes('Invalid email or password')) {
+                setError('Invalid email or password');
+            } else {
+                setError(errorMsg);
+            }
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -134,30 +165,55 @@ export default function Login() {
                     </div>
 
                     {/* Form */}
-                    <form onSubmit={handleLogin} className="space-y-5 relative z-10">
+                    <form onSubmit={handleSubmit} className="space-y-4 relative z-10">
+                        {/* Name (only for register) */}
+                        {isRegister && (
+                            <div>
+                                <label className="block text-sm font-medium text-zinc-300 mb-2">
+                                    {t.login.nameLabel}
+                                </label>
+                                <div className="relative group">
+                                    <div className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors duration-200 ${focused === 'name' ? 'text-orange-400' : 'text-zinc-500'}`}>
+                                        <User className="w-5 h-5" />
+                                    </div>
+                                    <input
+                                        type="text"
+                                        value={name}
+                                        onChange={(e) => setName(e.target.value)}
+                                        onFocus={() => setFocused('name')}
+                                        onBlur={() => setFocused(null)}
+                                        className="w-full pl-12 pr-4 py-3.5 bg-zinc-800/80 border border-zinc-700 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all duration-200 hover:border-zinc-600"
+                                        placeholder={t.login.namePlaceholder}
+                                    />
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Email */}
                         <div>
-                            <label className="block text-sm font-medium text-zinc-300 mb-2.5">
-                                {t.login.nameLabel}
+                            <label className="block text-sm font-medium text-zinc-300 mb-2">
+                                {t.login.emailLabel}
                             </label>
                             <div className="relative group">
-                                <div className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors duration-200 ${focused === 'username' ? 'text-orange-400' : 'text-zinc-500'}`}>
-                                    <User className="w-5 h-5" />
+                                <div className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors duration-200 ${focused === 'email' ? 'text-orange-400' : 'text-zinc-500'}`}>
+                                    <Mail className="w-5 h-5" />
                                 </div>
                                 <input
-                                    type="text"
-                                    value={username}
-                                    onChange={(e) => setUsername(e.target.value)}
-                                    onFocus={() => setFocused('username')}
+                                    type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    onFocus={() => setFocused('email')}
                                     onBlur={() => setFocused(null)}
-                                    className="w-full pl-12 pr-4 py-4 bg-zinc-800/80 border border-zinc-700 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all duration-200 hover:border-zinc-600"
-                                    placeholder={t.login.namePlaceholder}
-                                    autoFocus
+                                    className="w-full pl-12 pr-4 py-3.5 bg-zinc-800/80 border border-zinc-700 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all duration-200 hover:border-zinc-600"
+                                    placeholder={t.login.emailPlaceholder}
+                                    autoFocus={!isRegister}
                                 />
                             </div>
                         </div>
 
+                        {/* Password */}
                         <div>
-                            <label className="block text-sm font-medium text-zinc-300 mb-2.5">
+                            <label className="block text-sm font-medium text-zinc-300 mb-2">
                                 {t.login.passwordLabel}
                             </label>
                             <div className="relative group">
@@ -170,32 +226,49 @@ export default function Login() {
                                     onChange={(e) => setPassword(e.target.value)}
                                     onFocus={() => setFocused('password')}
                                     onBlur={() => setFocused(null)}
-                                    className="w-full pl-12 pr-4 py-4 bg-zinc-800/80 border border-zinc-700 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all duration-200 hover:border-zinc-600"
+                                    className="w-full pl-12 pr-4 py-3.5 bg-zinc-800/80 border border-zinc-700 rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 transition-all duration-200 hover:border-zinc-600"
                                     placeholder={t.login.passwordPlaceholder}
                                 />
                             </div>
-                            <p className="text-zinc-600 text-xs mt-2">
-                                {t.login.passwordHint}
-                            </p>
                         </div>
 
                         {error && (
-                            <p className="text-red-500 text-sm">{error}</p>
+                            <p className="text-red-500 text-sm bg-red-500/10 border border-red-500/20 rounded-lg px-4 py-2">{error}</p>
                         )}
 
                         <Button
                             type="submit"
                             variant="gradient"
                             size="xl"
-                            className="w-full mt-3 group"
+                            className="w-full mt-2 group"
+                            disabled={loading}
                         >
-                            {t.login.submitButton}
-                            <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                            {loading ? (
+                                <>
+                                    <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                                    Loading...
+                                </>
+                            ) : (
+                                <>
+                                    {isRegister ? t.login.registerButton : t.login.loginButton}
+                                    <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                                </>
+                            )}
                         </Button>
                     </form>
 
-                    <div className="mt-8 pt-6 border-t border-zinc-800">
-                        <p className="text-center text-xs text-zinc-600">
+                    <div className="mt-6 pt-6 border-t border-zinc-800">
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setIsRegister(!isRegister);
+                                setError('');
+                            }}
+                            className="w-full text-center text-sm text-zinc-400 hover:text-orange-400 transition-colors"
+                        >
+                            {isRegister ? t.login.switchToLogin : t.login.switchToRegister}
+                        </button>
+                        <p className="text-center text-xs text-zinc-600 mt-4">
                             {t.login.footer}
                         </p>
                     </div>

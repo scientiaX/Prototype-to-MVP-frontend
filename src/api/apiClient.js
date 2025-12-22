@@ -38,15 +38,24 @@ apiClient.interceptors.response.use(
 
 export const auth = {
   me: async () => {
-    const user = JSON.parse(localStorage.getItem('current_user') || '{}');
-    if (!user.email) {
-      throw new Error('Not authenticated');
+    // Try to get from backend first if we have token
+    const token = localStorage.getItem('auth_token');
+    if (token) {
+      try {
+        const response = await apiClient.get('/auth/me');
+        return response.data;
+      } catch (error) {
+        // Token invalid, clear it
+        localStorage.removeItem('auth_token');
+        localStorage.removeItem('current_user');
+        throw new Error('Not authenticated');
+      }
     }
-    return user;
+    throw new Error('Not authenticated');
   },
 
   isAuthenticated: () => {
-    return !!localStorage.getItem('current_user');
+    return !!localStorage.getItem('auth_token');
   },
 
   logout: () => {
@@ -73,13 +82,26 @@ export const auth = {
     window.location.href = '/login';
   },
 
+  // Register new user
+  register: async (email, password, name) => {
+    const response = await apiClient.post('/auth/register', { email, password, name });
+    const { token, user } = response.data;
+    localStorage.setItem('auth_token', token);
+    localStorage.setItem('current_user', JSON.stringify(user));
+    return user;
+  },
+
+  // Login existing user
+  login: async (email, password) => {
+    const response = await apiClient.post('/auth/login', { email, password });
+    const { token, user } = response.data;
+    localStorage.setItem('auth_token', token);
+    localStorage.setItem('current_user', JSON.stringify(user));
+    return user;
+  },
+
+  // Legacy setUser (for compatibility during transition)
   setUser: (user) => {
-    // Clear old user data first when setting new user
-    const oldUser = JSON.parse(localStorage.getItem('current_user') || '{}');
-    if (oldUser.email && oldUser.email !== user.email) {
-      // Different user, clear everything
-      auth.clearAllData();
-    }
     localStorage.setItem('current_user', JSON.stringify(user));
   }
 };
