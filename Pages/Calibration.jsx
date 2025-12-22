@@ -8,68 +8,141 @@ import CalibrationResult from '@/components/calibration/CalibrationResult';
 import { Loader2 } from 'lucide-react';
 import { getTranslation } from '../components/utils/translations';
 
-const getCalibrationQuestions = (lang) => {
-  const t = getTranslation(lang);
-  return [
-    {
-      id: 'domain',
-      question: t.calibration.questions.domain.question,
-      options: [
-        { value: 'business', label: t.calibration.questions.domain.options.business },
-        { value: 'tech', label: t.calibration.questions.domain.options.tech },
-        { value: 'creative', label: t.calibration.questions.domain.options.creative },
-        { value: 'leadership', label: t.calibration.questions.domain.options.leadership }
-      ]
-    },
-    {
-      id: 'aspiration',
-      question: t.calibration.questions.aspiration.question,
-      options: [
-        { value: 'founder', label: t.calibration.questions.aspiration.options.founder },
-        { value: 'expert', label: t.calibration.questions.aspiration.options.expert },
-        { value: 'leader', label: t.calibration.questions.aspiration.options.leader },
-        { value: 'innovator', label: t.calibration.questions.aspiration.options.innovator }
-      ]
-    },
-    {
-      id: 'thinking_style',
-      question: t.calibration.questions.thinking_style.question,
-      options: [
-        { value: 'fast', label: t.calibration.questions.thinking_style.options.fast },
-        { value: 'accurate', label: t.calibration.questions.thinking_style.options.accurate },
-        { value: 'explorative', label: t.calibration.questions.thinking_style.options.explorative }
-      ]
-    },
-    {
-      id: 'stuck_experience',
-      question: t.calibration.questions.stuck_experience.question,
-      options: [
-        { value: 'decision', label: t.calibration.questions.stuck_experience.options.decision },
-        { value: 'execution', label: t.calibration.questions.stuck_experience.options.execution },
-        { value: 'direction', label: t.calibration.questions.stuck_experience.options.direction },
-        { value: 'resource', label: t.calibration.questions.stuck_experience.options.resource }
-      ]
-    },
-    {
-      id: 'avoided_risk',
-      question: t.calibration.questions.avoided_risk.question,
-      options: [
-        { value: 'financial', label: t.calibration.questions.avoided_risk.options.financial },
-        { value: 'reputation', label: t.calibration.questions.avoided_risk.options.reputation },
-        { value: 'time', label: t.calibration.questions.avoided_risk.options.time },
-        { value: 'relationship', label: t.calibration.questions.avoided_risk.options.relationship }
-      ]
-    },
-    {
-      id: 'regret',
-      question: t.calibration.questions.regret.question,
-      options: [
-        { value: 'too_slow', label: t.calibration.questions.regret.options.too_slow },
-        { value: 'too_reckless', label: t.calibration.questions.regret.options.too_reckless }
-      ]
-    }
-  ];
+// Mapping: Domain -> Relevant Aspirations
+const ASPIRATION_BY_DOMAIN = {
+  business: ['founder', 'ceo', 'investor', 'freelancer'],
+  tech: ['expert', 'product_lead', 'cto', 'innovator'],
+  creative: ['creator', 'artist', 'expert', 'founder'],
+  leadership: ['leader', 'cxo', 'founder', 'strategist']
 };
+
+// Mapping: Domain + Aspiration -> Relevant Stuck Experiences
+const STUCK_BY_CONTEXT = {
+  // Business contexts
+  'business_founder': ['decision', 'scaling', 'resource', 'delegation'],
+  'business_ceo': ['delegation', 'scaling', 'decision', 'overwhelm'],
+  'business_investor': ['decision', 'direction', 'confidence', 'overwhelm'],
+  'business_freelancer': ['resource', 'confidence', 'motivation', 'direction'],
+  // Tech contexts
+  'tech_expert': ['direction', 'execution', 'perfectionism', 'overwhelm'],
+  'tech_product_lead': ['decision', 'execution', 'delegation', 'scaling'],
+  'tech_cto': ['delegation', 'scaling', 'direction', 'overwhelm'],
+  'tech_innovator': ['direction', 'confidence', 'resource', 'execution'],
+  // Creative contexts
+  'creative_creator': ['motivation', 'confidence', 'direction', 'resource'],
+  'creative_artist': ['motivation', 'confidence', 'perfectionism', 'direction'],
+  'creative_expert': ['direction', 'perfectionism', 'execution', 'motivation'],
+  'creative_founder': ['resource', 'confidence', 'scaling', 'decision'],
+  // Leadership contexts
+  'leadership_leader': ['delegation', 'decision', 'execution', 'motivation'],
+  'leadership_cxo': ['delegation', 'scaling', 'decision', 'overwhelm'],
+  'leadership_founder': ['decision', 'scaling', 'resource', 'delegation'],
+  'leadership_strategist': ['direction', 'decision', 'execution', 'overwhelm']
+};
+
+// Mapping: Domain + Aspiration -> Relevant Avoided Risks
+const RISK_BY_CONTEXT = {
+  // Business contexts
+  'business_founder': ['financial', 'time', 'opportunity', 'reputation'],
+  'business_ceo': ['reputation', 'career', 'financial', 'relationship'],
+  'business_investor': ['financial', 'opportunity', 'time', 'reputation'],
+  'business_freelancer': ['financial', 'time', 'reputation', 'disappointment'],
+  // Tech contexts
+  'tech_expert': ['reputation', 'time', 'career', 'disappointment'],
+  'tech_product_lead': ['time', 'reputation', 'career', 'relationship'],
+  'tech_cto': ['reputation', 'career', 'relationship', 'health'],
+  'tech_innovator': ['time', 'reputation', 'opportunity', 'financial'],
+  // Creative contexts
+  'creative_creator': ['reputation', 'disappointment', 'time', 'financial'],
+  'creative_artist': ['disappointment', 'reputation', 'financial', 'time'],
+  'creative_expert': ['reputation', 'time', 'disappointment', 'career'],
+  'creative_founder': ['financial', 'reputation', 'time', 'opportunity'],
+  // Leadership contexts
+  'leadership_leader': ['relationship', 'reputation', 'career', 'disappointment'],
+  'leadership_cxo': ['reputation', 'career', 'relationship', 'health'],
+  'leadership_founder': ['financial', 'reputation', 'relationship', 'opportunity'],
+  'leadership_strategist': ['time', 'opportunity', 'reputation', 'career']
+};
+
+// Default fallbacks
+const DEFAULT_STUCK = ['decision', 'execution', 'direction', 'resource'];
+const DEFAULT_RISK = ['financial', 'reputation', 'time', 'relationship'];
+
+// Dynamic question generator
+const getDynamicQuestion = (questionIndex, answers, lang) => {
+  const t = getTranslation(lang);
+  const questions = t.calibration.questions;
+
+  const questionOrder = ['domain', 'aspiration', 'thinking_style', 'stuck_experience', 'avoided_risk', 'regret'];
+  const questionId = questionOrder[questionIndex];
+
+  switch (questionId) {
+    case 'domain':
+      return {
+        id: 'domain',
+        question: questions.domain.question,
+        options: Object.entries(questions.domain.options).map(([value, label]) => ({ value, label }))
+      };
+
+    case 'aspiration': {
+      const domain = answers.domain || 'business';
+      const relevantAspirations = ASPIRATION_BY_DOMAIN[domain] || ASPIRATION_BY_DOMAIN.business;
+      return {
+        id: 'aspiration',
+        question: questions.aspiration.question,
+        options: relevantAspirations.map(value => ({
+          value,
+          label: questions.aspiration.options[value]
+        }))
+      };
+    }
+
+    case 'thinking_style':
+      return {
+        id: 'thinking_style',
+        question: questions.thinking_style.question,
+        options: Object.entries(questions.thinking_style.options).map(([value, label]) => ({ value, label }))
+      };
+
+    case 'stuck_experience': {
+      const contextKey = `${answers.domain}_${answers.aspiration}`;
+      const relevantStuck = STUCK_BY_CONTEXT[contextKey] || DEFAULT_STUCK;
+      return {
+        id: 'stuck_experience',
+        question: questions.stuck_experience.question,
+        options: relevantStuck.map(value => ({
+          value,
+          label: questions.stuck_experience.options[value]
+        }))
+      };
+    }
+
+    case 'avoided_risk': {
+      const contextKey = `${answers.domain}_${answers.aspiration}`;
+      const relevantRisks = RISK_BY_CONTEXT[contextKey] || DEFAULT_RISK;
+      return {
+        id: 'avoided_risk',
+        question: questions.avoided_risk.question,
+        options: relevantRisks.map(value => ({
+          value,
+          label: questions.avoided_risk.options[value]
+        }))
+      };
+    }
+
+    case 'regret':
+      return {
+        id: 'regret',
+        question: questions.regret.question,
+        options: Object.entries(questions.regret.options).map(([value, label]) => ({ value, label }))
+      };
+
+    default:
+      return null;
+  }
+};
+
+const TOTAL_QUESTIONS = 6;
 
 function calculateProfile(answers) {
   let risk_appetite = 0.5;
@@ -131,8 +204,8 @@ function calculateProfile(answers) {
     builder: decision_speed + (1 - ambiguity_tolerance) * 0.5,
     strategist: ambiguity_tolerance + experience_depth
   };
-  
-  primary_archetype = Object.entries(scores).reduce((a, b) => 
+
+  primary_archetype = Object.entries(scores).reduce((a, b) =>
     scores[a[0]] > scores[b[0]] ? a : b
   )[0];
 
@@ -168,8 +241,11 @@ export default function Calibration() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [existingProfile, setExistingProfile] = useState(null);
   const navigate = useNavigate();
-  
-  const CALIBRATION_QUESTIONS = selectedLanguage ? getCalibrationQuestions(selectedLanguage) : [];
+
+  // Get current question dynamically based on answers
+  const currentQuestionData = selectedLanguage
+    ? getDynamicQuestion(currentQuestion, answers, selectedLanguage)
+    : null;
 
   useEffect(() => {
     checkExistingProfile();
@@ -191,23 +267,26 @@ export default function Calibration() {
   };
 
   const handleSelect = (value) => {
-    const questionId = CALIBRATION_QUESTIONS[currentQuestion].id;
-    setAnswers(prev => ({ ...prev, [questionId]: value }));
-    
+    const questionId = currentQuestionData?.id;
+    if (!questionId) return;
+
+    const newAnswers = { ...answers, [questionId]: value };
+    setAnswers(newAnswers);
+
     setTimeout(() => {
-      if (currentQuestion < CALIBRATION_QUESTIONS.length - 1) {
+      if (currentQuestion < TOTAL_QUESTIONS - 1) {
         setCurrentQuestion(prev => prev + 1);
       } else {
-        processCalibration({ ...answers, [questionId]: value });
+        processCalibration(newAnswers);
       }
     }, 300);
   };
 
   const processCalibration = async (finalAnswers) => {
     setIsProcessing(true);
-    
+
     const profile = await apiClient.api.profiles.calibrate(finalAnswers, selectedLanguage);
-    
+
     setProfile(profile);
     setView('result');
     setIsProcessing(false);
@@ -226,18 +305,18 @@ export default function Calibration() {
             {existingProfile.language === 'en' ? 'You are already calibrated.' : 'Kamu sudah ter-kalibrasi.'}
           </h2>
           <p className="text-zinc-400 mb-6">
-            {existingProfile.language === 'en' 
-              ? 'Go straight to the arena or check your progress.' 
+            {existingProfile.language === 'en'
+              ? 'Go straight to the arena or check your progress.'
               : 'Langsung masuk ke arena atau lihat progress kamu.'}
           </p>
           <div className="flex gap-4 justify-center">
-            <button 
+            <button
               onClick={() => navigate(createPageUrl('Arena'))}
               className="bg-orange-500 hover:bg-orange-600 text-black font-bold px-6 py-3 rounded-lg"
             >
               {t.arena.title}
             </button>
-            <button 
+            <button
               onClick={() => navigate(createPageUrl('Profile'))}
               className="bg-zinc-800 hover:bg-zinc-700 text-white font-bold px-6 py-3 rounded-lg"
             >
@@ -269,7 +348,7 @@ export default function Calibration() {
     <div className="min-h-screen bg-black flex flex-col items-center justify-center p-6">
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 via-transparent to-red-500/5 pointer-events-none" />
-      
+
       <AnimatePresence mode="wait">
         {view === 'language' ? (
           <motion.div
@@ -321,21 +400,21 @@ export default function Calibration() {
             </div>
           </motion.div>
         ) : view === 'result' ? (
-          <CalibrationResult 
+          <CalibrationResult
             key="result"
             profile={profile}
             language={selectedLanguage}
-            onEnterArena={handleEnterArena} 
+            onEnterArena={handleEnterArena}
           />
-        ) : CALIBRATION_QUESTIONS.length > 0 && CALIBRATION_QUESTIONS[currentQuestion] ? (
+        ) : currentQuestionData ? (
           <CalibrationQuestion
-            key={currentQuestion}
-            question={CALIBRATION_QUESTIONS[currentQuestion].question}
-            options={CALIBRATION_QUESTIONS[currentQuestion].options}
+            key={`${currentQuestion}-${answers.domain || ''}-${answers.aspiration || ''}`}
+            question={currentQuestionData.question}
+            options={currentQuestionData.options}
             onSelect={handleSelect}
             currentIndex={currentQuestion}
-            totalQuestions={CALIBRATION_QUESTIONS.length}
-            selectedValue={answers[CALIBRATION_QUESTIONS[currentQuestion].id]}
+            totalQuestions={TOTAL_QUESTIONS}
+            selectedValue={answers[currentQuestionData.id]}
           />
         ) : null}
       </AnimatePresence>

@@ -8,7 +8,7 @@ export const translations = {
       leaderboard: 'Leaderboard',
       logout: 'Logout'
     },
-    
+
     // Calibration
     calibration: {
       questions: {
@@ -24,10 +24,24 @@ export const translations = {
         aspiration: {
           question: "In 2 years, what do you want to be known as?",
           options: {
+            // Universal options
             founder: 'Founder building from scratch',
             expert: 'Expert mastering their field',
             leader: 'Leader managing large teams',
-            innovator: 'Innovator changing how things work'
+            innovator: 'Innovator changing how things work',
+            // Business-specific
+            ceo: 'CEO scaling a company',
+            investor: 'Investor spotting opportunities',
+            freelancer: 'Freelancer building client base',
+            // Tech-specific
+            product_lead: 'Product Lead shipping great products',
+            cto: 'CTO building technical vision',
+            // Creative-specific
+            creator: 'Creator building audience',
+            artist: 'Artist expressing unique vision',
+            // Leadership-specific
+            strategist: 'Strategist planning big moves',
+            cxo: 'Executive driving organization'
           }
         },
         thinking_style: {
@@ -41,19 +55,33 @@ export const translations = {
         stuck_experience: {
           question: "When was the last time you felt stuck?",
           options: {
+            // Universal options
             decision: 'When choosing between two hard options',
             execution: 'When knowing what to do but can\'t execute',
             direction: 'When not knowing the right direction',
-            resource: 'When lacking resources or support'
+            resource: 'When lacking resources or support',
+            // Context-specific options
+            scaling: 'When trying to scale what\'s working',
+            delegation: 'When delegating to others',
+            perfectionism: 'When stuck trying to make it perfect',
+            overwhelm: 'When overwhelmed by too many options',
+            confidence: 'When lacking confidence to take action',
+            motivation: 'When losing motivation mid-project'
           }
         },
         avoided_risk: {
           question: "What risk do you avoid most often?",
           options: {
+            // Universal options
             financial: 'Financial risk - losing money',
             reputation: 'Reputation risk - looking like a failure',
             time: 'Time risk - wasting time on wrong things',
-            relationship: 'Relationship risk - disappointing others'
+            relationship: 'Relationship risk - disappointing others',
+            // Context-specific options
+            opportunity: 'Opportunity cost - missing better options',
+            career: 'Career risk - damaging professional path',
+            disappointment: 'Self-disappointment - not meeting own standards',
+            health: 'Burnout risk - health and energy impact'
           }
         },
         regret: {
@@ -73,7 +101,7 @@ export const translations = {
         enterArena: "Enter the Arena"
       }
     },
-    
+
     // Arena
     arena: {
       title: 'Problem Arena',
@@ -86,7 +114,7 @@ export const translations = {
       generateFirst: 'Generate First Problem'
     }
   },
-  
+
   id: {
     // Navigation
     nav: {
@@ -96,7 +124,7 @@ export const translations = {
       leaderboard: 'Leaderboard',
       logout: 'Keluar'
     },
-    
+
     // Calibration
     calibration: {
       questions: {
@@ -112,10 +140,24 @@ export const translations = {
         aspiration: {
           question: "Dalam 2 tahun ke depan, kamu ingin dikenal sebagai apa?",
           options: {
+            // Universal options
             founder: 'Founder yang membangun sesuatu dari nol',
             expert: 'Expert yang menguasai bidangnya',
             leader: 'Leader yang menggerakkan tim besar',
-            innovator: 'Innovator yang mengubah cara kerja'
+            innovator: 'Innovator yang mengubah cara kerja',
+            // Business-specific
+            ceo: 'CEO yang meng-scale perusahaan',
+            investor: 'Investor yang jeli melihat peluang',
+            freelancer: 'Freelancer yang membangun klien base',
+            // Tech-specific
+            product_lead: 'Product Lead yang meluncurkan produk hebat',
+            cto: 'CTO yang membangun visi teknis',
+            // Creative-specific
+            creator: 'Creator yang membangun audience',
+            artist: 'Artist yang mengekspresikan visi unik',
+            // Leadership-specific
+            strategist: 'Strategist yang merancang langkah besar',
+            cxo: 'Executive yang menggerakkan organisasi'
           }
         },
         thinking_style: {
@@ -129,19 +171,33 @@ export const translations = {
         stuck_experience: {
           question: "Kapan terakhir kamu merasa stuck dan tidak bisa maju?",
           options: {
+            // Universal options
             decision: 'Saat harus memilih antara dua pilihan sulit',
             execution: 'Saat tahu harus apa tapi tidak bisa eksekusi',
             direction: 'Saat tidak tahu arah yang benar',
-            resource: 'Saat kekurangan resource atau dukungan'
+            resource: 'Saat kekurangan resource atau dukungan',
+            // Context-specific options
+            scaling: 'Saat mencoba meng-scale yang sudah jalan',
+            delegation: 'Saat harus mendelegasikan ke orang lain',
+            perfectionism: 'Saat terjebak ingin sempurna',
+            overwhelm: 'Saat kewalahan dengan terlalu banyak pilihan',
+            confidence: 'Saat kurang percaya diri untuk bertindak',
+            motivation: 'Saat kehilangan motivasi di tengah jalan'
           }
         },
         avoided_risk: {
           question: "Risiko apa yang paling sering kamu hindari?",
           options: {
+            // Universal options
             financial: 'Risiko finansial - kehilangan uang',
             reputation: 'Risiko reputasi - terlihat gagal',
             time: 'Risiko waktu - membuang waktu untuk hal salah',
-            relationship: 'Risiko relasi - mengecewakan orang lain'
+            relationship: 'Risiko relasi - mengecewakan orang lain',
+            // Context-specific options
+            opportunity: 'Opportunity cost - melewatkan pilihan yang lebih baik',
+            career: 'Risiko karir - merusak jalur profesional',
+            disappointment: 'Kekecewaan diri - tidak memenuhi standar sendiri',
+            health: 'Risiko burnout - dampak kesehatan dan energi'
           }
         },
         regret: {
@@ -161,7 +217,7 @@ export const translations = {
         enterArena: "Masuk Arena"
       }
     },
-    
+
     // Arena
     arena: {
       title: 'Problem Arena',
