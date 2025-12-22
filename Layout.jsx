@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import apiClient from '@/api/apiClient';
+import { getTranslation } from '@/components/utils/translations';
 import {
   Swords,
   User,
@@ -19,6 +20,9 @@ export default function Layout({ children, currentPageName }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [userLanguage, setUserLanguage] = useState('en');
+
+  const t = getTranslation(userLanguage);
 
   useEffect(() => {
     checkAuth();
@@ -34,6 +38,18 @@ export default function Layout({ children, currentPageName }) {
   const checkAuth = async () => {
     const auth = await apiClient.auth.isAuthenticated();
     setIsAuthenticated(auth);
+
+    if (auth) {
+      try {
+        const user = await apiClient.auth.me();
+        const profiles = await apiClient.entities.UserProfile.filter({ created_by: user.email });
+        if (profiles.length > 0 && profiles[0].language) {
+          setUserLanguage(profiles[0].language);
+        }
+      } catch (e) {
+        // Ignore errors, use default language
+      }
+    }
   };
 
   const handleLogout = () => {
@@ -42,10 +58,10 @@ export default function Layout({ children, currentPageName }) {
   };
 
   const navItems = [
-    { name: 'Home', icon: Home, page: 'Home' },
-    { name: 'Arena', icon: Swords, page: 'Arena' },
-    { name: 'Profile', icon: User, page: 'Profile' },
-    { name: 'Leaderboard', icon: Trophy, page: 'Leaderboard' }
+    { name: t.nav.home, icon: Home, page: 'Home' },
+    { name: t.nav.arena, icon: Swords, page: 'Arena' },
+    { name: t.nav.profile, icon: User, page: 'Profile' },
+    { name: t.nav.leaderboard, icon: Trophy, page: 'Leaderboard' }
   ];
 
   const hideNav = currentPageName === 'Calibration';
@@ -118,7 +134,7 @@ export default function Layout({ children, currentPageName }) {
                 className="flex items-center gap-2 px-4 py-2 text-sm text-zinc-400 hover:text-red-400 transition-all duration-200 rounded-xl hover:bg-red-500/10 border border-transparent hover:border-red-500/20"
               >
                 <LogOut className="w-4 h-4" />
-                <span>Keluar</span>
+                <span>{t.nav.logout}</span>
               </button>
             )}
           </div>
@@ -193,7 +209,7 @@ export default function Layout({ children, currentPageName }) {
                   className="w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-red-400 hover:bg-red-500/10 transition-colors"
                 >
                   <LogOut className="w-5 h-5" />
-                  <span>Keluar</span>
+                  <span>{t.nav.logout}</span>
                 </button>
               </>
             )}

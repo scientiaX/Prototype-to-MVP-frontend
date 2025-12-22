@@ -302,12 +302,10 @@ export default function Calibration() {
       <div className="min-h-screen bg-black flex items-center justify-center p-6">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-white mb-4">
-            {existingProfile.language === 'en' ? 'You are already calibrated.' : 'Kamu sudah ter-kalibrasi.'}
+            {t.calibration.alreadyCalibrated}
           </h2>
           <p className="text-zinc-400 mb-6">
-            {existingProfile.language === 'en'
-              ? 'Go straight to the arena or check your progress.'
-              : 'Langsung masuk ke arena atau lihat progress kamu.'}
+            {t.calibration.alreadyCalibratedHint}
           </p>
           <div className="flex gap-4 justify-center">
             <button
@@ -320,7 +318,7 @@ export default function Calibration() {
               onClick={() => navigate(createPageUrl('Profile'))}
               className="bg-zinc-800 hover:bg-zinc-700 text-white font-bold px-6 py-3 rounded-lg"
             >
-              {t.profile.title}
+              {t.nav.profile}
             </button>
           </div>
         </div>
@@ -338,7 +336,7 @@ export default function Calibration() {
           <Loader2 className="w-12 h-12 text-orange-500" />
         </motion.div>
         <p className="text-zinc-400 ml-4">
-          {selectedLanguage === 'en' ? 'Calibrating profile...' : 'Mengkalibrasi profil...'}
+          {getTranslation(selectedLanguage).calibration.calibrating}
         </p>
       </div>
     );

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import apiClient from '@/api/apiClient';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { getTranslation } from '@/components/utils/translations';
 import { Trophy, Zap, TrendingUp, Target, Brain, Wrench, Crown } from 'lucide-react';
 import { cn } from "@/lib/utils";
 
@@ -15,8 +16,11 @@ const archetypeConfig = {
 export default function Leaderboard() {
   const [profiles, setProfiles] = useState([]);
   const [currentUser, setCurrentUser] = useState(null);
+  const [userProfile, setUserProfile] = useState(null);
   const [activeTab, setActiveTab] = useState('growth');
   const [archetypeFilter, setArchetypeFilter] = useState('all');
+
+  const t = getTranslation(userProfile?.language || 'en');
 
   useEffect(() => {
     loadLeaderboard();
@@ -25,15 +29,21 @@ export default function Leaderboard() {
   const loadLeaderboard = async () => {
     const user = await apiClient.auth.me();
     setCurrentUser(user);
-    
+
+    // Get user's profile to determine language
+    const userProfiles = await apiClient.entities.UserProfile.filter({ created_by: user.email });
+    if (userProfiles.length > 0) {
+      setUserProfile(userProfiles[0]);
+    }
+
     const allProfiles = await apiClient.api.profiles.getLeaderboard();
     setProfiles(allProfiles);
   };
 
   const getGrowthScore = (profile) => {
     // Growth = XP delta + difficulty jumps in last 2 weeks
-    const totalXp = (profile.xp_risk_taker || 0) + (profile.xp_analyst || 0) + 
-                    (profile.xp_builder || 0) + (profile.xp_strategist || 0);
+    const totalXp = (profile.xp_risk_taker || 0) + (profile.xp_analyst || 0) +
+      (profile.xp_builder || 0) + (profile.xp_strategist || 0);
     return totalXp;
   };
 
@@ -49,8 +59,8 @@ export default function Leaderboard() {
     return getReliabilityScore(b) - getReliabilityScore(a);
   });
 
-  const filteredProfiles = archetypeFilter === 'all' 
-    ? sortedProfiles 
+  const filteredProfiles = archetypeFilter === 'all'
+    ? sortedProfiles
     : sortedProfiles.filter(p => p.primary_archetype === archetypeFilter);
 
   const rankColors = ['text-yellow-500', 'text-zinc-400', 'text-amber-600'];
@@ -60,26 +70,26 @@ export default function Leaderboard() {
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-white mb-2">Leaderboard</h1>
-          <p className="text-zinc-500">Bukan ranking kepintaran. Ranking konfrontasi.</p>
+          <h1 className="text-3xl font-bold text-white mb-2">{t.leaderboard.title}</h1>
+          <p className="text-zinc-500">{t.leaderboard.subtitle}</p>
         </div>
 
         {/* Mode Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
           <TabsList className="w-full bg-zinc-900 p-1 rounded-lg">
-            <TabsTrigger 
-              value="growth" 
+            <TabsTrigger
+              value="growth"
               className="flex-1 data-[state=active]:bg-orange-500 data-[state=active]:text-black"
             >
               <TrendingUp className="w-4 h-4 mr-2" />
-              Growth (2 Minggu)
+              {t.leaderboard.growth}
             </TabsTrigger>
-            <TabsTrigger 
+            <TabsTrigger
               value="reliability"
               className="flex-1 data-[state=active]:bg-orange-500 data-[state=active]:text-black"
             >
               <Trophy className="w-4 h-4 mr-2" />
-              All-Time Reliability
+              {t.leaderboard.reliability}
             </TabsTrigger>
           </TabsList>
         </Tabs>
@@ -90,12 +100,12 @@ export default function Leaderboard() {
             onClick={() => setArchetypeFilter('all')}
             className={cn(
               "px-4 py-2 rounded-lg text-sm font-medium transition-colors",
-              archetypeFilter === 'all' 
-                ? "bg-white text-black" 
+              archetypeFilter === 'all'
+                ? "bg-white text-black"
                 : "bg-zinc-900 text-zinc-400 hover:bg-zinc-800"
             )}
           >
-            Semua
+            {t.leaderboard.all}
           </button>
           {Object.entries(archetypeConfig).map(([key, config]) => {
             const Icon = config.icon;
@@ -105,8 +115,8 @@ export default function Leaderboard() {
                 onClick={() => setArchetypeFilter(key)}
                 className={cn(
                   "px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center gap-2",
-                  archetypeFilter === key 
-                    ? `${config.bgColor} ${config.color}` 
+                  archetypeFilter === key
+                    ? `${config.bgColor} ${config.color}`
                     : "bg-zinc-900 text-zinc-400 hover:bg-zinc-800"
                 )}
               >
@@ -124,7 +134,7 @@ export default function Leaderboard() {
             const Icon = archetype.icon;
             const score = activeTab === 'growth' ? getGrowthScore(profile) : getReliabilityScore(profile);
             const isCurrentUser = profile.created_by === currentUser?.email;
-            
+
             return (
               <motion.div
                 key={profile.id}
@@ -133,8 +143,8 @@ export default function Leaderboard() {
                 transition={{ delay: index * 0.05 }}
                 className={cn(
                   "flex items-center gap-4 p-4 rounded-xl border transition-all",
-                  isCurrentUser 
-                    ? "bg-orange-500/10 border-orange-500/30" 
+                  isCurrentUser
+                    ? "bg-orange-500/10 border-orange-500/30"
                     : "bg-zinc-900/50 border-zinc-800 hover:border-zinc-700"
                 )}
               >
@@ -161,10 +171,10 @@ export default function Leaderboard() {
                     "font-semibold truncate",
                     isCurrentUser ? "text-orange-500" : "text-white"
                   )}>
-                    {isCurrentUser ? 'Kamu' : `Player ${profile.id.slice(-4)}`}
+                    {isCurrentUser ? t.leaderboard.you : `Player ${profile.id.slice(-4)}`}
                   </p>
                   <p className="text-zinc-500 text-sm">
-                    Level {profile.current_difficulty} • {profile.total_arenas_completed || 0} arenas
+                    Level {profile.current_difficulty} • {profile.total_arenas_completed || 0} {t.leaderboard.arenas}
                   </p>
                 </div>
 
@@ -177,7 +187,7 @@ export default function Leaderboard() {
                     {score}
                   </p>
                   <p className="text-zinc-600 text-xs">
-                    {activeTab === 'growth' ? 'XP' : 'Reliability'}
+                    {activeTab === 'growth' ? t.leaderboard.xp : 'Reliability'}
                   </p>
                 </div>
               </motion.div>
@@ -187,17 +197,17 @@ export default function Leaderboard() {
 
         {filteredProfiles.length === 0 && (
           <div className="text-center py-16">
-            <p className="text-zinc-500">Belum ada data untuk ditampilkan.</p>
+            <p className="text-zinc-500">{t.leaderboard.noData}</p>
           </div>
         )}
 
         {/* Info */}
         <div className="mt-8 p-4 bg-zinc-900/30 border border-zinc-800 rounded-lg">
           <p className="text-zinc-500 text-sm">
-            <span className="text-orange-500 font-semibold">Catatan:</span>{' '}
-            {activeTab === 'growth' 
-              ? 'Growth leaderboard di-reset setiap 2 minggu. Berdasarkan lonjakan difficulty dan XP delta.'
-              : 'All-Time Reliability tidak pernah reset. Berdasarkan konsistensi menghadapi masalah berat.'
+            <span className="text-orange-500 font-semibold">{t.leaderboard.note}</span>{' '}
+            {activeTab === 'growth'
+              ? t.leaderboard.growthNote
+              : t.leaderboard.reliabilityNote
             }
           </p>
         </div>

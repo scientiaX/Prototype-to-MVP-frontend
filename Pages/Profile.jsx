@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import ArchetypeRadar from '@/components/profile/ArchetypeRadar';
 import BadgeDisplay from '@/components/profile/BadgeDisplay';
+import { getTranslation } from '@/components/utils/translations';
 import { Loader2, Zap, Target, Brain, Wrench, Trophy, TrendingUp, Clock } from 'lucide-react';
 import { cn } from "@/lib/utils";
 
@@ -22,24 +23,26 @@ export default function Profile() {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
+  const t = getTranslation(profile?.language || 'en');
+
   useEffect(() => {
     loadProfile();
   }, []);
 
   const loadProfile = async () => {
     const user = await apiClient.auth.me();
-    
+
     const profiles = await apiClient.entities.UserProfile.filter({ created_by: user.email });
     if (profiles.length === 0 || !profiles[0].calibration_completed) {
       navigate(createPageUrl('Calibration'));
       return;
     }
-    
+
     setProfile(profiles[0]);
-    
+
     const userAchievements = await apiClient.api.user.getAchievements(user.email);
     const userArtifacts = await apiClient.api.user.getArtifacts(user.email);
-    
+
     setAchievements(userAchievements);
     setArtifacts(userArtifacts);
     setIsLoading(false);
@@ -55,8 +58,8 @@ export default function Profile() {
 
   const archetype = archetypeConfig[profile.primary_archetype] || archetypeConfig.analyst;
   const Icon = archetype.icon;
-  const totalXp = (profile.xp_risk_taker || 0) + (profile.xp_analyst || 0) + 
-                  (profile.xp_builder || 0) + (profile.xp_strategist || 0);
+  const totalXp = (profile.xp_risk_taker || 0) + (profile.xp_analyst || 0) +
+    (profile.xp_builder || 0) + (profile.xp_strategist || 0);
 
   return (
     <div className="min-h-screen bg-black p-4 md:p-6">
@@ -91,9 +94,9 @@ export default function Profile() {
           >
             <Trophy className="w-5 h-5 text-orange-500 mx-auto mb-2" />
             <p className="text-2xl font-bold text-white">{profile.current_difficulty}</p>
-            <p className="text-zinc-500 text-xs">Current Level</p>
+            <p className="text-zinc-500 text-xs">{t.profile.currentLevel}</p>
           </motion.div>
-          
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -102,9 +105,9 @@ export default function Profile() {
           >
             <Zap className="w-5 h-5 text-yellow-500 mx-auto mb-2" />
             <p className="text-2xl font-bold text-white">{totalXp}</p>
-            <p className="text-zinc-500 text-xs">Total XP</p>
+            <p className="text-zinc-500 text-xs">{t.profile.totalXp}</p>
           </motion.div>
-          
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -113,9 +116,9 @@ export default function Profile() {
           >
             <TrendingUp className="w-5 h-5 text-green-500 mx-auto mb-2" />
             <p className="text-2xl font-bold text-white">{profile.highest_difficulty_conquered || 0}</p>
-            <p className="text-zinc-500 text-xs">Highest Conquered</p>
+            <p className="text-zinc-500 text-xs">{t.profile.highestConquered}</p>
           </motion.div>
-          
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -124,7 +127,7 @@ export default function Profile() {
           >
             <Target className="w-5 h-5 text-blue-500 mx-auto mb-2" />
             <p className="text-2xl font-bold text-white">{profile.total_arenas_completed || 0}</p>
-            <p className="text-zinc-500 text-xs">Arenas Completed</p>
+            <p className="text-zinc-500 text-xs">{t.profile.arenasCompleted}</p>
           </motion.div>
         </div>
 
@@ -135,9 +138,9 @@ export default function Profile() {
           transition={{ delay: 0.5 }}
           className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 mb-8"
         >
-          <h2 className="text-white font-semibold mb-4">Archetype Distribution</h2>
+          <h2 className="text-white font-semibold mb-4">{t.profile.archetypeDistribution}</h2>
           <ArchetypeRadar profile={profile} />
-          
+
           {/* XP breakdown */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
             {Object.entries(archetypeConfig).map(([key, config]) => {
@@ -159,7 +162,7 @@ export default function Profile() {
           transition={{ delay: 0.6 }}
           className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 mb-8"
         >
-          <h2 className="text-white font-semibold mb-4">Badges (Scars)</h2>
+          <h2 className="text-white font-semibold mb-4">{t.profile.badges}</h2>
           <BadgeDisplay achievements={achievements} />
         </motion.div>
 
@@ -170,12 +173,12 @@ export default function Profile() {
           transition={{ delay: 0.7 }}
           className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6"
         >
-          <h2 className="text-white font-semibold mb-4">Portfolio Artifacts</h2>
-          
+          <h2 className="text-white font-semibold mb-4">{t.profile.portfolio}</h2>
+
           {artifacts.length > 0 ? (
             <div className="space-y-4">
               {artifacts.map((artifact) => (
-                <div 
+                <div
                   key={artifact.id}
                   className="bg-zinc-950 border border-zinc-800 rounded-lg p-4"
                 >
@@ -188,28 +191,28 @@ export default function Profile() {
                       <span className={cn(
                         "inline-block px-2 py-1 rounded text-xs font-mono",
                         artifact.difficulty <= 3 ? "bg-green-500/20 text-green-500" :
-                        artifact.difficulty <= 6 ? "bg-yellow-500/20 text-yellow-500" :
-                        "bg-red-500/20 text-red-500"
+                          artifact.difficulty <= 6 ? "bg-yellow-500/20 text-yellow-500" :
+                            "bg-red-500/20 text-red-500"
                       )}>
-                        Difficulty {artifact.difficulty}
+                        {t.profile.difficulty} {artifact.difficulty}
                       </span>
                     </div>
                   </div>
-                  
+
                   <p className="text-zinc-400 text-sm mb-2">
-                    Ditaklukkan sebagai <span className="text-orange-500 capitalize">{artifact.archetype_role?.replace('_', ' ')}</span>
+                    {t.profile.conqueredAs} <span className="text-orange-500 capitalize">{artifact.archetype_role?.replace('_', ' ')}</span>
                   </p>
-                  
+
                   {artifact.insight && (
                     <p className="text-zinc-500 text-sm italic">
                       "{artifact.insight}"
                     </p>
                   )}
-                  
+
                   {artifact.level_up_verified && (
                     <div className="flex items-center gap-1 mt-2">
                       <TrendingUp className="w-3 h-3 text-green-500" />
-                      <span className="text-green-500 text-xs">Level Up Verified</span>
+                      <span className="text-green-500 text-xs">{t.profile.levelUpVerified}</span>
                     </div>
                   )}
                 </div>
@@ -217,7 +220,7 @@ export default function Profile() {
             </div>
           ) : (
             <p className="text-zinc-600 text-center py-8">
-              Belum ada artifact. Selesaikan arena dan naik level untuk mengumpulkannya.
+              {t.profile.noArtifacts}
             </p>
           )}
         </motion.div>
