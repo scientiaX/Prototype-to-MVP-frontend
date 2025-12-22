@@ -261,8 +261,8 @@ export default function Home() {
                     </span>
                     <span>
                       {isAuthenticated
-                        ? hasProfile ? 'Ready to battle' : '5-7 menit kalibrasi'
-                        : 'Login dulu'}
+                        ? hasProfile ? t.readyBattle : t.calibrationTime
+                        : t.notLoggedIn}
                     </span>
                   </div>
                 </div>

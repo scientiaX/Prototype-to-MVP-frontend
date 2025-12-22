@@ -8,7 +8,22 @@ export const translations = {
       leaderboard: 'Leaderboard',
       logout: 'Logout'
     },
-    
+
+    // Login page
+    login: {
+      title: 'Enter the',
+      titleHighlight: 'Arena',
+      subtitle: 'Enter your name and password to continue',
+      nameLabel: 'Name',
+      namePlaceholder: 'Your name',
+      passwordLabel: 'Password',
+      passwordPlaceholder: 'Password (optional)',
+      passwordHint: 'Password optional for development',
+      submitButton: 'Continue to Arena',
+      footer: 'No email needed • Password optional',
+      errorName: 'Please enter your name'
+    },
+
     // Calibration
     calibration: {
       questions: {
@@ -73,7 +88,7 @@ export const translations = {
         enterArena: "Enter the Arena"
       }
     },
-    
+
     // Arena
     arena: {
       title: 'Problem Arena',
@@ -86,7 +101,7 @@ export const translations = {
       generateFirst: 'Generate First Problem'
     }
   },
-  
+
   id: {
     // Navigation
     nav: {
@@ -96,7 +111,22 @@ export const translations = {
       leaderboard: 'Leaderboard',
       logout: 'Keluar'
     },
-    
+
+    // Login page
+    login: {
+      title: 'Masuk ke',
+      titleHighlight: 'Arena',
+      subtitle: 'Masukkan nama dan password untuk lanjut',
+      nameLabel: 'Nama',
+      namePlaceholder: 'Nama kamu',
+      passwordLabel: 'Password',
+      passwordPlaceholder: 'Password (opsional)',
+      passwordHint: 'Password opsional untuk development',
+      submitButton: 'Lanjut ke Arena',
+      footer: 'Tidak perlu email • Password opsional',
+      errorName: 'Masukkan nama'
+    },
+
     // Calibration
     calibration: {
       questions: {
@@ -161,7 +191,7 @@ export const translations = {
         enterArena: "Masuk Arena"
       }
     },
-    
+
     // Arena
     arena: {
       title: 'Problem Arena',
@@ -176,6 +206,6 @@ export const translations = {
   }
 };
 
-export const getTranslation = (lang = 'id') => {
-  return translations[lang] || translations.id;
+export const getTranslation = (lang = 'en') => {
+  return translations[lang] || translations.en;
 };
