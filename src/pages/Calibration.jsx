@@ -123,9 +123,9 @@ export default function Calibration() {
 
   const navigate = useNavigate();
 
-  // Get questions based on age group and language
+  // Get questions based on age group, language, and previous answers (for dynamic options)
   const CALIBRATION_QUESTIONS = selectedAgeGroup && selectedLanguage
-    ? getQuestionsByAgeGroup(selectedAgeGroup, selectedLanguage)
+    ? getQuestionsByAgeGroup(selectedAgeGroup, selectedLanguage, answers)
     : [];
 
   useEffect(() => {
@@ -143,9 +143,12 @@ export default function Calibration() {
           navigate(createPageUrl('Home'));
           return;
         }
+        // User is logged in but hasn't completed calibration
+        // Skip auth view and go directly to language selection
+        setView('language');
       }
     } catch (error) {
-      // Not logged in, continue with auth
+      // Not logged in, continue with auth view
     }
     setIsCheckingAuth(false);
   };

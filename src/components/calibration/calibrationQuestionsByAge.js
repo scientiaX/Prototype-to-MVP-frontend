@@ -17,6 +17,163 @@ export const getAgeGroupFromAge = (age) => {
 };
 
 // ============================================
+// ASPIRATION POOLS - All possible aspirations
+// ============================================
+export const ASPIRATION_POOLS = {
+    id: {
+        // Tech-related
+        founder: { value: 'founder', label: '🚀 Founder startup teknologi' },
+        engineer: { value: 'engineer', label: '💻 Software engineer di perusahaan top' },
+        aiSpecialist: { value: 'ai_specialist', label: '🤖 AI/ML specialist' },
+        gamedev: { value: 'gamedev', label: '🎮 Game developer atau game designer' },
+        cto: { value: 'cto', label: '⚡ CTO atau tech lead' },
+
+        // Creative-related
+        creator: { value: 'creator', label: '🎬 Content creator dengan jutaan followers' },
+        artist: { value: 'artist', label: '🎤 Musisi, artis, atau entertainer terkenal' },
+        designer: { value: 'designer', label: '🎨 Designer ternama (UI/UX, grafis, fashion)' },
+        filmmaker: { value: 'filmmaker', label: '🎥 Filmmaker atau video producer' },
+
+        // Business-related
+        ceo: { value: 'ceo', label: '👔 CEO perusahaan besar' },
+        businessOwner: { value: 'business_owner', label: '💼 Pemilik bisnis dengan banyak cabang' },
+        investor: { value: 'investor', label: '💰 Investor atau angel investor' },
+        entrepreneur: { value: 'entrepreneur', label: '📈 Serial entrepreneur' },
+
+        // Science-related  
+        scientist: { value: 'scientist', label: '🔬 Saintis atau peneliti' },
+        doctor: { value: 'doctor', label: '👨‍⚕️ Dokter atau tenaga medis profesional' },
+        professor: { value: 'professor', label: '🎓 Profesor atau akademisi' },
+        innovator: { value: 'innovator', label: '💡 Penemu atau inovator' },
+        engineer_science: { value: 'engineer_science', label: '⚙️ Engineer (teknik mesin, sipil, elektro)' },
+
+        // Finance-related
+        trader: { value: 'trader', label: '📊 Trader atau fund manager' },
+        financialAdvisor: { value: 'financial_advisor', label: '💹 Financial advisor atau wealth manager' },
+
+        // Social/Leadership
+        leader: { value: 'leader', label: '👑 Pemimpin organisasi atau komunitas besar' },
+        socialEntrepreneur: { value: 'social_entrepreneur', label: '🌍 Social entrepreneur' },
+        activist: { value: 'activist', label: '✊ Aktivis atau change maker' },
+        communityBuilder: { value: 'community_builder', label: '👥 Community builder' },
+
+        // Gaming/Sports
+        esports: { value: 'esports', label: '🏆 Atlet esports profesional' },
+        athlete: { value: 'athlete', label: '🥇 Atlet profesional' },
+        coach: { value: 'coach', label: '🎯 Coach atau mentor' },
+
+        // General
+        expert: { value: 'expert', label: '🧠 Ahli world-class di bidang tertentu' },
+        freelancer: { value: 'freelancer', label: '🌐 Freelancer dengan client global' },
+    },
+    en: {
+        // Tech-related
+        founder: { value: 'founder', label: '🚀 Tech startup founder' },
+        engineer: { value: 'engineer', label: '💻 Software engineer at top company' },
+        aiSpecialist: { value: 'ai_specialist', label: '🤖 AI/ML specialist' },
+        gamedev: { value: 'gamedev', label: '🎮 Game developer or designer' },
+        cto: { value: 'cto', label: '⚡ CTO or tech lead' },
+
+        // Creative-related
+        creator: { value: 'creator', label: '🎬 Content creator with millions of followers' },
+        artist: { value: 'artist', label: '🎤 Famous musician, artist, or entertainer' },
+        designer: { value: 'designer', label: '🎨 Renowned designer (UI/UX, graphic, fashion)' },
+        filmmaker: { value: 'filmmaker', label: '🎥 Filmmaker or video producer' },
+
+        // Business-related
+        ceo: { value: 'ceo', label: '👔 CEO of a major company' },
+        businessOwner: { value: 'business_owner', label: '💼 Business owner with multiple branches' },
+        investor: { value: 'investor', label: '💰 Investor or angel investor' },
+        entrepreneur: { value: 'entrepreneur', label: '📈 Serial entrepreneur' },
+
+        // Science-related
+        scientist: { value: 'scientist', label: '🔬 Scientist or researcher' },
+        doctor: { value: 'doctor', label: '👨‍⚕️ Doctor or medical professional' },
+        professor: { value: 'professor', label: '🎓 Professor or academic' },
+        innovator: { value: 'innovator', label: '💡 Inventor or innovator' },
+        engineer_science: { value: 'engineer_science', label: '⚙️ Engineer (mechanical, civil, electrical)' },
+
+        // Finance-related
+        trader: { value: 'trader', label: '📊 Trader or fund manager' },
+        financialAdvisor: { value: 'financial_advisor', label: '💹 Financial advisor or wealth manager' },
+
+        // Social/Leadership
+        leader: { value: 'leader', label: '👑 Leader of organization or large community' },
+        socialEntrepreneur: { value: 'social_entrepreneur', label: '🌍 Social entrepreneur' },
+        activist: { value: 'activist', label: '✊ Activist or change maker' },
+        communityBuilder: { value: 'community_builder', label: '👥 Community builder' },
+
+        // Gaming/Sports
+        esports: { value: 'esports', label: '🏆 Professional esports athlete' },
+        athlete: { value: 'athlete', label: '🥇 Professional athlete' },
+        coach: { value: 'coach', label: '🎯 Coach or mentor' },
+
+        // General
+        expert: { value: 'expert', label: '🧠 World-class expert in a specific field' },
+        freelancer: { value: 'freelancer', label: '🌐 Freelancer with global clients' },
+    }
+};
+
+// ============================================
+// DOMAIN TO ASPIRATION MAPPING
+// Maps each domain to relevant aspirations (ordered by relevance)
+// ============================================
+export const DOMAIN_ASPIRATION_MAP = {
+    // SMP domains
+    tech: ['founder', 'engineer', 'aiSpecialist', 'cto', 'gamedev', 'expert', 'freelancer'],
+    creative: ['creator', 'artist', 'designer', 'filmmaker', 'expert', 'freelancer'],
+    business: ['entrepreneur', 'businessOwner', 'ceo', 'investor', 'founder', 'leader'],
+    gaming: ['esports', 'gamedev', 'creator', 'coach', 'founder'],
+    social: ['leader', 'socialEntrepreneur', 'communityBuilder', 'activist', 'creator'],
+    explore: ['creator', 'entrepreneur', 'expert', 'freelancer', 'leader', 'innovator'],
+
+    // SMA/Adult domains
+    science: ['scientist', 'doctor', 'professor', 'innovator', 'engineer_science', 'expert'],
+    finance: ['trader', 'financialAdvisor', 'investor', 'entrepreneur', 'ceo', 'expert'],
+    leadership: ['ceo', 'leader', 'entrepreneur', 'coach', 'expert', 'socialEntrepreneur'],
+    product: ['founder', 'expert', 'designer', 'cto', 'freelancer', 'entrepreneur'],
+};
+
+/**
+ * Get dynamic aspiration options based on domain selection
+ * @param {string} domain - The user's selected domain
+ * @param {string} language - 'id' or 'en'
+ * @param {string} ageGroup - AGE_GROUPS value
+ * @returns {Array} - Array of aspiration options, domain-relevant first
+ */
+export function getDynamicAspirationOptions(domain, language = 'id', ageGroup = AGE_GROUPS.SMA) {
+    const lang = language === 'en' ? 'en' : 'id';
+    const pool = ASPIRATION_POOLS[lang];
+
+    // Get domain-specific aspirations
+    const domainAspirations = DOMAIN_ASPIRATION_MAP[domain] || [];
+
+    // Build options array with domain-relevant ones first
+    const options = [];
+    const usedValues = new Set();
+
+    // Add domain-relevant aspirations first
+    domainAspirations.forEach(key => {
+        if (pool[key] && !usedValues.has(pool[key].value)) {
+            options.push(pool[key]);
+            usedValues.add(pool[key].value);
+        }
+    });
+
+    // Add general aspirations that weren't already included
+    const generalAspirations = ['expert', 'freelancer', 'leader', 'founder', 'creator'];
+    generalAspirations.forEach(key => {
+        if (pool[key] && !usedValues.has(pool[key].value)) {
+            options.push(pool[key]);
+            usedValues.add(pool[key].value);
+        }
+    });
+
+    // Limit to 7 options for better UX
+    return options.slice(0, 7);
+}
+
+// ============================================
 // SMP QUESTIONS (12-15 tahun)
 // Aspirational, not school-focused
 // ============================================
@@ -553,17 +710,49 @@ export const ADULT_QUESTIONS = {
 
 /**
  * Get questions based on age group and language
+ * Now supports dynamic options based on previous answers
+ * @param {string} ageGroup - AGE_GROUPS value
+ * @param {string} language - 'id' or 'en'
+ * @param {Object} previousAnswers - Object containing previous answer values (optional)
+ * @returns {Array} - Array of question objects with potentially dynamic options
  */
-export function getQuestionsByAgeGroup(ageGroup, language = 'id') {
+export function getQuestionsByAgeGroup(ageGroup, language = 'id', previousAnswers = {}) {
     const lang = language === 'en' ? 'en' : 'id';
 
+    let baseQuestions;
     switch (ageGroup) {
         case AGE_GROUPS.SMP:
-            return SMP_QUESTIONS[lang];
+            baseQuestions = SMP_QUESTIONS[lang];
+            break;
         case AGE_GROUPS.SMA:
-            return SMA_QUESTIONS[lang];
+            baseQuestions = SMA_QUESTIONS[lang];
+            break;
         case AGE_GROUPS.ADULT:
         default:
-            return ADULT_QUESTIONS[lang];
+            baseQuestions = ADULT_QUESTIONS[lang];
+            break;
     }
+
+    // If no previous answers, return base questions
+    if (!previousAnswers || Object.keys(previousAnswers).length === 0) {
+        return baseQuestions;
+    }
+
+    // Create dynamic questions based on previous answers
+    return baseQuestions.map(question => {
+        // Dynamic aspiration options based on domain
+        if (question.id === 'aspiration' && previousAnswers.domain) {
+            const dynamicOptions = getDynamicAspirationOptions(
+                previousAnswers.domain,
+                language,
+                ageGroup
+            );
+            return {
+                ...question,
+                options: dynamicOptions
+            };
+        }
+
+        return question;
+    });
 }
