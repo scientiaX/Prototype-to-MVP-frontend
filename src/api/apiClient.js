@@ -109,9 +109,17 @@ export const auth = {
 export const entities = {
   UserProfile: {
     filter: async (params) => {
-      const user = await auth.me();
-      const response = await apiClient.get(`/profiles/${user.email}`);
-      return [response.data];
+      try {
+        const user = await auth.me();
+        const response = await apiClient.get(`/profiles/${user.email}`);
+        return [response.data];
+      } catch (error) {
+        // Return empty array on 404 (profile not found) - this is expected for new users
+        if (error.response?.status === 404) {
+          return [];
+        }
+        throw error;
+      }
     },
 
     create: async (data) => {

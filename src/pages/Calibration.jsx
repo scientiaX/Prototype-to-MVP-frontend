@@ -132,11 +132,17 @@ export default function Calibration() {
     try {
       const user = await apiClient.auth.me();
       if (user) {
-        const profiles = await apiClient.entities.UserProfile.filter({ created_by: user.email });
-        if (profiles.length > 0 && profiles[0].calibration_completed) {
-          // Already calibrated, go to home
-          navigate(createPageUrl('Home'));
-          return;
+        // User is logged in - check if they have a profile
+        try {
+          const profiles = await apiClient.entities.UserProfile.filter({ created_by: user.email });
+          if (profiles.length > 0 && profiles[0].calibration_completed) {
+            // Already calibrated, go to home
+            navigate(createPageUrl('Home'));
+            return;
+          }
+        } catch (profileError) {
+          // Profile not found (404) is OK for new users - they need to calibrate
+          console.log('No profile found, proceeding with calibration');
         }
         // User is logged in but hasn't completed calibration - continue to language selection
       } else {
@@ -145,7 +151,8 @@ export default function Calibration() {
         return;
       }
     } catch (error) {
-      // Not logged in, redirect to login page
+      // Not logged in (auth.me failed), redirect to login page
+      console.log('Auth check failed, redirecting to login:', error.message);
       navigate('/login');
       return;
     }
