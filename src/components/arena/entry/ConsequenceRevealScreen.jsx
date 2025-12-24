@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Zap, X, AlertCircle } from 'lucide-react';
+import { Zap, X, AlertCircle, Target, CheckCircle } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 /**
  * ConsequenceRevealScreen - Screen 4 (60-90s)
@@ -9,6 +10,9 @@ import { Zap, X, AlertCircle } from 'lucide-react';
  * - Salah satu hal penting hilang/terkompromi
  * - Bahasa singkat dan tegas
  * - Dramatic reveal animation
+ * 
+ * FRIKSI #4: Now includes prediction comparison
+ * Shows whether user's prediction was accurate
  */
 export default function ConsequenceRevealScreen({
     consequences,
@@ -16,11 +20,19 @@ export default function ConsequenceRevealScreen({
     selectedChoice,
     onContinue,
     timeRemaining,
-    isLoading
+    isLoading,
+    // NEW: Prediction comparison props (Friksi #4)
+    userPrediction = null,
+    actualOutcome = null // 'positive', 'mixed', 'challenging'
 }) {
     const [revealedIndex, setRevealedIndex] = useState(-1);
     const [showInsight, setShowInsight] = useState(false);
+    const [showPredictionResult, setShowPredictionResult] = useState(false);
     const [canContinue, setCanContinue] = useState(false);
+
+    // Check if prediction was accurate
+    const predictionAccurate = userPrediction && actualOutcome &&
+        userPrediction.id === actualOutcome;
 
     // Reveal consequences one by one
     useEffect(() => {
@@ -125,11 +137,53 @@ export default function ConsequenceRevealScreen({
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: 0.3 }}
-                                    className="text-center mb-8"
+                                    className="text-center mb-6"
                                 >
                                     <p className="text-zinc-400 text-lg italic">
                                         "{insightMessage}"
                                     </p>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+
+                        {/* FRIKSI #4: Prediction Result */}
+                        <AnimatePresence>
+                            {showInsight && userPrediction && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                                    transition={{ delay: 0.5, type: 'spring', damping: 15 }}
+                                    className={cn(
+                                        "rounded-xl p-4 mb-6 border",
+                                        predictionAccurate
+                                            ? "bg-green-500/10 border-green-500/30"
+                                            : "bg-zinc-800/50 border-zinc-700"
+                                    )}
+                                >
+                                    <div className="flex items-center gap-3">
+                                        {predictionAccurate ? (
+                                            <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0" />
+                                        ) : (
+                                            <Target className="w-6 h-6 text-zinc-400 flex-shrink-0" />
+                                        )}
+                                        <div>
+                                            <p className={cn(
+                                                "text-sm font-medium",
+                                                predictionAccurate ? "text-green-400" : "text-zinc-300"
+                                            )}>
+                                                {predictionAccurate
+                                                    ? "🎯 Tebakanmu tepat!"
+                                                    : "🤔 Hasilnya berbeda dari dugaanmu"
+                                                }
+                                            </p>
+                                            <p className="text-xs text-zinc-500 mt-1">
+                                                {predictionAccurate
+                                                    ? "Kamu mulai memahami pola skenario ini."
+                                                    : "Ini pembelajaran baru: realitas sering berbeda dari ekspektasi."
+                                                }
+                                            </p>
+                                        </div>
+                                    </div>
                                 </motion.div>
                             )}
                         </AnimatePresence>

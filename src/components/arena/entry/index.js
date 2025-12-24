@@ -15,3 +15,16 @@ export { default as DecisionLockScreen } from './DecisionLockScreen';
 export { default as ConsequenceRevealScreen } from './ConsequenceRevealScreen';
 export { default as StatusUpdateScreen } from './StatusUpdateScreen';
 export { default as FirstReflectionScreen } from './FirstReflectionScreen';
+
+// FRIKSI #1: Pure Action Components (aksi tanpa interpretasi)
+export { default as PureActionScreen } from './PureActionScreen';
+export { default as MeaningRevealScreen } from './MeaningRevealScreen';
+
+// FRIKSI #5: Optional Reflection Components
+export { default as ReplayReflectionScreen } from './ReplayReflectionScreen';
+
+// FRIKSI #4: Prediction Payoff Component
+export { default as PredictionScreen } from './PredictionScreen';
+
+
+
