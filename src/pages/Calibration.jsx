@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import CalibrationQuestion from '@/components/calibration/CalibrationQuestion';
 import CalibrationResult from '@/components/calibration/CalibrationResult';
-import { Loader2, Globe, Flame, Sparkles, Check, User, Lock, Calendar } from 'lucide-react';
+import { Loader2, Globe, Flame, Sparkles, Check, Calendar } from 'lucide-react';
 import { getTranslation } from '../components/utils/translations';
 import { Button } from "@/components/ui/button";
 import {
@@ -105,10 +105,8 @@ function calculateProfile(answers, ageGroup) {
 }
 
 export default function Calibration() {
-  // Views: auth -> language -> age -> questions -> result
-  // Check if user already has token (came from login/register page)
-  const hasToken = localStorage.getItem('token');
-  const [view, setView] = useState(hasToken ? 'language' : 'auth');
+  // Views: language -> age -> questions -> result (auth is now handled by Login page)
+  const [view, setView] = useState('language');
   const [selectedLanguage, setSelectedLanguage] = useState(null);
   const [selectedAgeGroup, setSelectedAgeGroup] = useState(null);
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -117,11 +115,6 @@ export default function Calibration() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [existingProfile, setExistingProfile] = useState(null);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
-
-  // Auth state
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [authError, setAuthError] = useState('');
 
   const navigate = useNavigate();
 
@@ -145,45 +138,18 @@ export default function Calibration() {
           navigate(createPageUrl('Home'));
           return;
         }
-        // User is logged in but hasn't completed calibration
-        // Skip auth view and go directly to language selection
-        setView('language');
-      }
-    } catch (error) {
-      // Not logged in, continue with auth view
-    }
-    setIsCheckingAuth(false);
-  };
-
-  const handleAuthSubmit = async (e) => {
-    e.preventDefault();
-    setAuthError('');
-
-    if (!username.trim()) {
-      setAuthError('Masukkan nama');
-      return;
-    }
-
-    // For now, just proceed. In production, this would check/create user
-    try {
-      // Check if user exists by trying to login or register
-      await apiClient.auth.login({ username: username.trim(), password: password || 'default' });
-
-      // Check if profile exists
-      const user = await apiClient.auth.me();
-      const profiles = await apiClient.entities.UserProfile.filter({ created_by: user.email });
-
-      if (profiles.length > 0 && profiles[0].calibration_completed) {
-        navigate(createPageUrl('Home'));
+        // User is logged in but hasn't completed calibration - continue to language selection
+      } else {
+        // Not logged in, redirect to login page
+        navigate('/login');
         return;
       }
-
-      // Continue to language selection
-      setView('language');
     } catch (error) {
-      // New user, continue to calibration
-      setView('language');
+      // Not logged in, redirect to login page
+      navigate('/login');
+      return;
     }
+    setIsCheckingAuth(false);
   };
 
   const handleLanguageSelect = (lang) => {
@@ -305,63 +271,6 @@ export default function Calibration() {
       </div>
 
       <AnimatePresence mode="wait">
-        {/* AUTH VIEW */}
-        {view === 'auth' && (
-          <motion.div
-            key="auth"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -30 }}
-            className="w-full max-w-md relative z-10"
-          >
-            <div className="text-center mb-10">
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ type: "spring", duration: 0.8 }}
-                className="w-20 h-20 bg-gradient-to-br from-orange-500 to-red-600 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-orange-500/30"
-              >
-                <Flame className="w-10 h-10 text-black" />
-              </motion.div>
-              <h1 className="text-3xl font-bold text-white mb-2">Selamat Datang</h1>
-              <p className="text-zinc-500">Masukkan namamu untuk mulai</p>
-            </div>
-
-            <form onSubmit={handleAuthSubmit} className="space-y-4">
-              <div className="relative">
-                <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
-                <input
-                  type="text"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  placeholder="Nama kamu"
-                  className="w-full bg-zinc-900 border border-zinc-800 rounded-xl py-4 pl-12 pr-4 text-white placeholder-zinc-600 focus:border-orange-500 focus:outline-none transition-colors"
-                  autoFocus
-                />
-              </div>
-
-              <div className="relative">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Password (opsional)"
-                  className="w-full bg-zinc-900 border border-zinc-800 rounded-xl py-4 pl-12 pr-4 text-white placeholder-zinc-600 focus:border-orange-500 focus:outline-none transition-colors"
-                />
-              </div>
-
-              {authError && (
-                <p className="text-red-500 text-sm">{authError}</p>
-              )}
-
-              <Button type="submit" variant="gradient" className="w-full py-4 text-lg">
-                Lanjut
-              </Button>
-            </form>
-          </motion.div>
-        )}
-
         {/* LANGUAGE VIEW */}
         {view === 'language' && (
           <motion.div
