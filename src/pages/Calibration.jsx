@@ -106,7 +106,9 @@ function calculateProfile(answers, ageGroup) {
 
 export default function Calibration() {
   // Views: auth -> language -> age -> questions -> result
-  const [view, setView] = useState('auth');
+  // Check if user already has token (came from login/register page)
+  const hasToken = localStorage.getItem('token');
+  const [view, setView] = useState(hasToken ? 'language' : 'auth');
   const [selectedLanguage, setSelectedLanguage] = useState(null);
   const [selectedAgeGroup, setSelectedAgeGroup] = useState(null);
   const [currentQuestion, setCurrentQuestion] = useState(0);
