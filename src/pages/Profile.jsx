@@ -27,22 +27,34 @@ export default function Profile() {
   }, []);
 
   const loadProfile = async () => {
-    const user = await apiClient.auth.me();
+    try {
+      // Check if user is authenticated
+      if (!apiClient.auth.isAuthenticated()) {
+        navigate('/login?redirect=/profile');
+        return;
+      }
 
-    const profiles = await apiClient.entities.UserProfile.filter({ created_by: user.email });
-    if (profiles.length === 0 || !profiles[0].calibration_completed) {
-      navigate(createPageUrl('Calibration'));
-      return;
+      const user = await apiClient.auth.me();
+
+      const profiles = await apiClient.entities.UserProfile.filter({ created_by: user.email });
+      if (profiles.length === 0 || !profiles[0].calibration_completed) {
+        navigate(createPageUrl('Calibration'));
+        return;
+      }
+
+      setProfile(profiles[0]);
+
+      const userAchievements = await apiClient.api.user.getAchievements(user.email);
+      const userArtifacts = await apiClient.api.user.getArtifacts(user.email);
+
+      setAchievements(userAchievements);
+      setArtifacts(userArtifacts);
+      setIsLoading(false);
+    } catch (error) {
+      console.error('Error loading profile:', error);
+      // If authentication failed, redirect to login
+      navigate('/login?redirect=/profile');
     }
-
-    setProfile(profiles[0]);
-
-    const userAchievements = await apiClient.api.user.getAchievements(user.email);
-    const userArtifacts = await apiClient.api.user.getArtifacts(user.email);
-
-    setAchievements(userAchievements);
-    setArtifacts(userArtifacts);
-    setIsLoading(false);
   };
 
   if (isLoading) {

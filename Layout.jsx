@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import apiClient from '@/api/apiClient';
 import { getTranslation } from '@/components/utils/translations';
@@ -21,6 +21,7 @@ export default function Layout({ children, currentPageName }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [userLanguage, setUserLanguage] = useState('en');
+  const navigate = useNavigate();
 
   const t = getTranslation(userLanguage);
 
@@ -55,6 +56,18 @@ export default function Layout({ children, currentPageName }) {
   const handleLogout = () => {
     apiClient.auth.clearAllData(); // Clear ALL stored data
     window.location.href = '/login';
+  };
+
+  // Pages that require authentication
+  const protectedPages = ['Arena', 'Profile'];
+
+  // Handle navigation click - check auth for protected pages
+  const handleNavClick = (e, page) => {
+    if (protectedPages.includes(page) && !isAuthenticated) {
+      e.preventDefault();
+      // Redirect to login with redirect parameter
+      navigate(`/login?redirect=${createPageUrl(page)}`);
+    }
   };
 
   const navItems = [
@@ -110,6 +123,7 @@ export default function Layout({ children, currentPageName }) {
                   <Link
                     key={item.page}
                     to={createPageUrl(item.page)}
+                    onClick={(e) => handleNavClick(e, item.page)}
                     className={cn(
                       "relative flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200",
                       isActive
@@ -181,7 +195,10 @@ export default function Layout({ children, currentPageName }) {
                 <Link
                   key={item.page}
                   to={createPageUrl(item.page)}
-                  onClick={() => setMobileMenuOpen(false)}
+                  onClick={(e) => {
+                    setMobileMenuOpen(false);
+                    handleNavClick(e, item.page);
+                  }}
                   className={cn(
                     "flex items-center justify-between px-4 py-3.5 rounded-xl text-base font-medium transition-all",
                     isActive
@@ -227,6 +244,7 @@ export default function Layout({ children, currentPageName }) {
               <Link
                 key={item.page}
                 to={createPageUrl(item.page)}
+                onClick={(e) => handleNavClick(e, item.page)}
                 className={cn(
                   "relative flex flex-col items-center justify-center gap-1 py-2 px-5 rounded-xl transition-all duration-200"
                 )}

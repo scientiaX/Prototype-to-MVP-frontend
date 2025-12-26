@@ -31,8 +31,18 @@ export default function Leaderboard() {
   const loadLeaderboard = async () => {
     setIsLoading(true);
     try {
-      const user = await apiClient.auth.me();
-      setCurrentUser(user);
+      // Try to get current user if authenticated (optional)
+      try {
+        if (apiClient.auth.isAuthenticated()) {
+          const user = await apiClient.auth.me();
+          setCurrentUser(user);
+        }
+      } catch (e) {
+        // User not logged in, that's fine - leaderboard is public
+        setCurrentUser(null);
+      }
+
+      // Leaderboard is public - no auth required
       const allProfiles = await apiClient.api.profiles.getLeaderboard();
       setProfiles(allProfiles || []);
     } catch (error) {

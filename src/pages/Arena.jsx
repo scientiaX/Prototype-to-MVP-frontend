@@ -31,23 +31,38 @@ export default function Arena() {
 
   const loadData = async () => {
     setIsLoading(true);
-    const user = await apiClient.auth.me();
 
-    const profiles = await apiClient.entities.UserProfile.filter({ created_by: user.email });
-    if (profiles.length === 0 || !profiles[0].calibration_completed) {
-      navigate(createPageUrl('Calibration'));
+    try {
+      // Check if user is authenticated
+      if (!apiClient.auth.isAuthenticated()) {
+        navigate('/login?redirect=/arena');
+        return;
+      }
+
+      const user = await apiClient.auth.me();
+
+      const profiles = await apiClient.entities.UserProfile.filter({ created_by: user.email });
+      if (profiles.length === 0 || !profiles[0].calibration_completed) {
+        navigate(createPageUrl('Calibration'));
+        return;
+      }
+
+      setProfile(profiles[0]);
+
+      const allProblems = await apiClient.api.problems.list({ is_active: true });
+      const relevantProblems = allProblems.filter(p =>
+        p.difficulty >= profiles[0].current_difficulty - 1 &&
+        p.difficulty <= profiles[0].current_difficulty + 2
+      );
+
+      setProblems(relevantProblems);
+    } catch (error) {
+      console.error('Error loading arena data:', error);
+      // If authentication failed, redirect to login
+      navigate('/login?redirect=/arena');
       return;
     }
 
-    setProfile(profiles[0]);
-
-    const allProblems = await apiClient.api.problems.list({ is_active: true });
-    const relevantProblems = allProblems.filter(p =>
-      p.difficulty >= profiles[0].current_difficulty - 1 &&
-      p.difficulty <= profiles[0].current_difficulty + 2
-    );
-
-    setProblems(relevantProblems);
     setIsLoading(false);
   };
 
