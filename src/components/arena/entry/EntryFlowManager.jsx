@@ -63,25 +63,49 @@ export const DEFAULT_CHOICES = [
     }
 ];
 
+// Session storage key for entry flow state
+const ENTRY_FLOW_STATE_KEY = 'arena_entry_flow_state';
+
 /**
  * Entry Flow State Manager Hook
  * Manages the 180-second high-impact entry sequence
  */
 export const useEntryFlowManager = (problem, profile) => {
-    // Current screen state
-    const [currentScreen, setCurrentScreen] = useState(ENTRY_SCREENS.SITUATION_DROP);
-    const [screenStartTime, setScreenStartTime] = useState(Date.now());
-    const [totalElapsed, setTotalElapsed] = useState(0);
+    // Try to restore saved state
+    const getSavedState = useCallback(() => {
+        try {
+            const saved = sessionStorage.getItem(ENTRY_FLOW_STATE_KEY);
+            if (saved) {
+                const state = JSON.parse(saved);
+                // Check if saved state is for the same problem
+                if (state.problemId === problem?.problem_id) {
+                    return state;
+                }
+            }
+        } catch (e) {
+            console.error('Error reading entry flow state:', e);
+        }
+        return null;
+    }, [problem?.problem_id]);
 
-    // User decision state
-    const [choices, setChoices] = useState([]);
-    const [selectedChoice, setSelectedChoice] = useState(null);
-    const [isLocked, setIsLocked] = useState(false);
-    const [consequences, setConsequences] = useState([]);
-    const [insightMessage, setInsightMessage] = useState('');
-    const [progressStatus, setProgressStatus] = useState('forming');
-    const [reflectionText, setReflectionText] = useState('');
-    const [reflectionQuestion, setReflectionQuestion] = useState('');
+    const savedState = getSavedState();
+
+    // Current screen state - restore from session if available
+    const [currentScreen, setCurrentScreen] = useState(
+        savedState?.currentScreen || ENTRY_SCREENS.SITUATION_DROP
+    );
+    const [screenStartTime, setScreenStartTime] = useState(Date.now());
+    const [totalElapsed, setTotalElapsed] = useState(savedState?.totalElapsed || 0);
+
+    // User decision state - restore from session if available
+    const [choices, setChoices] = useState(savedState?.choices || []);
+    const [selectedChoice, setSelectedChoice] = useState(savedState?.selectedChoice || null);
+    const [isLocked, setIsLocked] = useState(savedState?.isLocked || false);
+    const [consequences, setConsequences] = useState(savedState?.consequences || []);
+    const [insightMessage, setInsightMessage] = useState(savedState?.insightMessage || '');
+    const [progressStatus, setProgressStatus] = useState(savedState?.progressStatus || 'forming');
+    const [reflectionText, setReflectionText] = useState(savedState?.reflectionText || '');
+    const [reflectionQuestion, setReflectionQuestion] = useState(savedState?.reflectionQuestion || '');
 
     // Loading states
     const [isLoadingChoices, setIsLoadingChoices] = useState(false);
@@ -90,6 +114,41 @@ export const useEntryFlowManager = (problem, profile) => {
     // Timer refs
     const timerRef = useRef(null);
     const elapsedTimerRef = useRef(null);
+
+    // Save entry flow state to sessionStorage
+    const saveEntryFlowState = useCallback(() => {
+        if (problem?.problem_id && currentScreen !== ENTRY_SCREENS.COMPLETED) {
+            const entryFlowState = {
+                problemId: problem.problem_id,
+                currentScreen,
+                totalElapsed,
+                choices,
+                selectedChoice,
+                isLocked,
+                consequences,
+                insightMessage,
+                progressStatus,
+                reflectionText,
+                reflectionQuestion,
+                savedAt: Date.now()
+            };
+            sessionStorage.setItem(ENTRY_FLOW_STATE_KEY, JSON.stringify(entryFlowState));
+        }
+    }, [problem?.problem_id, currentScreen, totalElapsed, choices, selectedChoice, isLocked, consequences, insightMessage, progressStatus, reflectionText, reflectionQuestion]);
+
+    // Save state whenever relevant values change
+    useEffect(() => {
+        saveEntryFlowState();
+    }, [saveEntryFlowState]);
+
+    // Save state before page unload
+    useEffect(() => {
+        const handleBeforeUnload = () => {
+            saveEntryFlowState();
+        };
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+    }, [saveEntryFlowState]);
 
     // Track total elapsed time
     useEffect(() => {

@@ -16,6 +16,9 @@ import ActionScreen from './screens/ActionScreen';
 import FeedbackScreen from './screens/FeedbackScreen';
 import { useMicroToast, ProgressChip } from './MicroToast';
 
+// Session storage key for battle state
+const BATTLE_STATE_KEY = 'arena_battle_state';
+
 /**
  * ArenaBattle - Main Arena Component
  * Refactored to use Sequential Screen Model from Experience Layer
@@ -25,16 +28,112 @@ export default function ArenaBattle({ problem, session, onSubmit, onAbandon, pro
   const screenManager = useArenaScreenManager(SCREENS.SITUATION);
   const { showToast, ToastContainer } = useMicroToast();
 
-  // Core state
-  const [timeElapsed, setTimeElapsed] = useState(0);
-  const [currentQuestion, setCurrentQuestion] = useState('');
-  const [progressStatus, setProgressStatus] = useState('forming');
-  const [exchangeHistory, setExchangeHistory] = useState([]);
+  // Core state - with session storage restoration
+  const [timeElapsed, setTimeElapsed] = useState(() => {
+    try {
+      const saved = sessionStorage.getItem(BATTLE_STATE_KEY);
+      if (saved) {
+        const state = JSON.parse(saved);
+        if (state.sessionId === session?._id) {
+          return state.timeElapsed || 0;
+        }
+      }
+    } catch (e) { }
+    return 0;
+  });
+
+  const [currentQuestion, setCurrentQuestion] = useState(() => {
+    try {
+      const saved = sessionStorage.getItem(BATTLE_STATE_KEY);
+      if (saved) {
+        const state = JSON.parse(saved);
+        if (state.sessionId === session?._id) {
+          return state.currentQuestion || '';
+        }
+      }
+    } catch (e) { }
+    return '';
+  });
+
+  const [progressStatus, setProgressStatus] = useState(() => {
+    try {
+      const saved = sessionStorage.getItem(BATTLE_STATE_KEY);
+      if (saved) {
+        const state = JSON.parse(saved);
+        if (state.sessionId === session?._id) {
+          return state.progressStatus || 'forming';
+        }
+      }
+    } catch (e) { }
+    return 'forming';
+  });
+
+  const [exchangeHistory, setExchangeHistory] = useState(() => {
+    try {
+      const saved = sessionStorage.getItem(BATTLE_STATE_KEY);
+      if (saved) {
+        const state = JSON.parse(saved);
+        if (state.sessionId === session?._id) {
+          return state.exchangeHistory || [];
+        }
+      }
+    } catch (e) { }
+    return [];
+  });
+
   const [isLoading, setIsLoading] = useState(false);
 
   // Feedback state
   const [feedbackType, setFeedbackType] = useState('decision_stabilized');
   const [feedbackMessage, setFeedbackMessage] = useState('');
+
+  // Restore screen state from session storage
+  useEffect(() => {
+    try {
+      const saved = sessionStorage.getItem(BATTLE_STATE_KEY);
+      if (saved) {
+        const state = JSON.parse(saved);
+        if (state.sessionId === session?._id && state.currentScreen) {
+          // Restore screen if we have saved state
+          if (state.currentScreen === SCREENS.ACTION && state.currentQuestion) {
+            screenManager.goToScreen(SCREENS.ACTION);
+          }
+        }
+      }
+    } catch (e) {
+      console.error('Error restoring battle screen state:', e);
+    }
+  }, [session?._id]);
+
+  // Save battle state to sessionStorage whenever it changes
+  const saveBattleState = useCallback(() => {
+    if (session?._id) {
+      const battleState = {
+        sessionId: session._id,
+        timeElapsed,
+        currentQuestion,
+        progressStatus,
+        exchangeHistory,
+        currentScreen: screenManager.currentScreen,
+        savedAt: Date.now()
+      };
+      sessionStorage.setItem(BATTLE_STATE_KEY, JSON.stringify(battleState));
+    }
+  }, [session?._id, timeElapsed, currentQuestion, progressStatus, exchangeHistory, screenManager.currentScreen]);
+
+  // Save state whenever relevant values change
+  useEffect(() => {
+    saveBattleState();
+  }, [saveBattleState]);
+
+  // Save state before page unload
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      saveBattleState();
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [saveBattleState]);
 
   // Timer
   useEffect(() => {

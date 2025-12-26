@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import apiClient from '@/api/apiClient';
 import { useNavigate } from 'react-router-dom';
@@ -10,6 +10,9 @@ import ProblemGeneratorModal from '@/components/arena/ProblemGeneratorModal';
 import { ArenaEntryFlow } from '@/components/arena/entry';
 import { Loader2, RefreshCw, Trophy, Zap, Sparkles, Plus, Swords, Target, Users, User, Clock, Lock } from 'lucide-react';
 import { Button } from "@/components/ui/button";
+
+// Session storage keys
+const ARENA_SESSION_KEY = 'arena_active_session';
 
 export default function Arena() {
   const [profile, setProfile] = useState(null);
@@ -23,7 +26,72 @@ export default function Arena() {
   const [view, setView] = useState('selection'); // 'selection' | 'entry' | 'battle' | 'result'
   const [gameMode, setGameMode] = useState(null); // null = mode selection, 'solo' = solo mode, 'multiplayer' = coming soon
   const [entryFlowData, setEntryFlowData] = useState(null); // Data from entry flow
+  const [isRestoringSession, setIsRestoringSession] = useState(false);
   const navigate = useNavigate();
+
+  // Save session state to sessionStorage whenever it changes
+  const saveSessionState = useCallback(() => {
+    if (currentSession && (view === 'entry' || view === 'battle')) {
+      const sessionState = {
+        selectedProblem,
+        currentSession,
+        view,
+        gameMode,
+        entryFlowData,
+        savedAt: Date.now()
+      };
+      sessionStorage.setItem(ARENA_SESSION_KEY, JSON.stringify(sessionState));
+    }
+  }, [selectedProblem, currentSession, view, gameMode, entryFlowData]);
+
+  // Clear session state
+  const clearSessionState = useCallback(() => {
+    sessionStorage.removeItem(ARENA_SESSION_KEY);
+    // Also clear battle and entry flow state
+    sessionStorage.removeItem('arena_battle_state');
+    sessionStorage.removeItem('arena_entry_flow_state');
+  }, []);
+
+  // Restore session state from sessionStorage
+  const restoreSessionState = useCallback(() => {
+    try {
+      const savedState = sessionStorage.getItem(ARENA_SESSION_KEY);
+      if (savedState) {
+        const state = JSON.parse(savedState);
+        // Check if session is not too old (max 30 minutes)
+        const maxAge = 30 * 60 * 1000; // 30 minutes
+        if (Date.now() - state.savedAt < maxAge) {
+          setSelectedProblem(state.selectedProblem);
+          setCurrentSession(state.currentSession);
+          setView(state.view);
+          setGameMode(state.gameMode);
+          setEntryFlowData(state.entryFlowData);
+          return true;
+        } else {
+          // Session too old, clear it
+          clearSessionState();
+        }
+      }
+    } catch (error) {
+      console.error('Error restoring session state:', error);
+      clearSessionState();
+    }
+    return false;
+  }, [clearSessionState]);
+
+  // Save state whenever relevant values change
+  useEffect(() => {
+    saveSessionState();
+  }, [saveSessionState]);
+
+  // Save state before page unload
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      saveSessionState();
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [saveSessionState]);
 
   useEffect(() => {
     loadData();
@@ -48,6 +116,14 @@ export default function Arena() {
       }
 
       setProfile(profiles[0]);
+
+      // Try to restore previous session
+      const restored = restoreSessionState();
+      if (restored) {
+        setIsRestoringSession(true);
+        // Small delay to ensure state is set
+        setTimeout(() => setIsRestoringSession(false), 100);
+      }
 
       const allProblems = await apiClient.api.problems.list({ is_active: true });
       const relevantProblems = allProblems.filter(p =>
@@ -117,6 +193,8 @@ export default function Arena() {
         exchange_count: conversationMessages.filter(m => m.role === 'user').length
       });
       setView('result');
+      // Clear session state when session is completed
+      clearSessionState();
     } catch (error) {
       console.error('Submit error:', error);
     }
@@ -128,12 +206,16 @@ export default function Arena() {
     if (currentSession) {
       await apiClient.api.arena.abandon(currentSession._id);
     }
+    // Clear session state when abandoned
+    clearSessionState();
     setView('selection');
     setSelectedProblem(null);
     setCurrentSession(null);
   };
 
   const handleContinue = () => {
+    // Clear session state when continuing to next arena
+    clearSessionState();
     setView('selection');
     setSelectedProblem(null);
     setCurrentSession(null);
