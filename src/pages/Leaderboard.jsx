@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import apiClient from '@/api/apiClient';
-import { Trophy, Zap, TrendingUp, Target, Brain, Wrench, Crown, Medal, Sparkles, Users } from 'lucide-react';
+import { Trophy, Zap, TrendingUp, Target, Brain, Wrench, Crown, Medal, Sparkles, Users, X } from 'lucide-react';
 import { cn } from "@/lib/utils";
 
 const archetypeConfig = {
@@ -23,6 +23,7 @@ export default function Leaderboard() {
   const [activeTab, setActiveTab] = useState('growth');
   const [archetypeFilter, setArchetypeFilter] = useState('all');
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedProfile, setSelectedProfile] = useState(null);
 
   useEffect(() => {
     loadLeaderboard();
@@ -58,15 +59,16 @@ export default function Leaderboard() {
       (profile.xp_builder || 0) + (profile.xp_strategist || 0);
   };
 
-  const getReliabilityScore = (profile) => {
-    return (profile.highest_difficulty_conquered || 0) * 10 + (profile.total_arenas_completed || 0);
+  const getAllTimeXP = (profile) => {
+    return (profile.xp_risk_taker || 0) + (profile.xp_analyst || 0) +
+      (profile.xp_builder || 0) + (profile.xp_strategist || 0);
   };
 
   const sortedProfiles = [...profiles].sort((a, b) => {
     if (activeTab === 'growth') {
       return getGrowthScore(b) - getGrowthScore(a);
     }
-    return getReliabilityScore(b) - getReliabilityScore(a);
+    return getAllTimeXP(b) - getAllTimeXP(a);
   });
 
   const filteredProfiles = archetypeFilter === 'all'
@@ -219,22 +221,24 @@ export default function Leaderboard() {
           {filteredProfiles.map((profile, index) => {
             const archetype = archetypeConfig[profile.primary_archetype] || archetypeConfig.analyst;
             const Icon = archetype.icon;
-            const score = activeTab === 'growth' ? getGrowthScore(profile) : getReliabilityScore(profile);
-            const isCurrentUser = profile.created_by === currentUser?.email;
+            const score = activeTab === 'growth' ? getGrowthScore(profile) : getAllTimeXP(profile);
+            const isCurrentUser = profile.user_id === currentUser?.id || profile.email === currentUser?.email;
             const isTopThree = index < 3;
             const rank = rankConfig[index] || null;
+            const displayName = profile.name || 'Anonymous';
 
             return (
               <motion.div
-                key={profile.id}
+                key={profile.id || profile.user_id}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.3 + index * 0.03 }}
+                onClick={() => setSelectedProfile(profile)}
                 className={cn(
-                  "group bg-zinc-900/80 backdrop-blur-sm border rounded-2xl flex items-center gap-4 p-4 transition-all duration-300",
+                  "group bg-zinc-900/80 backdrop-blur-sm border rounded-2xl flex items-center gap-4 p-4 transition-all duration-300 cursor-pointer",
                   isCurrentUser
                     ? "border-orange-500/40 bg-orange-500/5 hover:bg-orange-500/10"
-                    : "border-zinc-800 hover:border-zinc-700"
+                    : "border-zinc-800 hover:border-zinc-700 hover:bg-zinc-800/50"
                 )}
               >
                 {/* Rank */}
@@ -261,7 +265,7 @@ export default function Leaderboard() {
                     "font-semibold truncate text-lg",
                     isCurrentUser ? "text-orange-400" : "text-white"
                   )}>
-                    {isCurrentUser ? 'Kamu' : `Player ${profile.id?.slice?.(-4) || profile.id || 'Unknown'}`}
+                    {isCurrentUser ? 'Kamu' : displayName}
                   </p>
                   <div className="flex items-center gap-2 text-sm text-zinc-500">
                     <span>Level {profile.current_difficulty}</span>
@@ -279,7 +283,7 @@ export default function Leaderboard() {
                     {score}
                   </p>
                   <p className="text-xs text-zinc-600 uppercase tracking-wide">
-                    {activeTab === 'growth' ? 'XP' : 'Score'}
+                    XP
                   </p>
                 </div>
               </motion.div>
@@ -323,6 +327,111 @@ export default function Leaderboard() {
             </div>
           </div>
         </motion.div>
+
+        {/* Profile Modal */}
+        <AnimatePresence>
+          {selectedProfile && (
+            <motion.div
+              className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedProfile(null)}
+            >
+              <motion.div
+                className="bg-zinc-900 border border-zinc-700 rounded-2xl max-w-md w-full overflow-hidden"
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Modal Header */}
+                <div className="relative bg-gradient-to-r from-orange-500/20 to-red-500/20 p-6">
+                  <button
+                    onClick={() => setSelectedProfile(null)}
+                    className="absolute top-4 right-4 w-8 h-8 rounded-full bg-zinc-800/80 flex items-center justify-center text-zinc-400 hover:text-white hover:bg-zinc-700 transition-colors"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                  <div className="flex items-center gap-4">
+                    {(() => {
+                      const arch = archetypeConfig[selectedProfile.primary_archetype] || archetypeConfig.analyst;
+                      const ArchIcon = arch.icon;
+                      return (
+                        <div className={cn("w-16 h-16 rounded-2xl flex items-center justify-center", arch.bg)}>
+                          <ArchIcon className={cn("w-8 h-8", arch.color)} />
+                        </div>
+                      );
+                    })()}
+                    <div>
+                      <h3 className="text-xl font-bold text-white">
+                        {selectedProfile.name || 'Anonymous'}
+                      </h3>
+                      <p className={cn("text-sm font-medium", (archetypeConfig[selectedProfile.primary_archetype] || archetypeConfig.analyst).color)}>
+                        {(archetypeConfig[selectedProfile.primary_archetype] || archetypeConfig.analyst).label}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Modal Body */}
+                <div className="p-6 space-y-6">
+                  {/* Stats Row */}
+                  <div className="grid grid-cols-3 gap-4">
+                    <div className="text-center">
+                      <p className="text-2xl font-bold text-white font-mono">
+                        {selectedProfile.current_difficulty || 1}
+                      </p>
+                      <p className="text-xs text-zinc-500 uppercase">Level</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-2xl font-bold text-orange-400 font-mono">
+                        {(selectedProfile.xp_risk_taker || 0) + (selectedProfile.xp_analyst || 0) +
+                          (selectedProfile.xp_builder || 0) + (selectedProfile.xp_strategist || 0)}
+                      </p>
+                      <p className="text-xs text-zinc-500 uppercase">Total XP</p>
+                    </div>
+                    <div className="text-center">
+                      <p className="text-2xl font-bold text-white font-mono">
+                        {selectedProfile.total_arenas_completed || 0}
+                      </p>
+                      <p className="text-xs text-zinc-500 uppercase">Arenas</p>
+                    </div>
+                  </div>
+
+                  {/* XP Breakdown */}
+                  <div className="space-y-3">
+                    <p className="text-sm font-medium text-zinc-400">XP Breakdown</p>
+                    <div className="grid grid-cols-2 gap-2">
+                      {Object.entries(archetypeConfig).map(([key, config]) => {
+                        const xpKey = `xp_${key}`;
+                        const xpValue = selectedProfile[xpKey] || 0;
+                        const ArchetypeIcon = config.icon;
+                        return (
+                          <div key={key} className={cn("flex items-center gap-2 p-3 rounded-xl", config.bg)}>
+                            <ArchetypeIcon className={cn("w-4 h-4", config.color)} />
+                            <span className="text-sm text-zinc-300">{config.label}</span>
+                            <span className={cn("ml-auto font-mono font-bold", config.color)}>{xpValue}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Highest Difficulty */}
+                  {selectedProfile.highest_difficulty_conquered > 0 && (
+                    <div className="flex items-center justify-between p-4 bg-zinc-800/50 rounded-xl">
+                      <span className="text-sm text-zinc-400">Highest Difficulty Conquered</span>
+                      <span className="text-lg font-bold text-yellow-400 font-mono">
+                        Level {selectedProfile.highest_difficulty_conquered}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );
