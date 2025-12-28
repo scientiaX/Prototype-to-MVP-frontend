@@ -11,7 +11,6 @@ import {
   LogOut,
   Menu,
   X,
-  Flame,
   ChevronRight
 } from 'lucide-react';
 import { cn } from "@/lib/utils";
@@ -103,9 +102,11 @@ export default function Layout({ children, currentPageName }) {
             {/* Logo */}
             <Link to={createPageUrl('Home')} className="flex items-center gap-3 group">
               <div className="relative">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-gradient-to-br from-orange-500 to-red-600 transition-all duration-300 group-hover:scale-110 group-hover:rotate-3">
-                  <Flame className="w-5 h-5 text-black" />
-                </div>
+                <img
+                  src="/novax-icon.png"
+                  alt="NovaX"
+                  className="w-10 h-10 rounded-xl transition-all duration-300 group-hover:scale-110 group-hover:rotate-3"
+                />
                 <div className="absolute inset-0 rounded-xl bg-orange-500/40 blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
               <div className="flex flex-col">
@@ -159,9 +160,11 @@ export default function Layout({ children, currentPageName }) {
       <nav className="md:hidden fixed top-0 left-0 right-0 z-navbar glass-navbar">
         <div className="flex items-center justify-between h-14 px-4">
           <Link to={createPageUrl('Home')} className="flex items-center gap-2">
-            <div className="w-9 h-9 rounded-lg flex items-center justify-center bg-gradient-to-br from-orange-500 to-red-600">
-              <Flame className="w-5 h-5 text-black" />
-            </div>
+            <img
+              src="/novax-icon.png"
+              alt="NovaX"
+              className="w-9 h-9 rounded-lg"
+            />
             <span className="font-bold text-white tracking-tight">NOVAX</span>
           </Link>
 
