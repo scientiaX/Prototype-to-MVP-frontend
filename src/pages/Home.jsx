@@ -63,7 +63,7 @@ export default function Home() {
       descriptionHighlight: 'Not materials. Not theory. Not validation.',
       ctaCalibrate: 'Start Calibration',
       ctaArena: 'Enter Arena',
-      notLoggedIn: 'Login first',
+      notLoggedIn: 'more fun than watching, more effective than reading',
       calibrationTime: '5-7 min calibration',
       readyBattle: 'Ready to battle',
       liveStats: 'Live Stats',
@@ -279,7 +279,7 @@ export default function Home() {
                   {/* Card Glow Effect */}
                   <div className="absolute -inset-1 bg-gradient-to-r from-orange-500/20 to-red-500/20 rounded-3xl blur-xl opacity-50 group-hover:opacity-75 transition-opacity duration-500" />
 
-                  <div className="relative bg-zinc-900/90 backdrop-blur-xl border border-zinc-800/80 rounded-2xl p-8 overflow-hidden">
+                  <div className="relative bg-zinc-900/90 backdrop-blur-xl border border-zinc-800/80 rounded-2xl p-6 overflow-hidden">
                     {/* Decorative Corner */}
                     <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-orange-500/10 to-transparent rounded-full blur-2xl" />
 
@@ -329,18 +329,6 @@ export default function Home() {
                           </span>
                         </div>
                       </div>
-
-                      {/* Visual Separator */}
-                      <div className="flex items-center gap-3 justify-center mb-6">
-                        <div className="h-px w-12 bg-gradient-to-r from-transparent to-zinc-700" />
-                        <Sparkles className="w-4 h-4 text-violet-400" />
-                        <div className="h-px w-12 bg-gradient-to-l from-transparent to-zinc-700" />
-                      </div>
-
-                      {/* Quote */}
-                      <p className="text-sm italic text-zinc-500 text-center">
-                        "No comfort zone. Only growth zone."
-                      </p>
                     </div>
                   </div>
                 </div>
