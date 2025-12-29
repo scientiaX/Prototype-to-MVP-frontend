@@ -286,7 +286,7 @@ export default function Home() {
                     <div className="relative z-10">
                       {/* Static Learning From Header */}
                       <div className="text-center mb-6">
-                        <h3 className="text-white font-bold text-2xl mb-4">Learning From</h3>
+                        <h3 className="text-zinc-400 font-medium text-lg mb-3">Learning From</h3>
 
                         {/* Rotating Words */}
                         <div className="relative h-10 overflow-hidden">
@@ -312,19 +312,19 @@ export default function Home() {
                               .smooth-word:nth-child(5) { animation: smoothCycle 12.5s ease-in-out infinite 10s; }
                             `}
                           </style>
-                          <span className="smooth-word text-2xl font-semibold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+                          <span className="smooth-word text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
                             Real World Simulation
                           </span>
-                          <span className="smooth-word text-2xl font-semibold bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-transparent">
+                          <span className="smooth-word text-2xl font-bold bg-gradient-to-r from-orange-400 to-amber-400 bg-clip-text text-transparent">
                             Real World Problems
                           </span>
-                          <span className="smooth-word text-2xl font-semibold bg-gradient-to-r from-red-400 to-pink-500 bg-clip-text text-transparent">
+                          <span className="smooth-word text-2xl font-bold bg-gradient-to-r from-rose-400 to-pink-400 bg-clip-text text-transparent">
                             Mistakes
                           </span>
-                          <span className="smooth-word text-2xl font-semibold bg-gradient-to-r from-violet-400 to-purple-500 bg-clip-text text-transparent">
+                          <span className="smooth-word text-2xl font-bold bg-gradient-to-r from-violet-400 to-purple-400 bg-clip-text text-transparent">
                             Decisions
                           </span>
-                          <span className="smooth-word text-2xl font-semibold bg-gradient-to-r from-emerald-400 to-green-500 bg-clip-text text-transparent">
+                          <span className="smooth-word text-2xl font-bold bg-gradient-to-r from-teal-400 to-cyan-400 bg-clip-text text-transparent">
                             Reflection
                           </span>
                         </div>
