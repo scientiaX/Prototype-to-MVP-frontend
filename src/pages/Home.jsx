@@ -268,7 +268,7 @@ export default function Home() {
                 </div>
               </motion.div>
 
-              {/* Right - Stats Card */}
+              {/* Right - Learning From Slider Card */}
               <motion.div
                 initial={{ opacity: 0, x: 40 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -284,39 +284,101 @@ export default function Home() {
                     <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-orange-500/10 to-transparent rounded-full blur-2xl" />
 
                     <div className="relative z-10">
-                      <div className="flex items-center justify-between mb-8">
+                      <div className="flex items-center justify-between mb-6">
                         <div>
-                          <h3 className="text-white font-bold text-xl mb-1">Live Stats</h3>
-                          <p className="text-sm text-zinc-500">Real-time arena activity</p>
+                          <h3 className="text-white font-bold text-xl mb-1">Learning From</h3>
+                          <p className="text-sm text-zinc-500">How warriors grow stronger</p>
                         </div>
                         <div className="w-10 h-10 rounded-xl bg-violet-500/15 flex items-center justify-center">
                           <Sparkles className="w-5 h-5 text-violet-400" />
                         </div>
                       </div>
 
-                      <div className="space-y-5">
-                        {stats.map((stat, i) => (
-                          <motion.div
-                            key={i}
-                            className="flex items-center justify-between p-3 rounded-xl bg-zinc-800/40 border border-zinc-800/50 hover:border-zinc-700/60 transition-colors"
-                            initial={{ opacity: 0, x: 20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: 0.5 + i * 0.1 }}
-                          >
-                            <div className="flex items-center gap-3">
-                              <div className="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center">
-                                <stat.icon className={`w-5 h-5 ${stat.color}`} />
-                              </div>
-                              <span className="text-zinc-400 text-sm">{stat.label}</span>
+                      {/* Auto-sliding Cards */}
+                      <div className="relative h-[200px] overflow-hidden rounded-xl">
+                        <style>
+                          {`
+                            @keyframes slideUp {
+                              0%, 16% { transform: translateY(0); opacity: 1; }
+                              20%, 36% { transform: translateY(-100%); opacity: 1; }
+                              40%, 56% { transform: translateY(-200%); opacity: 1; }
+                              60%, 76% { transform: translateY(-300%); opacity: 1; }
+                              80%, 96% { transform: translateY(-400%); opacity: 1; }
+                              100% { transform: translateY(-500%); opacity: 1; }
+                            }
+                            .slide-container {
+                              animation: slideUp 15s ease-in-out infinite;
+                            }
+                          `}
+                        </style>
+                        <div className="slide-container">
+                          {/* Slide 1 - Real World Simulation */}
+                          <div className="h-[200px] p-5 bg-gradient-to-br from-cyan-500/10 to-blue-500/5 border border-cyan-500/20 rounded-xl flex flex-col justify-center">
+                            <div className="w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center mb-4">
+                              <Target className="w-6 h-6 text-cyan-400" />
                             </div>
-                            <span className="font-mono font-bold text-2xl text-white">
-                              {stat.value}
-                            </span>
-                          </motion.div>
+                            <h4 className="text-white font-semibold text-lg mb-2">Real World Simulation</h4>
+                            <p className="text-zinc-400 text-sm leading-relaxed">Menghadapi skenario nyata yang terjadi di industri dan bisnis sesungguhnya.</p>
+                          </div>
+
+                          {/* Slide 2 - Real World Problem */}
+                          <div className="h-[200px] p-5 bg-gradient-to-br from-orange-500/10 to-red-500/5 border border-orange-500/20 rounded-xl flex flex-col justify-center">
+                            <div className="w-12 h-12 rounded-xl bg-orange-500/20 flex items-center justify-center mb-4">
+                              <Flame className="w-6 h-6 text-orange-400" />
+                            </div>
+                            <h4 className="text-white font-semibold text-lg mb-2">Real World Problem</h4>
+                            <p className="text-zinc-400 text-sm leading-relaxed">Masalah autentik tanpa jawaban baku. Belajar berpikir, bukan menghafal.</p>
+                          </div>
+
+                          {/* Slide 3 - Kesalahan */}
+                          <div className="h-[200px] p-5 bg-gradient-to-br from-red-500/10 to-pink-500/5 border border-red-500/20 rounded-xl flex flex-col justify-center">
+                            <div className="w-12 h-12 rounded-xl bg-red-500/20 flex items-center justify-center mb-4">
+                              <Shield className="w-6 h-6 text-red-400" />
+                            </div>
+                            <h4 className="text-white font-semibold text-lg mb-2">Kesalahan</h4>
+                            <p className="text-zinc-400 text-sm leading-relaxed">Gagal adalah guru terbaik. Setiap error membuka insight baru untuk berkembang.</p>
+                          </div>
+
+                          {/* Slide 4 - Keputusan */}
+                          <div className="h-[200px] p-5 bg-gradient-to-br from-violet-500/10 to-purple-500/5 border border-violet-500/20 rounded-xl flex flex-col justify-center">
+                            <div className="w-12 h-12 rounded-xl bg-violet-500/20 flex items-center justify-center mb-4">
+                              <TrendingUp className="w-6 h-6 text-violet-400" />
+                            </div>
+                            <h4 className="text-white font-semibold text-lg mb-2">Keputusan</h4>
+                            <p className="text-zinc-400 text-sm leading-relaxed">Berlatih mengambil keputusan di bawah tekanan dengan konsekuensi nyata.</p>
+                          </div>
+
+                          {/* Slide 5 - Refleksi */}
+                          <div className="h-[200px] p-5 bg-gradient-to-br from-emerald-500/10 to-green-500/5 border border-emerald-500/20 rounded-xl flex flex-col justify-center">
+                            <div className="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center mb-4">
+                              <Sparkles className="w-6 h-6 text-emerald-400" />
+                            </div>
+                            <h4 className="text-white font-semibold text-lg mb-2">Refleksi</h4>
+                            <p className="text-zinc-400 text-sm leading-relaxed">Memproses pengalaman jadi wisdom. Feedback loop yang memperkuat mental.</p>
+                          </div>
+
+                          {/* Duplicate first slide for seamless loop */}
+                          <div className="h-[200px] p-5 bg-gradient-to-br from-cyan-500/10 to-blue-500/5 border border-cyan-500/20 rounded-xl flex flex-col justify-center">
+                            <div className="w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center mb-4">
+                              <Target className="w-6 h-6 text-cyan-400" />
+                            </div>
+                            <h4 className="text-white font-semibold text-lg mb-2">Real World Simulation</h4>
+                            <p className="text-zinc-400 text-sm leading-relaxed">Menghadapi skenario nyata yang terjadi di industri dan bisnis sesungguhnya.</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Slide Indicators */}
+                      <div className="flex justify-center gap-2 mt-4">
+                        {[0, 1, 2, 3, 4].map((i) => (
+                          <div
+                            key={i}
+                            className="w-1.5 h-1.5 rounded-full bg-zinc-600"
+                          />
                         ))}
                       </div>
 
-                      <div className="mt-8 pt-6 border-t border-zinc-800">
+                      <div className="mt-6 pt-5 border-t border-zinc-800">
                         <p className="text-sm italic text-zinc-600 text-center">
                           "No comfort zone. Only growth zone."
                         </p>
