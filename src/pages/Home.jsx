@@ -293,11 +293,11 @@ export default function Home() {
                           <style>
                             {`
                               @keyframes smoothCycle {
-                                0% { opacity: 0; transform: translateY(8px); }
-                                3% { opacity: 1; transform: translateY(0); }
-                                17% { opacity: 1; transform: translateY(0); }
-                                20% { opacity: 0; transform: translateY(-8px); }
-                                100% { opacity: 0; transform: translateY(-8px); }
+                                0% { opacity: 0; transform: translateY(6px); }
+                                4% { opacity: 1; transform: translateY(0); }
+                                16% { opacity: 1; transform: translateY(0); }
+                                20% { opacity: 0; transform: translateY(-6px); }
+                                20.01%, 100% { opacity: 0; transform: translateY(6px); }
                               }
                               .smooth-word {
                                 position: absolute;
@@ -305,11 +305,11 @@ export default function Home() {
                                 right: 0;
                                 opacity: 0;
                               }
-                              .smooth-word:nth-child(1) { animation: smoothCycle 10s ease-in-out infinite 0s; }
-                              .smooth-word:nth-child(2) { animation: smoothCycle 10s ease-in-out infinite 2s; }
-                              .smooth-word:nth-child(3) { animation: smoothCycle 10s ease-in-out infinite 4s; }
-                              .smooth-word:nth-child(4) { animation: smoothCycle 10s ease-in-out infinite 6s; }
-                              .smooth-word:nth-child(5) { animation: smoothCycle 10s ease-in-out infinite 8s; }
+                              .smooth-word:nth-child(1) { animation: smoothCycle 12.5s ease-in-out infinite 0s; }
+                              .smooth-word:nth-child(2) { animation: smoothCycle 12.5s ease-in-out infinite 2.5s; }
+                              .smooth-word:nth-child(3) { animation: smoothCycle 12.5s ease-in-out infinite 5s; }
+                              .smooth-word:nth-child(4) { animation: smoothCycle 12.5s ease-in-out infinite 7.5s; }
+                              .smooth-word:nth-child(5) { animation: smoothCycle 12.5s ease-in-out infinite 10s; }
                             `}
                           </style>
                           <span className="smooth-word text-2xl font-semibold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
