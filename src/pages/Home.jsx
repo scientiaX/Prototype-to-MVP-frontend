@@ -289,29 +289,29 @@ export default function Home() {
                         <h3 className="text-zinc-400 font-medium text-lg mb-3">Learning From</h3>
 
                         {/* Rotating Words */}
+                        <style>
+                          {`
+                            @keyframes smoothCycle {
+                              0% { opacity: 0; transform: translateY(6px); }
+                              2% { opacity: 1; transform: translateY(0); }
+                              18% { opacity: 1; transform: translateY(0); }
+                              20% { opacity: 0; transform: translateY(-6px); }
+                              100% { opacity: 0; }
+                            }
+                            .smooth-word {
+                              position: absolute;
+                              left: 0;
+                              right: 0;
+                              opacity: 0;
+                            }
+                            .smooth-word:nth-of-type(1) { animation: smoothCycle 15s ease-in-out infinite 0s; }
+                            .smooth-word:nth-of-type(2) { animation: smoothCycle 15s ease-in-out infinite 3s; }
+                            .smooth-word:nth-of-type(3) { animation: smoothCycle 15s ease-in-out infinite 6s; }
+                            .smooth-word:nth-of-type(4) { animation: smoothCycle 15s ease-in-out infinite 9s; }
+                            .smooth-word:nth-of-type(5) { animation: smoothCycle 15s ease-in-out infinite 12s; }
+                          `}
+                        </style>
                         <div className="relative h-10 overflow-hidden">
-                          <style>
-                            {`
-                              @keyframes smoothCycle {
-                                0% { opacity: 0; transform: translateY(6px); }
-                                4% { opacity: 1; transform: translateY(0); }
-                                16% { opacity: 1; transform: translateY(0); }
-                                20% { opacity: 0; transform: translateY(-6px); }
-                                20.01%, 100% { opacity: 0; transform: translateY(6px); }
-                              }
-                              .smooth-word {
-                                position: absolute;
-                                left: 0;
-                                right: 0;
-                                opacity: 0;
-                              }
-                              .smooth-word:nth-child(1) { animation: smoothCycle 12.5s ease-in-out infinite 0s; }
-                              .smooth-word:nth-child(2) { animation: smoothCycle 12.5s ease-in-out infinite 2.5s; }
-                              .smooth-word:nth-child(3) { animation: smoothCycle 12.5s ease-in-out infinite 5s; }
-                              .smooth-word:nth-child(4) { animation: smoothCycle 12.5s ease-in-out infinite 7.5s; }
-                              .smooth-word:nth-child(5) { animation: smoothCycle 12.5s ease-in-out infinite 10s; }
-                            `}
-                          </style>
                           <span className="smooth-word text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
                             Real World Simulation
                           </span>
