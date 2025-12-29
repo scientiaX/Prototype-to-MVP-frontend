@@ -268,7 +268,7 @@ export default function Home() {
                 </div>
               </motion.div>
 
-              {/* Right - Learning From Slider Card */}
+              {/* Right - Learning From Card */}
               <motion.div
                 initial={{ opacity: 0, x: 40 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -284,92 +284,60 @@ export default function Home() {
                     <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-orange-500/10 to-transparent rounded-full blur-2xl" />
 
                     <div className="relative z-10">
-                      <div className="flex items-center justify-between mb-6">
-                        <div>
-                          <h3 className="text-white font-bold text-xl mb-1">Learning From</h3>
-                          <p className="text-sm text-zinc-500">How warriors grow stronger</p>
-                        </div>
-                        <div className="w-10 h-10 rounded-xl bg-violet-500/15 flex items-center justify-center">
-                          <Sparkles className="w-5 h-5 text-violet-400" />
-                        </div>
-                      </div>
+                      {/* Static Learning From Header */}
+                      <div className="text-center mb-8">
+                        <p className="text-zinc-500 text-sm uppercase tracking-wider mb-2">Warriors Learn From</p>
 
-                      {/* Auto-sliding Cards - Horizontal */}
-                      <div className="relative h-[120px] overflow-hidden rounded-xl">
-                        <style>
-                          {`
-                            @keyframes slideFade {
-                              0%, 18% { opacity: 1; transform: translateX(0); }
-                              20% { opacity: 0; transform: translateX(-30px); }
-                              20.1%, 38% { opacity: 1; transform: translateX(0); }
-                              40% { opacity: 0; transform: translateX(-30px); }
-                              40.1%, 58% { opacity: 1; transform: translateX(0); }
-                              60% { opacity: 0; transform: translateX(-30px); }
-                              60.1%, 78% { opacity: 1; transform: translateX(0); }
-                              80% { opacity: 0; transform: translateX(-30px); }
-                              80.1%, 98% { opacity: 1; transform: translateX(0); }
-                              100% { opacity: 0; transform: translateX(-30px); }
-                            }
-                            .learning-slide { position: absolute; inset: 0; opacity: 0; }
-                            .learning-slide:nth-child(1) { animation: slideFade 15s infinite 0s; }
-                            .learning-slide:nth-child(2) { animation: slideFade 15s infinite 3s; }
-                            .learning-slide:nth-child(3) { animation: slideFade 15s infinite 6s; }
-                            .learning-slide:nth-child(4) { animation: slideFade 15s infinite 9s; }
-                            .learning-slide:nth-child(5) { animation: slideFade 15s infinite 12s; }
-                          `}
-                        </style>
-
-                        <div className="learning-slide p-5 bg-gradient-to-r from-cyan-500/10 to-transparent border border-cyan-500/20 rounded-xl flex items-center gap-4">
-                          <div className="w-14 h-14 rounded-xl bg-cyan-500/20 flex items-center justify-center shrink-0">
-                            <Target className="w-7 h-7 text-cyan-400" />
-                          </div>
-                          <div>
-                            <h4 className="text-white font-semibold text-xl">Real World Simulation</h4>
-                          </div>
-                        </div>
-
-                        <div className="learning-slide p-5 bg-gradient-to-r from-orange-500/10 to-transparent border border-orange-500/20 rounded-xl flex items-center gap-4">
-                          <div className="w-14 h-14 rounded-xl bg-orange-500/20 flex items-center justify-center shrink-0">
-                            <Flame className="w-7 h-7 text-orange-400" />
-                          </div>
-                          <div>
-                            <h4 className="text-white font-semibold text-xl">Real World Problem</h4>
-                          </div>
-                        </div>
-
-                        <div className="learning-slide p-5 bg-gradient-to-r from-red-500/10 to-transparent border border-red-500/20 rounded-xl flex items-center gap-4">
-                          <div className="w-14 h-14 rounded-xl bg-red-500/20 flex items-center justify-center shrink-0">
-                            <Shield className="w-7 h-7 text-red-400" />
-                          </div>
-                          <div>
-                            <h4 className="text-white font-semibold text-xl">Kesalahan</h4>
-                          </div>
-                        </div>
-
-                        <div className="learning-slide p-5 bg-gradient-to-r from-violet-500/10 to-transparent border border-violet-500/20 rounded-xl flex items-center gap-4">
-                          <div className="w-14 h-14 rounded-xl bg-violet-500/20 flex items-center justify-center shrink-0">
-                            <TrendingUp className="w-7 h-7 text-violet-400" />
-                          </div>
-                          <div>
-                            <h4 className="text-white font-semibold text-xl">Keputusan</h4>
-                          </div>
-                        </div>
-
-                        <div className="learning-slide p-5 bg-gradient-to-r from-emerald-500/10 to-transparent border border-emerald-500/20 rounded-xl flex items-center gap-4">
-                          <div className="w-14 h-14 rounded-xl bg-emerald-500/20 flex items-center justify-center shrink-0">
-                            <Sparkles className="w-7 h-7 text-emerald-400" />
-                          </div>
-                          <div>
-                            <h4 className="text-white font-semibold text-xl">Refleksi</h4>
-                          </div>
+                        {/* Rotating Words */}
+                        <div className="relative h-12 overflow-hidden">
+                          <style>
+                            {`
+                              @keyframes wordCycle {
+                                0%, 16% { opacity: 1; transform: translateY(0); }
+                                20%, 100% { opacity: 0; transform: translateY(-100%); }
+                              }
+                              .rotating-word {
+                                position: absolute;
+                                left: 0;
+                                right: 0;
+                                opacity: 0;
+                              }
+                              .rotating-word:nth-child(1) { animation: wordCycle 12.5s ease-in-out infinite 0s; }
+                              .rotating-word:nth-child(2) { animation: wordCycle 12.5s ease-in-out infinite 2.5s; }
+                              .rotating-word:nth-child(3) { animation: wordCycle 12.5s ease-in-out infinite 5s; }
+                              .rotating-word:nth-child(4) { animation: wordCycle 12.5s ease-in-out infinite 7.5s; }
+                              .rotating-word:nth-child(5) { animation: wordCycle 12.5s ease-in-out infinite 10s; }
+                            `}
+                          </style>
+                          <span className="rotating-word text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+                            Real World Simulation
+                          </span>
+                          <span className="rotating-word text-3xl font-bold bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-transparent">
+                            Real World Problem
+                          </span>
+                          <span className="rotating-word text-3xl font-bold bg-gradient-to-r from-red-400 to-pink-500 bg-clip-text text-transparent">
+                            Kesalahan
+                          </span>
+                          <span className="rotating-word text-3xl font-bold bg-gradient-to-r from-violet-400 to-purple-500 bg-clip-text text-transparent">
+                            Keputusan
+                          </span>
+                          <span className="rotating-word text-3xl font-bold bg-gradient-to-r from-emerald-400 to-green-500 bg-clip-text text-transparent">
+                            Refleksi
+                          </span>
                         </div>
                       </div>
 
-                      <div className="mt-6 pt-5 border-t border-zinc-800">
-                        <p className="text-sm italic text-zinc-600 text-center">
-                          "No comfort zone. Only growth zone."
-                        </p>
+                      {/* Visual Separator */}
+                      <div className="flex items-center gap-3 justify-center mb-6">
+                        <div className="h-px w-12 bg-gradient-to-r from-transparent to-zinc-700" />
+                        <Sparkles className="w-4 h-4 text-violet-400" />
+                        <div className="h-px w-12 bg-gradient-to-l from-transparent to-zinc-700" />
                       </div>
+
+                      {/* Quote */}
+                      <p className="text-sm italic text-zinc-500 text-center">
+                        "No comfort zone. Only growth zone."
+                      </p>
                     </div>
                   </div>
                 </div>
