@@ -294,88 +294,75 @@ export default function Home() {
                         </div>
                       </div>
 
-                      {/* Auto-sliding Cards */}
-                      <div className="relative h-[200px] overflow-hidden rounded-xl">
+                      {/* Auto-sliding Cards - Horizontal */}
+                      <div className="relative h-[120px] overflow-hidden rounded-xl">
                         <style>
                           {`
-                            @keyframes slideUp {
-                              0%, 16% { transform: translateY(0); opacity: 1; }
-                              20%, 36% { transform: translateY(-100%); opacity: 1; }
-                              40%, 56% { transform: translateY(-200%); opacity: 1; }
-                              60%, 76% { transform: translateY(-300%); opacity: 1; }
-                              80%, 96% { transform: translateY(-400%); opacity: 1; }
-                              100% { transform: translateY(-500%); opacity: 1; }
+                            @keyframes slideFade {
+                              0%, 18% { opacity: 1; transform: translateX(0); }
+                              20% { opacity: 0; transform: translateX(-30px); }
+                              20.1%, 38% { opacity: 1; transform: translateX(0); }
+                              40% { opacity: 0; transform: translateX(-30px); }
+                              40.1%, 58% { opacity: 1; transform: translateX(0); }
+                              60% { opacity: 0; transform: translateX(-30px); }
+                              60.1%, 78% { opacity: 1; transform: translateX(0); }
+                              80% { opacity: 0; transform: translateX(-30px); }
+                              80.1%, 98% { opacity: 1; transform: translateX(0); }
+                              100% { opacity: 0; transform: translateX(-30px); }
                             }
-                            .slide-container {
-                              animation: slideUp 15s ease-in-out infinite;
-                            }
+                            .learning-slide { position: absolute; inset: 0; opacity: 0; }
+                            .learning-slide:nth-child(1) { animation: slideFade 15s infinite 0s; }
+                            .learning-slide:nth-child(2) { animation: slideFade 15s infinite 3s; }
+                            .learning-slide:nth-child(3) { animation: slideFade 15s infinite 6s; }
+                            .learning-slide:nth-child(4) { animation: slideFade 15s infinite 9s; }
+                            .learning-slide:nth-child(5) { animation: slideFade 15s infinite 12s; }
                           `}
                         </style>
-                        <div className="slide-container">
-                          {/* Slide 1 - Real World Simulation */}
-                          <div className="h-[200px] p-5 bg-gradient-to-br from-cyan-500/10 to-blue-500/5 border border-cyan-500/20 rounded-xl flex flex-col justify-center">
-                            <div className="w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center mb-4">
-                              <Target className="w-6 h-6 text-cyan-400" />
-                            </div>
-                            <h4 className="text-white font-semibold text-lg mb-2">Real World Simulation</h4>
-                            <p className="text-zinc-400 text-sm leading-relaxed">Menghadapi skenario nyata yang terjadi di industri dan bisnis sesungguhnya.</p>
-                          </div>
 
-                          {/* Slide 2 - Real World Problem */}
-                          <div className="h-[200px] p-5 bg-gradient-to-br from-orange-500/10 to-red-500/5 border border-orange-500/20 rounded-xl flex flex-col justify-center">
-                            <div className="w-12 h-12 rounded-xl bg-orange-500/20 flex items-center justify-center mb-4">
-                              <Flame className="w-6 h-6 text-orange-400" />
-                            </div>
-                            <h4 className="text-white font-semibold text-lg mb-2">Real World Problem</h4>
-                            <p className="text-zinc-400 text-sm leading-relaxed">Masalah autentik tanpa jawaban baku. Belajar berpikir, bukan menghafal.</p>
+                        <div className="learning-slide p-5 bg-gradient-to-r from-cyan-500/10 to-transparent border border-cyan-500/20 rounded-xl flex items-center gap-4">
+                          <div className="w-14 h-14 rounded-xl bg-cyan-500/20 flex items-center justify-center shrink-0">
+                            <Target className="w-7 h-7 text-cyan-400" />
                           </div>
-
-                          {/* Slide 3 - Kesalahan */}
-                          <div className="h-[200px] p-5 bg-gradient-to-br from-red-500/10 to-pink-500/5 border border-red-500/20 rounded-xl flex flex-col justify-center">
-                            <div className="w-12 h-12 rounded-xl bg-red-500/20 flex items-center justify-center mb-4">
-                              <Shield className="w-6 h-6 text-red-400" />
-                            </div>
-                            <h4 className="text-white font-semibold text-lg mb-2">Kesalahan</h4>
-                            <p className="text-zinc-400 text-sm leading-relaxed">Gagal adalah guru terbaik. Setiap error membuka insight baru untuk berkembang.</p>
-                          </div>
-
-                          {/* Slide 4 - Keputusan */}
-                          <div className="h-[200px] p-5 bg-gradient-to-br from-violet-500/10 to-purple-500/5 border border-violet-500/20 rounded-xl flex flex-col justify-center">
-                            <div className="w-12 h-12 rounded-xl bg-violet-500/20 flex items-center justify-center mb-4">
-                              <TrendingUp className="w-6 h-6 text-violet-400" />
-                            </div>
-                            <h4 className="text-white font-semibold text-lg mb-2">Keputusan</h4>
-                            <p className="text-zinc-400 text-sm leading-relaxed">Berlatih mengambil keputusan di bawah tekanan dengan konsekuensi nyata.</p>
-                          </div>
-
-                          {/* Slide 5 - Refleksi */}
-                          <div className="h-[200px] p-5 bg-gradient-to-br from-emerald-500/10 to-green-500/5 border border-emerald-500/20 rounded-xl flex flex-col justify-center">
-                            <div className="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center mb-4">
-                              <Sparkles className="w-6 h-6 text-emerald-400" />
-                            </div>
-                            <h4 className="text-white font-semibold text-lg mb-2">Refleksi</h4>
-                            <p className="text-zinc-400 text-sm leading-relaxed">Memproses pengalaman jadi wisdom. Feedback loop yang memperkuat mental.</p>
-                          </div>
-
-                          {/* Duplicate first slide for seamless loop */}
-                          <div className="h-[200px] p-5 bg-gradient-to-br from-cyan-500/10 to-blue-500/5 border border-cyan-500/20 rounded-xl flex flex-col justify-center">
-                            <div className="w-12 h-12 rounded-xl bg-cyan-500/20 flex items-center justify-center mb-4">
-                              <Target className="w-6 h-6 text-cyan-400" />
-                            </div>
-                            <h4 className="text-white font-semibold text-lg mb-2">Real World Simulation</h4>
-                            <p className="text-zinc-400 text-sm leading-relaxed">Menghadapi skenario nyata yang terjadi di industri dan bisnis sesungguhnya.</p>
+                          <div>
+                            <h4 className="text-white font-semibold text-xl">Real World Simulation</h4>
                           </div>
                         </div>
-                      </div>
 
-                      {/* Slide Indicators */}
-                      <div className="flex justify-center gap-2 mt-4">
-                        {[0, 1, 2, 3, 4].map((i) => (
-                          <div
-                            key={i}
-                            className="w-1.5 h-1.5 rounded-full bg-zinc-600"
-                          />
-                        ))}
+                        <div className="learning-slide p-5 bg-gradient-to-r from-orange-500/10 to-transparent border border-orange-500/20 rounded-xl flex items-center gap-4">
+                          <div className="w-14 h-14 rounded-xl bg-orange-500/20 flex items-center justify-center shrink-0">
+                            <Flame className="w-7 h-7 text-orange-400" />
+                          </div>
+                          <div>
+                            <h4 className="text-white font-semibold text-xl">Real World Problem</h4>
+                          </div>
+                        </div>
+
+                        <div className="learning-slide p-5 bg-gradient-to-r from-red-500/10 to-transparent border border-red-500/20 rounded-xl flex items-center gap-4">
+                          <div className="w-14 h-14 rounded-xl bg-red-500/20 flex items-center justify-center shrink-0">
+                            <Shield className="w-7 h-7 text-red-400" />
+                          </div>
+                          <div>
+                            <h4 className="text-white font-semibold text-xl">Kesalahan</h4>
+                          </div>
+                        </div>
+
+                        <div className="learning-slide p-5 bg-gradient-to-r from-violet-500/10 to-transparent border border-violet-500/20 rounded-xl flex items-center gap-4">
+                          <div className="w-14 h-14 rounded-xl bg-violet-500/20 flex items-center justify-center shrink-0">
+                            <TrendingUp className="w-7 h-7 text-violet-400" />
+                          </div>
+                          <div>
+                            <h4 className="text-white font-semibold text-xl">Keputusan</h4>
+                          </div>
+                        </div>
+
+                        <div className="learning-slide p-5 bg-gradient-to-r from-emerald-500/10 to-transparent border border-emerald-500/20 rounded-xl flex items-center gap-4">
+                          <div className="w-14 h-14 rounded-xl bg-emerald-500/20 flex items-center justify-center shrink-0">
+                            <Sparkles className="w-7 h-7 text-emerald-400" />
+                          </div>
+                          <div>
+                            <h4 className="text-white font-semibold text-xl">Refleksi</h4>
+                          </div>
+                        </div>
                       </div>
 
                       <div className="mt-6 pt-5 border-t border-zinc-800">
@@ -459,7 +446,7 @@ export default function Home() {
                 <div className="relative z-10">
                   <p className="text-lg text-zinc-400">
                     <span className="text-red-400 font-semibold">⚠️ Important:</span>{' '}
-                    Built by students for students. Competing healthily and<span className="text-white font-medium"> disrupting the world.</span>.
+                    Built by students for students. Competing healthily and<span className="text-white font-medium"> disrupting the world.</span>
                   </p>
                 </div>
               </div>
