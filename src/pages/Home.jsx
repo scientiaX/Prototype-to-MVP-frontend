@@ -285,44 +285,46 @@ export default function Home() {
 
                     <div className="relative z-10">
                       {/* Static Learning From Header */}
-                      <div className="text-center mb-8">
-                        <p className="text-zinc-500 text-sm uppercase tracking-wider mb-2">Warriors Learn From</p>
+                      <div className="text-center mb-6">
+                        <h3 className="text-white font-bold text-2xl mb-4">Learning From</h3>
 
                         {/* Rotating Words */}
-                        <div className="relative h-12 overflow-hidden">
+                        <div className="relative h-10 overflow-hidden">
                           <style>
                             {`
-                              @keyframes wordCycle {
-                                0%, 16% { opacity: 1; transform: translateY(0); }
-                                20%, 100% { opacity: 0; transform: translateY(-100%); }
+                              @keyframes smoothCycle {
+                                0%, 15% { opacity: 1; transform: translateY(0); }
+                                18%, 20% { opacity: 0; transform: translateY(-8px); }
+                                20.1%, 100% { opacity: 0; transform: translateY(8px); }
                               }
-                              .rotating-word {
+                              .smooth-word {
                                 position: absolute;
                                 left: 0;
                                 right: 0;
                                 opacity: 0;
+                                transition: all 0.3s ease;
                               }
-                              .rotating-word:nth-child(1) { animation: wordCycle 12.5s ease-in-out infinite 0s; }
-                              .rotating-word:nth-child(2) { animation: wordCycle 12.5s ease-in-out infinite 2.5s; }
-                              .rotating-word:nth-child(3) { animation: wordCycle 12.5s ease-in-out infinite 5s; }
-                              .rotating-word:nth-child(4) { animation: wordCycle 12.5s ease-in-out infinite 7.5s; }
-                              .rotating-word:nth-child(5) { animation: wordCycle 12.5s ease-in-out infinite 10s; }
+                              .smooth-word:nth-child(1) { animation: smoothCycle 12.5s cubic-bezier(0.4, 0, 0.2, 1) infinite 0s; }
+                              .smooth-word:nth-child(2) { animation: smoothCycle 12.5s cubic-bezier(0.4, 0, 0.2, 1) infinite 2.5s; }
+                              .smooth-word:nth-child(3) { animation: smoothCycle 12.5s cubic-bezier(0.4, 0, 0.2, 1) infinite 5s; }
+                              .smooth-word:nth-child(4) { animation: smoothCycle 12.5s cubic-bezier(0.4, 0, 0.2, 1) infinite 7.5s; }
+                              .smooth-word:nth-child(5) { animation: smoothCycle 12.5s cubic-bezier(0.4, 0, 0.2, 1) infinite 10s; }
                             `}
                           </style>
-                          <span className="rotating-word text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+                          <span className="smooth-word text-2xl font-semibold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
                             Real World Simulation
                           </span>
-                          <span className="rotating-word text-3xl font-bold bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-transparent">
-                            Real World Problem
+                          <span className="smooth-word text-2xl font-semibold bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-transparent">
+                            Real World Problems
                           </span>
-                          <span className="rotating-word text-3xl font-bold bg-gradient-to-r from-red-400 to-pink-500 bg-clip-text text-transparent">
-                            Kesalahan
+                          <span className="smooth-word text-2xl font-semibold bg-gradient-to-r from-red-400 to-pink-500 bg-clip-text text-transparent">
+                            Mistakes
                           </span>
-                          <span className="rotating-word text-3xl font-bold bg-gradient-to-r from-violet-400 to-purple-500 bg-clip-text text-transparent">
-                            Keputusan
+                          <span className="smooth-word text-2xl font-semibold bg-gradient-to-r from-violet-400 to-purple-500 bg-clip-text text-transparent">
+                            Decisions
                           </span>
-                          <span className="rotating-word text-3xl font-bold bg-gradient-to-r from-emerald-400 to-green-500 bg-clip-text text-transparent">
-                            Refleksi
+                          <span className="smooth-word text-2xl font-semibold bg-gradient-to-r from-emerald-400 to-green-500 bg-clip-text text-transparent">
+                            Reflection
                           </span>
                         </div>
                       </div>
