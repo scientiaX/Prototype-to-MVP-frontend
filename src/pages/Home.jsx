@@ -210,7 +210,7 @@ export default function Home() {
       <div className="relative z-10">
         {/* Hero Section */}
         <section className="max-w-6xl mx-auto px-6 md:px-8">
-          <div className="min-h-[85vh] flex items-center py-20">
+          <div className="min-h-[75vh] flex items-center py-12">
             <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center w-full">
               {/* Left - Content */}
               <motion.div
@@ -271,20 +271,20 @@ export default function Home() {
                 </p>
 
                 {/* 3-Step Journey */}
-                <div className="mt-8 flex flex-wrap items-center gap-2 text-sm">
-                  <div className="flex items-center gap-2 bg-zinc-800/50 px-3 py-1.5 rounded-full border border-zinc-700/50">
-                    <span className="text-violet-400">✎</span>
-                    <span className="text-zinc-300">Write your dreams</span>
+                <div className="mt-8 flex items-center gap-3 text-base">
+                  <div className="flex items-center gap-2.5 bg-zinc-800/60 px-4 py-2 rounded-full border border-zinc-700/50">
+                    <span className="text-violet-400 text-lg">✎</span>
+                    <span className="text-zinc-200 font-medium">Write your dreams</span>
                   </div>
-                  <ChevronRight className="w-4 h-4 text-zinc-600" />
-                  <div className="flex items-center gap-2 bg-zinc-800/50 px-3 py-1.5 rounded-full border border-zinc-700/50">
-                    <span className="text-orange-400">⚡</span>
-                    <span className="text-zinc-300">Face problems</span>
+                  <ChevronRight className="w-5 h-5 text-zinc-500 shrink-0" />
+                  <div className="flex items-center gap-2.5 bg-zinc-800/60 px-4 py-2 rounded-full border border-zinc-700/50">
+                    <span className="text-orange-400 text-lg">⚡</span>
+                    <span className="text-zinc-200 font-medium">Face problems</span>
                   </div>
-                  <ChevronRight className="w-4 h-4 text-zinc-600" />
-                  <div className="flex items-center gap-2 bg-zinc-800/50 px-3 py-1.5 rounded-full border border-zinc-700/50">
-                    <span className="text-emerald-400">↑</span>
-                    <span className="text-zinc-300">Build capabilities</span>
+                  <ChevronRight className="w-5 h-5 text-zinc-500 shrink-0" />
+                  <div className="flex items-center gap-2.5 bg-zinc-800/60 px-4 py-2 rounded-full border border-zinc-700/50">
+                    <span className="text-emerald-400 text-lg">↑</span>
+                    <span className="text-zinc-200 font-medium">Build capabilities</span>
                   </div>
                 </div>
               </motion.div>
