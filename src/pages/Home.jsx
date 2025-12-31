@@ -269,6 +269,24 @@ export default function Home() {
                 <p className="mt-6 text-zinc-400 text-sm">
                   <span className="bg-orange-500/20 text-orange-300 px-1.5 py-0.5 rounded">More fun</span> than watching, <span className="bg-orange-500/20 text-orange-300 px-1.5 py-0.5 rounded">more effective</span> than reading.
                 </p>
+
+                {/* 3-Step Journey */}
+                <div className="mt-8 flex flex-wrap items-center gap-2 text-sm">
+                  <div className="flex items-center gap-2 bg-zinc-800/50 px-3 py-1.5 rounded-full border border-zinc-700/50">
+                    <span className="text-violet-400">✎</span>
+                    <span className="text-zinc-300">Write your dreams</span>
+                  </div>
+                  <ChevronRight className="w-4 h-4 text-zinc-600" />
+                  <div className="flex items-center gap-2 bg-zinc-800/50 px-3 py-1.5 rounded-full border border-zinc-700/50">
+                    <span className="text-orange-400">⚡</span>
+                    <span className="text-zinc-300">Face problems</span>
+                  </div>
+                  <ChevronRight className="w-4 h-4 text-zinc-600" />
+                  <div className="flex items-center gap-2 bg-zinc-800/50 px-3 py-1.5 rounded-full border border-zinc-700/50">
+                    <span className="text-emerald-400">↑</span>
+                    <span className="text-zinc-300">Build capabilities</span>
+                  </div>
+                </div>
               </motion.div>
 
               {/* Right - Learning From Card */}
