@@ -304,11 +304,11 @@ export default function Home() {
                               right: 0;
                               opacity: 0;
                             }
-                            .smooth-word:nth-of-type(1) { animation: smoothCycle 15s ease-in-out infinite 0s; }
-                            .smooth-word:nth-of-type(2) { animation: smoothCycle 15s ease-in-out infinite 3s; }
-                            .smooth-word:nth-of-type(3) { animation: smoothCycle 15s ease-in-out infinite 6s; }
-                            .smooth-word:nth-of-type(4) { animation: smoothCycle 15s ease-in-out infinite 9s; }
-                            .smooth-word:nth-of-type(5) { animation: smoothCycle 15s ease-in-out infinite 12s; }
+                            .smooth-word:nth-of-type(1) { animation: smoothCycle 10s ease-in-out infinite 0s; }
+                            .smooth-word:nth-of-type(2) { animation: smoothCycle 10s ease-in-out infinite 2s; }
+                            .smooth-word:nth-of-type(3) { animation: smoothCycle 10s ease-in-out infinite 4s; }
+                            .smooth-word:nth-of-type(4) { animation: smoothCycle 10s ease-in-out infinite 6s; }
+                            .smooth-word:nth-of-type(5) { animation: smoothCycle 10s ease-in-out infinite 8s; }
                           `}
                         </style>
                         <div className="relative h-10 overflow-hidden">
