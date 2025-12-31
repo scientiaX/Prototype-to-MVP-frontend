@@ -271,21 +271,18 @@ export default function Home() {
                 </p>
 
                 {/* 3-Step Journey */}
-                <div className="mt-8 flex items-center gap-3 text-base">
-                  <div className="flex items-center gap-2.5 bg-zinc-800/60 px-4 py-2 rounded-full border border-zinc-700/50">
-                    <span className="text-violet-400 text-lg">✎</span>
-                    <span className="text-zinc-200 font-medium">Write your dreams</span>
-                  </div>
-                  <ChevronRight className="w-5 h-5 text-zinc-500 shrink-0" />
-                  <div className="flex items-center gap-2.5 bg-zinc-800/60 px-4 py-2 rounded-full border border-zinc-700/50">
-                    <span className="text-orange-400 text-lg">⚡</span>
-                    <span className="text-zinc-200 font-medium">Face problems</span>
-                  </div>
-                  <ChevronRight className="w-5 h-5 text-zinc-500 shrink-0" />
-                  <div className="flex items-center gap-2.5 bg-zinc-800/60 px-4 py-2 rounded-full border border-zinc-700/50">
-                    <span className="text-emerald-400 text-lg">↑</span>
-                    <span className="text-zinc-200 font-medium">Build capabilities</span>
-                  </div>
+                <div className="mt-8 flex items-center gap-4 text-base whitespace-nowrap">
+                  <span className="text-zinc-400">
+                    <span className="text-violet-400">Write</span> your dreams
+                  </span>
+                  <span className="text-zinc-600">→</span>
+                  <span className="text-zinc-400">
+                    <span className="text-orange-400">Face</span> problems
+                  </span>
+                  <span className="text-zinc-600">→</span>
+                  <span className="text-zinc-400">
+                    <span className="text-emerald-400">Build</span> capabilities
+                  </span>
                 </div>
               </motion.div>
 
