@@ -341,10 +341,10 @@ export default function Home() {
             >
               {/* Typewriter Input Visual */}
               <div className="flex items-center justify-center w-full px-2">
-                <div className="relative inline-flex items-center px-4 py-2 md:px-6 md:py-3 bg-transparent border border-zinc-700/50 rounded-full w-full md:w-auto justify-center">
-                  <span className="text-zinc-500 text-sm md:text-lg mr-1 md:mr-2">Learning From</span>
+                <div className="relative inline-flex items-center px-5 py-3 md:px-6 md:py-3 bg-transparent border border-zinc-700/50 rounded-full w-full md:w-auto justify-center">
+                  <span className="text-zinc-500 text-base md:text-lg mr-2">Learning From</span>
                   <div className="relative">
-                    <span className={`text-sm md:text-lg font-medium bg-gradient-to-r ${learningColors[wordIndex]} bg-clip-text text-transparent`}>
+                    <span className={`text-base md:text-lg font-semibold bg-gradient-to-r ${learningColors[wordIndex]} bg-clip-text text-transparent`}>
                       {displayText}
                     </span>
                     <span className={`text-orange-500 font-light ${showCursor ? 'opacity-100' : 'opacity-0'}`}>|</span>
@@ -353,19 +353,19 @@ export default function Home() {
               </div>
 
               {/* 3-Step Journey - vertical on mobile, horizontal on desktop */}
-              <div className="flex flex-col md:flex-row items-center gap-3 md:gap-4 text-base md:text-base justify-center mt-6">
+              <div className="flex flex-col md:flex-row items-center gap-4 md:gap-4 text-lg md:text-base justify-center mt-8">
                 <span className="text-zinc-300">
-                  <span className="text-violet-400 font-medium">Write</span> your dreams
+                  <span className="text-violet-400 font-semibold">Write</span> your dreams
                 </span>
-                <span className="text-zinc-600 hidden md:inline">→</span>
-                <span className="text-zinc-600 md:hidden">↓</span>
+                <span className="text-zinc-600 hidden md:inline text-xl">→</span>
+                <span className="text-zinc-500 md:hidden text-xl">↓</span>
                 <span className="text-zinc-300">
-                  <span className="text-orange-400 font-medium">Face</span> problems
+                  <span className="text-orange-400 font-semibold">Face</span> problems
                 </span>
-                <span className="text-zinc-600 hidden md:inline">→</span>
-                <span className="text-zinc-600 md:hidden">↓</span>
+                <span className="text-zinc-600 hidden md:inline text-xl">→</span>
+                <span className="text-zinc-500 md:hidden text-xl">↓</span>
                 <span className="text-zinc-300">
-                  <span className="text-emerald-400 font-medium">Build</span> capabilities
+                  <span className="text-emerald-400 font-semibold">Build</span> capabilities
                 </span>
               </div>
             </motion.div>
