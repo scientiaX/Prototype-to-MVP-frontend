@@ -61,7 +61,7 @@ export default function Home() {
       headline1: 'NovaX',
       headline2: 'Arena',
       description: 'Real-world experiential learning',
-      descriptionHighlight: 'on your device.',
+      descriptionHighlight: 'in your hands.',
       ctaCalibrate: 'Start Calibration',
       ctaArena: 'Enter Arena',
       notLoggedIn: 'more fun than watching, more effective than reading',
@@ -418,7 +418,7 @@ export default function Home() {
                   </div>
                   <div>
                     <h3 className="text-white font-semibold text-lg mb-1">Measurable Growth</h3>
-                    <p className="text-zinc-400 text-sm">Track your progress with XP, levels, and capability badges that prove your real improvement.</p>
+                    <p className="text-zinc-400 text-sm">Track your progress with XP, capability badges and artifact that prove your real improvement.</p>
                   </div>
                 </div>
               </div>
