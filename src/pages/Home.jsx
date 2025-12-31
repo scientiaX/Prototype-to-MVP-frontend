@@ -262,10 +262,15 @@ export default function Home() {
                     <span>
                       {isAuthenticated
                         ? hasProfile ? t.readyBattle : t.calibrationTime
-                        : t.notLoggedIn}
+                        : 'Login first'}
                     </span>
                   </div>
                 </div>
+
+                {/* Slogan */}
+                <p className="mt-6 text-zinc-500 text-sm">
+                  <span className="text-orange-400 font-medium">More fun</span> than watching, <span className="text-orange-400 font-medium">more effective</span> than reading.
+                </p>
               </motion.div>
 
               {/* Right - Learning From Card */}
