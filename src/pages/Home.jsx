@@ -353,7 +353,7 @@ export default function Home() {
               </div>
 
               {/* 3-Step Journey - vertical on mobile, horizontal on desktop */}
-              <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 text-sm md:text-base justify-center mt-6">
+              <div className="flex flex-col md:flex-row items-center gap-3 md:gap-4 text-base md:text-base justify-center mt-6">
                 <span className="text-zinc-300">
                   <span className="text-violet-400 font-medium">Write</span> your dreams
                 </span>
