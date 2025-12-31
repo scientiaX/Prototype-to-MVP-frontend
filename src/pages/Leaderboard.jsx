@@ -170,7 +170,7 @@ export default function Leaderboard() {
                 />
               )}
               <Trophy className="w-4 h-4 relative z-10" />
-              <span className="relative z-10">All-Time Reliability</span>
+              <span className="relative z-10">All-Time</span>
             </button>
           </div>
         </motion.div>
@@ -321,7 +321,7 @@ export default function Leaderboard() {
                 <span className="text-orange-400 font-semibold">Note: </span>
                 {activeTab === 'growth'
                   ? 'Growth leaderboard di-reset setiap 2 minggu. Berdasarkan lonjakan difficulty dan XP delta.'
-                  : 'All-Time Reliability tidak pernah reset. Berdasarkan konsistensi menghadapi masalah berat.'
+                  : 'All-Time tidak pernah reset.'
                 }
               </p>
             </div>

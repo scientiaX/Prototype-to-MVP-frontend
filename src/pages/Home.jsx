@@ -329,11 +329,6 @@ export default function Home() {
                     </div>
                   )}
                 </div>
-
-                {/* Slogan - visible on mobile here */}
-                <p className="mt-6 text-zinc-400 text-sm lg:hidden">
-                  <span className="bg-orange-500/20 text-orange-300 px-1.5 py-0.5 rounded">More fun</span> than watching, <span className="bg-orange-500/20 text-orange-300 px-1.5 py-0.5 rounded">more effective</span> than reading.
-                </p>
               </motion.div>
             </div>
 
@@ -346,21 +341,20 @@ export default function Home() {
             >
               {/* Typewriter Input Visual */}
               <div className="flex items-center justify-center">
-                <div className="relative inline-flex items-center px-6 py-3 bg-transparent border border-zinc-700/50 rounded-full">
-                  <span className="text-zinc-500 text-lg mr-2">Learning From</span>
-                  <div className="relative min-w-[180px]">
-                    <span className={`text-lg font-medium bg-gradient-to-r ${learningColors[wordIndex]} bg-clip-text text-transparent`}>
+                <div className="relative inline-flex items-center px-4 py-2 md:px-6 md:py-3 bg-transparent border border-zinc-700/50 rounded-full">
+                  <span className="text-zinc-500 text-xs md:text-lg mr-1 md:mr-2">Learning From</span>
+                  <div className="relative min-w-[120px] md:min-w-[180px]">
+                    <span className={`text-xs md:text-lg font-medium bg-gradient-to-r ${learningColors[wordIndex]} bg-clip-text text-transparent`}>
                       {displayText}
                     </span>
                     <span className={`text-orange-500 font-light ${showCursor ? 'opacity-100' : 'opacity-0'}`}>|</span>
-                    {/* Invisible spacer to maintain width */}
-                    <span className="invisible text-lg font-medium absolute left-0">Real World Simulation</span>
+                    <span className="invisible text-xs md:text-lg font-medium absolute left-0">Real World Simulation</span>
                   </div>
                 </div>
               </div>
 
               {/* 3-Step Journey */}
-              <div className="flex items-center gap-4 text-base justify-center mt-6">
+              <div className="flex items-center gap-2 md:gap-4 text-xs md:text-base justify-center mt-6 whitespace-nowrap">
                 <span className="text-zinc-300">
                   <span className="text-violet-400 font-medium">Write</span> your dreams
                 </span>
@@ -452,6 +446,9 @@ export default function Home() {
             >
               <p className="text-2xl md:text-4xl font-bold text-white">
                 Get proof of your <span className="text-gradient-fire">real capabilities</span>, not grades.
+              </p>
+              <p className="mt-4 text-zinc-400 text-sm">
+                <span className="bg-orange-500/20 text-orange-300 px-1.5 py-0.5 rounded">More fun</span> than watching, <span className="bg-orange-500/20 text-orange-300 px-1.5 py-0.5 rounded">more effective</span> than reading.
               </p>
             </motion.div>
           </motion.div>
