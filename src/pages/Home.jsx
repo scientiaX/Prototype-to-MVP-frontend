@@ -286,14 +286,14 @@ export default function Home() {
                 initial={{ opacity: 0, x: 40 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                className="w-full lg:w-auto lg:max-w-md shrink-0"
+                className="w-full lg:w-auto lg:max-w-lg shrink-0"
               >
                 <div className="relative group">
                   <div className="absolute -inset-1 bg-gradient-to-r from-orange-500/20 to-red-500/20 rounded-2xl blur-xl opacity-50 group-hover:opacity-75 transition-opacity duration-500" />
-                  <div className="relative bg-zinc-900/90 backdrop-blur-xl border border-zinc-800/80 rounded-2xl p-6 overflow-hidden">
+                  <div className="relative bg-zinc-900/90 backdrop-blur-xl border border-zinc-800/80 rounded-2xl p-8 overflow-hidden">
                     <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-orange-500/10 to-transparent rounded-full blur-2xl" />
                     <div className="relative z-10 text-center">
-                      <h3 className="text-zinc-400 font-medium text-base mb-3">Learning From</h3>
+                      <h3 className="text-zinc-400 font-medium text-lg mb-4">Learning From</h3>
                       <style>
                         {`
                           @keyframes smoothCycle {
@@ -308,6 +308,7 @@ export default function Home() {
                             left: 0;
                             right: 0;
                             opacity: 0;
+                            white-space: nowrap;
                           }
                           .smooth-word:nth-of-type(1) { animation: smoothCycle 10s ease-in-out infinite 0s; }
                           .smooth-word:nth-of-type(2) { animation: smoothCycle 10s ease-in-out infinite 2s; }
@@ -316,7 +317,7 @@ export default function Home() {
                           .smooth-word:nth-of-type(5) { animation: smoothCycle 10s ease-in-out infinite 8s; }
                         `}
                       </style>
-                      <div className="relative h-9 overflow-hidden">
+                      <div className="relative h-10 overflow-hidden">
                         <span className="smooth-word text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">Real World Simulation</span>
                         <span className="smooth-word text-2xl font-bold bg-gradient-to-r from-orange-400 to-amber-400 bg-clip-text text-transparent">Real World Problems</span>
                         <span className="smooth-word text-2xl font-bold bg-gradient-to-r from-rose-400 to-pink-400 bg-clip-text text-transparent">Mistakes</span>
