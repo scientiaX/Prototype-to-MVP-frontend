@@ -418,7 +418,7 @@ export default function Home() {
                   </div>
                   <div>
                     <h3 className="text-white font-semibold text-lg mb-1">Measurable Growth</h3>
-                    <p className="text-zinc-400 text-sm">Track your progress with XP, capability badges and artifact that prove your real improvement.</p>
+                    <p className="text-zinc-400 text-sm">Track your progress with XP, capability badges and artifacts that prove your real improvement.</p>
                   </div>
                 </div>
               </div>
