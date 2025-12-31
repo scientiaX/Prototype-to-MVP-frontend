@@ -59,8 +59,8 @@ export default function Home() {
       badge: 'Novax Trial',
       headline1: 'NovaX',
       headline2: 'Arena',
-      description: 'Real learning happens through confronting real problems.',
-      descriptionHighlight: 'Not materials. Not theory. Not validation.',
+      description: 'Real-world experiential learning',
+      descriptionHighlight: 'on your device.',
       ctaCalibrate: 'Start Calibration',
       ctaArena: 'Enter Arena',
       notLoggedIn: 'more fun than watching, more effective than reading',
@@ -74,7 +74,7 @@ export default function Home() {
       warning: 'This is not a platform to feel comfortable. If you are looking for validation, this is not the place.',
       features: [
         { title: 'Adaptive Matching', description: 'AI matches problems to your archetype and capability level' },
-        { title: 'XP = Difficulty', description: 'Progression based on real challenge and growth, not grinding' },
+        { title: 'XP = Difficulty', description: 'Progress based on growth in challenges and real capabilities. not grinding' },
         { title: 'Scar Badges', description: 'Badges prove you fought and grew, not just participated' }
       ]
     },
