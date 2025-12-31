@@ -290,16 +290,11 @@ export default function Home() {
               transition={{ duration: 0.7, delay: 0.4 }}
             >
               {/* Typewriter Input Visual */}
-              <div className="flex items-center gap-4 justify-center">
-                <span className="text-zinc-500 text-lg">Learning From</span>
-                <div className="relative inline-flex items-center px-4 py-2 bg-transparent border border-zinc-700/50 rounded-lg min-w-[280px]">
+              <div className="flex items-center justify-center">
+                <div className="relative inline-flex items-center px-4 py-2 bg-transparent border border-zinc-700/50 rounded-lg">
+                  <span className="text-zinc-500 text-lg mr-2">Learning From</span>
                   <style>
                     {`
-                      @keyframes typewriter {
-                        0%, 100% { width: 0; }
-                        5%, 25% { width: 100%; }
-                        30%, 35% { width: 0; }
-                      }
                       @keyframes blink {
                         0%, 100% { opacity: 1; }
                         50% { opacity: 0; }
@@ -320,6 +315,7 @@ export default function Home() {
                         animation: blink 0.7s infinite;
                         color: #f97316;
                       }
+                      /* 3 blinks = 2.1s visible, total cycle = 5 words * 2.5s = 12.5s */
                       .typewriter-text:nth-child(1) { animation: typewrite 12.5s ease-in-out infinite 0s; }
                       .typewriter-text:nth-child(2) { animation: typewrite 12.5s ease-in-out infinite 2.5s; }
                       .typewriter-text:nth-child(3) { animation: typewrite 12.5s ease-in-out infinite 5s; }
@@ -327,15 +323,15 @@ export default function Home() {
                       .typewriter-text:nth-child(5) { animation: typewrite 12.5s ease-in-out infinite 10s; }
                       @keyframes typewrite {
                         0% { opacity: 0; width: 0; }
-                        2% { opacity: 1; width: 0; }
-                        15% { opacity: 1; width: 100%; }
-                        18% { opacity: 1; width: 100%; }
+                        4% { opacity: 1; width: 0; }
+                        12% { opacity: 1; width: 100%; }
+                        16.8% { opacity: 1; width: 100%; } /* 3 blinks = 2.1s = 16.8% of 12.5s */
                         20% { opacity: 0; width: 0; }
                         100% { opacity: 0; width: 0; }
                       }
                     `}
                   </style>
-                  <div className="typewriter-container h-7 relative">
+                  <div className="typewriter-container h-7 relative min-w-[180px]">
                     <span className="typewriter-text text-lg font-medium bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">Real World Simulation</span>
                     <span className="typewriter-text text-lg font-medium bg-gradient-to-r from-orange-400 to-amber-400 bg-clip-text text-transparent">Real World Problems</span>
                     <span className="typewriter-text text-lg font-medium bg-gradient-to-r from-rose-400 to-pink-400 bg-clip-text text-transparent">Mistakes</span>
