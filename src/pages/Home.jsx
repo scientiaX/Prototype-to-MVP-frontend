@@ -14,7 +14,8 @@ import {
   Zap,
   Users,
   BarChart3,
-  ArrowRight
+  ArrowRight,
+  Play
 } from 'lucide-react';
 
 export default function Home() {
@@ -178,8 +179,8 @@ export default function Home() {
         <div
           className="absolute inset-0"
           style={{
-            backgroundImage: `radial-gradient(rgba(255,255,255,0.08) 1.5px, transparent 1.5px)`,
-            backgroundSize: '32px 32px'
+            backgroundImage: `radial-gradient(rgba(255,255,255,0.12) 2px, transparent 2px)`,
+            backgroundSize: '28px 28px'
           }}
         />
 
@@ -254,6 +255,14 @@ export default function Home() {
                     <ArrowRight className="w-5 h-5 ml-1 group-hover:translate-x-1.5 transition-transform duration-300" />
                   </Button>
 
+                  <button
+                    onClick={() => document.getElementById('demo-section')?.scrollIntoView({ behavior: 'smooth' })}
+                    className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors px-4 py-2.5 rounded-xl border border-zinc-700/50 hover:border-zinc-600"
+                  >
+                    <Play className="w-4 h-4" />
+                    <span className="text-sm font-medium">Watch Demo</span>
+                  </button>
+
                   {isAuthenticated && (
                     <div className="flex items-center gap-2.5 text-sm text-zinc-500 bg-zinc-900/50 px-4 py-2.5 rounded-xl border border-zinc-800/50">
                       <span className="text-lg">
@@ -265,6 +274,11 @@ export default function Home() {
                     </div>
                   )}
                 </div>
+
+                {/* Slogan - visible on mobile here */}
+                <p className="mt-6 text-zinc-400 text-sm lg:hidden">
+                  <span className="bg-orange-500/20 text-orange-300 px-1.5 py-0.5 rounded">More fun</span> than watching, <span className="bg-orange-500/20 text-orange-300 px-1.5 py-0.5 rounded">more effective</span> than reading.
+                </p>
               </motion.div>
 
               {/* Right - Learning From Card */}
@@ -315,9 +329,9 @@ export default function Home() {
               </motion.div>
             </div>
 
-            {/* Bottom Row - Slogan and 3-Step Journey */}
+            {/* Bottom Row - Slogan and 3-Step Journey - hidden on mobile */}
             <motion.div
-              className="mt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+              className="mt-8 hidden lg:flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.4 }}
@@ -343,6 +357,73 @@ export default function Home() {
               </div>
             </motion.div>
           </div>
+        </section>
+
+        {/* Demo Section */}
+        <section id="demo-section" className="max-w-6xl mx-auto px-6 md:px-8 py-20">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+          >
+            {/* Headline */}
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                Real problems are <span className="text-red-400">expensive</span>. NovaX is <span className="text-emerald-400">affordable</span>.
+              </h2>
+              <p className="text-zinc-500 max-w-2xl mx-auto">
+                Experience real-world challenges without real-world consequences. Learn faster, fail safely, grow stronger.
+              </p>
+            </div>
+
+            {/* Content Grid */}
+            <div className="grid lg:grid-cols-2 gap-10 items-center">
+              {/* Left - Video */}
+              <div className="relative rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800 aspect-video">
+                <iframe
+                  className="w-full h-full"
+                  src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                  title="NovaX Arena Demo"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              </div>
+
+              {/* Right - Explanation */}
+              <div className="space-y-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center shrink-0">
+                    <Target className="w-5 h-5 text-red-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-white font-semibold text-lg mb-1">Real Mistakes, No Real Cost</h3>
+                    <p className="text-zinc-400 text-sm">Making mistakes in the real world costs money, time, and reputation. Here, you learn from mistakes for free.</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-orange-500/10 flex items-center justify-center shrink-0">
+                    <Zap className="w-5 h-5 text-orange-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-white font-semibold text-lg mb-1">AI-Powered Pressure</h3>
+                    <p className="text-zinc-400 text-sm">Our AI adapts to your skill level and pushes you just enough to grow without overwhelming you.</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center shrink-0">
+                    <TrendingUp className="w-5 h-5 text-emerald-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-white font-semibold text-lg mb-1">Measurable Growth</h3>
+                    <p className="text-zinc-400 text-sm">Track your progress with XP, levels, and capability badges that prove your real improvement.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </section>
 
         {/* Features Section */}
