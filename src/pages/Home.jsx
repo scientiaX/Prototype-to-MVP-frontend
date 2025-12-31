@@ -291,7 +291,7 @@ export default function Home() {
             >
               {/* Typewriter Input Visual */}
               <div className="flex items-center justify-center">
-                <div className="relative inline-flex items-center px-4 py-2 bg-transparent border border-zinc-700/50 rounded-lg">
+                <div className="relative inline-flex items-center px-6 py-3 bg-transparent border border-zinc-700/50 rounded-full">
                   <span className="text-zinc-500 text-lg mr-2">Learning From</span>
                   <style>
                     {`
@@ -315,17 +315,18 @@ export default function Home() {
                         animation: blink 0.7s infinite;
                         color: #f97316;
                       }
-                      /* 3 blinks = 2.1s visible, total cycle = 5 words * 2.5s = 12.5s */
-                      .typewriter-text:nth-child(1) { animation: typewrite 12.5s ease-in-out infinite 0s; }
-                      .typewriter-text:nth-child(2) { animation: typewrite 12.5s ease-in-out infinite 2.5s; }
-                      .typewriter-text:nth-child(3) { animation: typewrite 12.5s ease-in-out infinite 5s; }
-                      .typewriter-text:nth-child(4) { animation: typewrite 12.5s ease-in-out infinite 7.5s; }
-                      .typewriter-text:nth-child(5) { animation: typewrite 12.5s ease-in-out infinite 10s; }
+                      /* 3 blinks = 2.1s visible per word, total cycle = 5 words * 3s = 15s */
+                      .typewriter-text:nth-child(1) { animation: typewrite 15s steps(20, end) infinite 0s; }
+                      .typewriter-text:nth-child(2) { animation: typewrite 15s steps(20, end) infinite 3s; }
+                      .typewriter-text:nth-child(3) { animation: typewrite 15s steps(20, end) infinite 6s; }
+                      .typewriter-text:nth-child(4) { animation: typewrite 15s steps(20, end) infinite 9s; }
+                      .typewriter-text:nth-child(5) { animation: typewrite 15s steps(20, end) infinite 12s; }
                       @keyframes typewrite {
                         0% { opacity: 0; width: 0; }
-                        4% { opacity: 1; width: 0; }
-                        12% { opacity: 1; width: 100%; }
-                        16.8% { opacity: 1; width: 100%; } /* 3 blinks = 2.1s = 16.8% of 12.5s */
+                        1% { opacity: 1; width: 0; }
+                        8% { opacity: 1; width: 100%; }
+                        14% { opacity: 1; width: 100%; } /* 2.1s visible = 14% of 15s */
+                        18% { opacity: 1; width: 0; }
                         20% { opacity: 0; width: 0; }
                         100% { opacity: 0; width: 0; }
                       }
