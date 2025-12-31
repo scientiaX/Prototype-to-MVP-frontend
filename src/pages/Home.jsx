@@ -286,7 +286,7 @@ export default function Home() {
                 initial={{ opacity: 0, x: 40 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                className="w-full lg:w-auto lg:max-w-sm shrink-0"
+                className="w-full lg:w-auto lg:max-w-md shrink-0"
               >
                 <div className="relative group">
                   <div className="absolute -inset-1 bg-gradient-to-r from-orange-500/20 to-red-500/20 rounded-2xl blur-xl opacity-50 group-hover:opacity-75 transition-opacity duration-500" />
