@@ -253,23 +253,21 @@ export default function Home() {
                     <ArrowRight className="w-5 h-5 ml-1 group-hover:translate-x-1.5 transition-transform duration-300" />
                   </Button>
 
-                  <div className="flex items-center gap-2.5 text-sm text-zinc-500 bg-zinc-900/50 px-4 py-2.5 rounded-xl border border-zinc-800/50">
-                    <span className="text-lg">
-                      {isAuthenticated
-                        ? hasProfile ? '⚔️' : '🎯'
-                        : '🔑'}
-                    </span>
-                    <span>
-                      {isAuthenticated
-                        ? hasProfile ? t.readyBattle : t.calibrationTime
-                        : 'Login first'}
-                    </span>
-                  </div>
+                  {isAuthenticated && (
+                    <div className="flex items-center gap-2.5 text-sm text-zinc-500 bg-zinc-900/50 px-4 py-2.5 rounded-xl border border-zinc-800/50">
+                      <span className="text-lg">
+                        {hasProfile ? '⚔️' : '🎯'}
+                      </span>
+                      <span>
+                        {hasProfile ? t.readyBattle : t.calibrationTime}
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 {/* Slogan */}
-                <p className="mt-6 text-zinc-500 text-sm">
-                  <span className="text-orange-400 font-medium">More fun</span> than watching, <span className="text-orange-400 font-medium">more effective</span> than reading.
+                <p className="mt-6 text-zinc-400 text-sm">
+                  <span className="bg-orange-500/20 text-orange-300 px-1.5 py-0.5 rounded">More fun</span> than watching, <span className="bg-orange-500/20 text-orange-300 px-1.5 py-0.5 rounded">more effective</span> than reading.
                 </p>
               </motion.div>
 
