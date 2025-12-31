@@ -176,10 +176,10 @@ export default function Home() {
 
         {/* Dot Pattern Background */}
         <div
-          className="absolute inset-0 opacity-[0.4]"
+          className="absolute inset-0"
           style={{
-            backgroundImage: `radial-gradient(circle, rgba(255,255,255,0.15) 1px, transparent 1px)`,
-            backgroundSize: '40px 40px'
+            backgroundImage: `radial-gradient(rgba(255,255,255,0.08) 1.5px, transparent 1.5px)`,
+            backgroundSize: '32px 32px'
           }}
         />
 
@@ -268,21 +268,6 @@ export default function Home() {
                 <p className="mt-6 text-zinc-400 text-sm">
                   <span className="bg-orange-500/20 text-orange-300 px-1.5 py-0.5 rounded">More fun</span> than watching, <span className="bg-orange-500/20 text-orange-300 px-1.5 py-0.5 rounded">more effective</span> than reading.
                 </p>
-
-                {/* 3-Step Journey */}
-                <div className="mt-10 flex items-center justify-center gap-5 text-lg">
-                  <span className="text-zinc-300">
-                    <span className="text-violet-400 font-medium">Write</span> your dreams
-                  </span>
-                  <span className="text-zinc-500">→</span>
-                  <span className="text-zinc-300">
-                    <span className="text-orange-400 font-medium">Face</span> problems
-                  </span>
-                  <span className="text-zinc-500">→</span>
-                  <span className="text-zinc-300">
-                    <span className="text-emerald-400 font-medium">Build</span> capabilities
-                  </span>
-                </div>
               </motion.div>
 
               {/* Right - Learning From Card */}
@@ -351,6 +336,26 @@ export default function Home() {
                 </div>
               </motion.div>
             </div>
+
+            {/* 3-Step Journey - Centered below grid */}
+            <motion.div
+              className="mt-12 flex items-center justify-center gap-8 text-lg"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.5 }}
+            >
+              <span className="text-zinc-300">
+                <span className="text-violet-400 font-medium">Write</span> your dreams
+              </span>
+              <span className="text-zinc-600">→</span>
+              <span className="text-zinc-300">
+                <span className="text-orange-400 font-medium">Face</span> problems
+              </span>
+              <span className="text-zinc-600">→</span>
+              <span className="text-zinc-300">
+                <span className="text-emerald-400 font-medium">Build</span> capabilities
+              </span>
+            </motion.div>
           </div>
         </section>
 
