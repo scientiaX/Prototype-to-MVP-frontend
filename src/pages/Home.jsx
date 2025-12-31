@@ -231,8 +231,8 @@ export default function Home() {
 
                 {/* Headline */}
                 <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-[0.95] tracking-tight">
-                  <span className="text-white block">NovaX</span>
-                  <span className="text-gradient-fire block">Arena</span>
+                  <span className="text-white">NovaX</span>{' '}
+                  <span className="text-gradient-fire">Arena</span>
                 </h1>
 
                 {/* Description */}
