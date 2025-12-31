@@ -210,7 +210,7 @@ export default function Home() {
       <div className="relative z-10">
         {/* Hero Section */}
         <section className="max-w-6xl mx-auto px-6 md:px-8">
-          <div className="min-h-[75vh] flex flex-col justify-center py-12">
+          <div className="min-h-[65vh] flex flex-col pt-8 pb-16">
             {/* Top Row - Headline and Learning From Card */}
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 lg:gap-8">
               {/* Left - Main Content */}
