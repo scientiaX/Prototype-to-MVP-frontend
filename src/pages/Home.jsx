@@ -280,62 +280,74 @@ export default function Home() {
                   <span className="bg-orange-500/20 text-orange-300 px-1.5 py-0.5 rounded">More fun</span> than watching, <span className="bg-orange-500/20 text-orange-300 px-1.5 py-0.5 rounded">more effective</span> than reading.
                 </p>
               </motion.div>
-
-              {/* Right - Learning From */}
-              <motion.div
-                initial={{ opacity: 0, x: 40 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                className="text-right"
-              >
-                <h3 className="text-zinc-500 font-medium text-sm mb-2">Learning From</h3>
-                <style>
-                  {`
-                    @keyframes smoothCycle {
-                      0% { opacity: 0; transform: translateY(6px); }
-                      2% { opacity: 1; transform: translateY(0); }
-                      18% { opacity: 1; transform: translateY(0); }
-                      20% { opacity: 0; transform: translateY(-6px); }
-                      100% { opacity: 0; }
-                    }
-                    .smooth-word {
-                      position: absolute;
-                      left: 0;
-                      right: 0;
-                      opacity: 0;
-                      white-space: nowrap;
-                    }
-                    .smooth-word:nth-of-type(1) { animation: smoothCycle 10s ease-in-out infinite 0s; }
-                    .smooth-word:nth-of-type(2) { animation: smoothCycle 10s ease-in-out infinite 2s; }
-                    .smooth-word:nth-of-type(3) { animation: smoothCycle 10s ease-in-out infinite 4s; }
-                    .smooth-word:nth-of-type(4) { animation: smoothCycle 10s ease-in-out infinite 6s; }
-                    .smooth-word:nth-of-type(5) { animation: smoothCycle 10s ease-in-out infinite 8s; }
-                  `}
-                </style>
-                <div className="relative h-10 text-right">
-                  <span className="smooth-word text-2xl md:text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">Real World Simulation</span>
-                  <span className="smooth-word text-2xl md:text-3xl font-bold bg-gradient-to-r from-orange-400 to-amber-400 bg-clip-text text-transparent">Real World Problems</span>
-                  <span className="smooth-word text-2xl md:text-3xl font-bold bg-gradient-to-r from-rose-400 to-pink-400 bg-clip-text text-transparent">Mistakes</span>
-                  <span className="smooth-word text-2xl md:text-3xl font-bold bg-gradient-to-r from-violet-400 to-purple-400 bg-clip-text text-transparent">Decisions</span>
-                  <span className="smooth-word text-2xl md:text-3xl font-bold bg-gradient-to-r from-teal-400 to-cyan-400 bg-clip-text text-transparent">Reflection</span>
-                </div>
-              </motion.div>
             </div>
 
-            {/* Bottom Row - Slogan and 3-Step Journey - hidden on mobile */}
+            {/* Bottom Row - Learning From Typewriter */}
             <motion.div
-              className="mt-8 hidden lg:flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
+              className="mt-10"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.4 }}
             >
-              {/* Slogan */}
-              <p className="text-zinc-400 text-sm">
-                <span className="bg-orange-500/20 text-orange-300 px-1.5 py-0.5 rounded">More fun</span> than watching, <span className="bg-orange-500/20 text-orange-300 px-1.5 py-0.5 rounded">more effective</span> than reading.
-              </p>
+              {/* Typewriter Input Visual */}
+              <div className="flex items-center gap-4 justify-center">
+                <span className="text-zinc-500 text-lg">Learning From</span>
+                <div className="relative inline-flex items-center px-4 py-2 bg-transparent border border-zinc-700/50 rounded-lg min-w-[280px]">
+                  <style>
+                    {`
+                      @keyframes typewriter {
+                        0%, 100% { width: 0; }
+                        5%, 25% { width: 100%; }
+                        30%, 35% { width: 0; }
+                      }
+                      @keyframes blink {
+                        0%, 100% { opacity: 1; }
+                        50% { opacity: 0; }
+                      }
+                      .typewriter-container {
+                        position: relative;
+                        display: inline-block;
+                      }
+                      .typewriter-text {
+                        position: absolute;
+                        left: 0;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        opacity: 0;
+                      }
+                      .typewriter-text::after {
+                        content: '|';
+                        animation: blink 0.7s infinite;
+                        color: #f97316;
+                      }
+                      .typewriter-text:nth-child(1) { animation: typewrite 12.5s ease-in-out infinite 0s; }
+                      .typewriter-text:nth-child(2) { animation: typewrite 12.5s ease-in-out infinite 2.5s; }
+                      .typewriter-text:nth-child(3) { animation: typewrite 12.5s ease-in-out infinite 5s; }
+                      .typewriter-text:nth-child(4) { animation: typewrite 12.5s ease-in-out infinite 7.5s; }
+                      .typewriter-text:nth-child(5) { animation: typewrite 12.5s ease-in-out infinite 10s; }
+                      @keyframes typewrite {
+                        0% { opacity: 0; width: 0; }
+                        2% { opacity: 1; width: 0; }
+                        15% { opacity: 1; width: 100%; }
+                        18% { opacity: 1; width: 100%; }
+                        20% { opacity: 0; width: 0; }
+                        100% { opacity: 0; width: 0; }
+                      }
+                    `}
+                  </style>
+                  <div className="typewriter-container h-7 relative">
+                    <span className="typewriter-text text-lg font-medium bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">Real World Simulation</span>
+                    <span className="typewriter-text text-lg font-medium bg-gradient-to-r from-orange-400 to-amber-400 bg-clip-text text-transparent">Real World Problems</span>
+                    <span className="typewriter-text text-lg font-medium bg-gradient-to-r from-rose-400 to-pink-400 bg-clip-text text-transparent">Mistakes</span>
+                    <span className="typewriter-text text-lg font-medium bg-gradient-to-r from-violet-400 to-purple-400 bg-clip-text text-transparent">Decisions</span>
+                    <span className="typewriter-text text-lg font-medium bg-gradient-to-r from-teal-400 to-cyan-400 bg-clip-text text-transparent">Reflection</span>
+                    <span className="invisible text-lg font-medium">Real World Simulation</span>
+                  </div>
+                </div>
+              </div>
 
               {/* 3-Step Journey */}
-              <div className="flex items-center gap-4 text-base">
+              <div className="flex items-center gap-4 text-base justify-center mt-6">
                 <span className="text-zinc-300">
                   <span className="text-violet-400 font-medium">Write</span> your dreams
                 </span>
