@@ -423,6 +423,19 @@ export default function Home() {
                 </div>
               </div>
             </div>
+
+            {/* Punchline */}
+            <motion.div
+              className="mt-16 text-center"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3 }}
+            >
+              <p className="text-2xl md:text-4xl font-bold text-white">
+                Get proof of your <span className="text-gradient-fire">real capabilities</span>, not grades.
+              </p>
+            </motion.div>
           </motion.div>
         </section>
 
