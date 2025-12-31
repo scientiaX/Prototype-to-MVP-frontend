@@ -174,13 +174,12 @@ export default function Home() {
           }}
         />
 
-        {/* Grid Pattern */}
+        {/* Dot Pattern Background */}
         <div
-          className="absolute inset-0 opacity-[0.015]"
+          className="absolute inset-0 opacity-[0.4]"
           style={{
-            backgroundImage: `linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), 
-                             linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)`,
-            backgroundSize: '80px 80px'
+            backgroundImage: `radial-gradient(circle, rgba(255,255,255,0.15) 1px, transparent 1px)`,
+            backgroundSize: '40px 40px'
           }}
         />
 
@@ -271,17 +270,17 @@ export default function Home() {
                 </p>
 
                 {/* 3-Step Journey */}
-                <div className="mt-8 flex items-center gap-4 text-base whitespace-nowrap">
-                  <span className="text-zinc-400">
-                    <span className="text-violet-400">Write</span> your dreams
+                <div className="mt-10 flex items-center justify-center gap-5 text-lg">
+                  <span className="text-zinc-300">
+                    <span className="text-violet-400 font-medium">Write</span> your dreams
                   </span>
-                  <span className="text-zinc-600">→</span>
-                  <span className="text-zinc-400">
-                    <span className="text-orange-400">Face</span> problems
+                  <span className="text-zinc-500">→</span>
+                  <span className="text-zinc-300">
+                    <span className="text-orange-400 font-medium">Face</span> problems
                   </span>
-                  <span className="text-zinc-600">→</span>
-                  <span className="text-zinc-400">
-                    <span className="text-emerald-400">Build</span> capabilities
+                  <span className="text-zinc-500">→</span>
+                  <span className="text-zinc-300">
+                    <span className="text-emerald-400 font-medium">Build</span> capabilities
                   </span>
                 </div>
               </motion.div>
