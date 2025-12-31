@@ -24,9 +24,64 @@ export default function Home() {
   const [language, setLanguage] = useState('en'); // Default English until onboarding
   const navigate = useNavigate();
 
+  // Typewriter effect state
+  const learningWords = ['Real World Simulation', 'Real World Problems', 'Mistakes', 'Decisions', 'Reflection'];
+  const learningColors = [
+    'from-cyan-400 to-blue-400',
+    'from-orange-400 to-amber-400',
+    'from-rose-400 to-pink-400',
+    'from-violet-400 to-purple-400',
+    'from-teal-400 to-cyan-400'
+  ];
+  const [wordIndex, setWordIndex] = useState(0);
+  const [displayText, setDisplayText] = useState('');
+  const [isTyping, setIsTyping] = useState(true);
+  const [showCursor, setShowCursor] = useState(true);
+
   useEffect(() => {
     checkAuth();
   }, []);
+
+  // Cursor blink effect
+  useEffect(() => {
+    const cursorInterval = setInterval(() => {
+      setShowCursor(prev => !prev);
+    }, 350); // 0.7s / 2 = 0.35s for toggle
+    return () => clearInterval(cursorInterval);
+  }, []);
+
+  // Typewriter effect
+  useEffect(() => {
+    const currentWord = learningWords[wordIndex];
+
+    if (isTyping) {
+      // Typing phase
+      if (displayText.length < currentWord.length) {
+        const timeout = setTimeout(() => {
+          setDisplayText(currentWord.slice(0, displayText.length + 1));
+        }, 50); // 50ms per character
+        return () => clearTimeout(timeout);
+      } else {
+        // Done typing, wait for 3 blinks (2.1 seconds)
+        const timeout = setTimeout(() => {
+          setIsTyping(false);
+        }, 2100);
+        return () => clearTimeout(timeout);
+      }
+    } else {
+      // Deleting phase
+      if (displayText.length > 0) {
+        const timeout = setTimeout(() => {
+          setDisplayText(displayText.slice(0, -1));
+        }, 30); // 30ms per character delete
+        return () => clearTimeout(timeout);
+      } else {
+        // Done deleting, move to next word
+        setWordIndex((prev) => (prev + 1) % learningWords.length);
+        setIsTyping(true);
+      }
+    }
+  }, [displayText, isTyping, wordIndex]);
 
   const checkAuth = async () => {
     const authenticated = await apiClient.auth.isAuthenticated();
@@ -293,52 +348,13 @@ export default function Home() {
               <div className="flex items-center justify-center">
                 <div className="relative inline-flex items-center px-6 py-3 bg-transparent border border-zinc-700/50 rounded-full">
                   <span className="text-zinc-500 text-lg mr-2">Learning From</span>
-                  <style>
-                    {`
-                      @keyframes blink {
-                        0%, 100% { opacity: 1; }
-                        50% { opacity: 0; }
-                      }
-                      .typewriter-container {
-                        position: relative;
-                        display: inline-block;
-                      }
-                      .typewriter-text {
-                        position: absolute;
-                        left: 0;
-                        white-space: nowrap;
-                        overflow: hidden;
-                        opacity: 0;
-                      }
-                      .typewriter-text::after {
-                        content: '|';
-                        animation: blink 0.7s infinite;
-                        color: #f97316;
-                      }
-                      /* 3 blinks = 2.1s visible per word, total cycle = 5 words * 3s = 15s */
-                      .typewriter-text:nth-child(1) { animation: typewrite 15s steps(20, end) infinite 0s; }
-                      .typewriter-text:nth-child(2) { animation: typewrite 15s steps(20, end) infinite 3s; }
-                      .typewriter-text:nth-child(3) { animation: typewrite 15s steps(20, end) infinite 6s; }
-                      .typewriter-text:nth-child(4) { animation: typewrite 15s steps(20, end) infinite 9s; }
-                      .typewriter-text:nth-child(5) { animation: typewrite 15s steps(20, end) infinite 12s; }
-                      @keyframes typewrite {
-                        0% { opacity: 0; width: 0; }
-                        1% { opacity: 1; width: 0; }
-                        8% { opacity: 1; width: 100%; }
-                        14% { opacity: 1; width: 100%; } /* 2.1s visible = 14% of 15s */
-                        18% { opacity: 1; width: 0; }
-                        20% { opacity: 0; width: 0; }
-                        100% { opacity: 0; width: 0; }
-                      }
-                    `}
-                  </style>
-                  <div className="typewriter-container h-7 relative min-w-[180px]">
-                    <span className="typewriter-text text-lg font-medium bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">Real World Simulation</span>
-                    <span className="typewriter-text text-lg font-medium bg-gradient-to-r from-orange-400 to-amber-400 bg-clip-text text-transparent">Real World Problems</span>
-                    <span className="typewriter-text text-lg font-medium bg-gradient-to-r from-rose-400 to-pink-400 bg-clip-text text-transparent">Mistakes</span>
-                    <span className="typewriter-text text-lg font-medium bg-gradient-to-r from-violet-400 to-purple-400 bg-clip-text text-transparent">Decisions</span>
-                    <span className="typewriter-text text-lg font-medium bg-gradient-to-r from-teal-400 to-cyan-400 bg-clip-text text-transparent">Reflection</span>
-                    <span className="invisible text-lg font-medium">Real World Simulation</span>
+                  <div className="relative min-w-[180px]">
+                    <span className={`text-lg font-medium bg-gradient-to-r ${learningColors[wordIndex]} bg-clip-text text-transparent`}>
+                      {displayText}
+                    </span>
+                    <span className={`text-orange-500 font-light ${showCursor ? 'opacity-100' : 'opacity-0'}`}>|</span>
+                    {/* Invisible spacer to maintain width */}
+                    <span className="invisible text-lg font-medium absolute left-0">Real World Simulation</span>
                   </div>
                 </div>
               </div>
