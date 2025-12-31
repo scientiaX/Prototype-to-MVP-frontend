@@ -209,13 +209,15 @@ export default function Home() {
       <div className="relative z-10">
         {/* Hero Section */}
         <section className="max-w-6xl mx-auto px-6 md:px-8">
-          <div className="min-h-[75vh] flex items-center py-12">
-            <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center w-full">
-              {/* Left - Content */}
+          <div className="min-h-[75vh] flex flex-col justify-center py-12">
+            {/* Top Row - Headline and Learning From Card */}
+            <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-8 lg:gap-16">
+              {/* Left - Main Content */}
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+                className="flex-1 max-w-xl"
               >
                 {/* Badge */}
                 <motion.div
@@ -263,11 +265,6 @@ export default function Home() {
                     </div>
                   )}
                 </div>
-
-                {/* Slogan */}
-                <p className="mt-6 text-zinc-400 text-sm">
-                  <span className="bg-orange-500/20 text-orange-300 px-1.5 py-0.5 rounded">More fun</span> than watching, <span className="bg-orange-500/20 text-orange-300 px-1.5 py-0.5 rounded">more effective</span> than reading.
-                </p>
               </motion.div>
 
               {/* Right - Learning From Card */}
@@ -275,61 +272,42 @@ export default function Home() {
                 initial={{ opacity: 0, x: 40 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                className="lg:justify-self-end w-full max-w-md"
+                className="w-full lg:w-auto lg:max-w-xs shrink-0"
               >
                 <div className="relative group">
-                  {/* Card Glow Effect */}
-                  <div className="absolute -inset-1 bg-gradient-to-r from-orange-500/20 to-red-500/20 rounded-3xl blur-xl opacity-50 group-hover:opacity-75 transition-opacity duration-500" />
-
-                  <div className="relative bg-zinc-900/90 backdrop-blur-xl border border-zinc-800/80 rounded-2xl p-6 overflow-hidden">
-                    {/* Decorative Corner */}
-                    <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-orange-500/10 to-transparent rounded-full blur-2xl" />
-
-                    <div className="relative z-10">
-                      {/* Static Learning From Header */}
-                      <div className="text-center mb-6">
-                        <h3 className="text-zinc-400 font-medium text-lg mb-3">Learning From</h3>
-
-                        {/* Rotating Words */}
-                        <style>
-                          {`
-                            @keyframes smoothCycle {
-                              0% { opacity: 0; transform: translateY(6px); }
-                              2% { opacity: 1; transform: translateY(0); }
-                              18% { opacity: 1; transform: translateY(0); }
-                              20% { opacity: 0; transform: translateY(-6px); }
-                              100% { opacity: 0; }
-                            }
-                            .smooth-word {
-                              position: absolute;
-                              left: 0;
-                              right: 0;
-                              opacity: 0;
-                            }
-                            .smooth-word:nth-of-type(1) { animation: smoothCycle 10s ease-in-out infinite 0s; }
-                            .smooth-word:nth-of-type(2) { animation: smoothCycle 10s ease-in-out infinite 2s; }
-                            .smooth-word:nth-of-type(3) { animation: smoothCycle 10s ease-in-out infinite 4s; }
-                            .smooth-word:nth-of-type(4) { animation: smoothCycle 10s ease-in-out infinite 6s; }
-                            .smooth-word:nth-of-type(5) { animation: smoothCycle 10s ease-in-out infinite 8s; }
-                          `}
-                        </style>
-                        <div className="relative h-10 overflow-hidden">
-                          <span className="smooth-word text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
-                            Real World Simulation
-                          </span>
-                          <span className="smooth-word text-2xl font-bold bg-gradient-to-r from-orange-400 to-amber-400 bg-clip-text text-transparent">
-                            Real World Problems
-                          </span>
-                          <span className="smooth-word text-2xl font-bold bg-gradient-to-r from-rose-400 to-pink-400 bg-clip-text text-transparent">
-                            Mistakes
-                          </span>
-                          <span className="smooth-word text-2xl font-bold bg-gradient-to-r from-violet-400 to-purple-400 bg-clip-text text-transparent">
-                            Decisions
-                          </span>
-                          <span className="smooth-word text-2xl font-bold bg-gradient-to-r from-teal-400 to-cyan-400 bg-clip-text text-transparent">
-                            Reflection
-                          </span>
-                        </div>
+                  <div className="absolute -inset-1 bg-gradient-to-r from-orange-500/20 to-red-500/20 rounded-2xl blur-xl opacity-50 group-hover:opacity-75 transition-opacity duration-500" />
+                  <div className="relative bg-zinc-900/90 backdrop-blur-xl border border-zinc-800/80 rounded-xl p-5 overflow-hidden">
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-orange-500/10 to-transparent rounded-full blur-2xl" />
+                    <div className="relative z-10 text-center">
+                      <h3 className="text-zinc-400 font-medium text-sm mb-2">Learning From</h3>
+                      <style>
+                        {`
+                          @keyframes smoothCycle {
+                            0% { opacity: 0; transform: translateY(6px); }
+                            2% { opacity: 1; transform: translateY(0); }
+                            18% { opacity: 1; transform: translateY(0); }
+                            20% { opacity: 0; transform: translateY(-6px); }
+                            100% { opacity: 0; }
+                          }
+                          .smooth-word {
+                            position: absolute;
+                            left: 0;
+                            right: 0;
+                            opacity: 0;
+                          }
+                          .smooth-word:nth-of-type(1) { animation: smoothCycle 10s ease-in-out infinite 0s; }
+                          .smooth-word:nth-of-type(2) { animation: smoothCycle 10s ease-in-out infinite 2s; }
+                          .smooth-word:nth-of-type(3) { animation: smoothCycle 10s ease-in-out infinite 4s; }
+                          .smooth-word:nth-of-type(4) { animation: smoothCycle 10s ease-in-out infinite 6s; }
+                          .smooth-word:nth-of-type(5) { animation: smoothCycle 10s ease-in-out infinite 8s; }
+                        `}
+                      </style>
+                      <div className="relative h-8 overflow-hidden">
+                        <span className="smooth-word text-xl font-bold bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">Real World Simulation</span>
+                        <span className="smooth-word text-xl font-bold bg-gradient-to-r from-orange-400 to-amber-400 bg-clip-text text-transparent">Real World Problems</span>
+                        <span className="smooth-word text-xl font-bold bg-gradient-to-r from-rose-400 to-pink-400 bg-clip-text text-transparent">Mistakes</span>
+                        <span className="smooth-word text-xl font-bold bg-gradient-to-r from-violet-400 to-purple-400 bg-clip-text text-transparent">Decisions</span>
+                        <span className="smooth-word text-xl font-bold bg-gradient-to-r from-teal-400 to-cyan-400 bg-clip-text text-transparent">Reflection</span>
                       </div>
                     </div>
                   </div>
@@ -337,24 +315,32 @@ export default function Home() {
               </motion.div>
             </div>
 
-            {/* 3-Step Journey - Centered below grid */}
+            {/* Bottom Row - Slogan and 3-Step Journey */}
             <motion.div
-              className="mt-12 flex items-center justify-center gap-8 text-lg"
+              className="mt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.5 }}
+              transition={{ duration: 0.7, delay: 0.4 }}
             >
-              <span className="text-zinc-300">
-                <span className="text-violet-400 font-medium">Write</span> your dreams
-              </span>
-              <span className="text-zinc-600">→</span>
-              <span className="text-zinc-300">
-                <span className="text-orange-400 font-medium">Face</span> problems
-              </span>
-              <span className="text-zinc-600">→</span>
-              <span className="text-zinc-300">
-                <span className="text-emerald-400 font-medium">Build</span> capabilities
-              </span>
+              {/* Slogan */}
+              <p className="text-zinc-400 text-sm">
+                <span className="bg-orange-500/20 text-orange-300 px-1.5 py-0.5 rounded">More fun</span> than watching, <span className="bg-orange-500/20 text-orange-300 px-1.5 py-0.5 rounded">more effective</span> than reading.
+              </p>
+
+              {/* 3-Step Journey */}
+              <div className="flex items-center gap-4 text-base">
+                <span className="text-zinc-300">
+                  <span className="text-violet-400 font-medium">Write</span> your dreams
+                </span>
+                <span className="text-zinc-600">→</span>
+                <span className="text-zinc-300">
+                  <span className="text-orange-400 font-medium">Face</span> problems
+                </span>
+                <span className="text-zinc-600">→</span>
+                <span className="text-zinc-300">
+                  <span className="text-emerald-400 font-medium">Build</span> capabilities
+                </span>
+              </div>
             </motion.div>
           </div>
         </section>
