@@ -340,10 +340,10 @@ export default function Home() {
               transition={{ duration: 0.7, delay: 0.4 }}
             >
               {/* Typewriter Input Visual */}
-              <div className="flex items-center justify-center w-full px-2">
-                <div className="relative inline-flex items-center px-5 py-3 md:px-6 md:py-3 bg-transparent border border-zinc-700/50 rounded-full w-full md:w-auto justify-center">
-                  <span className="text-zinc-500 text-base md:text-lg mr-2">Learning From</span>
-                  <div className="relative">
+              <div className="flex items-center justify-center w-full">
+                <div className="relative inline-flex items-center px-5 py-3 md:px-6 md:py-3 bg-transparent border border-zinc-700/50 rounded-full w-full md:w-auto">
+                  <span className="text-zinc-500 text-base md:text-lg mr-2 whitespace-nowrap">Learning From</span>
+                  <div className="relative whitespace-nowrap">
                     <span className={`text-base md:text-lg font-semibold bg-gradient-to-r ${learningColors[wordIndex]} bg-clip-text text-transparent`}>
                       {displayText}
                     </span>
