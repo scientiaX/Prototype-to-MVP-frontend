@@ -130,7 +130,7 @@ export default function Home() {
       warning: 'This is not a platform to feel comfortable. If you are looking for validation, this is not the place.',
       features: [
         { title: 'Adaptive Matching', description: 'AI matches problems to your archetype and capability level' },
-        { title: 'XP = Difficulty', description: 'Progress based on growth in challenges and real capabilities. not grinding' },
+        { title: 'XP = Difficulty', description: 'Progress based on growth in challenges and real capabilities, not grinding' },
         { title: 'Scar Badges', description: 'Badges prove you fought and grew, not just participated' }
       ]
     },
@@ -353,17 +353,17 @@ export default function Home() {
               </div>
 
               {/* 3-Step Journey - vertical on mobile, horizontal on desktop */}
-              <div className="flex flex-col md:flex-row items-center gap-4 md:gap-4 text-lg md:text-base justify-center mt-8">
+              <div className="flex flex-col md:flex-row items-center gap-5 md:gap-4 text-2xl md:text-base justify-center mt-8">
                 <span className="text-zinc-300">
                   <span className="text-violet-400 font-semibold">Write</span> your dreams
                 </span>
                 <span className="text-zinc-600 hidden md:inline text-xl">→</span>
-                <span className="text-zinc-500 md:hidden text-xl">↓</span>
+                <span className="text-zinc-500 md:hidden text-3xl">↓</span>
                 <span className="text-zinc-300">
                   <span className="text-orange-400 font-semibold">Face</span> problems
                 </span>
                 <span className="text-zinc-600 hidden md:inline text-xl">→</span>
-                <span className="text-zinc-500 md:hidden text-xl">↓</span>
+                <span className="text-zinc-500 md:hidden text-3xl">↓</span>
                 <span className="text-zinc-300">
                   <span className="text-emerald-400 font-semibold">Build</span> capabilities
                 </span>
