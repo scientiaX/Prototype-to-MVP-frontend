@@ -478,8 +478,8 @@ export default function Home() {
               </motion.div>
             </div>
 
-            {/* Features - Modern Startup Style */}
-            <div className="grid md:grid-cols-3 gap-12 md:gap-8">
+            {/* Features - Modern Cards */}
+            <div className="grid md:grid-cols-3 gap-6">
               {features.map((feature, i) => (
                 <motion.div
                   key={i}
@@ -487,18 +487,21 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.15, duration: 0.5 }}
-                  className="text-center md:text-left"
+                  className="relative p-6 rounded-xl bg-zinc-900/50 backdrop-blur-sm border border-zinc-800/50 hover:border-zinc-700/50 transition-colors duration-300"
                 >
-                  {/* Number indicator */}
-                  <div className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-zinc-700 text-zinc-500 text-sm font-medium mb-5">
-                    0{i + 1}
+                  {/* Small accent line at top */}
+                  <div className={`absolute top-0 left-6 right-6 h-px bg-gradient-to-r ${feature.gradient} opacity-40`} />
+
+                  {/* Icon - small and subtle */}
+                  <div className="mb-4">
+                    <feature.icon className={`w-5 h-5 ${i === 0 ? 'text-orange-400' : i === 1 ? 'text-emerald-400' : 'text-violet-400'}`} />
                   </div>
 
-                  <h3 className="text-white font-semibold text-xl mb-3">
+                  <h3 className="text-white font-medium text-lg mb-2">
                     {feature.title}
                   </h3>
 
-                  <p className="text-zinc-500 leading-relaxed text-base">
+                  <p className="text-zinc-400 text-sm leading-relaxed">
                     {feature.description}
                   </p>
                 </motion.div>
