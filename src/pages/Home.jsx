@@ -478,8 +478,8 @@ export default function Home() {
               </motion.div>
             </div>
 
-            {/* Features Grid */}
-            <div className="grid md:grid-cols-3 gap-6">
+            {/* Features - Modern Startup Style */}
+            <div className="grid md:grid-cols-3 gap-12 md:gap-8">
               {features.map((feature, i) => (
                 <motion.div
                   key={i}
@@ -487,24 +487,20 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.15, duration: 0.5 }}
-                  className="group relative"
+                  className="text-center md:text-left"
                 >
-                  {/* Card Hover Glow */}
-                  <div className={`absolute -inset-0.5 bg-gradient-to-r ${feature.gradient} rounded-2xl blur-lg opacity-0 group-hover:opacity-20 transition-opacity duration-500`} />
-
-                  <div className="relative bg-zinc-900 border border-zinc-800 rounded-2xl p-8 hover:border-zinc-700 transition-all duration-300 h-full">
-                    <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center mb-6 shadow-lg ${feature.glow} group-hover:scale-110 transition-transform duration-300`}>
-                      <feature.icon className="w-7 h-7 text-black" />
-                    </div>
-
-                    <h3 className="text-white font-bold text-xl mb-3">
-                      {feature.title}
-                    </h3>
-
-                    <p className="text-zinc-400 leading-relaxed">
-                      {feature.description}
-                    </p>
+                  {/* Number indicator */}
+                  <div className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-zinc-700 text-zinc-500 text-sm font-medium mb-5">
+                    0{i + 1}
                   </div>
+
+                  <h3 className="text-white font-semibold text-xl mb-3">
+                    {feature.title}
+                  </h3>
+
+                  <p className="text-zinc-500 leading-relaxed text-base">
+                    {feature.description}
+                  </p>
                 </motion.div>
               ))}
             </div>
