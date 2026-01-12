@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { cn } from "@/lib/utils";
-import { Check } from 'lucide-react';
+import { Check, ChevronLeft } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 
 export default function CalibrationQuestion({
   question,
   options,
   onSelect,
+  onBack,
+  canGoBack = true,
   currentIndex,
   totalQuestions,
   selectedValue,
@@ -64,13 +66,22 @@ export default function CalibrationQuestion({
         ))}
       </div>
 
-      {/* Question number */}
+      {/* Question number with back button */}
       <motion.div
         className="flex items-center gap-3 mb-4"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.1 }}
       >
+        {canGoBack && onBack && (
+          <button
+            onClick={onBack}
+            className="flex items-center gap-1 text-zinc-500 hover:text-orange-400 transition-colors text-sm font-medium"
+          >
+            <ChevronLeft className="w-4 h-4" />
+            Kembali
+          </button>
+        )}
         <span className="text-zinc-500 text-sm font-mono bg-zinc-900/50 px-3 py-1.5 rounded-lg border border-zinc-800">
           {String(currentIndex + 1).padStart(2, '0')} / {String(totalQuestions).padStart(2, '0')}
         </span>

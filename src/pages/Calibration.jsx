@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import CalibrationQuestion from '@/components/calibration/CalibrationQuestion';
 import CalibrationResult from '@/components/calibration/CalibrationResult';
-import { Loader2, Globe, Flame, Sparkles, Check, Calendar } from 'lucide-react';
+import { Loader2, Globe, Flame, Sparkles, Check, Calendar, ChevronLeft } from 'lucide-react';
 import { getTranslation } from '../components/utils/translations';
 import { Button } from "@/components/ui/button";
 import {
@@ -193,6 +193,17 @@ export default function Calibration() {
     }, 300);
   };
 
+  // Handle back navigation
+  const handleBack = () => {
+    if (currentQuestion > 0) {
+      // Go to previous question
+      setCurrentQuestion(prev => prev - 1);
+    } else {
+      // First question - go back to age selection
+      setView('age');
+    }
+  };
+
   const processCalibration = async (finalAnswers) => {
     setIsProcessing(true);
     try {
@@ -339,6 +350,15 @@ export default function Calibration() {
             exit={{ opacity: 0, y: -30 }}
             className="w-full max-w-xl relative z-10"
           >
+            {/* Back button */}
+            <button
+              onClick={() => setView('language')}
+              className="flex items-center gap-1 text-zinc-500 hover:text-orange-400 transition-colors text-sm font-medium mb-6"
+            >
+              <ChevronLeft className="w-4 h-4" />
+              {selectedLanguage === 'en' ? 'Back' : 'Kembali'}
+            </button>
+
             <div className="text-center mb-10">
               <motion.div
                 initial={{ scale: 0 }}
@@ -399,6 +419,8 @@ export default function Calibration() {
             question={CALIBRATION_QUESTIONS[currentQuestion].question}
             options={CALIBRATION_QUESTIONS[currentQuestion].options}
             onSelect={handleSelect}
+            onBack={handleBack}
+            canGoBack={true}
             currentIndex={currentQuestion}
             totalQuestions={CALIBRATION_QUESTIONS.length}
             selectedValue={answers[CALIBRATION_QUESTIONS[currentQuestion].id]}
