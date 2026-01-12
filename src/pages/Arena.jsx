@@ -6,9 +6,8 @@ import { createPageUrl } from '@/utils';
 import ProblemCard from '@/components/arena/ProblemCard';
 import ArenaBattle from '@/components/arena/ArenaBattle';
 import ArenaResult from '@/components/arena/ArenaResult';
-import ProblemGeneratorModal from '@/components/arena/ProblemGeneratorModal';
 import { ArenaEntryFlow } from '@/components/arena/entry';
-import { Loader2, RefreshCw, Trophy, Zap, Sparkles, Plus, Swords, Target, Users, User, Clock, Lock } from 'lucide-react';
+import { Loader2, Trophy, Zap, Sparkles, Swords, Target, Users, User, Clock, Lock } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 
 // Session storage keys
@@ -22,7 +21,7 @@ export default function Arena() {
   const [result, setResult] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isGenerating, setIsGenerating] = useState(false);
-  const [showGeneratorModal, setShowGeneratorModal] = useState(false);
+  const [generatingDuration, setGeneratingDuration] = useState(null); // 30 or 10
   const [view, setView] = useState('selection'); // 'selection' | 'entry' | 'battle' | 'result'
   const [gameMode, setGameMode] = useState(null); // null = mode selection, 'solo' = solo mode, 'multiplayer' = coming soon
   const [entryFlowData, setEntryFlowData] = useState(null); // Data from entry flow
@@ -142,11 +141,16 @@ export default function Arena() {
     setIsLoading(false);
   };
 
-  const generateProblem = async (customization = null) => {
+  const generateProblem = async (durationMinutes = 30) => {
     setIsGenerating(true);
-    const newProblem = await apiClient.api.problems.generate(profile, customization);
-    setProblems(prev => [newProblem, ...prev]);
-    setIsGenerating(false);
+    setGeneratingDuration(durationMinutes);
+    try {
+      const newProblem = await apiClient.api.problems.generate(profile, { durationMinutes });
+      setProblems(prev => [newProblem, ...prev]);
+    } finally {
+      setIsGenerating(false);
+      setGeneratingDuration(null);
+    }
   };
 
   const startProblem = async (problem) => {
@@ -545,34 +549,45 @@ export default function Arena() {
           transition={{ delay: 0.3 }}
         >
           <Button
-            onClick={() => generateProblem(null)}
+            onClick={() => generateProblem(30)}
             disabled={isGenerating}
             variant="gradient"
             size="lg"
             className="group"
           >
-            {isGenerating ? (
+            {isGenerating && generatingDuration === 30 ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin" />
                 Generating...
               </>
             ) : (
               <>
-                <RefreshCw className="w-4 h-4 group-hover:rotate-180 transition-transform duration-500" />
-                Quick Generate
+                <Clock className="w-4 h-4" />
+                <span>30 Menit</span>
+                <span className="text-xs opacity-70 ml-1">(Standar)</span>
               </>
             )}
           </Button>
 
           <Button
-            onClick={() => setShowGeneratorModal(true)}
+            onClick={() => generateProblem(10)}
             disabled={isGenerating}
             variant="outline"
             size="lg"
-            className="group"
+            className="group border-emerald-500/30 hover:border-emerald-500/50 text-emerald-400 hover:text-emerald-300"
           >
-            <Plus className="w-4 h-4 group-hover:rotate-90 transition-transform duration-300" />
-            Custom Problem
+            {isGenerating && generatingDuration === 10 ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Generating...
+              </>
+            ) : (
+              <>
+                <Zap className="w-4 h-4" />
+                <span>10 Menit</span>
+                <span className="text-xs opacity-70 ml-1">(Ringan)</span>
+              </>
+            )}
           </Button>
         </motion.div>
 
@@ -612,34 +627,49 @@ export default function Arena() {
             <p className="text-zinc-600 mb-8 max-w-md mx-auto">
               Generate masalah pertama untuk mulai bertarung dan menguji kemampuanmu
             </p>
-            <Button
-              onClick={() => generateProblem(null)}
-              disabled={isGenerating}
-              variant="gradient"
-              size="lg"
-            >
-              {isGenerating ? (
-                <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  Generating...
-                </>
-              ) : (
-                <>
-                  <Sparkles className="w-4 h-4" />
-                  Generate Masalah Pertama
-                </>
-              )}
-            </Button>
+            <div className="flex gap-3 justify-center flex-wrap">
+              <Button
+                onClick={() => generateProblem(30)}
+                disabled={isGenerating}
+                variant="gradient"
+                size="lg"
+              >
+                {isGenerating && generatingDuration === 30 ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Generating...
+                  </>
+                ) : (
+                  <>
+                    <Clock className="w-4 h-4" />
+                    30 Menit (Standar)
+                  </>
+                )}
+              </Button>
+              <Button
+                onClick={() => generateProblem(10)}
+                disabled={isGenerating}
+                variant="outline"
+                size="lg"
+                className="border-emerald-500/30 hover:border-emerald-500/50 text-emerald-400"
+              >
+                {isGenerating && generatingDuration === 10 ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Generating...
+                  </>
+                ) : (
+                  <>
+                    <Zap className="w-4 h-4" />
+                    10 Menit (Ringan)
+                  </>
+                )}
+              </Button>
+            </div>
           </motion.div>
         )}
       </div>
 
-      <ProblemGeneratorModal
-        isOpen={showGeneratorModal}
-        onClose={() => setShowGeneratorModal(false)}
-        onGenerate={generateProblem}
-        profile={profile}
-      />
     </div>
   );
 }
