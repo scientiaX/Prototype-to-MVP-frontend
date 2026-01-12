@@ -149,16 +149,6 @@ export default function Login() {
                                 />
                                 <div className="absolute inset-0 rounded-2xl bg-orange-500/20 blur-lg opacity-50" />
                             </div>
-                            <motion.div
-                                className="absolute -top-1 -right-1 w-6 h-6 bg-violet-500/20 rounded-full flex items-center justify-center"
-                                animate={{
-                                    scale: [1, 1.2, 1],
-                                    opacity: [0.7, 1, 0.7]
-                                }}
-                                transition={{ duration: 2, repeat: Infinity }}
-                            >
-                                <Sparkles className="w-3 h-3 text-violet-400" />
-                            </motion.div>
                         </motion.div>
 
                         <h1 className="text-2xl font-bold text-white mb-2">
