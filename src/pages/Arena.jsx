@@ -26,6 +26,7 @@ export default function Arena() {
   const [gameMode, setGameMode] = useState(null); // null = mode selection, 'solo' = solo mode, 'multiplayer' = coming soon
   const [entryFlowData, setEntryFlowData] = useState(null); // Data from entry flow
   const [isRestoringSession, setIsRestoringSession] = useState(false);
+  const [active10MinArena, setActive10MinArena] = useState(null); // Track active 10-min arena
   const navigate = useNavigate();
 
   // Save session state to sessionStorage whenever it changes
@@ -142,11 +143,21 @@ export default function Arena() {
   };
 
   const generateProblem = async (durationMinutes = 30) => {
+    // Check if 10-minute arena limit is reached
+    if (durationMinutes === 10 && active10MinArena) {
+      return; // Don't generate - limit reached
+    }
+
     setIsGenerating(true);
     setGeneratingDuration(durationMinutes);
     try {
       const newProblem = await apiClient.api.problems.generate(profile, { durationMinutes });
       setProblems(prev => [newProblem, ...prev]);
+
+      // Track active 10-minute arena
+      if (durationMinutes === 10) {
+        setActive10MinArena(newProblem);
+      }
     } finally {
       setIsGenerating(false);
       setGeneratingDuration(null);
@@ -199,6 +210,10 @@ export default function Arena() {
       setView('result');
       // Clear session state when session is completed
       clearSessionState();
+      // Clear 10-minute arena tracking if this was a 10-min arena
+      if (selectedProblem?.duration_minutes === 10) {
+        setActive10MinArena(null);
+      }
     } catch (error) {
       console.error('Submit error:', error);
     }
@@ -212,6 +227,10 @@ export default function Arena() {
     }
     // Clear session state when abandoned
     clearSessionState();
+    // Clear 10-minute arena tracking if this was a 10-min arena
+    if (selectedProblem?.duration_minutes === 10) {
+      setActive10MinArena(null);
+    }
     setView('selection');
     setSelectedProblem(null);
     setCurrentSession(null);
@@ -571,15 +590,23 @@ export default function Arena() {
 
           <Button
             onClick={() => generateProblem(10)}
-            disabled={isGenerating}
+            disabled={isGenerating || !!active10MinArena}
             variant="outline"
             size="lg"
-            className="group border-emerald-500/30 hover:border-emerald-500/50 text-emerald-400 hover:text-emerald-300"
+            className={`group ${active10MinArena
+              ? 'border-zinc-600 text-zinc-500 cursor-not-allowed'
+              : 'border-emerald-500/30 hover:border-emerald-500/50 text-emerald-400 hover:text-emerald-300'}`}
           >
             {isGenerating && generatingDuration === 10 ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin" />
                 Generating...
+              </>
+            ) : active10MinArena ? (
+              <>
+                <Zap className="w-4 h-4" />
+                <span>10 Menit</span>
+                <span className="text-xs opacity-70 ml-1">(Selesaikan dulu)</span>
               </>
             ) : (
               <>
@@ -648,15 +675,22 @@ export default function Arena() {
               </Button>
               <Button
                 onClick={() => generateProblem(10)}
-                disabled={isGenerating}
+                disabled={isGenerating || !!active10MinArena}
                 variant="outline"
                 size="lg"
-                className="border-emerald-500/30 hover:border-emerald-500/50 text-emerald-400"
+                className={active10MinArena
+                  ? 'border-zinc-600 text-zinc-500'
+                  : 'border-emerald-500/30 hover:border-emerald-500/50 text-emerald-400'}
               >
                 {isGenerating && generatingDuration === 10 ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin" />
                     Generating...
+                  </>
+                ) : active10MinArena ? (
+                  <>
+                    <Zap className="w-4 h-4" />
+                    10 Menit (Selesaikan dulu)
                   </>
                 ) : (
                   <>
