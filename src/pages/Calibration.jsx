@@ -303,9 +303,21 @@ export default function Calibration() {
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ type: "spring", duration: 0.8 }}
-                className="w-24 h-24 bg-gradient-to-br from-orange-500 to-red-600 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-lg shadow-orange-500/30"
+                className="relative inline-block mb-8"
               >
-                <Globe className="w-12 h-12 text-black" />
+                <div className="w-24 h-24 bg-gradient-to-br from-orange-500 to-red-600 rounded-3xl flex items-center justify-center mx-auto shadow-lg shadow-orange-500/30">
+                  <Flame className="w-12 h-12 text-black" />
+                </div>
+                <motion.div
+                  className="absolute -top-1 -right-1 w-8 h-8 bg-violet-500/20 rounded-full flex items-center justify-center"
+                  animate={{
+                    scale: [1, 1.2, 1],
+                    opacity: [0.7, 1, 0.7]
+                  }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                >
+                  <Sparkles className="w-4 h-4 text-violet-400" />
+                </motion.div>
               </motion.div>
               <h1 className="text-4xl md:text-5xl text-white font-bold mb-4">Choose Your Language</h1>
               <p className="text-xl text-zinc-400">Pilih Bahasamu</p>
