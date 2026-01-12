@@ -307,7 +307,7 @@ export default function Calibration() {
               >
                 <div className="relative">
                   <img
-                    src="/novax-icon.png"
+                    src="/favicon.png"
                     alt="NovaX"
                     className="w-24 h-24 rounded-3xl shadow-lg shadow-orange-500/30"
                   />
