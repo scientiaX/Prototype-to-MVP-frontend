@@ -103,7 +103,7 @@ export default function Layout({ children, currentPageName }) {
             <Link to={createPageUrl('Home')} className="flex items-center gap-3 group">
               <div className="relative">
                 <img
-                  src="/novax-icon.png"
+                  src="/favicon.png"
                   alt="NovaX"
                   className="w-10 h-10 rounded-xl transition-all duration-300 group-hover:scale-110 group-hover:rotate-3"
                 />
@@ -161,7 +161,7 @@ export default function Layout({ children, currentPageName }) {
         <div className="flex items-center justify-between h-14 px-4">
           <Link to={createPageUrl('Home')} className="flex items-center gap-2">
             <img
-              src="/novax-icon.png"
+              src="/favicon.png"
               alt="NovaX"
               className="w-9 h-9 rounded-lg"
             />

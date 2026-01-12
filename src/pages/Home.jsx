@@ -286,33 +286,6 @@ export default function Home() {
                   <span className="text-xs font-semibold text-orange-400 tracking-wider uppercase font-mono">Novax Trial</span>
                 </motion.div>
 
-                {/* NovaX Icon */}
-                <motion.div
-                  className="relative inline-block mb-6"
-                  initial={{ scale: 0.8, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ delay: 0.15, duration: 0.5 }}
-                >
-                  <div className="relative">
-                    <img
-                      src="/favicon.png"
-                      alt="NovaX"
-                      className="w-20 h-20 rounded-2xl shadow-lg shadow-orange-500/30"
-                    />
-                    <div className="absolute inset-0 rounded-2xl bg-orange-500/20 blur-lg opacity-50" />
-                  </div>
-                  <motion.div
-                    className="absolute -top-1 -right-1 w-6 h-6 bg-violet-500/20 rounded-full flex items-center justify-center"
-                    animate={{
-                      scale: [1, 1.2, 1],
-                      opacity: [0.7, 1, 0.7]
-                    }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  >
-                    <Sparkles className="w-3 h-3 text-violet-400" />
-                  </motion.div>
-                </motion.div>
-
                 {/* Headline */}
                 <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-[0.95] tracking-tight">
                   <span className="text-white">NovaX</span>{' '}
