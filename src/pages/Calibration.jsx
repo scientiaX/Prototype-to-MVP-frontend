@@ -305,8 +305,13 @@ export default function Calibration() {
                 transition={{ type: "spring", duration: 0.8 }}
                 className="relative inline-block mb-8"
               >
-                <div className="w-24 h-24 bg-gradient-to-br from-orange-500 to-red-600 rounded-3xl flex items-center justify-center mx-auto shadow-lg shadow-orange-500/30">
-                  <Flame className="w-12 h-12 text-black" />
+                <div className="relative">
+                  <img
+                    src="/novax-icon.png"
+                    alt="NovaX"
+                    className="w-24 h-24 rounded-3xl shadow-lg shadow-orange-500/30"
+                  />
+                  <div className="absolute inset-0 rounded-3xl bg-orange-500/20 blur-xl opacity-60" />
                 </div>
                 <motion.div
                   className="absolute -top-1 -right-1 w-8 h-8 bg-violet-500/20 rounded-full flex items-center justify-center"
