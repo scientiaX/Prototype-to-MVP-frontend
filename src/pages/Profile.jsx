@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import ArchetypeRadar from '@/components/profile/ArchetypeRadar';
 import BadgeDisplay from '@/components/profile/BadgeDisplay';
+import MonthlyProgress from '@/components/profile/MonthlyProgress';
 import { Loader2, Zap, Target, Brain, Wrench, Trophy, TrendingUp, Award, User, Sparkles } from 'lucide-react';
 import { cn } from "@/lib/utils";
 
@@ -154,6 +155,20 @@ export default function Profile() {
             </motion.div>
           ))}
         </div>
+
+        {/* Monthly Progress */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.45 }}
+          className="mb-10"
+        >
+          <MonthlyProgress
+            monthlyArenas={profile.monthly_arenas || []}
+            currentStreak={profile.current_streak || 0}
+            longestStreak={profile.longest_streak || 0}
+          />
+        </motion.div>
 
         {/* Archetype Radar */}
         <motion.div

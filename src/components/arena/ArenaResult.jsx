@@ -193,11 +193,35 @@ export default function ArenaResult({
 
         {/* Insight */}
         {ai_insight && (
-          <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 mb-8">
+          <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 mb-6">
             <h2 className="text-zinc-400 text-sm font-semibold mb-3">INSIGHT</h2>
             <p className="text-zinc-300 text-sm">{ai_insight}</p>
           </div>
         )}
+
+        {/* Social Comparison Stats - Savage style */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="bg-gradient-to-r from-violet-500/10 to-purple-500/10 border border-violet-500/30 rounded-xl p-5 mb-8"
+        >
+          <div className="flex items-center gap-3 mb-3">
+            <span className="text-xl">📊</span>
+            <span className="text-violet-400 font-semibold text-sm">PERBANDINGAN</span>
+          </div>
+          <p className="text-zinc-300 text-sm leading-relaxed">
+            {xp_earned > 15
+              ? "🔥 Kamu mengambil risiko di atas rata-rata user lain. Berani!"
+              : xp_earned > 5
+                ? "⚡ Keputusanmu seimbang antara risiko dan keamanan."
+                : "🛡️ Kamu memilih pendekatan lebih aman dari 64% user lain."
+            }
+          </p>
+          <p className="text-zinc-500 text-xs mt-2 italic">
+            Berdasarkan pilihan user di problem serupa
+          </p>
+        </motion.div>
 
         {/* Actions */}
         <div className="flex gap-4">

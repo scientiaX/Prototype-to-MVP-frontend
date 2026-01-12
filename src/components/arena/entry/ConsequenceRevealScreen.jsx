@@ -130,6 +130,28 @@ export default function ConsequenceRevealScreen({
                             </AnimatePresence>
                         </div>
 
+                        {/* Risk/Complexity Indicators */}
+                        <AnimatePresence>
+                            {revealedIndex >= consequences.length - 1 && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.5 }}
+                                    className="flex flex-wrap justify-center gap-3 mb-6"
+                                >
+                                    <span className="px-3 py-1.5 rounded-full bg-red-500/15 border border-red-500/30 text-red-400 text-sm font-medium">
+                                        Risiko ↑
+                                    </span>
+                                    <span className="px-3 py-1.5 rounded-full bg-yellow-500/15 border border-yellow-500/30 text-yellow-400 text-sm font-medium">
+                                        Kompleksitas ↑
+                                    </span>
+                                    <span className="px-3 py-1.5 rounded-full bg-blue-500/15 border border-blue-500/30 text-blue-400 text-sm font-medium">
+                                        Tekanan ↑
+                                    </span>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+
                         {/* Insight message */}
                         <AnimatePresence>
                             {showInsight && (

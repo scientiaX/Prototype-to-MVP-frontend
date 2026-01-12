@@ -317,8 +317,8 @@ export default function Leaderboard() {
               <p className="text-sm text-zinc-400">
                 <span className="text-orange-400 font-semibold">Note: </span>
                 {activeTab === 'growth'
-                  ? 'Growth leaderboard di-reset setiap 2 minggu. Berdasarkan lonjakan difficulty dan XP delta.'
-                  : 'All-Time tidak pernah reset.'
+                  ? 'Growth leaderboard | Based on XP delta.'
+                  : 'All-Time.'
                 }
               </p>
             </div>
