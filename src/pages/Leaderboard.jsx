@@ -121,9 +121,6 @@ export default function Leaderboard() {
           <h1 className="text-3xl md:text-5xl font-bold text-white mb-3">
             Leaderboard
           </h1>
-          <p className="text-zinc-500 text-lg">
-            Bukan ranking kepintaran. Ranking konfrontasi.
-          </p>
         </motion.div>
 
         {/* Mode Tabs */}
