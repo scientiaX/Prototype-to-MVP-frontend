@@ -141,8 +141,13 @@ export default function Login() {
                             animate={{ scale: 1, opacity: 1 }}
                             transition={{ delay: 0.2, duration: 0.5 }}
                         >
-                            <div className="w-20 h-20 bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl flex items-center justify-center mx-auto shadow-lg shadow-orange-500/30">
-                                <Flame className="w-10 h-10 text-black" />
+                            <div className="relative">
+                                <img
+                                    src="/favicon.png"
+                                    alt="NovaX"
+                                    className="w-20 h-20 rounded-2xl shadow-lg shadow-orange-500/30"
+                                />
+                                <div className="absolute inset-0 rounded-2xl bg-orange-500/20 blur-lg opacity-50" />
                             </div>
                             <motion.div
                                 className="absolute -top-1 -right-1 w-6 h-6 bg-violet-500/20 rounded-full flex items-center justify-center"
