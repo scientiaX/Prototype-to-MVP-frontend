@@ -352,6 +352,41 @@ export const api = {
       const response = await apiClient.get(`/user/artifacts/${userId}`);
       return response.data;
     }
+  },
+
+  onboardingArena: {
+    generateProblem: async (domain, language, ageGroup, useAI = false) => {
+      const response = await apiClient.post('/onboarding-arena/generate-problem', {
+        domain,
+        language,
+        age_group: ageGroup,
+        use_ai: useAI
+      });
+      return response.data;
+    },
+
+    getConsequence: async (choiceId, archetypeSignal, language) => {
+      const response = await apiClient.post('/onboarding-arena/get-consequence', {
+        choice_id: choiceId,
+        archetype_signal: archetypeSignal,
+        language
+      });
+      return response.data;
+    },
+
+    complete: async (domain, language, ageGroup, decisions) => {
+      const user = await auth.me();
+      const response = await apiClient.post('/onboarding-arena/complete', {
+        user_id: user.email,
+        email: user.email,
+        domain,
+        language,
+        age_group: ageGroup,
+        decisions,
+        name: user.name
+      });
+      return response.data;
+    }
   }
 };
 
