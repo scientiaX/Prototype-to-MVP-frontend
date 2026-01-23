@@ -21,8 +21,7 @@ jobs:
         script: |
           cd ~/apps/Prototype-to-MVP-frontend
           git pull
-          source .env 2>/dev/null || true
-          docker build -t frontend --build-arg VITE_API_BASE_URL="${VITE_API_BASE_URL:-https://api.novaxarena.tech}" .
+          docker build -t frontend .
           docker rm -f frontend || true
-          docker run -d --name frontend -p 127.0.0.1:8080:80 --restart unless-stopped frontend
+          docker run -d --name frontend -p 127.0.0.1:8080:80 frontend
 

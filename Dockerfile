@@ -11,13 +11,8 @@ RUN npm install
 # Copy source code
 COPY . .
 
-# Build arguments
-ARG VITE_API_BASE_URL
-ARG BUILD_DATE
-ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
-ENV BUILD_DATE=$BUILD_DATE
-
-# Build the app
+# Build the app (Vite automatically reads from .env.production when NODE_ENV=production)
+ENV NODE_ENV=production
 RUN npm run build
 
 # Production stage
@@ -41,8 +36,7 @@ RUN apk add --no-cache dos2unix && \
     apk del dos2unix
 
 # Add build info for debugging
-ARG BUILD_DATE
-RUN echo "Build date: ${BUILD_DATE}" > /usr/share/nginx/html/build-info.txt
+RUN echo "Build date: $(date -u +%Y-%m-%dT%H:%M:%SZ)" > /usr/share/nginx/html/build-info.txt
 
 EXPOSE 80
 
