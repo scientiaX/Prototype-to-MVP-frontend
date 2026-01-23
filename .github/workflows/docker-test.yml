@@ -17,7 +17,8 @@ jobs:
     steps:
     - name: Checkout Frontend
       uses: actions/checkout@v4
-      path: frontend
+      with:
+        path: frontend
       
     - name: Checkout Backend
       uses: actions/checkout@v4
