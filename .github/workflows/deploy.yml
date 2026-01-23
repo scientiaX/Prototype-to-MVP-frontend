@@ -14,16 +14,15 @@ jobs:
 
     - name: Deploy to EC2
       uses: appleboy/ssh-action@v1.0.3
-      env:
-        VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
       with:
         host: ${{ secrets.EC2_HOST }}
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.EC2_SSH_KEY }}
-        envs: VITE_API_BASE_URL
         script: |
           cd ~/apps/Prototype-to-MVP-frontend
           git pull
-          docker build -t frontend --build-arg VITE_API_BASE_URL="$VITE_API_BASE_URL" .
+          source .env 2>/dev/null || true
+          docker build -t frontend --build-arg VITE_API_BASE_URL="${VITE_API_BASE_URL:-https://api.novaxarena.tech}" .
           docker rm -f frontend || true
           docker run -d --name frontend -p 127.0.0.1:8080:80 --restart unless-stopped frontend
+
