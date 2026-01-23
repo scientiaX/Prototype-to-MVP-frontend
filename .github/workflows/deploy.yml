@@ -1,81 +1,29 @@
-name: Deploy Frontend to EC2
+name: Deploy Frontend
 
 on:
   push:
-    branches: [main]
-  workflow_dispatch:
+    branches: [ "main" ]
 
 jobs:
-  build:
-    name: Build Frontend
-    runs-on: ubuntu-latest
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
-        cache: 'npm'
-        
-    - name: Install dependencies
-      run: npm ci
-      
-    - name: Build production
-      run: npm run build
-      
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: dist
-        path: dist/
-        retention-days: 1
-
   deploy:
-    name: Deploy to EC2
     runs-on: ubuntu-latest
-    needs: build
-    
+
     steps:
-    - name: Download build artifacts
-      uses: actions/download-artifact@v4
-      with:
-        name: dist
-        path: dist/
-        
-    - name: Deploy to EC2 via SSH
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Deploy to EC2
       uses: appleboy/ssh-action@v1.0.3
       with:
         host: ${{ secrets.EC2_HOST }}
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
-          # Create directory if not exists
-          mkdir -p ~/Prototype-to-MVP-frontend
-          
-    - name: Copy files to EC2
-      uses: appleboy/scp-action@v0.1.7
-      with:
-        host: ${{ secrets.EC2_HOST }}
-        username: ${{ secrets.EC2_USER }}
-        key: ${{ secrets.EC2_SSH_KEY }}
-        source: "dist/*"
-        target: "~/Prototype-to-MVP-frontend/"
-        strip_components: 1
-        
-    - name: Restart Nginx
-      uses: appleboy/ssh-action@v1.0.3
-      with:
-        host: ${{ secrets.EC2_HOST }}
-        username: ${{ secrets.EC2_USER }}
-        key: ${{ secrets.EC2_SSH_KEY }}
-        script: |
-          # Copy built files to nginx html directory
-          sudo cp -r ~/Prototype-to-MVP-frontend/dist/* /var/www/html/ 2>/dev/null || sudo cp -r ~/Prototype-to-MVP-frontend/* /var/www/html/
-          
-          # Restart nginx
-          sudo systemctl reload nginx || sudo nginx -s reload
-          
-          echo "✅ Frontend deployed successfully!"
+          cd ~/apps/Prototype-to-MVP-frontend
+          git pull
+          docker build -t frontend .
+          docker rm -f frontend || true
+          docker run -d \
+            --name frontend \
+            -p 127.0.0.1:8080:80 \
+            frontend
