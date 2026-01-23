@@ -21,9 +21,13 @@ jobs:
         script: |
           cd ~/apps/Prototype-to-MVP-frontend
           git pull
-          docker build -t frontend .
+          docker build -t frontend \
+            --build-arg VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL }} \
+            --build-arg BUILD_DATE=$(date -u +"%Y-%m-%dT%H:%M:%SZ") \
+            .
           docker rm -f frontend || true
           docker run -d \
             --name frontend \
             -p 127.0.0.1:8080:80 \
+            --restart unless-stopped \
             frontend
