@@ -1,98 +1,29 @@
-name: CD - Deploy to Production
+name: Deploy Frontend
 
 on:
   push:
-    branches: [ main ]
-    tags:
-      - 'v*.*.*'
-  workflow_dispatch:
-
-env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+    branches: [ "main" ]
 
 jobs:
-  build-and-push:
-    name: Build and Push Docker Image
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-      
-    outputs:
-      image-tag: ${{ steps.meta.outputs.tags }}
-      
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
-      
-    - name: Log in to Container Registry
-      uses: docker/login-action@v3
-      with:
-        registry: ${{ env.REGISTRY }}
-        username: ${{ github.actor }}
-        password: ${{ secrets.GITHUB_TOKEN }}
-        
-    - name: Extract metadata
-      id: meta
-      uses: docker/metadata-action@v5
-      with:
-        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-        tags: |
-          type=ref,event=branch
-          type=ref,event=pr
-          type=semver,pattern={{version}}
-          type=semver,pattern={{major}}.{{minor}}
-          type=sha,prefix={{branch}}-
-          
-    - name: Build and push Frontend
-      uses: docker/build-push-action@v5
-      with:
-        context: .
-        file: ./Dockerfile
-        push: true
-        tags: ${{ steps.meta.outputs.tags }}
-        labels: ${{ steps.meta.outputs.labels }}
-        cache-from: type=gha
-        cache-to: type=gha,mode=max
-          
   deploy:
-    name: Deploy to Server
     runs-on: ubuntu-latest
-    needs: build-and-push
-    if: github.ref == 'refs/heads/main'
-    
+
     steps:
-    - name: Checkout code
+    - name: Checkout
       uses: actions/checkout@v4
-      
-    - name: Deploy to production server
-      uses: appleboy/ssh-action@v1.0.0
+
+    - name: Deploy to EC2
+      uses: appleboy/ssh-action@v1.0.3
       with:
-        host: ${{ secrets.DEPLOY_HOST }}
-        username: ${{ secrets.DEPLOY_USER }}
-        key: ${{ secrets.DEPLOY_SSH_KEY }}
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USER }}
+        key: ${{ secrets.EC2_SSH_KEY }}
         script: |
-          cd /opt/prototype-mvp
-          docker-compose pull
-          docker-compose up -d --force-recreate
-          docker system prune -f
-          
-    - name: Health check
-      run: |
-        sleep 10
-        curl -f ${{ secrets.DEPLOY_URL }}/health || exit 1
-        
-  notify:
-    name: Notify Deployment
-    runs-on: ubuntu-latest
-    needs: deploy
-    if: always()
-    
-    steps:
-    - name: Send notification
-      run: |
-        echo "Deployment completed for ${{ github.ref }}"
+          cd ~/apps/Prototype-to-MVP-frontend
+          git pull
+          docker build -t frontend .
+          docker rm -f frontend || true
+          docker run -d \
+            --name frontend \
+            -p 127.0.0.1:8080:80 \
+            frontend
