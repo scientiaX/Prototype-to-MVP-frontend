@@ -45,7 +45,7 @@ services:
     networks:
       - prototype-mvp-network
     healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3001/health"]
+      test: [ "CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3001/health" ]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -57,13 +57,13 @@ services:
     container_name: prototype-mvp-frontend
     restart: unless-stopped
     ports:
-      - "80:80"
+      - "127.0.0.1:8080:80"
     depends_on:
       - backend
     networks:
       - prototype-mvp-network
     healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost"]
+      test: [ "CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost" ]
       interval: 30s
       timeout: 10s
       retries: 3
