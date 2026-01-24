@@ -33,11 +33,12 @@ export default function ActionScreen({
     const inputRef = useRef(null);
 
     // Character limits based on interaction type
+    // Lowered minimums to allow more flexible responses (even 1-2 words is OK)
     const charLimits = {
-        [INTERACTION_TYPES.TEXT_COMMIT]: { min: 50, max: 500 },
-        [INTERACTION_TYPES.PATCH]: { min: 10, max: 300 },
+        [INTERACTION_TYPES.TEXT_COMMIT]: { min: 5, max: 500 },
+        [INTERACTION_TYPES.PATCH]: { min: 3, max: 300 },
         [INTERACTION_TYPES.OPTION_SELECT]: { min: 0, max: 150 },
-        [INTERACTION_TYPES.EXTENDED_REFLECTION]: { min: 100, max: 1000 }
+        [INTERACTION_TYPES.EXTENDED_REFLECTION]: { min: 20, max: 1000 }
     };
 
     const limits = charLimits[interactionType] || charLimits[INTERACTION_TYPES.TEXT_COMMIT];

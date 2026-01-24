@@ -216,7 +216,7 @@ export default function Profile() {
               <Award className="w-5 h-5 text-orange-400" />
             </div>
             <div>
-              <h2 className="text-white font-bold text-xl">Badges (Scars)</h2>
+              <h2 className="text-white font-bold text-xl">Badges/Achievements</h2>
               <p className="text-sm text-zinc-500">Proof of your battles</p>
             </div>
           </div>
