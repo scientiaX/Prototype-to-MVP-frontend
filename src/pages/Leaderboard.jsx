@@ -148,7 +148,7 @@ export default function Leaderboard() {
                 />
               )}
               <TrendingUp className="w-4 h-4 relative z-10" />
-              <span className="relative z-10">Growth (2 Minggu)</span>
+              <span className="relative z-10">Growth (2 Weeks)</span>
             </button>
             <button
               onClick={() => setActiveTab('reliability')}
