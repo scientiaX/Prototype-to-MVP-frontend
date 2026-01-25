@@ -24,7 +24,8 @@ Onboarding ini **dihitung sebagai arena pertama yang user selesaikan** (Arena Pe
 - **Act-first UX**: aksi dulu, refleksi belakangan
 - **Tap-based**: 90% input adalah tap/click, bukan mengetik
 - **1 layar = 1 aksi**: sekuensial, tidak ramai
-- **Auto-advance**: user tidak perlu menekan “Next” berulang
+- **Fast loop**: banyak aksi kecil yang mengalir (bukan 1 pertanyaan besar)
+- **Tap-driven**: maju karena user tap, bukan karena timer
 - **Micro-win cepat**: ada momen “selesai” kecil di ≤30 detik
 - **No judgement**: tidak ada benar/salah, tidak ada label kemampuan
 - **Copy pendek**: kalimat pendek, konkret, dan langsung
@@ -39,6 +40,9 @@ Onboarding ini **dihitung sebagai arena pertama yang user selesaikan** (Arena Pe
 
 Jika Quick terasa “4–5 menit”, onboarding ini harus terasa seperti:
 > “Gue baru klik-klik dikit, tapi udah dapet gambaran.”
+
+Catatan penting: durasi ini **bukan** karena user “mikir lama” untuk 1 keputusan.
+Durasi terjadi karena onboarding terdiri dari **kumpulan micro-actions** (seperti Duolingo) yang kalau diakumulasi menjadi 90–120 detik.
 
 ---
 
@@ -60,10 +64,11 @@ Onboarding Arena bukan:
 ## Alur Tingkat Tinggi
 
 1. Input minimum (umur + domain) — boleh “skip” dengan default
-2. Tutorial instan: 1–2 keputusan berbasis tap
-3. Konsekuensi mikro → insight mikro
-4. Reward netral → unlock Arena harian (Quick/Standard)
-5. Selesai: tercatat sebagai **Arena Pembukaan (Arena #1 Completed)**
+2. Tutorial instan: 6–10 micro-decisions berbasis tap (kumpulan sub‑problem kecil)
+3. Setelah tiap micro-decision: feedback mikro (1 kalimat)
+4. Setelah beberapa micro-decision: 1 insight mikro (1–2 kalimat) yang terasa “hasil dari rangkaian pilihan”
+5. Reward netral → unlock Arena harian (Quick/Standard)
+6. Selesai: tercatat sebagai **Arena Pembukaan (Arena #1 Completed)**
 
 ---
 
@@ -94,101 +99,44 @@ Onboarding Arena bukan:
 
 ---
 
-## Step 2 — Situation Drop (5–20 detik)
+## Step 2 — Micro-Loop (Inti Duolingo-Style)
 
-### Tujuan
-- User paham konteks tanpa diminta mikir panjang
+Onboarding Arena berjalan sebagai loop micro-actions. Prinsipnya: **bukan 1 pertanyaan besar**, tapi kumpulan sub‑problem kecil yang semuanya bisa dikerjakan cepat.
 
-### Format
-- 3–5 baris situasi konkret
-- 1 objective jelas
-- Tidak ada input
+### Struktur loop (per micro-round)
+Setiap micro-round terdiri dari:
+1. **Situation micro** (1–2 kalimat, konkret, tidak abstrak)
+2. **Tap choice** (2–3 opsi, semua masuk akal)
+3. **Feedback micro** (1 kalimat konsekuensi)
 
-### Guardrail
-- Tidak boleh ada paragraf panjang
-- Tidak boleh ada istilah teori
+### Jumlah micro-round
+- Target: **6–10 micro-round**
+- Estimasi: 8–12 detik per round (tap → feedback → lanjut)
 
----
+### Guardrail kualitas (kunci anti “mikir lama”)
+- Situasi harus konkret, bukan filosofis/abstrak
+- Opsi harus actionable, bukan “strategi besar”
+- Tidak ada input teks panjang
 
-## Step 3 — Forced Choice (20–35 detik)
-
-### Format
-- 2–3 kartu pilihan (tap sekali)
-- Semua opsi terasa masuk akal
-- Tidak ada opsi “aman sempurna”
-
-### Copy gaya Duolingo (contoh)
-- Header: “Pilih cepat.”
-- Sub: “Tidak ada yang sempurna. Yang penting: commit.”
-
-### Teknis (sinyal)
-- Simpan `choice_id`
-- Simpan `time_to_first_tap`
+### Sinyal kalibrasi yang dipanen (contoh)
+- Risk tolerance (proxy)
+- Speed vs depth bias (proxy)
+- Externalization vs internalization (proxy)
+- Consistency (antar round)
 
 ---
 
-## Step 4 — Lock (35–45 detik)
-
-### Tujuan
-- Micro-win: user merasa “udah melakukan sesuatu”
-
-### UX
-- Tombol besar: **KUNCI PILIHAN**
-- Setelah lock, auto-advance
-
-### Anti-friksi
-- Boleh ganti pilihan sebelum lock (maks 1 kali) tanpa modal/alert
-
-### Teknis (sinyal)
-- Simpan `time_to_lock`
-- Simpan `change_of_mind_count`
-
----
-
-## Step 5 — Consequence Reveal (45–65 detik)
-
-### Format
-- 1–2 kalimat konsekuensi
-- Tidak menghakimi, tapi terasa “kena”
-
-### Contoh
-> “Langkah ini cepat, tapi kamu mengorbankan sinyal yang lebih kuat.”
-
-### Teknis
-- Consequence dari `consequence_templates`
-
----
-
-## Step 6 — Optional Second Tap (65–85 detik)
-
-Hanya muncul jika sistem perlu 1 sinyal tambahan **dan** user masih dalam tempo cepat.
-
-### Format
-- 1 pertanyaan sangat pendek
-- 2 opsi (tap)
-- Auto-lock (tanpa step lock kedua)
-
-### Tujuan sinyal
-- Consistency
-- Ambiguity tolerance
-- Externalization vs internalization
-
----
-
-## Step 7 — Insight Mikro (85–100 detik)
+## Step 3 — Insight Mikro (Menempel ke Pola Pilihan)
 
 ### Prinsip insight
 - 1–2 kalimat
-- Spesifik ke pilihan user
+- Spesifik ke rangkaian pilihan user (bukan 1 pilihan doang)
 - Tidak generik, tidak teoritis
 - Tidak membeberkan “penilaian kemampuan”
 
-### Teknis
-- Insight dari `decision_pattern → insight_map`
-
 ---
 
-## Step 8 — Reward & Unlock (100–120 detik)
+## Step 4 — Reward & Unlock
 
 ### Elemen
 - XP kecil (+)
@@ -203,15 +151,14 @@ Hanya muncul jika sistem perlu 1 sinyal tambahan **dan** user masih dalam tempo 
 
 ---
 
-## Step 9 — Kalibrasi Diam‑Diam (Backend)
+## Step 5 — Kalibrasi Diam‑Diam (Backend)
 
 ### Yang dikalibrasi (prior, bukan label final)
 - Entry difficulty seed
 - Risk tolerance (proxy)
 - Speed vs depth bias (proxy)
-- Ambiguity tolerance (proxy)
 - Externalization vs internalization (proxy)
-- Consistency (jika ada second tap)
+- Consistency (antar micro-round)
 
 ### Minimal data yang disimpan
 - `domain`, `age_group`, `language`

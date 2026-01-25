@@ -23,6 +23,7 @@ export default function OnboardingArena({
     onBack
 }) {
     // Steps: loading -> situation -> choice -> lock -> consequence -> insight -> complete
+    const TOTAL_MICRO_ROUNDS = 7;
     const [step, setStep] = useState('loading');
     const [problem, setProblem] = useState(null);
     const [choices, setChoices] = useState([]);
@@ -35,25 +36,32 @@ export default function OnboardingArena({
     const [profile, setProfile] = useState(null);
     const [error, setError] = useState(null);
     const [canChangeChoice, setCanChangeChoice] = useState(true);
-    const autoAdvanceRef = useRef(null);
     const decisionsRef = useRef([]);
+    const profileRef = useRef(null);
+    const [roundIndex, setRoundIndex] = useState(0);
 
     // Load problem on mount
     useEffect(() => {
-        loadProblem();
+        loadProblem({ resetAll: true });
     }, [domain, ageGroup, language]);
 
-    const loadProblem = async () => {
+    const loadProblem = async ({ resetAll = false } = {}) => {
         try {
             setStep('loading');
             setError(null);
             setSelectedChoice(null);
             setConsequence('');
             setInsight('');
-            setDecisions([]);
-            decisionsRef.current = [];
             setDecisionStartTime(null);
             setCanChangeChoice(true);
+
+            if (resetAll) {
+                setDecisions([]);
+                decisionsRef.current = [];
+                setProfile(null);
+                setXpEarned(0);
+                setRoundIndex(0);
+            }
 
             const result = await apiClient.api.onboardingArena.generateProblem(
                 domain,
@@ -74,38 +82,10 @@ export default function OnboardingArena({
         }
     };
 
-    const clearAutoAdvance = useCallback(() => {
-        if (autoAdvanceRef.current) {
-            clearTimeout(autoAdvanceRef.current);
-            autoAdvanceRef.current = null;
-        }
-    }, []);
-
     const advanceToChoice = useCallback(() => {
-        clearAutoAdvance();
         setStep('choice');
         setDecisionStartTime(Date.now());
-    }, [clearAutoAdvance]);
-
-    useEffect(() => {
-        clearAutoAdvance();
-        if (step === 'situation') {
-            autoAdvanceRef.current = setTimeout(() => {
-                advanceToChoice();
-            }, 2500);
-        }
-        if (step === 'consequence') {
-            autoAdvanceRef.current = setTimeout(() => {
-                setStep('insight');
-            }, 1200);
-        }
-        if (step === 'insight') {
-            autoAdvanceRef.current = setTimeout(() => {
-                handleComplete();
-            }, 1200);
-        }
-        return () => clearAutoAdvance();
-    }, [step, clearAutoAdvance, advanceToChoice]);
+    }, []);
 
     const handleChoiceSelect = (choice) => {
         setSelectedChoice(choice);
@@ -115,9 +95,10 @@ export default function OnboardingArena({
     const handleLockChoice = async () => {
         try {
             if (!selectedChoice) return;
+            if (!problem) return;
 
             // Calculate time to decide
-            const timeToDecide = Date.now() - decisionStartTime;
+            const timeToDecide = decisionStartTime ? (Date.now() - decisionStartTime) : 0;
 
             // Record decision
             const decision = {
@@ -165,7 +146,24 @@ export default function OnboardingArena({
                 decisionsRef.current
             );
 
-            setProfile(result.profile);
+            let nextProfile = result.profile;
+
+            try {
+                const currentTotal = Number(nextProfile?.total_arenas_completed ?? 0);
+                const ensuredTotal = Math.max(currentTotal, 1);
+                if (ensuredTotal !== currentTotal) {
+                    const user = await apiClient.auth.me();
+                    const updated = await apiClient.api.profiles.update(user.email, {
+                        total_arenas_completed: ensuredTotal
+                    });
+                    nextProfile = updated || nextProfile;
+                }
+            } catch (e) {
+                // ignore profile sync failure
+            }
+
+            profileRef.current = nextProfile;
+            setProfile(nextProfile);
             setXpEarned(result.xp_earned || 5);
             setStep('complete');
 
@@ -177,8 +175,17 @@ export default function OnboardingArena({
         }
     };
 
+    const handleInsightContinue = async () => {
+        if (roundIndex + 1 < TOTAL_MICRO_ROUNDS) {
+            setRoundIndex(prev => prev + 1);
+            await loadProblem();
+            return;
+        }
+        await handleComplete();
+    };
+
     const handleEnterArena = () => {
-        onComplete(profile);
+        onComplete(profileRef.current || profile);
     };
 
     // Translation helper
@@ -255,7 +262,7 @@ export default function OnboardingArena({
                                 </span>
                                 <span className="text-zinc-500 text-sm">•</span>
                                 <span className="text-zinc-500 text-sm">
-                                    {t('Arena Pembukaan', 'Opening Arena')}
+                                    {t(`Arena Pembukaan • ${roundIndex + 1}/${TOTAL_MICRO_ROUNDS}`, `Opening Arena • ${roundIndex + 1}/${TOTAL_MICRO_ROUNDS}`)}
                                 </span>
                             </div>
 
@@ -412,22 +419,17 @@ export default function OnboardingArena({
                             {consequence}
                         </motion.p>
 
-                        {/* Loading indicator for next step */}
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 1 }}
-                            className="mt-8"
+                        <motion.button
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.9 }}
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={() => setStep('insight')}
+                            className="mt-10 px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-xl shadow-lg shadow-orange-500/30"
                         >
-                            <div className="w-32 h-1 bg-zinc-800 rounded-full mx-auto overflow-hidden">
-                                <motion.div
-                                    className="h-full bg-orange-500"
-                                    initial={{ width: 0 }}
-                                    animate={{ width: '100%' }}
-                                    transition={{ duration: 2 }}
-                                />
-                            </div>
-                        </motion.div>
+                            {t('Lanjut', 'Continue')}
+                        </motion.button>
                     </motion.div>
                 )}
 
@@ -473,10 +475,10 @@ export default function OnboardingArena({
                             transition={{ delay: 0.9 }}
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
-                            onClick={handleComplete}
+                            onClick={handleInsightContinue}
                             className="px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-xl shadow-lg shadow-orange-500/30"
                         >
-                            {t('Selesai', 'Finish')}
+                            {roundIndex + 1 < TOTAL_MICRO_ROUNDS ? t('Lanjut', 'Next') : t('Selesai', 'Finish')}
                         </motion.button>
                     </motion.div>
                 )}

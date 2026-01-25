@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import apiClient from '@/api/apiClient';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import ProblemCard from '@/components/arena/ProblemCard';
 import ArenaBattle from '@/components/arena/ArenaBattle';
@@ -39,6 +39,7 @@ export default function Arena() {
   const [activeQuickProblem, setActiveQuickProblem] = useState(null);
   const [activeStandardProblem, setActiveStandardProblem] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
   // Save session state to sessionStorage whenever it changes
   const saveSessionState = useCallback(() => {
@@ -105,6 +106,8 @@ export default function Arena() {
   }, [saveSessionState]);
 
   useEffect(() => {
+    const override = location.state?.profileOverride;
+    if (override) setProfile(override);
     loadData();
   }, []);
 

@@ -96,7 +96,7 @@ export default function Calibration() {
 
   const handleOnboardingComplete = (profile) => {
     // Profile has been saved by OnboardingArena, go straight to arena
-    navigate(createPageUrl('Arena'));
+    navigate(createPageUrl('Arena'), { state: { profileOverride: profile || null } });
   };
 
   const handleBackFromDomain = () => {
