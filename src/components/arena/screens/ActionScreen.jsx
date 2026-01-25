@@ -32,13 +32,12 @@ export default function ActionScreen({
     const [charCount, setCharCount] = useState(0);
     const inputRef = useRef(null);
 
-    // Character limits based on interaction type
-    // Lowered minimums to allow more flexible responses (even 1-2 words is OK)
+    // Character limits - NO minimums (AI handles short responses by digging deeper)
     const charLimits = {
-        [INTERACTION_TYPES.TEXT_COMMIT]: { min: 5, max: 500 },
-        [INTERACTION_TYPES.PATCH]: { min: 3, max: 300 },
+        [INTERACTION_TYPES.TEXT_COMMIT]: { min: 0, max: 500 },
+        [INTERACTION_TYPES.PATCH]: { min: 0, max: 300 },
         [INTERACTION_TYPES.OPTION_SELECT]: { min: 0, max: 150 },
-        [INTERACTION_TYPES.EXTENDED_REFLECTION]: { min: 20, max: 1000 }
+        [INTERACTION_TYPES.EXTENDED_REFLECTION]: { min: 0, max: 1000 }
     };
 
     const limits = charLimits[interactionType] || charLimits[INTERACTION_TYPES.TEXT_COMMIT];
@@ -181,15 +180,14 @@ export default function ActionScreen({
                             ref={inputRef}
                             value={input}
                             onChange={handleInputChange}
-                            placeholder="Tulis revisi atau tambahan..."
+                            placeholder="Revisi atau tambahan..."
                             className={cn(
                                 "min-h-[120px] bg-zinc-950 text-white resize-none",
                                 styles.border
                             )}
                             maxLength={limits.max}
                         />
-                        <div className="flex justify-between text-xs text-zinc-500">
-                            <span>Min {limits.min} karakter</span>
+                        <div className="flex justify-end text-xs text-zinc-500">
                             <span className={charCount > limits.max * 0.9 ? 'text-orange-400' : ''}>
                                 {charCount}/{limits.max}
                             </span>
@@ -200,24 +198,18 @@ export default function ActionScreen({
             case INTERACTION_TYPES.EXTENDED_REFLECTION:
                 return (
                     <div className="space-y-4">
-                        <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-3 mb-4">
-                            <p className="text-blue-400 text-sm">
-                                💭 Mode refleksi. Jelaskan dengan lebih detail.
-                            </p>
-                        </div>
                         <Textarea
                             ref={inputRef}
                             value={input}
                             onChange={handleInputChange}
-                            placeholder="Jelaskan reasoning-mu secara lengkap..."
+                            placeholder="Jelaskan lebih detail..."
                             className={cn(
                                 "min-h-[200px] bg-zinc-950 text-white resize-none",
                                 styles.border
                             )}
                             maxLength={limits.max}
                         />
-                        <div className="flex justify-between text-xs text-zinc-500">
-                            <span>Min {limits.min} karakter</span>
+                        <div className="flex justify-end text-xs text-zinc-500">
                             <span className={charCount > limits.max * 0.9 ? 'text-orange-400' : ''}>
                                 {charCount}/{limits.max}
                             </span>
@@ -233,15 +225,14 @@ export default function ActionScreen({
                             ref={inputRef}
                             value={input}
                             onChange={handleInputChange}
-                            placeholder="Tulis keputusanmu di sini..."
+                            placeholder="Jawab di sini..."
                             className={cn(
-                                "min-h-[160px] bg-zinc-950 text-white resize-none",
+                                "min-h-[140px] bg-zinc-950 text-white resize-none",
                                 styles.border
                             )}
                             maxLength={limits.max}
                         />
-                        <div className="flex justify-between text-xs text-zinc-500">
-                            <span>Min {limits.min} karakter</span>
+                        <div className="flex justify-end text-xs text-zinc-500">
                             <span className={charCount > limits.max * 0.9 ? 'text-orange-400' : ''}>
                                 {charCount}/{limits.max}
                             </span>
