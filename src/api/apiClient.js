@@ -355,12 +355,55 @@ export const api = {
   },
 
   onboardingArena: {
+    initSession: async (domain, language, ageGroup, problemSnapshot = null) => {
+      const user = await auth.me();
+      const response = await apiClient.post('/onboarding-arena/init-session', {
+        user_id: user.email,
+        domain,
+        language,
+        age_group: ageGroup,
+        ...(problemSnapshot ? { problem_snapshot: problemSnapshot } : {})
+      });
+      return response.data;
+    },
+
     generateProblem: async (domain, language, ageGroup, useAI = false) => {
       const response = await apiClient.post('/onboarding-arena/generate-problem', {
         domain,
         language,
         age_group: ageGroup,
         use_ai: useAI
+      });
+      return response.data;
+    },
+
+    track: async (sessionId, keystrokeData = {}) => {
+      const response = await apiClient.post('/onboarding-arena/track', {
+        session_id: sessionId,
+        keystroke_data: keystrokeData
+      });
+      return response.data;
+    },
+
+    recordDecision: async (sessionId, decision, problemSnapshot = null) => {
+      const response = await apiClient.post('/onboarding-arena/record-decision', {
+        session_id: sessionId,
+        decision,
+        ...(problemSnapshot ? { problem_snapshot: problemSnapshot } : {})
+      });
+      return response.data;
+    },
+
+    getNextAction: async (sessionId, language) => {
+      const lang = language === 'en' ? 'en' : 'id';
+      const response = await apiClient.get(`/onboarding-arena/next-action/${sessionId}?lang=${lang}`);
+      return response.data;
+    },
+
+    respondToIntervention: async (sessionId, responseType) => {
+      const response = await apiClient.post('/onboarding-arena/intervention-response', {
+        session_id: sessionId,
+        response_type: responseType
       });
       return response.data;
     },

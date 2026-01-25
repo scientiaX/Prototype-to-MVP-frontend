@@ -195,6 +195,7 @@ export default function OnboardingArena({
     const [xpEarned, setXpEarned] = useState(0);
     const [decisions, setDecisions] = useState([]);
     const [decisionStartTime, setDecisionStartTime] = useState(null);
+    const [firstTapAt, setFirstTapAt] = useState(null);
     const [profile, setProfile] = useState(null);
     const [error, setError] = useState(null);
     const [canChangeChoice, setCanChangeChoice] = useState(true);
@@ -204,6 +205,12 @@ export default function OnboardingArena({
     const [roundIndex, setRoundIndex] = useState(0);
     const totalRoundsRef = useRef(8);
     const [totalRounds, setTotalRounds] = useState(8);
+    const onboardingSessionIdRef = useRef(null);
+    const [adaptiveTimeouts, setAdaptiveTimeouts] = useState(null);
+    const [nudgeMessage, setNudgeMessage] = useState('');
+    const [simplifyPrompt, setSimplifyPrompt] = useState(null);
+    const pollingRef = useRef(null);
+    const nudgeHideRef = useRef(null);
 
     // Load problem on mount
     useEffect(() => {
@@ -218,7 +225,10 @@ export default function OnboardingArena({
             setConsequence('');
             setInsight('');
             setDecisionStartTime(null);
+            setFirstTapAt(null);
             setChangeOfMindCount(0);
+            setNudgeMessage('');
+            setSimplifyPrompt(null);
 
             if (resetAll) {
                 const nextTotal = 6 + Math.floor(Math.random() * 4);
@@ -229,6 +239,8 @@ export default function OnboardingArena({
                 setProfile(null);
                 setXpEarned(0);
                 setRoundIndex(0);
+                onboardingSessionIdRef.current = null;
+                setAdaptiveTimeouts(null);
             }
 
             const lang = pickLanguage(language);
@@ -289,6 +301,24 @@ export default function OnboardingArena({
                 });
             }
 
+            if (resetAll || !onboardingSessionIdRef.current) {
+                try {
+                    const init = await apiClient.api.onboardingArena.initSession(domain, language, ageGroup, {
+                        problem_id: generated.problem.id,
+                        title: generated.problem.title,
+                        context: generated.problem.context,
+                        objective: generated.problem.objective,
+                        difficulty: 3,
+                        role_label: generated.problem.role
+                    });
+                    onboardingSessionIdRef.current = init?.session_id || null;
+                    setAdaptiveTimeouts(init?.timeouts || null);
+                } catch (e) {
+                    onboardingSessionIdRef.current = null;
+                    setAdaptiveTimeouts(null);
+                }
+            }
+
             setProblem(generated.problem);
             setChoices(generated.choices);
             setStep('situation');
@@ -301,10 +331,22 @@ export default function OnboardingArena({
         }
     };
 
+    const markActive = useCallback(async (eventType) => {
+        const sessionId = onboardingSessionIdRef.current;
+        if (!sessionId) return;
+        try {
+            await apiClient.api.onboardingArena.track(sessionId, { event_type: eventType, timestamp: Date.now() });
+            await apiClient.api.onboardingArena.respondToIntervention(sessionId, 'active');
+        } catch (e) {
+        }
+    }, []);
+
     const advanceToChoice = useCallback(() => {
         setStep('choice');
         setDecisionStartTime(Date.now());
-    }, []);
+        setFirstTapAt(null);
+        markActive('enter_choice');
+    }, [markActive]);
 
     const shouldShowInsightThisRound = useCallback(() => {
         const isLastRound = roundIndex + 1 >= totalRoundsRef.current;
@@ -314,28 +356,48 @@ export default function OnboardingArena({
         return decisionsCount % 3 === 0;
     }, [roundIndex]);
 
-    const commitChoice = useCallback(async (choice) => {
+    const commitChoice = useCallback(async (choice, opts = {}) => {
         try {
             if (!choice) return;
             if (!problem) return;
 
             const now = Date.now();
-            const timeToDecide = decisionStartTime ? (Date.now() - decisionStartTime) : 0;
+            const timeToDecide = decisionStartTime ? (now - decisionStartTime) : 0;
+            const timeToFirstTap = (decisionStartTime && firstTapAt)
+                ? Math.max(0, firstTapAt - decisionStartTime)
+                : timeToDecide;
 
             const decision = {
                 problem_id: problem.id,
                 choice_id: choice.id,
                 archetype_signal: choice.archetype_signal,
-                time_to_first_tap: timeToDecide,
+                time_to_first_tap: timeToFirstTap,
                 time_to_lock: timeToDecide,
                 time_to_decide: timeToDecide,
                 change_of_mind_count: changeOfMindCount,
+                forced: !!opts.forced,
                 decided_at: now
             };
 
             const nextDecisions = [...decisionsRef.current, decision];
             decisionsRef.current = nextDecisions;
             setDecisions(nextDecisions);
+
+            const sessionId = onboardingSessionIdRef.current;
+            if (sessionId) {
+                try {
+                    const recorded = await apiClient.api.onboardingArena.recordDecision(sessionId, decision, {
+                        problem_id: problem.id,
+                        title: problem.title,
+                        context: problem.context,
+                        objective: problem.objective,
+                        difficulty: 3,
+                        role_label: problem.role
+                    });
+                    if (recorded?.timeouts) setAdaptiveTimeouts(recorded.timeouts);
+                } catch (e) {
+                }
+            }
 
             const feedback = generateFeedback({
                 language,
@@ -353,9 +415,11 @@ export default function OnboardingArena({
                 : 'Pilihanmu sudah dicatat.');
             setStep('consequence');
         }
-    }, [problem, decisionStartTime, language, changeOfMindCount]);
+    }, [problem, decisionStartTime, firstTapAt, language, changeOfMindCount]);
 
     const handleChoiceSelect = (choice) => {
+        if (!firstTapAt) setFirstTapAt(Date.now());
+        markActive('tap_choice');
         setSelectedChoice(choice);
         if (roundIndex === 0) {
             setStep('lock');
@@ -365,6 +429,7 @@ export default function OnboardingArena({
     };
 
     const handleLockChoice = async () => {
+        markActive('lock_choice');
         await commitChoice(selectedChoice);
     };
 
@@ -433,6 +498,62 @@ export default function OnboardingArena({
 
     // Translation helper
     const t = (id, en) => language === 'en' ? en : id;
+
+    useEffect(() => {
+        if (pollingRef.current) {
+            clearInterval(pollingRef.current);
+            pollingRef.current = null;
+        }
+        if (nudgeHideRef.current) {
+            clearTimeout(nudgeHideRef.current);
+            nudgeHideRef.current = null;
+        }
+
+        if (step !== 'choice') {
+            setNudgeMessage('');
+            setSimplifyPrompt(null);
+            return;
+        }
+
+        const sessionId = onboardingSessionIdRef.current;
+        if (!sessionId) return;
+
+        pollingRef.current = setInterval(async () => {
+            try {
+                const action = await apiClient.api.onboardingArena.getNextAction(sessionId, language);
+                if (!action || action.action === 'none') return;
+
+                if (action.action === 'show_nudge') {
+                    setNudgeMessage(action.message || '');
+                    if (nudgeHideRef.current) clearTimeout(nudgeHideRef.current);
+                    nudgeHideRef.current = setTimeout(() => setNudgeMessage(''), 4000);
+                    return;
+                }
+
+                if (action.action === 'offer_simplify') {
+                    setSimplifyPrompt(action);
+                    return;
+                }
+
+                if (action.action === 'force_pick') {
+                    const recommended = action.recommended_archetype;
+                    const pick = (choices || []).find(c => c?.archetype_signal === recommended) || (choices || [])[0];
+                    if (!pick) return;
+                    setFirstTapAt(Date.now());
+                    await apiClient.api.onboardingArena.respondToIntervention(sessionId, 'timeout');
+                    await commitChoice(pick, { forced: true });
+                }
+            } catch (e) {
+            }
+        }, 2500);
+
+        return () => {
+            if (pollingRef.current) {
+                clearInterval(pollingRef.current);
+                pollingRef.current = null;
+            }
+        };
+    }, [step, language, choices, commitChoice]);
 
     return (
         <div className="w-full max-w-2xl mx-auto relative z-10">
@@ -532,9 +653,9 @@ export default function OnboardingArena({
                             <div className="h-1 bg-zinc-800 rounded-full overflow-hidden">
                                 <motion.div
                                     className="h-full bg-gradient-to-r from-orange-500 to-red-500"
-                                    initial={{ width: 0 }}
-                                    animate={{ width: '100%' }}
-                                    transition={{ duration: 2.5 }}
+                                    initial={false}
+                                    animate={{ width: `${Math.round(((roundIndex + 1) / Math.max(1, totalRounds)) * 100)}%` }}
+                                    transition={{ type: 'spring', stiffness: 120, damping: 22 }}
                                 />
                             </div>
                         </div>
@@ -550,6 +671,17 @@ export default function OnboardingArena({
                         exit={{ opacity: 0, y: -30 }}
                         className="space-y-6"
                     >
+                        {nudgeMessage && (
+                            <motion.div
+                                initial={{ opacity: 0, y: -8 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -8 }}
+                                className="mx-auto max-w-md px-4 py-3 bg-zinc-900/80 border border-orange-500/30 text-zinc-200 rounded-xl text-sm text-center"
+                            >
+                                {nudgeMessage}
+                            </motion.div>
+                        )}
+
                         <div className="text-center">
                             <h2 className="text-2xl font-bold text-white mb-2">
                                 {t('Pilih cepat.', 'Pick fast.')}
@@ -581,6 +713,68 @@ export default function OnboardingArena({
                                 </motion.button>
                             ))}
                         </div>
+
+                        {simplifyPrompt && (
+                            <motion.div
+                                key="simplify_prompt"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-6"
+                                onClick={() => {}}
+                            >
+                                <div className="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
+                                    <p className="text-white font-semibold mb-2">
+                                        {simplifyPrompt.message || t('Mau versi ringkas?', 'Want a shorter version?')}
+                                    </p>
+                                    <p className="text-zinc-400 text-sm mb-6">
+                                        {t('Kamu tetap pilih 1 opsi. Ini cuma biar cepat kebaca.', 'You still pick 1 option. This just makes it faster to read.')}
+                                    </p>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <button
+                                            type="button"
+                                            onClick={async () => {
+                                                setSimplifyPrompt(null);
+                                                await markActive('simplify');
+                                                const sessionId = onboardingSessionIdRef.current;
+                                                if (sessionId) {
+                                                    try {
+                                                        await apiClient.api.onboardingArena.respondToIntervention(sessionId, 'simplify');
+                                                    } catch (e) {
+                                                    }
+                                                }
+                                                setProblem(prev => {
+                                                    if (!prev) return prev;
+                                                    const ctx = String(prev.context || '');
+                                                    const trimmed = ctx.length > 140 ? `${ctx.slice(0, 140).trim()}…` : ctx;
+                                                    return { ...prev, context: trimmed };
+                                                });
+                                            }}
+                                            className="px-4 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-xl"
+                                        >
+                                            {t('Ringkas', 'Shorten')}
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={async () => {
+                                                setSimplifyPrompt(null);
+                                                await markActive('continue');
+                                                const sessionId = onboardingSessionIdRef.current;
+                                                if (sessionId) {
+                                                    try {
+                                                        await apiClient.api.onboardingArena.respondToIntervention(sessionId, 'continue');
+                                                    } catch (e) {
+                                                    }
+                                                }
+                                            }}
+                                            className="px-4 py-3 bg-zinc-900/60 border border-zinc-800 text-zinc-200 font-semibold rounded-xl hover:border-zinc-700 transition-colors"
+                                        >
+                                            {t('Lanjut pilih', 'Keep it')}
+                                        </button>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        )}
                     </motion.div>
                 )}
 
@@ -801,9 +995,9 @@ export default function OnboardingArena({
                             <div className="h-1 bg-zinc-800 rounded-full overflow-hidden">
                                 <motion.div
                                     className="h-full bg-gradient-to-r from-orange-500 to-red-500"
-                                    initial={{ width: 0 }}
+                                    initial={false}
                                     animate={{ width: '100%' }}
-                                    transition={{ duration: 1, delay: 0.5 }}
+                                    transition={{ type: 'spring', stiffness: 120, damping: 22 }}
                                 />
                             </div>
                         </motion.div>
