@@ -24,12 +24,19 @@ export const SCREENS = {
 
 /**
  * Interaction Types from arena_engine_specification
+ * Extended with game-like low-friction types
  */
 export const INTERACTION_TYPES = {
-    TEXT_COMMIT: 'text_commit',       // 300-500 chars decision
-    PATCH: 'patch',                   // Edit existing decision
-    OPTION_SELECT: 'option_select',   // Choose 1 of 2-3 options
+    // Quick actions (no keyboard)
+    QUICK_CHOICE: 'quick_choice',     // 2-3 emoji/icon buttons - instant tap
+    SPECTRUM: 'spectrum',             // Slider left/right for tendency
+    CHIP_SELECT: 'chip_select',       // Preset word chips to tap
+
+    // Standard interactions
+    TEXT_COMMIT: 'text_commit',       // Short text decision
+    OPTION_SELECT: 'option_select',   // Choose 1 of 2-3 text options
     TASK_EXECUTE: 'task_execute',     // Do an action
+    PATCH: 'patch',                   // Edit existing decision
     EXTENDED_REFLECTION: 'extended'   // Conditional long text
 };
 

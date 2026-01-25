@@ -217,6 +217,152 @@ export default function ActionScreen({
                     </div>
                 );
 
+            // ==========================================
+            // GAME-LIKE LOW-FRICTION INTERACTIONS
+            // ==========================================
+
+            case INTERACTION_TYPES.QUICK_CHOICE:
+                // Quick emoji/icon buttons - instant tap, no typing
+                const quickOptions = options.length > 0 ? options : [
+                    { emoji: '👍', label: 'Setuju' },
+                    { emoji: '🤔', label: 'Ragu' },
+                    { emoji: '👎', label: 'Tidak' }
+                ];
+                return (
+                    <div className="flex justify-center gap-6 py-8">
+                        {quickOptions.map((opt, i) => (
+                            <motion.button
+                                key={i}
+                                onClick={() => {
+                                    setSelectedOption(i);
+                                    onActivity?.();
+                                    // Auto-submit on tap for quick choice
+                                    setTimeout(() => {
+                                        onSubmit({ type: interactionType, choice: opt.label || opt.emoji, index: i });
+                                    }, 300);
+                                }}
+                                className={cn(
+                                    "flex flex-col items-center gap-2 p-6 rounded-2xl border-2 transition-all",
+                                    selectedOption === i
+                                        ? "border-orange-500 bg-orange-500/20 scale-110"
+                                        : "border-zinc-700 hover:border-zinc-500 hover:bg-zinc-800/50"
+                                )}
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                            >
+                                <span className="text-4xl">{opt.emoji}</span>
+                                <span className="text-xs text-zinc-400">{opt.label}</span>
+                            </motion.button>
+                        ))}
+                    </div>
+                );
+
+            case INTERACTION_TYPES.SPECTRUM:
+                // Slider for tendency - swipe-like experience
+                const [spectrumValue, setSpectrumValue] = useState(50);
+                const spectrumLabels = options.length >= 2
+                    ? { left: options[0], right: options[1] }
+                    : { left: 'Tidak yakin', right: 'Sangat yakin' };
+                return (
+                    <div className="py-8 px-4">
+                        <div className="flex justify-between text-sm text-zinc-400 mb-4">
+                            <span>{spectrumLabels.left}</span>
+                            <span>{spectrumLabels.right}</span>
+                        </div>
+                        <input
+                            type="range"
+                            min="0"
+                            max="100"
+                            value={spectrumValue}
+                            onChange={(e) => {
+                                setSpectrumValue(parseInt(e.target.value));
+                                onActivity?.();
+                            }}
+                            className="w-full h-3 bg-zinc-800 rounded-full appearance-none cursor-pointer accent-orange-500"
+                        />
+                        <div className="text-center mt-4">
+                            <span className={cn(
+                                "text-2xl font-bold",
+                                spectrumValue < 30 ? "text-red-400" :
+                                    spectrumValue > 70 ? "text-green-400" : "text-orange-400"
+                            )}>
+                                {spectrumValue}%
+                            </span>
+                        </div>
+                        <div className="flex justify-center mt-6">
+                            <Button
+                                onClick={() => onSubmit({ type: interactionType, value: spectrumValue })}
+                                className={`${styles.button} px-8`}
+                            >
+                                Konfirmasi
+                            </Button>
+                        </div>
+                    </div>
+                );
+
+            case INTERACTION_TYPES.CHIP_SELECT:
+                // Tappable word chips - no typing needed
+                const chips = options.length > 0 ? options : [
+                    'Prioritas utama',
+                    'Bisa ditunda',
+                    'Risiko tinggi',
+                    'Butuh data lagi',
+                    'Siap eksekusi'
+                ];
+                const [selectedChips, setSelectedChips] = useState([]);
+                return (
+                    <div className="py-6">
+                        <p className="text-zinc-500 text-sm mb-4 text-center">Pilih yang sesuai (bisa lebih dari 1)</p>
+                        <div className="flex flex-wrap justify-center gap-3">
+                            {chips.map((chip, i) => {
+                                const chipText = typeof chip === 'string' ? chip : chip.text;
+                                const isSelected = selectedChips.includes(i);
+                                return (
+                                    <motion.button
+                                        key={i}
+                                        onClick={() => {
+                                            if (isSelected) {
+                                                setSelectedChips(prev => prev.filter(x => x !== i));
+                                            } else {
+                                                setSelectedChips(prev => [...prev, i]);
+                                            }
+                                            onActivity?.();
+                                        }}
+                                        className={cn(
+                                            "px-4 py-2 rounded-full border text-sm transition-all",
+                                            isSelected
+                                                ? "border-orange-500 bg-orange-500/20 text-orange-300"
+                                                : "border-zinc-700 text-zinc-400 hover:border-zinc-500"
+                                        )}
+                                        whileTap={{ scale: 0.95 }}
+                                    >
+                                        {chipText}
+                                    </motion.button>
+                                );
+                            })}
+                        </div>
+                        {selectedChips.length > 0 && (
+                            <motion.div
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                className="flex justify-center mt-6"
+                            >
+                                <Button
+                                    onClick={() => {
+                                        const selected = selectedChips.map(i =>
+                                            typeof chips[i] === 'string' ? chips[i] : chips[i].text
+                                        );
+                                        onSubmit({ type: interactionType, chips: selected });
+                                    }}
+                                    className={`${styles.button} px-8`}
+                                >
+                                    Lanjut
+                                </Button>
+                            </motion.div>
+                        )}
+                    </div>
+                );
+
             // Default: TEXT_COMMIT
             default:
                 return (
