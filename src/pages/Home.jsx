@@ -21,7 +21,6 @@ import {
 export default function Home() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [hasProfile, setHasProfile] = useState(false);
-  const [language, setLanguage] = useState('en'); // Default English until onboarding
   const navigate = useNavigate();
 
   // Typewriter effect state
@@ -92,10 +91,6 @@ export default function Home() {
       const profiles = await apiClient.entities.UserProfile.filter({ created_by: user.email });
       const userProfile = profiles[0];
       setHasProfile(userProfile?.calibration_completed || false);
-      // Set language from profile if exists, otherwise keep English
-      if (userProfile?.language) {
-        setLanguage(userProfile.language);
-      }
     }
   };
 
@@ -109,57 +104,30 @@ export default function Home() {
     }
   };
 
-  // Content based on language
-  const content = {
-    en: {
-      badge: 'Novax Trial',
-      headline1: 'NovaX',
-      headline2: 'Arena',
-      description: 'Real-world experiential learning',
-      descriptionHighlight: 'in your hands.',
-      ctaCalibrate: 'Start Calibration',
-      ctaArena: 'Enter Arena',
-      notLoggedIn: 'more fun than watching, more effective than reading',
-      calibrationTime: '5-7 min calibration',
-      readyBattle: 'Ready to battle',
-      liveStats: 'Live Stats',
-      realTimeActivity: 'Real-time arena activity',
-      quote: 'No comfort zone. Only growth zone.',
-      sectionTitle: 'Confrontation-Based System',
-      sectionSubtitle: 'Backed by science. Every element designed for growth through pressure.',
-      warning: 'This is not a platform to feel comfortable. If you are looking for validation, this is not the place.',
-      features: [
-        { title: 'Adaptive Matching', description: 'AI matches problems to your archetype and capability level' },
-        { title: 'XP = Difficulty', description: 'Progress based on growth in challenges and real capabilities, not grinding' },
-        { title: 'Scar Badges', description: 'Badges prove you fought and grew, not just participated' }
-      ]
-    },
-    id: {
-      badge: 'Novax Trial',
-      headline1: 'NovaX',
-      headline2: 'Arena',
-      description: 'Belajar yang sebenarnya terjadi lewat konfrontasi masalah nyata.',
-      descriptionHighlight: 'Bukan materi. Bukan teori. Bukan validasi.',
-      ctaCalibrate: 'Mulai Kalibrasi',
-      ctaArena: 'Masuk Arena',
-      notLoggedIn: 'Login dulu',
-      calibrationTime: '5-7 menit kalibrasi',
-      readyBattle: 'Ready to battle',
-      liveStats: 'Live Stats',
-      realTimeActivity: 'Real-time arena activity',
-      quote: 'No comfort zone. Only growth zone.',
-      sectionTitle: 'Confrontation Based System',
-      sectionSubtitle: 'Backed by science. Setiap elemen dirancang untuk growth melalui pressure.',
-      warning: 'Dibangun oleh pelajar untuk pelajar. Berkompetisi dengan sehat dan disrupsi dunia.',
-      features: [
-        { title: 'Adaptive Matching', description: 'AI mencocokkan masalah dengan archetype dan level-capability mu' },
-        { title: 'XP = Difficulty', description: 'Progression berbasis challenge dan growth capability nyata, bukan grinding' },
-        { title: 'Scar Badges', description: 'Badge adalah bukti kamu bertarung dan berkembang, bukan partisipasi' }
-      ]
-    }
+  // English-only content
+  const t = {
+    badge: 'Novax Trial',
+    headline1: 'NovaX',
+    headline2: 'Arena',
+    description: 'Real-world experiential learning',
+    descriptionHighlight: 'in your hands.',
+    ctaCalibrate: 'Start Calibration',
+    ctaArena: 'Enter Arena',
+    notLoggedIn: 'more fun than watching, more effective than reading',
+    calibrationTime: '5-7 min calibration',
+    readyBattle: 'Ready to battle',
+    liveStats: 'Live Stats',
+    realTimeActivity: 'Real-time arena activity',
+    quote: 'No comfort zone. Only growth zone.',
+    sectionTitle: 'Confrontation-Based System',
+    sectionSubtitle: 'Backed by science. Every element designed for growth through pressure.',
+    warning: 'This is not a platform to feel comfortable. If you are looking for validation, this is not the place.',
+    features: [
+      { title: 'Adaptive Matching', description: 'AI matches problems to your archetype and capability level' },
+      { title: 'XP = Difficulty', description: 'Progress based on growth in challenges and real capabilities, not grinding' },
+      { title: 'Scar Badges', description: 'Badges prove you fought and grew, not just participated' }
+    ]
   };
-
-  const t = content[language] || content.en;
 
   const features = [
     {
