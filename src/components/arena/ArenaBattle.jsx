@@ -259,6 +259,20 @@ export default function ArenaBattle({ problem, session, onSubmit, onAbandon, pro
             screenManager.setVisualState(data.suggested_visual_state);
           }
 
+          // Show social comparison toast (event-based, ~30% from backend)
+          if (data.social_comparison?.text) {
+            setTimeout(() => {
+              showToast('social_comparison', data.social_comparison.text, 4000);
+            }, 500);
+          }
+
+          // Show micro feedback toast (event-based, ~40% from backend)
+          if (data.micro_feedback?.text) {
+            setTimeout(() => {
+              showToast('micro_feedback', data.micro_feedback.text, 2000);
+            }, 1000);
+          }
+
           screenManager.goToScreen(SCREENS.ACTION);
         }, 3000);
 
