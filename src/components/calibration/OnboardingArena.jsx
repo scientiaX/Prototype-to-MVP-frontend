@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Loader2, Zap, ArrowRight, ChevronLeft, Sparkles } from 'lucide-react';
 import apiClient from '@/api/apiClient';
@@ -22,7 +22,7 @@ export default function OnboardingArena({
     onComplete,
     onBack
 }) {
-    // Steps: loading -> problem -> decision -> consequence -> insight -> complete
+    // Steps: loading -> situation -> choice -> lock -> consequence -> insight -> complete
     const [step, setStep] = useState('loading');
     const [problem, setProblem] = useState(null);
     const [choices, setChoices] = useState([]);
@@ -34,6 +34,9 @@ export default function OnboardingArena({
     const [decisionStartTime, setDecisionStartTime] = useState(null);
     const [profile, setProfile] = useState(null);
     const [error, setError] = useState(null);
+    const [canChangeChoice, setCanChangeChoice] = useState(true);
+    const autoAdvanceRef = useRef(null);
+    const decisionsRef = useRef([]);
 
     // Load problem on mount
     useEffect(() => {
@@ -44,6 +47,13 @@ export default function OnboardingArena({
         try {
             setStep('loading');
             setError(null);
+            setSelectedChoice(null);
+            setConsequence('');
+            setInsight('');
+            setDecisions([]);
+            decisionsRef.current = [];
+            setDecisionStartTime(null);
+            setCanChangeChoice(true);
 
             const result = await apiClient.api.onboardingArena.generateProblem(
                 domain,
@@ -54,10 +64,7 @@ export default function OnboardingArena({
 
             setProblem(result.problem);
             setChoices(result.choices);
-            setStep('problem');
-
-            // Start timing for decision
-            setDecisionStartTime(Date.now());
+            setStep('situation');
         } catch (err) {
             console.error('Failed to load problem:', err);
             setError(language === 'en'
@@ -67,9 +74,47 @@ export default function OnboardingArena({
         }
     };
 
-    const handleChoiceSelect = async (choice) => {
+    const clearAutoAdvance = useCallback(() => {
+        if (autoAdvanceRef.current) {
+            clearTimeout(autoAdvanceRef.current);
+            autoAdvanceRef.current = null;
+        }
+    }, []);
+
+    const advanceToChoice = useCallback(() => {
+        clearAutoAdvance();
+        setStep('choice');
+        setDecisionStartTime(Date.now());
+    }, [clearAutoAdvance]);
+
+    useEffect(() => {
+        clearAutoAdvance();
+        if (step === 'situation') {
+            autoAdvanceRef.current = setTimeout(() => {
+                advanceToChoice();
+            }, 2500);
+        }
+        if (step === 'consequence') {
+            autoAdvanceRef.current = setTimeout(() => {
+                setStep('insight');
+            }, 1200);
+        }
+        if (step === 'insight') {
+            autoAdvanceRef.current = setTimeout(() => {
+                handleComplete();
+            }, 1200);
+        }
+        return () => clearAutoAdvance();
+    }, [step, clearAutoAdvance, advanceToChoice]);
+
+    const handleChoiceSelect = (choice) => {
+        setSelectedChoice(choice);
+        setStep('lock');
+    };
+
+    const handleLockChoice = async () => {
         try {
-            setSelectedChoice(choice);
+            if (!selectedChoice) return;
 
             // Calculate time to decide
             const timeToDecide = Date.now() - decisionStartTime;
@@ -77,29 +122,27 @@ export default function OnboardingArena({
             // Record decision
             const decision = {
                 problem_id: problem.id,
-                choice_id: choice.id,
-                archetype_signal: choice.archetype_signal,
+                choice_id: selectedChoice.id,
+                archetype_signal: selectedChoice.archetype_signal,
                 time_to_decide: timeToDecide
             };
 
-            setDecisions(prev => [...prev, decision]);
+            setDecisions(prev => {
+                const next = [...prev, decision];
+                decisionsRef.current = next;
+                return next;
+            });
 
             // Get consequence
             const result = await apiClient.api.onboardingArena.getConsequence(
-                choice.id,
-                choice.archetype_signal,
+                selectedChoice.id,
+                selectedChoice.archetype_signal,
                 language
             );
 
             setConsequence(result.consequence);
             setInsight(result.insight);
             setStep('consequence');
-
-            // After brief pause, show insight
-            setTimeout(() => {
-                setStep('insight');
-            }, 2000);
-
         } catch (err) {
             console.error('Failed to get consequence:', err);
             // Continue anyway with fallback
@@ -107,9 +150,6 @@ export default function OnboardingArena({
                 ? 'Your choice has been noted.'
                 : 'Pilihanmu sudah dicatat.');
             setStep('consequence');
-            setTimeout(() => {
-                setStep('insight');
-            }, 2000);
         }
     };
 
@@ -122,7 +162,7 @@ export default function OnboardingArena({
                 domain,
                 language,
                 ageGroup,
-                decisions
+                decisionsRef.current
             );
 
             setProfile(result.profile);
@@ -184,10 +224,10 @@ export default function OnboardingArena({
                     </motion.div>
                 )}
 
-                {/* PROBLEM */}
-                {step === 'problem' && problem && (
+                {/* SITUATION */}
+                {step === 'situation' && problem && (
                     <motion.div
-                        key="problem"
+                        key="situation"
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -30 }}
@@ -202,8 +242,12 @@ export default function OnboardingArena({
                             {t('Kembali', 'Back')}
                         </button>
 
-                        {/* Problem card */}
-                        <div className="bg-zinc-900/80 border border-zinc-800 rounded-2xl p-6">
+                        <button
+                            type="button"
+                            onClick={advanceToChoice}
+                            className="w-full text-left"
+                        >
+                            <div className="bg-zinc-900/80 border border-zinc-800 rounded-2xl p-6">
                             {/* Role badge */}
                             <div className="flex items-center gap-2 mb-4">
                                 <span className="px-3 py-1 bg-orange-500/20 text-orange-400 rounded-full text-sm font-medium">
@@ -211,7 +255,7 @@ export default function OnboardingArena({
                                 </span>
                                 <span className="text-zinc-500 text-sm">•</span>
                                 <span className="text-zinc-500 text-sm">
-                                    {t('Arena Onboarding', 'Onboarding Arena')}
+                                    {t('Arena Pembukaan', 'Opening Arena')}
                                 </span>
                             </div>
 
@@ -231,16 +275,47 @@ export default function OnboardingArena({
                                     {problem.objective}
                                 </p>
                             </div>
+                            </div>
+                        </button>
+
+                        <div className="max-w-xs mx-auto">
+                            <div className="h-1 bg-zinc-800 rounded-full overflow-hidden">
+                                <motion.div
+                                    className="h-full bg-gradient-to-r from-orange-500 to-red-500"
+                                    initial={{ width: 0 }}
+                                    animate={{ width: '100%' }}
+                                    transition={{ duration: 2.5 }}
+                                />
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
+
+                {/* CHOICE */}
+                {step === 'choice' && problem && (
+                    <motion.div
+                        key="choice"
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -30 }}
+                        className="space-y-6"
+                    >
+                        <div className="text-center">
+                            <h2 className="text-2xl font-bold text-white mb-2">
+                                {t('Pilih cepat.', 'Pick fast.')}
+                            </h2>
+                            <p className="text-zinc-500">
+                                {t('Tidak ada yang sempurna. Yang penting: commit.', 'No perfect choice. Just commit.')}
+                            </p>
                         </div>
 
-                        {/* Choices */}
                         <div className="space-y-3">
                             {choices.map((choice, idx) => (
                                 <motion.button
                                     key={choice.id}
                                     initial={{ opacity: 0, x: -20 }}
                                     animate={{ opacity: 1, x: 0 }}
-                                    transition={{ delay: idx * 0.1 }}
+                                    transition={{ delay: idx * 0.07 }}
                                     whileHover={{ scale: 1.02, x: 8 }}
                                     whileTap={{ scale: 0.98 }}
                                     onClick={() => handleChoiceSelect(choice)}
@@ -255,6 +330,57 @@ export default function OnboardingArena({
                                     <ArrowRight className="w-5 h-5 text-zinc-600 group-hover:text-orange-400 transition-colors" />
                                 </motion.button>
                             ))}
+                        </div>
+                    </motion.div>
+                )}
+
+                {/* LOCK */}
+                {step === 'lock' && selectedChoice && (
+                    <motion.div
+                        key="lock"
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -30 }}
+                        className="space-y-6"
+                    >
+                        <div className="text-center">
+                            <h2 className="text-2xl font-bold text-white mb-2">
+                                {t('Kunci pilihan.', 'Lock it in.')}
+                            </h2>
+                            <p className="text-zinc-500">
+                                {t('Sekali kunci, lanjut.', 'Once locked, we move.')}
+                            </p>
+                        </div>
+
+                        <div className="bg-zinc-900/80 border border-zinc-800 rounded-2xl p-6 flex items-center gap-4">
+                            <div className="text-4xl">{selectedChoice.icon}</div>
+                            <div className="flex-1">
+                                <p className="text-white font-semibold">{selectedChoice.text}</p>
+                            </div>
+                        </div>
+
+                        <div className="space-y-3">
+                            <motion.button
+                                whileHover={{ scale: 1.03 }}
+                                whileTap={{ scale: 0.98 }}
+                                onClick={handleLockChoice}
+                                className="w-full px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-xl shadow-lg shadow-orange-500/30"
+                            >
+                                {t('KUNCI PILIHAN', 'LOCK CHOICE')}
+                            </motion.button>
+
+                            {canChangeChoice && (
+                                <button
+                                    onClick={() => {
+                                        setCanChangeChoice(false);
+                                        setSelectedChoice(null);
+                                        setStep('choice');
+                                    }}
+                                    className="w-full px-8 py-3 bg-zinc-900/60 border border-zinc-800 text-zinc-300 font-semibold rounded-xl hover:border-zinc-700 transition-colors"
+                                >
+                                    {t('Ubah sekali', 'Change once')}
+                                </button>
+                            )}
                         </div>
                     </motion.div>
                 )}
@@ -327,9 +453,9 @@ export default function OnboardingArena({
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.3 }}
-                            className="text-lg text-zinc-300 max-w-lg mx-auto mb-2 italic"
+                            className="text-lg text-zinc-300 max-w-lg mx-auto mb-2"
                         >
-                            "{insight}"
+                            {insight}
                         </motion.p>
 
                         <motion.p
@@ -350,7 +476,7 @@ export default function OnboardingArena({
                             onClick={handleComplete}
                             className="px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-xl shadow-lg shadow-orange-500/30"
                         >
-                            {t('Lanjutkan', 'Continue')}
+                            {t('Selesai', 'Finish')}
                         </motion.button>
                     </motion.div>
                 )}
@@ -401,12 +527,23 @@ export default function OnboardingArena({
                             className="mb-8"
                         >
                             <h2 className="text-2xl font-bold text-white mb-2">
-                                {t('Arena singkat selesai.', 'Short arena complete.')}
+                                {t('Arena pembukaan selesai.', 'Opening arena complete.')}
                             </h2>
                             <p className="text-zinc-400">
                                 {t('Arena 5 menit siap. Masuk kapan saja.', 'The 5-minute arena is ready. Enter anytime.')}
                             </p>
                         </motion.div>
+
+                        {profile?.total_arenas_completed !== undefined && profile?.total_arenas_completed !== null && (
+                            <motion.p
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.35 }}
+                                className="text-zinc-500 text-sm mb-8"
+                            >
+                                {t(`Total arena selesai: ${profile.total_arenas_completed}`, `Total arenas completed: ${profile.total_arenas_completed}`)}
+                            </motion.p>
+                        )}
 
                         {/* Progress bar (thin, neutral) */}
                         <motion.div

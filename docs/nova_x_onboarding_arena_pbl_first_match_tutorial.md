@@ -1,205 +1,275 @@
-# NovaX – Onboarding Arena PBL (First Match Tutorial)
+# NovaX – Onboarding Arena (Tutorial Instan, Anti‑Friksi)
 
-Dokumen ini adalah **spesifikasi eksekusi** untuk onboarding NovaX berbasis **arena PBL singkat (5 menit)**. Tujuannya: memberi *taste* NovaX di menit pertama, **sangat ringan**, **nagih**, dan **memberi insight kecil yang terasa relevan**, tanpa terasa seperti tes atau latihan.
+Dokumen ini adalah **spesifikasi eksekusi** untuk Onboarding Arena NovaX yang:
+- **Lebih low-friksi, lebih ringan, lebih instan** dibanding mode Quick 4–5 menit
+- Mendorong user **bertindak sebelum berpikir** (gaya Duolingo): tap dulu → lihat akibat → dapat “klik”
+- Mengambil sinyal **kalibrasi di belakang layar**
+- Memberi user **taste pertama** tentang Arena NovaX lewat “tutorial pembukaan” seperti di game
 
-Dokumen ini siap dilempar ke tim eksekusi (product/AI/UX). Bahasa non-teknis dijaga, **detail teknis ditambahkan seperlunya**.
+Onboarding ini **dihitung sebagai arena pertama yang user selesaikan** (Arena Pembukaan).
 
 ---
 
 ## Tujuan Utama
 
-1. User **langsung merasakan** cara belajar NovaX (experience > explanation)
-2. User merasa:
-   - “klik”
-   - “wah, ini beda”
-   - “ini ringan tapi kepake”
-3. Sistem mendapatkan **kalibrasi awal** (entry point, level, archetype) **tanpa kuesioner berat**
-
-> Onboarding ini adalah **first match tutorial**, bukan assessment.
+1. User langsung paham “cara mainnya” tanpa dijelaskan panjang
+2. User melakukan aksi pertama dalam ≤30 detik
+3. Sistem mendapatkan kalibrasi awal (prior), tanpa kuesioner dan tanpa terasa seperti tes
+4. Setelah selesai, user merasa “gue udah menyelesaikan 1 arena”
 
 ---
 
-## Prinsip Desain (Non-Negotiable)
+## Prinsip Desain (Non‑Negotiable)
 
-- **Tidak ada tes eksplisit**
-- **Tidak ada skor besar / label kemampuan**
-- **Tidak ada latihan formal**
-- **Tidak ada ceramah AI**
-- **Insight kecil boleh muncul, tapi terbatas & implisit**
+- **Act-first UX**: aksi dulu, refleksi belakangan
+- **Tap-based**: 90% input adalah tap/click, bukan mengetik
+- **1 layar = 1 aksi**: sekuensial, tidak ramai
+- **Auto-advance**: user tidak perlu menekan “Next” berulang
+- **Micro-win cepat**: ada momen “selesai” kecil di ≤30 detik
+- **No judgement**: tidak ada benar/salah, tidak ada label kemampuan
+- **Copy pendek**: kalimat pendek, konkret, dan langsung
+
+---
+
+## Durasi Target
+
+- Target total: **±90–120 detik**
+- Batas keras: **≤150 detik**
+- Tidak ada pemilihan durasi oleh user
+
+Jika Quick terasa “4–5 menit”, onboarding ini harus terasa seperti:
+> “Gue baru klik-klik dikit, tapi udah dapet gambaran.”
+
+---
+
+## Definisi Produk
+
+Onboarding Arena adalah:
+- Arena tutorial instan untuk membuka pengalaman Arena NovaX
+- Arena pertama yang “completed” di progres user
+- Mekanisme kalibrasi prior yang dipakai untuk menyetel pengalaman Arena selanjutnya
+
+Onboarding Arena bukan:
+- Tutorial teks panjang
+- Tes kemampuan
+- Kuesioner profil
+- Arena kompetitif (leaderboard)
 
 ---
 
 ## Alur Tingkat Tinggi
 
-1. Input minimum (umur + bidang)
-2. Masuk **Arena Onboarding** (bukan Arena Harian)
-3. PBL mikro berbasis bidang (AI-assisted, non-statis)
-4. Insight mikro + dopamine loop ringan
-5. Kalibrasi diam-diam → Level & Archetype awal
-6.- [ ] Bridge ke Arena 5 Menit (Quick) <!-- id: 4 -->
+1. Input minimum (umur + domain) — boleh “skip” dengan default
+2. Tutorial instan: 1–2 keputusan berbasis tap
+3. Konsekuensi mikro → insight mikro
+4. Reward netral → unlock Arena harian (Quick/Standard)
+5. Selesai: tercatat sebagai **Arena Pembukaan (Arena #1 Completed)**
 
-## Step 0 — Input Minimum (≤20 detik)
+---
 
-### Input yang dikumpulkan:
-- **Umur (range)**
-- **Bidang / domain kasar** (Tech / Business / Finance / dll)
+## Step 0 — Input Minimum (≤10–15 detik)
 
-### Catatan teknis:
-- Umur → difficulty ceiling awal
-- Bidang → memilih **problem pool**
+### Input yang dikumpulkan
+- Umur (range)
+- Domain kasar (Tech / Business / Finance / dll)
 
-### Framing UX:
+### Anti-friksi
+- Sediakan default terpilih (user bisa langsung lanjut tanpa memilih)
+- Hindari wording “isi data”; framing sebagai “biar tantangan nyambung”
+
+### Framing copy
 > “Supaya tantangan pertamamu nyambung.”
 
 ---
 
-## Step 1 — Masuk Arena Onboarding
+## Step 1 — Enter Tutorial (0–5 detik)
 
-### Karakteristik arena onboarding:
-- Mirip Arena 5 Menit (Quick)
-- **Lebih ringan** (1–2 keputusan)
-- Tidak masuk streak
-- Tidak masuk leaderboard
+### UX
+- 1 tombol utama: **Mulai Arena Pembukaan**
+- Tanpa pilihan mode, tanpa pilihan durasi
 
-### Teknis:
-- Arena type = `onboarding_arena`
-- Problem source = `curated_problem_pool[domain]`
+### Teknis
+- `arena_type = onboarding_arena_tutorial`
+- `problem_source = curated_problem_pool[domain]`
 
 ---
 
-## Step 2 — Problem Mikro (Domain-Based)
+## Step 2 — Situation Drop (5–20 detik)
 
-### Ciri masalah:
-- Tidak perlu pengetahuan spesifik
-- Bisa dipahami ≤20 detik
-- Relevan secara universal
-- Bukan problem statis (AI menyesuaikan wording & konteks)
+### Tujuan
+- User paham konteks tanpa diminta mikir panjang
 
-### Contoh (Business):
-> “Sebuah ide sederhana terlihat menarik, tapi waktumu terbatas. Minggu ini, langkah mana yang paling masuk akal?”
+### Format
+- 3–5 baris situasi konkret
+- 1 objective jelas
+- Tidak ada input
 
-Pilihan (3 opsi):
-- Validasi cepat ke target user
-- Bangun versi kecil
-- Cari partner dulu
-
-### Teknis:
-- Pilihan disimpan sebagai vector keputusan (risk, speed, info_gain)
+### Guardrail
+- Tidak boleh ada paragraf panjang
+- Tidak boleh ada istilah teori
 
 ---
 
-## Step 3 — Decision & Consequence Mikro
+## Step 3 — Forced Choice (20–35 detik)
 
-### Alur:
-1. User memilih
-2. Sistem merespons singkat (1–2 kalimat)
+### Format
+- 2–3 kartu pilihan (tap sekali)
+- Semua opsi terasa masuk akal
+- Tidak ada opsi “aman sempurna”
 
-### Contoh respon:
-> “Langkah ini cepat, tapi berisiko memberi sinyal yang belum cukup kuat.”
+### Copy gaya Duolingo (contoh)
+- Header: “Pilih cepat.”
+- Sub: “Tidak ada yang sempurna. Yang penting: commit.”
 
-### Teknis:
-- Tidak ada penilaian benar/salah
-- Consequence diambil dari `consequence_templates`
-
----
-
-## Step 4 — Decision Loop Kedua (Opsional)
-
-- Hanya jika waktu masih tersedia
-- Masalah lanjutan **lebih kecil**
-
-Tujuan:
-- Mendapat sinyal tambahan (consistency / adaptivity)
+### Teknis (sinyal)
+- Simpan `choice_id`
+- Simpan `time_to_first_tap`
 
 ---
 
-## Step 5 — Insight Mikro (Kombinasi Knowledge + Experience)
+## Step 4 — Lock (35–45 detik)
 
-Ini bagian krusial untuk efek “ohh…”
+### Tujuan
+- Micro-win: user merasa “udah melakukan sesuatu”
 
-### Prinsip insight:
-- Pendek (1–2 kalimat)
-- Tidak generik
-- Terkait langsung dengan aksi user
+### UX
+- Tombol besar: **KUNCI PILIHAN**
+- Setelah lock, auto-advance
 
-### Contoh insight:
-- “Banyak orang mengira X efektif, tapi sering lupa bahwa tanpa Y, hasilnya misleading.”
-- “Pilihanmu barusan sering dipakai saat orang ingin bergerak cepat tanpa komitmen besar.”
+### Anti-friksi
+- Boleh ganti pilihan sebelum lock (maks 1 kali) tanpa modal/alert
 
-### Teknis:
-- Insight di-generate dari `decision_pattern → insight_map`
+### Teknis (sinyal)
+- Simpan `time_to_lock`
+- Simpan `change_of_mind_count`
 
 ---
 
-## Step 6 — Dopamine Loop Ringan
+## Step 5 — Consequence Reveal (45–65 detik)
 
-### Elemen:
+### Format
+- 1–2 kalimat konsekuensi
+- Tidak menghakimi, tapi terasa “kena”
+
+### Contoh
+> “Langkah ini cepat, tapi kamu mengorbankan sinyal yang lebih kuat.”
+
+### Teknis
+- Consequence dari `consequence_templates`
+
+---
+
+## Step 6 — Optional Second Tap (65–85 detik)
+
+Hanya muncul jika sistem perlu 1 sinyal tambahan **dan** user masih dalam tempo cepat.
+
+### Format
+- 1 pertanyaan sangat pendek
+- 2 opsi (tap)
+- Auto-lock (tanpa step lock kedua)
+
+### Tujuan sinyal
+- Consistency
+- Ambiguity tolerance
+- Externalization vs internalization
+
+---
+
+## Step 7 — Insight Mikro (85–100 detik)
+
+### Prinsip insight
+- 1–2 kalimat
+- Spesifik ke pilihan user
+- Tidak generik, tidak teoritis
+- Tidak membeberkan “penilaian kemampuan”
+
+### Teknis
+- Insight dari `decision_pattern → insight_map`
+
+---
+
+## Step 8 — Reward & Unlock (100–120 detik)
+
+### Elemen
 - XP kecil (+)
-- Progress bar tipis bergerak
-- Teks netral:
-  > “Arena singkat selesai.”
+- Progress bar tipis
+- Copy netral:
+  > “Arena pembukaan selesai.”
 
-Tidak ada:
-- level up besar
-- badge
-- celebratory animation
-
----
-
-## Step 7 — Kalibrasi Diam-Diam (Backend)
-
-### Yang dikalibrasi:
-- Entry level masalah
-- Decision archetype awal
-- Risk tolerance
-- Speed vs depth bias
-
-### Teknis:
-- Archetype disimpan sebagai **prior**, bukan label final
-- Bisa berubah seiring sesi
+### Unlock
+- Tombol tunggal: **Masuk Arena**
+- Copy transisi:
+  > “Arena 5 menit siap. Masuk kapan saja.”
 
 ---
 
-## Step 8 — Bridge ke Arena Harian
+## Step 9 — Kalibrasi Diam‑Diam (Backend)
 
-### Copy transisi:
-> “Arena 5 menit siap. Masuk kapan saja.”
+### Yang dikalibrasi (prior, bukan label final)
+- Entry difficulty seed
+- Risk tolerance (proxy)
+- Speed vs depth bias (proxy)
+- Ambiguity tolerance (proxy)
+- Externalization vs internalization (proxy)
+- Consistency (jika ada second tap)
 
-### UX:
-- Satu tombol
-- Tidak ada dorongan emosional
+### Minimal data yang disimpan
+- `domain`, `age_group`, `language`
+- `arena_type = onboarding_arena_tutorial`
+- `choice_id_1`, `choice_id_2?`
+- `time_to_first_tap`, `time_to_lock`, `change_of_mind_count`
+- `decision_signal_vector`
+- `completed_at`
+
+---
+
+## Perhitungan “Arena Pertama” (Arena Pembukaan)
+
+Onboarding Arena ini harus:
+- Muncul di histori sebagai **1 arena completed**
+- Mengisi metrik “Arena Completed Count” sebagai arena pembukaan
+
+Flag yang disarankan untuk konsistensi data:
+- `is_tutorial = true`
+- `counts_as_completion = true`
+- `counts_as_first_completion = true`
+- `exclude_from_leaderboard = true`
+- `exclude_from_streak = true` (opsi aman)
+
+Agar tidak merusak metrik kompetitif:
+- Tidak masuk leaderboard
+- Streak harian: opsi aman adalah **tidak dihitung** (atau dihitung hanya sebagai “hari pertama” satu kali, tergantung kebijakan produk)
 
 ---
 
 ## Hal yang Sengaja TIDAK Ada
 
 - Penjelasan teori
-- Label kepribadian
+- Label kepribadian / label kemampuan
 - Summary panjang
 - Motivational quotes
 - Paksaan lanjut
+- Form panjang atau input teks panjang
 
 ---
 
 ## Efek yang Diharapkan
 
 User berpikir:
-- “Tadi yang gue lakuin itu ternyata X ya…”
-- “Pantes aja sebelumnya gue salah…”
-- “Oh, ternyata kalau ada Y, X jadi misleading…”
-
-Ini **tercerahkan sedikit**, bukan terceramahi.
+- “Oh, ini cara mainnya.”
+- “Ternyata setiap pilihan ada trade-off.”
+- “Kok cepet, tapi kena.”
 
 ---
 
-## Perbedaan dengan Arena 10 Menit
+## Perbandingan dengan Arena Harian (Quick)
 
-| Arena Onboarding | Arena Harian (Quick) |
-|-----------------|--------------|
-| 5 menit | 4–5 menit |
-| 1–2 keputusan | 1–4 keputusan |
-| Demo rasa | Ritual harian |
-| Kalibrasi awal | Progress nyata |
+| Arena Onboarding (Tutorial Instan) | Arena Harian (Quick) |
+|---|---|
+| 90–120 detik | 4–5 menit |
+| 1–2 keputusan tap | 1–4 keputusan |
+| Arena pembukaan (tutorial) | Ritual harian |
+| Kalibrasi prior | Progress nyata |
 
 ---
 
@@ -207,4 +277,3 @@ Ini **tercerahkan sedikit**, bukan terceramahi.
 
 > **Onboarding NovaX bukan menjelaskan sistem.
 Ia membuat user berkata: “oh, ini caranya.”**
-
