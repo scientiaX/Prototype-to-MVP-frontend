@@ -10,6 +10,21 @@
 
 /* CSS Custom Properties */
 :root {
+  --paper: #f6f2e8;
+  --paper-2: #efe9dd;
+  --ink: #0b0b0c;
+  --ink-2: rgba(11, 11, 12, 0.72);
+  --ink-3: rgba(11, 11, 12, 0.46);
+  --acid-orange: #ff4d00;
+  --acid-magenta: #ff1f8f;
+  --acid-lime: #b7ff00;
+  --acid-cyan: #00d4ff;
+  --acid-yellow: #ffe800;
+  --wire: rgba(11, 11, 12, 0.16);
+  --wire-2: rgba(11, 11, 12, 0.28);
+  --steps-fast: 120ms steps(4, end);
+  --steps-base: 180ms steps(5, end);
+
   /* Colors - Primary (Fire) */
   --primary-50: #fff7ed;
   --primary-100: #ffedd5;
@@ -109,7 +124,7 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -118,10 +133,132 @@ body {
   font-family: var(--font-sans);
   font-size: 16px;
   line-height: 1.6;
-  background: #000000;
-  color: var(--zinc-300);
+  background: var(--paper);
+  color: var(--ink);
   min-height: 100vh;
   overflow-x: hidden;
+}
+
+.nx-page {
+  min-height: 100vh;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.nx-stage {
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 28px 20px 56px;
+}
+
+@media (min-width: 768px) {
+  .nx-stage {
+    padding: 42px 34px 72px;
+  }
+}
+
+.nx-panel {
+  position: relative;
+  background: var(--paper);
+  border: 3px solid var(--ink);
+  box-shadow: 10px 10px 0 var(--ink);
+  transition: transform var(--steps-fast), background var(--steps-fast);
+}
+
+.nx-panel:hover {
+  transform: translate(-3px, -3px);
+}
+
+.nx-panel-static {
+  position: relative;
+  background: var(--paper);
+  border: 3px solid var(--ink);
+  box-shadow: 10px 10px 0 var(--ink);
+}
+
+.nx-blob {
+  border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+}
+
+.nx-sharp {
+  border-radius: 0;
+}
+
+.nx-ink-muted {
+  color: var(--ink-2);
+}
+
+.nx-ink-faint {
+  color: var(--ink-3);
+}
+
+.nx-mono {
+  font-family: var(--font-mono);
+}
+
+.nx-bg-wires {
+  background-image:
+    linear-gradient(var(--wire) 1px, transparent 1px),
+    linear-gradient(90deg, var(--wire) 1px, transparent 1px);
+  background-size: 46px 46px;
+  background-position: 14px 22px;
+}
+
+.nx-bg-dots {
+  background-image: radial-gradient(var(--wire-2) 1.2px, transparent 1.2px);
+  background-size: 18px 18px;
+  background-position: 10px 12px;
+}
+
+.nx-bg-stripes {
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(11, 11, 12, 0.06),
+    rgba(11, 11, 12, 0.06) 8px,
+    rgba(11, 11, 12, 0) 8px,
+    rgba(11, 11, 12, 0) 14px
+  );
+}
+
+.nx-hard-gradient {
+  background: linear-gradient(90deg, var(--acid-lime) 0 35%, var(--paper) 35% 70%, var(--acid-cyan) 70% 100%);
+}
+
+.nx-crosshair {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--ink);
+  pointer-events: none;
+}
+
+.nx-crosshair::before,
+.nx-crosshair::after {
+  content: "";
+  position: absolute;
+  background: var(--ink);
+}
+
+.nx-crosshair::before {
+  left: 50%;
+  top: -3px;
+  width: 1px;
+  height: calc(100% + 6px);
+  transform: translateX(-50%);
+}
+
+.nx-crosshair::after {
+  top: 50%;
+  left: -3px;
+  height: 1px;
+  width: calc(100% + 6px);
+  transform: translateY(-50%);
+}
+
+.nx-vert {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
 }
 
 #root {
@@ -133,8 +270,8 @@ body {
    ================================================ */
 
 ::selection {
-  background: var(--primary-500);
-  color: #000000;
+  background: var(--acid-yellow);
+  color: var(--ink);
 }
 
 ::-webkit-scrollbar {
@@ -147,13 +284,13 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--zinc-700);
-  border-radius: var(--radius-full);
-  transition: background var(--transition-base);
+  background: var(--ink);
+  border-radius: 0;
+  transition: background var(--steps-fast);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--zinc-600);
+  background: rgba(11, 11, 12, 0.72);
 }
 
 /* ================================================
@@ -170,7 +307,7 @@ h6 {
   font-weight: 700;
   letter-spacing: -0.025em;
   line-height: 1.1;
-  color: var(--zinc-50);
+  color: var(--ink);
 }
 
 .font-mono {
@@ -214,23 +351,23 @@ h6 {
    ================================================ */
 
 .glow-fire {
-  box-shadow: var(--shadow-glow-primary);
+  box-shadow: 10px 10px 0 var(--ink);
 }
 
 .glow-fire-strong {
-  box-shadow: var(--shadow-glow-primary-strong);
+  box-shadow: 12px 12px 0 var(--ink);
 }
 
 .glow-magic {
-  box-shadow: var(--shadow-glow-accent);
+  box-shadow: 10px 10px 0 var(--ink);
 }
 
 .glow-success {
-  box-shadow: var(--shadow-glow-success);
+  box-shadow: 10px 10px 0 var(--ink);
 }
 
 .glow-electric {
-  box-shadow: var(--shadow-glow-cyan);
+  box-shadow: 10px 10px 0 var(--ink);
 }
 
 /* ================================================
@@ -238,24 +375,20 @@ h6 {
    ================================================ */
 
 .glass {
-  background: rgba(18, 18, 20, 0.8);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--paper);
+  border: 3px solid var(--ink);
+  box-shadow: 10px 10px 0 var(--ink);
 }
 
 .glass-navbar {
-  background: rgba(9, 9, 11, 0.85);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: var(--paper);
+  border-bottom: 3px solid var(--ink);
 }
 
 .glass-card {
-  background: rgba(24, 24, 27, 0.6);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: var(--paper);
+  border: 3px solid var(--ink);
+  box-shadow: 10px 10px 0 var(--ink);
 }
 
 /* ================================================
@@ -263,39 +396,36 @@ h6 {
    ================================================ */
 
 .card {
-  background: var(--zinc-900);
-  border: 1px solid var(--zinc-800);
-  border-radius: var(--radius-2xl);
-  transition: all var(--transition-smooth);
+  background: var(--paper);
+  border: 3px solid var(--ink);
+  border-radius: 0;
+  box-shadow: 10px 10px 0 var(--ink);
+  transition: transform var(--steps-fast), background var(--steps-fast);
 }
 
 .card:hover {
-  border-color: var(--zinc-700);
-  transform: translateY(-2px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  transform: translate(-3px, -3px);
 }
 
 .card-interactive {
-  background: var(--zinc-900);
-  border: 1px solid var(--zinc-800);
-  border-radius: var(--radius-2xl);
-  transition: all var(--transition-smooth);
+  background: var(--paper);
+  border: 3px solid var(--ink);
+  border-radius: 0;
+  box-shadow: 10px 10px 0 var(--ink);
+  transition: transform var(--steps-fast), background var(--steps-fast);
   cursor: pointer;
 }
 
 .card-interactive:hover {
-  border-color: var(--primary-500);
-  box-shadow: 0 0 0 1px var(--primary-500), 0 20px 40px rgba(249, 115, 22, 0.1);
-  transform: translateY(-4px);
+  transform: translate(-3px, -3px);
 }
 
 .card-glass {
-  background: rgba(24, 24, 27, 0.5);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: var(--radius-2xl);
-  transition: all var(--transition-smooth);
+  background: var(--paper);
+  border: 3px solid var(--ink);
+  border-radius: 0;
+  box-shadow: 10px 10px 0 var(--ink);
+  transition: transform var(--steps-fast), background var(--steps-fast);
 }
 
 /* ================================================
@@ -312,10 +442,11 @@ h6 {
   font-family: var(--font-mono);
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  border-radius: var(--radius-full);
-  background: var(--zinc-800);
-  color: var(--zinc-400);
-  transition: all var(--transition-base);
+  border-radius: 0;
+  background: var(--paper-2);
+  color: var(--ink);
+  border: 2px solid var(--ink);
+  transition: transform var(--steps-fast), background var(--steps-fast);
 }
 
 .badge-primary {

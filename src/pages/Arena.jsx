@@ -280,23 +280,22 @@ export default function Arena() {
 
   if (isLoading && view === 'selection') {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
+      <div className="min-h-screen nx-page relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none nx-bg-wires opacity-[0.55]" />
+        <div className="absolute inset-0 pointer-events-none nx-bg-dots opacity-[0.2]" />
         <motion.div
-          className="flex flex-col items-center gap-4"
+          className="nx-stage flex flex-col items-center justify-center min-h-screen gap-4"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
         >
-          <div className="relative">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center">
-              <Swords className="w-8 h-8 text-black" />
+          <div className="nx-panel nx-sharp px-8 py-8 text-center">
+            <div className="nx-crosshair -top-3 -left-3" />
+            <div className="nx-crosshair -bottom-3 -right-3" />
+            <div className="w-16 h-16 border-[3px] border-[var(--ink)] bg-[var(--acid-orange)] flex items-center justify-center mx-auto">
+              <Swords className="w-8 h-8 text-[var(--ink)]" />
             </div>
-            <motion.div
-              className="absolute inset-0 rounded-2xl bg-orange-500/30"
-              animate={{ scale: [1, 1.3, 1], opacity: [0.5, 0, 0.5] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-            />
+            <p className="mt-4 text-[var(--ink-2)] font-semibold">Loading arena...</p>
           </div>
-          <p className="text-zinc-400 font-medium">Loading arena...</p>
         </motion.div>
       </div>
     );
@@ -345,30 +344,26 @@ export default function Arena() {
   // Mode Selection Screen
   if (gameMode === null) {
     return (
-      <div className="min-h-screen bg-black relative">
-        {/* Background effects */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-orange-600/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-[-20%] left-[-10%] w-[500px] h-[500px] bg-violet-600/8 rounded-full blur-3xl" />
-        </div>
+      <div className="min-h-screen nx-page relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none nx-bg-wires opacity-[0.55]" />
+        <div className="absolute inset-0 pointer-events-none nx-bg-dots opacity-[0.2]" />
+        <div className="absolute -top-24 -right-24 w-[520px] h-[520px] nx-blob border-[3px] border-[var(--ink)] bg-[var(--acid-orange)] opacity-[0.10]" />
+        <div className="absolute -bottom-24 -left-28 w-[560px] h-[560px] nx-blob border-[3px] border-[var(--ink)] bg-[var(--acid-cyan)] opacity-[0.10]" />
 
-        <div className="relative z-10 max-w-4xl mx-auto px-6 md:px-8 py-16">
-          {/* Header */}
+        <div className="nx-stage relative pt-24 md:pt-28">
           <motion.div
-            className="text-center mb-16"
+            className="text-center mb-12"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-gradient-to-r from-orange-500/15 to-red-500/10 border border-orange-500/25 mb-6">
-              <div className="w-2 h-2 rounded-full bg-orange-400 animate-pulse" />
-              <span className="text-xs font-semibold text-orange-400 tracking-wider uppercase font-mono">Choose Mode</span>
+            <div className="inline-flex items-center gap-2.5 px-4 py-2 border-2 border-[var(--ink)] bg-[var(--acid-yellow)] mb-5">
+              <div className="w-2 h-2 bg-[var(--ink)]" />
+              <span className="text-xs font-black tracking-wider uppercase nx-mono">Choose Mode</span>
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+            <h1 className="text-4xl md:text-5xl font-black text-[var(--ink)] mb-3 tracking-[-0.06em]">
               NovaX Arena
             </h1>
-            <p className="text-zinc-500 text-lg">
-              Pilih arena untuk memulai tantangan
-            </p>
+            <p className="text-[var(--ink-2)] text-lg">Pilih arena untuk memulai tantangan</p>
           </motion.div>
 
           {/* Mode Cards */}
@@ -376,31 +371,30 @@ export default function Arena() {
             {/* Solo Mode */}
             <motion.button
               onClick={() => setGameMode('solo')}
-              className="group relative bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-2xl p-8 text-left hover:border-orange-500/50 transition-all duration-300"
+              className="group relative nx-panel nx-sharp p-8 text-left transition-transform duration-100 [transition-timing-function:steps(4,end)] hover:-translate-x-1 hover:-translate-y-1"
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2 }}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
-              {/* Glow Effect */}
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-orange-500 to-red-600 rounded-2xl blur-lg opacity-0 group-hover:opacity-20 transition-opacity duration-500" />
-
-              <div className="relative z-10">
-                <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <User className="w-8 h-8 text-black" />
+              <div className="relative">
+                <div className="nx-crosshair -top-3 -left-3" />
+                <div className="nx-crosshair -bottom-3 -right-3" />
+                <div className="w-16 h-16 bg-[var(--acid-orange)] border-[3px] border-[var(--ink)] flex items-center justify-center mb-6 transition-transform duration-100 [transition-timing-function:steps(4,end)] group-hover:-translate-x-1 group-hover:-translate-y-1">
+                  <User className="w-8 h-8 text-[var(--ink)]" />
                 </div>
 
-                <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-orange-400 transition-colors">
+                <h3 className="text-2xl font-black text-[var(--ink)] mb-3 tracking-[-0.04em]">
                   Solo Arena
                 </h3>
-                <p className="text-zinc-400 mb-6 leading-relaxed">
+                <p className="text-[var(--ink-2)] mb-6 leading-relaxed">
                   Hadapi masalah secara mandiri. Generate problem yang sesuai dengan level dan archetype-mu. Tingkatkan skill step-by-step.
                 </p>
 
-                <div className="flex items-center gap-2 text-orange-400 font-medium">
+                <div className="flex items-center gap-2 text-[var(--ink)] font-semibold">
                   <span>Mulai Solo</span>
-                  <Swords className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  <Swords className="w-4 h-4 transition-transform duration-100 [transition-timing-function:steps(4,end)] group-hover:translate-x-1" />
                 </div>
               </div>
             </motion.button>
@@ -408,36 +402,35 @@ export default function Arena() {
             {/* Multiplayer Mode */}
             <motion.button
               onClick={() => setGameMode('multiplayer')}
-              className="group relative bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-2xl p-8 text-left hover:border-violet-500/50 transition-all duration-300"
+              className="group relative nx-panel nx-sharp p-8 text-left transition-transform duration-100 [transition-timing-function:steps(4,end)] hover:-translate-x-1 hover:-translate-y-1"
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3 }}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
-              {/* Glow Effect */}
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-violet-500 to-purple-600 rounded-2xl blur-lg opacity-0 group-hover:opacity-20 transition-opacity duration-500" />
-
-              <div className="relative z-10">
-                <div className="w-16 h-16 bg-gradient-to-br from-violet-500 to-purple-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <Users className="w-8 h-8 text-black" />
+              <div className="relative">
+                <div className="nx-crosshair -top-3 -left-3" />
+                <div className="nx-crosshair -bottom-3 -right-3" />
+                <div className="w-16 h-16 bg-[var(--acid-cyan)] border-[3px] border-[var(--ink)] flex items-center justify-center mb-6 transition-transform duration-100 [transition-timing-function:steps(4,end)] group-hover:-translate-x-1 group-hover:-translate-y-1">
+                  <Users className="w-8 h-8 text-[var(--ink)]" />
                 </div>
 
                 <div className="flex items-center gap-3 mb-3">
-                  <h3 className="text-2xl font-bold text-white group-hover:text-violet-400 transition-colors">
+                  <h3 className="text-2xl font-black text-[var(--ink)] tracking-[-0.04em]">
                     Multiplayer
                   </h3>
-                  <span className="px-2.5 py-1 bg-violet-500/15 border border-violet-500/30 rounded-full text-xs font-semibold text-violet-400 uppercase tracking-wider">
+                  <span className="px-2.5 py-1 bg-[var(--acid-magenta)]/20 border-2 border-[var(--ink)] text-xs font-black text-[var(--ink)] uppercase tracking-wider nx-mono">
                     Soon
                   </span>
                 </div>
-                <p className="text-zinc-400 mb-6 leading-relaxed">
+                <p className="text-[var(--ink-2)] mb-6 leading-relaxed">
                   Compete atau collaborate dengan player lain dalam real-time battle. Uji skill-mu melawan sesama warrior.
                 </p>
 
-                <div className="flex items-center gap-2 text-violet-400 font-medium">
+                <div className="flex items-center gap-2 text-[var(--ink)] font-semibold">
                   <span>Lihat Preview</span>
-                  <Clock className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  <Clock className="w-4 h-4 transition-transform duration-100 [transition-timing-function:steps(4,end)] group-hover:translate-x-1" />
                 </div>
               </div>
             </motion.button>
@@ -450,73 +443,61 @@ export default function Arena() {
   // Multiplayer Coming Soon Screen
   if (gameMode === 'multiplayer') {
     return (
-      <div className="min-h-screen bg-black relative flex items-center justify-center">
-        {/* Background effects */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute top-[-20%] left-[30%] w-[600px] h-[600px] bg-violet-600/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-[-20%] right-[20%] w-[500px] h-[500px] bg-purple-600/8 rounded-full blur-3xl" />
-        </div>
+      <div className="min-h-screen nx-page relative overflow-hidden flex items-center justify-center">
+        <div className="absolute inset-0 pointer-events-none nx-bg-wires opacity-[0.55]" />
+        <div className="absolute inset-0 pointer-events-none nx-bg-dots opacity-[0.2]" />
+        <div className="absolute -top-24 -left-24 w-[520px] h-[520px] nx-blob border-[3px] border-[var(--ink)] bg-[var(--acid-magenta)] opacity-[0.10]" />
+        <div className="absolute -bottom-24 -right-24 w-[520px] h-[520px] nx-blob border-[3px] border-[var(--ink)] bg-[var(--acid-lime)] opacity-[0.10]" />
 
-        <div className="relative z-10 max-w-2xl mx-auto px-6 text-center">
+        <div className="relative z-10 nx-stage max-w-2xl text-center">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
           >
-            {/* Icon */}
-            <div className="relative inline-block mb-8">
-              <div className="w-24 h-24 bg-gradient-to-br from-violet-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto">
-                <Users className="w-12 h-12 text-black" />
+            <div className="nx-panel nx-sharp px-8 py-8">
+              <div className="nx-crosshair -top-3 -left-3" />
+              <div className="nx-crosshair -bottom-3 -right-3" />
+              <div className="relative inline-block mb-8">
+                <div className="w-24 h-24 bg-[var(--acid-cyan)] border-[3px] border-[var(--ink)] flex items-center justify-center mx-auto">
+                  <Users className="w-12 h-12 text-[var(--ink)]" />
+                </div>
+                <div className="absolute -bottom-3 -right-3 w-11 h-11 bg-[var(--paper)] border-[3px] border-[var(--ink)] flex items-center justify-center">
+                  <Lock className="w-5 h-5 text-[var(--ink)]" />
+                </div>
               </div>
-              <motion.div
-                className="absolute inset-0 rounded-2xl bg-violet-500/30"
-                animate={{ scale: [1, 1.3, 1], opacity: [0.5, 0, 0.5] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              />
-              {/* Lock Badge */}
-              <div className="absolute -bottom-2 -right-2 w-10 h-10 bg-zinc-900 border-2 border-violet-500 rounded-xl flex items-center justify-center">
-                <Lock className="w-5 h-5 text-violet-400" />
+
+              <h2 className="text-4xl md:text-5xl font-black text-[var(--ink)] mb-4 tracking-[-0.06em]">
+                Coming <span className="underline decoration-[var(--acid-magenta)] decoration-[4px] underline-offset-4">Soon</span>
+              </h2>
+              <p className="text-[var(--ink-2)] mb-8 max-w-md mx-auto">
+                Mode Multiplayer sedang dalam pengembangan. Bersiaplah untuk berkompetisi dengan player lain!
+              </p>
+
+              <div className="grid grid-cols-2 gap-4 mb-10 max-w-sm mx-auto">
+                <div className="nx-panel-static nx-sharp p-4">
+                  <Swords className="w-6 h-6 text-[var(--ink)] mx-auto mb-2" />
+                  <p className="text-sm nx-ink-muted">1v1 Battle</p>
+                </div>
+                <div className="nx-panel-static nx-sharp p-4">
+                  <Users className="w-6 h-6 text-[var(--ink)] mx-auto mb-2" />
+                  <p className="text-sm nx-ink-muted">Team Mode</p>
+                </div>
+                <div className="nx-panel-static nx-sharp p-4">
+                  <Trophy className="w-6 h-6 text-[var(--ink)] mx-auto mb-2" />
+                  <p className="text-sm nx-ink-muted">Ranked Match</p>
+                </div>
+                <div className="nx-panel-static nx-sharp p-4">
+                  <Zap className="w-6 h-6 text-[var(--ink)] mx-auto mb-2" />
+                  <p className="text-sm nx-ink-muted">Quick Match</p>
+                </div>
               </div>
+
+              <Button onClick={() => setGameMode(null)} variant="outline" size="lg" className="group">
+                <Swords className="w-4 h-4 mr-2 transition-transform duration-100 [transition-timing-function:steps(4,end)] group-hover:-translate-x-1" />
+                Kembali ke Mode Selection
+              </Button>
             </div>
-
-            {/* Content */}
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              Coming <span className="text-violet-400">Soon</span>
-            </h2>
-            <p className="text-xl text-zinc-400 mb-8 max-w-md mx-auto">
-              Mode Multiplayer sedang dalam pengembangan. Bersiaplah untuk berkompetisi dengan player lain!
-            </p>
-
-            {/* Features Preview */}
-            <div className="grid grid-cols-2 gap-4 mb-10 max-w-sm mx-auto">
-              <div className="bg-zinc-900/80 border border-zinc-800 rounded-xl p-4">
-                <Swords className="w-6 h-6 text-violet-400 mx-auto mb-2" />
-                <p className="text-sm text-zinc-400">1v1 Battle</p>
-              </div>
-              <div className="bg-zinc-900/80 border border-zinc-800 rounded-xl p-4">
-                <Users className="w-6 h-6 text-violet-400 mx-auto mb-2" />
-                <p className="text-sm text-zinc-400">Team Mode</p>
-              </div>
-              <div className="bg-zinc-900/80 border border-zinc-800 rounded-xl p-4">
-                <Trophy className="w-6 h-6 text-violet-400 mx-auto mb-2" />
-                <p className="text-sm text-zinc-400">Ranked Match</p>
-              </div>
-              <div className="bg-zinc-900/80 border border-zinc-800 rounded-xl p-4">
-                <Zap className="w-6 h-6 text-violet-400 mx-auto mb-2" />
-                <p className="text-sm text-zinc-400">Quick Match</p>
-              </div>
-            </div>
-
-            {/* Back Button */}
-            <Button
-              onClick={() => setGameMode(null)}
-              variant="outline"
-              size="lg"
-              className="group"
-            >
-              <Swords className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" />
-              Kembali ke Mode Selection
-            </Button>
           </motion.div>
         </div>
       </div>

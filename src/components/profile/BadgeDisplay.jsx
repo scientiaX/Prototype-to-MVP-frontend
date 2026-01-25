@@ -45,7 +45,7 @@ export default function BadgeDisplay({ achievements }) {
   if (!achievements || achievements.length === 0) {
     return (
       <div className="text-center py-8">
-        <p className="text-zinc-600 text-sm">Belum ada badge. Taklukkan masalah untuk mendapatkannya.</p>
+        <p className="nx-ink-muted text-sm">Belum ada badge. Taklukkan masalah untuk mendapatkannya.</p>
       </div>
     );
   }
@@ -63,35 +63,34 @@ export default function BadgeDisplay({ achievements }) {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: index * 0.1 }}
             className={cn(
-              "relative p-4 rounded-xl border-2",
-              config.bgColor,
-              config.borderColor,
-              achievement.is_highest && "ring-2 ring-yellow-500"
+              "relative nx-panel-static nx-sharp p-4"
             )}
           >
             {achievement.is_highest && (
-              <div className="absolute -top-2 -right-2 w-6 h-6 bg-yellow-500 rounded-full flex items-center justify-center">
-                <span className="text-black text-xs font-bold">★</span>
+              <div className="absolute -top-3 -right-3 w-8 h-8 bg-[var(--acid-yellow)] border-[3px] border-[var(--ink)] nx-sharp flex items-center justify-center">
+                <span className="text-[var(--ink)] text-xs font-black">★</span>
               </div>
             )}
             
             <div className="flex items-center gap-3 mb-2">
-              <Icon className={cn("w-6 h-6", config.color)} />
+              <div className={cn("w-10 h-10 border-2 border-[var(--ink)] nx-sharp flex items-center justify-center", config.bgColor)}>
+                <Icon className={cn("w-5 h-5", config.color)} />
+              </div>
               <div>
-                <p className={cn("font-semibold text-sm", config.color)}>
+                <p className={cn("font-black text-sm tracking-[-0.02em]", config.color)}>
                   {config.label}
                 </p>
-                <p className="text-zinc-500 text-xs">
+                <p className="nx-ink-faint text-xs nx-mono">
                   Lv.{achievement.difficulty_level}
                 </p>
               </div>
             </div>
             
-            <p className="text-zinc-400 text-xs line-clamp-2">
+            <p className="nx-ink-muted text-xs line-clamp-2">
               {achievement.title}
             </p>
             
-            <p className="text-zinc-600 text-xs mt-2 capitalize">
+            <p className="nx-ink-faint text-xs mt-2 capitalize">
               {achievement.archetype_at_achievement?.replace('_', ' ')}
             </p>
           </motion.div>

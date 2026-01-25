@@ -1,24 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import apiClient from '@/api/apiClient';
 import { getTranslation } from '@/components/utils/translations';
 import {
-  Swords,
-  User,
-  Trophy,
-  Home,
-  LogOut,
-  Menu,
-  X,
-  ChevronRight
-} from 'lucide-react';
+  IconSwords,
+  IconUser,
+  IconTrophy,
+  IconHome,
+  IconLogOut,
+  IconMenu,
+  IconX,
+  IconChevronRight
+} from '@/components/ui/raw-icons';
 import { cn } from "@/lib/utils";
 
 export default function Layout({ children, currentPageName }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const [userLanguage, setUserLanguage] = useState('en');
   const navigate = useNavigate();
 
@@ -26,13 +25,6 @@ export default function Layout({ children, currentPageName }) {
 
   useEffect(() => {
     checkAuth();
-
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const checkAuth = async () => {
@@ -70,53 +62,45 @@ export default function Layout({ children, currentPageName }) {
   };
 
   const navItems = [
-    { name: t.nav.home, icon: Home, page: 'Home' },
-    { name: t.nav.arena, icon: Swords, page: 'Arena' },
-    { name: t.nav.profile, icon: User, page: 'Profile' },
-    { name: t.nav.leaderboard, icon: Trophy, page: 'Leaderboard' }
+    { name: t.nav.home, icon: IconHome, page: 'Home' },
+    { name: t.nav.arena, icon: IconSwords, page: 'Arena' },
+    { name: t.nav.profile, icon: IconUser, page: 'Profile' },
+    { name: t.nav.leaderboard, icon: IconTrophy, page: 'Leaderboard' }
   ];
 
   const hideNav = currentPageName === 'Calibration';
 
   if (hideNav) {
     return (
-      <div className="min-h-screen bg-black">
+      <div className="min-h-screen nx-page">
         {children}
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen nx-page">
       {/* Desktop Navigation */}
-      <nav
-        className={cn(
-          "hidden md:block fixed top-0 left-0 right-0 z-navbar transition-all duration-300",
-          scrolled
-            ? "glass-navbar shadow-lg"
-            : "bg-transparent"
-        )}
-      >
-        <div className="max-w-6xl mx-auto px-8">
-          <div className="flex items-center justify-between h-16">
+      <nav className="hidden md:block fixed top-0 left-0 right-0 z-navbar">
+        <div className="mx-auto max-w-6xl px-8 py-3">
+          <div className="nx-panel nx-sharp px-4 py-3 flex items-center justify-between">
             {/* Logo */}
             <Link to={createPageUrl('Home')} className="flex items-center gap-3 group">
               <div className="relative">
                 <img
                   src="/favicon.png"
                   alt="NovaX"
-                  className="w-10 h-10 rounded-xl transition-all duration-300 group-hover:scale-110 group-hover:rotate-3"
+                  className="w-10 h-10 nx-sharp border-2 border-[var(--ink)] transition-all duration-100 [transition-timing-function:steps(4,end)] group-hover:-translate-x-0.5 group-hover:-translate-y-0.5"
                 />
-                <div className="absolute inset-0 rounded-xl bg-orange-500/40 blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
               <div className="flex flex-col">
-                <span className="font-bold text-white text-lg leading-none tracking-tight">NOVAX</span>
-                <span className="text-[10px] font-mono text-zinc-500 tracking-[0.2em]">ARENA</span>
+                <span className="font-bold text-[var(--ink)] text-lg leading-none tracking-tight">NOVAX</span>
+                <span className="text-[10px] nx-mono text-[var(--ink-3)] tracking-[0.28em]">ARENA</span>
               </div>
             </Link>
 
             {/* Nav Links */}
-            <div className="flex items-center gap-1 bg-zinc-900/50 backdrop-blur-sm rounded-2xl p-1.5 border border-zinc-800/50">
+            <div className="flex items-center gap-2">
               {navItems.map((item) => {
                 const Icon = item.icon;
                 const isActive = currentPageName === item.page;
@@ -126,17 +110,19 @@ export default function Layout({ children, currentPageName }) {
                     to={createPageUrl(item.page)}
                     onClick={(e) => handleNavClick(e, item.page)}
                     className={cn(
-                      "relative flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200",
+                      "relative px-3 py-2 text-sm font-semibold transition-all duration-100 [transition-timing-function:steps(4,end)]",
                       isActive
-                        ? "text-white"
-                        : "text-zinc-400 hover:text-white"
+                        ? "text-[var(--ink)]"
+                        : "text-[var(--ink-2)] hover:text-[var(--ink)]"
                     )}
                   >
                     {isActive && (
-                      <div className="absolute inset-0 bg-gradient-to-r from-orange-500/20 to-red-500/20 rounded-xl border border-orange-500/30" />
+                      <div className="absolute inset-0 nx-blob border-2 border-[var(--ink)] bg-[var(--acid-lime)] opacity-80" />
                     )}
-                    <Icon className={cn("w-4 h-4 relative z-10", isActive && "text-orange-400")} />
-                    <span className="relative z-10">{item.name}</span>
+                    <span className="relative z-10 flex items-center gap-2">
+                      <Icon className="w-4 h-4" />
+                      {item.name}
+                    </span>
                   </Link>
                 );
               })}
@@ -146,9 +132,9 @@ export default function Layout({ children, currentPageName }) {
             {isAuthenticated && (
               <button
                 onClick={handleLogout}
-                className="flex items-center gap-2 px-4 py-2 text-sm text-zinc-400 hover:text-red-400 transition-all duration-200 rounded-xl hover:bg-red-500/10 border border-transparent hover:border-red-500/20"
+                className="flex items-center gap-2 px-3 py-2 text-sm font-semibold text-[var(--ink-2)] hover:text-[var(--ink)] transition-all duration-100 [transition-timing-function:steps(4,end)] border-2 border-transparent hover:border-[var(--ink)]"
               >
-                <LogOut className="w-4 h-4" />
+                <IconLogOut className="w-4 h-4" />
                 <span>{t.nav.logout}</span>
               </button>
             )}
@@ -157,40 +143,40 @@ export default function Layout({ children, currentPageName }) {
       </nav>
 
       {/* Mobile Top Bar */}
-      <nav className="md:hidden fixed top-0 left-0 right-0 z-navbar glass-navbar">
-        <div className="flex items-center justify-between h-14 px-4">
+      <nav className="md:hidden fixed top-0 left-0 right-0 z-navbar px-4 pt-3">
+        <div className="nx-panel nx-sharp flex items-center justify-between px-4 py-3">
           <Link to={createPageUrl('Home')} className="flex items-center gap-2">
             <img
               src="/favicon.png"
               alt="NovaX"
-              className="w-9 h-9 rounded-lg"
+              className="w-9 h-9 nx-sharp border-2 border-[var(--ink)]"
             />
-            <span className="font-bold text-white tracking-tight">NOVAX</span>
+            <span className="font-bold text-[var(--ink)] tracking-tight">NOVAX</span>
           </Link>
 
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className={cn(
-              "p-2.5 rounded-xl transition-all duration-200",
+              "p-2 transition-all duration-100 [transition-timing-function:steps(4,end)] border-2 border-[var(--ink)] shadow-[4px_4px_0_var(--ink)]",
               mobileMenuOpen
-                ? "bg-orange-500/15 text-orange-400"
-                : "text-zinc-400 hover:text-white hover:bg-zinc-800"
+                ? "bg-[var(--acid-magenta)] text-[var(--ink)]"
+                : "bg-[var(--paper)] text-[var(--ink)] hover:translate-x-[-1px] hover:translate-y-[-1px]"
             )}
           >
-            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            {mobileMenuOpen ? <IconX className="w-5 h-5" /> : <IconMenu className="w-5 h-5" />}
           </button>
         </div>
 
         {/* Mobile Menu Dropdown */}
         <div
           className={cn(
-            "absolute top-full left-0 right-0 glass overflow-hidden transition-all duration-300",
+            "absolute top-full left-4 right-4 overflow-hidden transition-all duration-100 [transition-timing-function:steps(5,end)]",
             mobileMenuOpen
-              ? "max-h-[400px] opacity-100 border-b border-zinc-800"
+              ? "max-h-[460px] opacity-100"
               : "max-h-0 opacity-0"
           )}
         >
-          <div className="px-4 py-4 space-y-1">
+          <div className="nx-panel nx-sharp px-4 py-4 space-y-1">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = currentPageName === item.page;
@@ -203,43 +189,40 @@ export default function Layout({ children, currentPageName }) {
                     handleNavClick(e, item.page);
                   }}
                   className={cn(
-                    "flex items-center justify-between px-4 py-3.5 rounded-xl text-base font-medium transition-all",
+                    "flex items-center justify-between px-4 py-3 border-2 border-transparent transition-all duration-100 [transition-timing-function:steps(4,end)]",
                     isActive
-                      ? "bg-gradient-to-r from-orange-500/15 to-red-500/10 text-orange-400 border border-orange-500/20"
-                      : "text-zinc-300 hover:bg-zinc-800/50"
+                      ? "bg-[var(--acid-lime)] text-[var(--ink)] border-[var(--ink)]"
+                      : "text-[var(--ink)] hover:border-[var(--ink)] hover:translate-x-[-1px] hover:translate-y-[-1px]"
                   )}
                 >
                   <div className="flex items-center gap-3">
                     <Icon className="w-5 h-5" />
                     <span>{item.name}</span>
                   </div>
-                  {isActive && <ChevronRight className="w-4 h-4 text-orange-400" />}
+                  {isActive && <IconChevronRight className="w-4 h-4" />}
                 </Link>
               );
             })}
 
             {isAuthenticated && (
-              <>
-                <div className="h-px bg-zinc-800 my-2" />
-                <button
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    handleLogout();
-                  }}
-                  className="w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-red-400 hover:bg-red-500/10 transition-colors"
-                >
-                  <LogOut className="w-5 h-5" />
-                  <span>{t.nav.logout}</span>
-                </button>
-              </>
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  handleLogout();
+                }}
+                className="w-full flex items-center gap-3 px-4 py-3 mt-2 border-2 border-[var(--ink)] bg-[var(--acid-magenta)] text-[var(--ink)] shadow-[6px_6px_0_var(--ink)] transition-transform duration-100 [transition-timing-function:steps(4,end)] hover:translate-x-[-2px] hover:translate-y-[-2px]"
+              >
+                <IconLogOut className="w-5 h-5" />
+                <span className="font-semibold">{t.nav.logout}</span>
+              </button>
             )}
           </div>
         </div>
       </nav>
 
       {/* Mobile Bottom Navigation */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-navbar glass-navbar border-t border-zinc-800/50">
-        <div className="flex items-center justify-around h-16 px-2">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-navbar px-4 pb-3">
+        <div className="nx-panel nx-sharp flex items-center justify-around px-2 py-2">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = currentPageName === item.page;
@@ -248,26 +231,15 @@ export default function Layout({ children, currentPageName }) {
                 key={item.page}
                 to={createPageUrl(item.page)}
                 onClick={(e) => handleNavClick(e, item.page)}
-                className={cn(
-                  "relative flex flex-col items-center justify-center gap-1 py-2 px-5 rounded-xl transition-all duration-200"
-                )}
+                className="relative flex flex-col items-center justify-center gap-1 py-2 px-5 border-2 border-transparent transition-all duration-100 [transition-timing-function:steps(4,end)] hover:border-[var(--ink)]"
               >
                 {isActive && (
-                  <div className="absolute -top-0.5 left-1/2 -translate-x-1/2 w-8 h-1 bg-gradient-to-r from-orange-500 to-red-500 rounded-full" />
+                  <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-10 h-1 bg-[var(--acid-orange)] border border-[var(--ink)]" />
                 )}
-                <div className={cn(
-                  "p-1.5 rounded-lg transition-all",
-                  isActive ? "bg-orange-500/15" : ""
-                )}>
-                  <Icon className={cn(
-                    "w-5 h-5 transition-colors",
-                    isActive ? "text-orange-400" : "text-zinc-500"
-                  )} />
+                <div className={cn("p-1", isActive ? "bg-[var(--acid-lime)] border border-[var(--ink)]" : "")}>
+                  <Icon className="w-5 h-5 text-[var(--ink)]" />
                 </div>
-                <span className={cn(
-                  "text-[10px] font-medium transition-colors",
-                  isActive ? "text-orange-400" : "text-zinc-500"
-                )}>
+                <span className={cn("text-[10px] font-semibold", isActive ? "text-[var(--ink)]" : "text-[var(--ink-2)]")}>
                   {item.name}
                 </span>
               </Link>
@@ -279,13 +251,13 @@ export default function Layout({ children, currentPageName }) {
       {/* Backdrop for mobile menu */}
       {mobileMenuOpen && (
         <div
-          className="md:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
+          className="md:hidden fixed inset-0 bg-[rgba(11,11,12,0.45)] z-40"
           onClick={() => setMobileMenuOpen(false)}
         />
       )}
 
       {/* Main Content */}
-      <main className="pt-20 md:pt-24 pb-24 md:pb-8">
+      <main className="pt-24 md:pt-24 pb-24 md:pb-8">
         {children}
       </main>
     </div>

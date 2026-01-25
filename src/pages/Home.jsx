@@ -1,39 +1,33 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { useNavigate } from 'react-router-dom';
-import { createPageUrl } from '@/utils';
-import apiClient from '@/api/apiClient';
+import React, { useEffect, useMemo, useState } from "react";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { createPageUrl } from "@/utils";
+import apiClient from "@/api/apiClient";
 import { Button } from "@/components/ui/button";
 import {
-  ChevronRight,
-  Target,
-  Flame,
-  Shield,
-  TrendingUp,
-  Sparkles,
-  Zap,
-  Users,
-  BarChart3,
-  ArrowRight,
-  Play
-} from 'lucide-react';
+  IconArrowRight,
+  IconBars,
+  IconPlay,
+  IconShield,
+  IconSpark,
+  IconTarget,
+  IconTrendingUp,
+  IconUsers,
+  IconZap
+} from "@/components/ui/raw-icons";
+import { cn } from "@/lib/utils";
 
 export default function Home() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [hasProfile, setHasProfile] = useState(false);
   const navigate = useNavigate();
 
-  // Typewriter effect state
-  const learningWords = ['Real World Simulation', 'Real World Problems', 'Mistakes', 'Decisions', 'Reflection'];
-  const learningColors = [
-    'from-cyan-400 to-blue-400',
-    'from-orange-400 to-amber-400',
-    'from-rose-400 to-pink-400',
-    'from-violet-400 to-purple-400',
-    'from-teal-400 to-cyan-400'
-  ];
+  const learningWords = useMemo(
+    () => ["Real World Simulation", "Real World Problems", "Mistakes", "Decisions", "Reflection"],
+    []
+  );
   const [wordIndex, setWordIndex] = useState(0);
-  const [displayText, setDisplayText] = useState('');
+  const [displayText, setDisplayText] = useState("");
   const [isTyping, setIsTyping] = useState(true);
   const [showCursor, setShowCursor] = useState(true);
 
@@ -41,46 +35,39 @@ export default function Home() {
     checkAuth();
   }, []);
 
-  // Cursor blink effect
   useEffect(() => {
     const cursorInterval = setInterval(() => {
-      setShowCursor(prev => !prev);
-    }, 350); // 0.7s / 2 = 0.35s for toggle
+      setShowCursor((prev) => !prev);
+    }, 200);
     return () => clearInterval(cursorInterval);
   }, []);
 
-  // Typewriter effect
   useEffect(() => {
     const currentWord = learningWords[wordIndex];
 
     if (isTyping) {
-      // Typing phase
       if (displayText.length < currentWord.length) {
         const timeout = setTimeout(() => {
           setDisplayText(currentWord.slice(0, displayText.length + 1));
-        }, 50); // 50ms per character
-        return () => clearTimeout(timeout);
-      } else {
-        // Done typing, wait for 3 blinks (2.1 seconds)
-        const timeout = setTimeout(() => {
-          setIsTyping(false);
-        }, 2100);
+        }, 34);
         return () => clearTimeout(timeout);
       }
-    } else {
-      // Deleting phase
-      if (displayText.length > 0) {
-        const timeout = setTimeout(() => {
-          setDisplayText(displayText.slice(0, -1));
-        }, 30); // 30ms per character delete
-        return () => clearTimeout(timeout);
-      } else {
-        // Done deleting, move to next word
-        setWordIndex((prev) => (prev + 1) % learningWords.length);
-        setIsTyping(true);
-      }
+      const timeout = setTimeout(() => {
+        setIsTyping(false);
+      }, 680);
+      return () => clearTimeout(timeout);
     }
-  }, [displayText, isTyping, wordIndex]);
+
+    if (displayText.length > 0) {
+      const timeout = setTimeout(() => {
+        setDisplayText(displayText.slice(0, -1));
+      }, 22);
+      return () => clearTimeout(timeout);
+    }
+
+    setWordIndex((prev) => (prev + 1) % learningWords.length);
+    setIsTyping(true);
+  }, [displayText, isTyping, learningWords, wordIndex]);
 
   const checkAuth = async () => {
     const authenticated = await apiClient.auth.isAuthenticated();
@@ -96,455 +83,268 @@ export default function Home() {
 
   const handleStart = () => {
     if (!isAuthenticated) {
-      apiClient.auth.redirectToLogin(createPageUrl('Calibration'));
-    } else if (hasProfile) {
-      navigate(createPageUrl('Arena'));
-    } else {
-      navigate(createPageUrl('Calibration'));
+      apiClient.auth.redirectToLogin(createPageUrl("Calibration"));
+      return;
     }
+    if (hasProfile) {
+      navigate(createPageUrl("Arena"));
+      return;
+    }
+    navigate(createPageUrl("Calibration"));
   };
 
-  // Multi-language content
-  const [lang, setLang] = useState('en');
+  const [lang, setLang] = useState("en");
 
   const t = {
     en: {
-      badge: 'Novax Trial',
-      headline1: 'NovaX',
-      headline2: 'Arena',
-      description: 'Real-world experiential learning',
-      descriptionHighlight: 'in your hands.',
-      ctaCalibrate: 'Start Calibration',
-      ctaArena: 'Enter Arena',
-      notLoggedIn: 'more fun than watching, more effective than reading',
-      calibrationTime: '5-7 min calibration',
-      readyBattle: 'Ready to battle',
-      liveStats: 'Live Stats',
-      realTimeActivity: 'Real-time arena activity',
-      quote: 'No comfort zone. Only growth zone.',
-      sectionTitle: 'Confrontation-Based System',
-      sectionSubtitle: 'Backed by science. Every element designed for growth through pressure.',
-      warning: 'This is not a platform to feel comfortable. If you are looking for validation, this is not the place.',
+      badge: "Novax Trial",
+      headline1: "NovaX",
+      headline2: "Arena",
+      description: "Real-world experiential learning",
+      descriptionHighlight: "in your hands.",
+      ctaCalibrate: "Start Calibration",
+      ctaArena: "Enter Arena",
+      calibrationTime: "5-7 min calibration",
+      readyBattle: "Ready to battle",
+      quote: "No comfort zone. Only growth zone.",
       features: [
-        { title: 'Adaptive Matching', description: 'AI matches problems to your archetype and capability level' },
-        { title: 'XP = Difficulty', description: 'Progress based on growth in challenges and real capabilities, not grinding' },
-        { title: 'Scar Badges', description: 'Badges prove you fought and grew, not just participated' }
+        { icon: IconTarget, title: "Adaptive Matching", description: "AI matches problems to your archetype + capability level." },
+        { icon: IconTrendingUp, title: "XP = Difficulty", description: "Progress comes from pressure, not grinding." },
+        { icon: IconShield, title: "Scar Badges", description: "Badges prove conflict survived, not participation." }
       ]
     },
     id: {
-      badge: 'Novax Trial',
-      headline1: 'NovaX',
-      headline2: 'Arena',
-      description: 'Belajar dari pengalaman dunia nyata',
-      descriptionHighlight: 'di tanganmu.',
-      ctaCalibrate: 'Mulai Kalibrasi',
-      ctaArena: 'Masuk Arena',
-      notLoggedIn: 'lebih seru dari menonton, lebih efektif dari membaca',
-      calibrationTime: '5-7 menit kalibrasi',
-      readyBattle: 'Siap bertempur',
-      liveStats: 'Statistik Live',
-      realTimeActivity: 'Aktivitas arena real-time',
-      quote: 'Tidak ada zona nyaman. Hanya zona pertumbuhan.',
-      sectionTitle: 'Sistem Berbasis Konfrontasi',
-      sectionSubtitle: 'Didukung oleh sains. Setiap elemen didesain untuk tumbuh melalui tekanan.',
-      warning: 'Ini bukan platform untuk merasa nyaman. Jika kamu mencari validasi, ini bukan tempatnya.',
+      badge: "Novax Trial",
+      headline1: "NovaX",
+      headline2: "Arena",
+      description: "Belajar dari pengalaman dunia nyata",
+      descriptionHighlight: "di tanganmu.",
+      ctaCalibrate: "Mulai Kalibrasi",
+      ctaArena: "Masuk Arena",
+      calibrationTime: "5-7 menit kalibrasi",
+      readyBattle: "Siap bertempur",
+      quote: "Tidak ada zona nyaman. Hanya zona pertumbuhan.",
       features: [
-        { title: 'Adaptive Matching', description: 'AI mencocokkan masalah dengan arketipe dan tingkat kemampuanmu' },
-        { title: 'XP = Kesulitan', description: 'Progres berdasarkan pertumbuhan dalam tantangan, bukan grinding' },
-        { title: 'Scar Badges', description: 'Badge membuktikan kamu telah berjuang dan tumbuh, bukan sekadar berpartisipasi' }
+        { icon: IconTarget, title: "Adaptive Matching", description: "AI mencocokkan masalah dengan arketipe + levelmu." },
+        { icon: IconTrendingUp, title: "XP = Kesulitan", description: "Progres dari tekanan, bukan grinding." },
+        { icon: IconShield, title: "Scar Badges", description: "Badge bukti kamu selamat dari konflik." }
       ]
     }
   }[lang];
 
-  const features = [
-    {
-      icon: Target,
-      title: t.features[0].title,
-      description: t.features[0].description,
-      gradient: "from-orange-500 to-red-600",
-      glow: "shadow-orange-500/30"
-    },
-    {
-      icon: TrendingUp,
-      title: t.features[1].title,
-      description: t.features[1].description,
-      gradient: "from-emerald-500 to-green-600",
-      glow: "shadow-emerald-500/30"
-    },
-    {
-      icon: Shield,
-      title: t.features[2].title,
-      description: t.features[2].description,
-      gradient: "from-violet-500 to-purple-600",
-      glow: "shadow-violet-500/30"
-    }
-  ];
-
   const stats = [
-    { value: "247", label: lang === 'en' ? "Active Battles" : "Pertempuran Aktif", icon: Zap, color: "text-yellow-400" },
-    { value: "7.2", label: lang === 'en' ? "Avg Difficulty" : "Rerata Kesulitan", icon: BarChart3, color: "text-orange-400" },
-    { value: "1.2k", label: lang === 'en' ? "Warriors" : "Pejuang", icon: Users, color: "text-cyan-400" }
+    { value: "247", label: lang === "en" ? "Active Battles" : "Pertempuran Aktif", icon: IconZap, accent: "bg-[var(--acid-yellow)]" },
+    { value: "7.2", label: lang === "en" ? "Avg Difficulty" : "Rerata Kesulitan", icon: IconBars, accent: "bg-[var(--acid-cyan)]" },
+    { value: "1.2k", label: lang === "en" ? "Warriors" : "Pejuang", icon: IconUsers, accent: "bg-[var(--acid-lime)]" }
   ];
 
   return (
-    <div className="min-h-screen bg-black relative overflow-hidden">
-      {/* Animated Background */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {/* Primary Glow */}
-        <motion.div
-          className="absolute top-[-30%] right-[-15%] w-[900px] h-[900px] rounded-full"
-          style={{
-            background: 'radial-gradient(circle, rgba(249, 115, 22, 0.15) 0%, rgba(234, 88, 12, 0.08) 40%, transparent 70%)'
-          }}
-          animate={{
-            scale: [1, 1.1, 1],
-            opacity: [0.8, 1, 0.8]
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
+    <div className="nx-page relative overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none nx-bg-wires opacity-[0.55]" />
+      <div className="absolute inset-0 pointer-events-none nx-bg-dots opacity-[0.22]" />
+      <div className="absolute -top-24 -right-24 w-[420px] h-[420px] nx-blob border-[3px] border-[var(--ink)] bg-[var(--acid-magenta)] opacity-[0.12]" />
+      <div className="absolute -bottom-24 -left-28 w-[520px] h-[520px] nx-blob border-[3px] border-[var(--ink)] bg-[var(--acid-cyan)] opacity-[0.10]" />
 
-        {/* Secondary Glow */}
-        <motion.div
-          className="absolute bottom-[-40%] left-[-20%] w-[700px] h-[700px] rounded-full"
-          style={{
-            background: 'radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 60%)'
-          }}
-          animate={{
-            scale: [1, 1.15, 1],
-            opacity: [0.6, 0.8, 0.6]
-          }}
-          transition={{
-            duration: 10,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 2
-          }}
-        />
+      <div className="nx-stage relative">
+        <div className="absolute -top-2 right-4 nx-mono text-[10px] text-[var(--ink-3)]">
+          X: {String(Math.floor(100 + (wordIndex * 7) % 90)).padStart(3, "0")} / Y: {String(Math.floor(40 + (wordIndex * 11) % 70)).padStart(3, "0")}
+        </div>
 
-        {/* Dot Pattern Background */}
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `radial-gradient(rgba(255,255,255,0.12) 2px, transparent 2px)`,
-            backgroundSize: '28px 28px'
-          }}
-        />
-
-        {/* Floating particles */}
-        {[...Array(5)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-orange-400/40 rounded-full"
-            style={{
-              left: `${20 + i * 15}%`,
-              top: `${30 + (i % 3) * 20}%`
-            }}
-            animate={{
-              y: [-20, 20, -20],
-              opacity: [0.2, 0.6, 0.2]
-            }}
-            transition={{
-              duration: 4 + i,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: i * 0.5
-            }}
-          />
-        ))}
-      </div>
-
-      <div className="relative z-10">
-        {/* Hero Section */}
-        <section className="max-w-6xl mx-auto px-6 md:px-8">
-          <div className="min-h-[65vh] flex flex-col pt-8 pb-16">
-            {/* Top Row - Headline and Learning From Card */}
-            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 lg:gap-8">
-              {/* Left - Main Content */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-                className="flex-1 max-w-xl"
-              >
-                {/* Badge and Language Toggle */}
-                <div className="flex flex-wrap items-center gap-4 mb-8">
-                  <motion.div
-                    className="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-gradient-to-r from-orange-500/15 to-red-500/10 border border-orange-500/25"
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.2, duration: 0.5 }}
-                  >
-                    <div className="w-2 h-2 rounded-full bg-orange-400 animate-pulse" />
-                    <span className="text-xs font-semibold text-orange-400 tracking-wider uppercase font-mono">{t.badge}</span>
-                  </motion.div>
-
-                  <motion.div
-                    className="flex items-center bg-zinc-900/50 border border-zinc-800 rounded-full p-1"
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.3 }}
-                  >
-                    <button
-                      onClick={() => setLang('en')}
-                      className={`px-3 py-1 rounded-full text-[10px] font-bold transition-all ${lang === 'en' ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20' : 'text-zinc-500 hover:text-zinc-300'}`}
-                    >
-                      EN
-                    </button>
-                    <button
-                      onClick={() => setLang('id')}
-                      className={`px-3 py-1 rounded-full text-[10px] font-bold transition-all ${lang === 'id' ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20' : 'text-zinc-500 hover:text-zinc-300'}`}
-                    >
-                      ID
-                    </button>
-                  </motion.div>
-                </div>
-
-                {/* Headline */}
-                <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-[0.95] tracking-tight">
-                  <span className="text-white">NovaX</span>{' '}
-                  <span className="text-gradient-fire">Arena</span>
-                </h1>
-
-                {/* Description */}
-                <p className="text-lg md:text-xl text-zinc-400 mb-10 max-w-lg leading-relaxed">
-                  {t.description}{' '}
-                  <span className="text-orange-400 font-medium">{t.descriptionHighlight}</span>
-                </p>
-
-                {/* CTA */}
-                <div className="flex flex-wrap items-center gap-4">
-                  <Button
-                    onClick={handleStart}
-                    variant="gradient"
-                    size="xl"
-                    className="group"
-                  >
-                    {hasProfile ? t.ctaArena : t.ctaCalibrate}
-                    <ArrowRight className="w-5 h-5 ml-1 group-hover:translate-x-1.5 transition-transform duration-300" />
-                  </Button>
-
-                  <button
-                    onClick={() => document.getElementById('demo-section')?.scrollIntoView({ behavior: 'smooth' })}
-                    className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors px-4 py-2.5 rounded-xl border border-zinc-700/50 hover:border-zinc-600"
-                  >
-                    <Play className="w-4 h-4" />
-                    <span className="text-sm font-medium">Watch Demo</span>
-                  </button>
-
-                  {isAuthenticated && (
-                    <div className="flex items-center gap-2.5 text-sm text-zinc-500 bg-zinc-900/50 px-4 py-2.5 rounded-xl border border-zinc-800/50">
-                      <span className="text-lg">
-                        {hasProfile ? '⚔️' : '🎯'}
-                      </span>
-                      <span>
-                        {hasProfile ? t.readyBattle : t.calibrationTime}
-                      </span>
-                    </div>
-                  )}
-                </div>
-              </motion.div>
+        <div className="grid lg:grid-cols-12 gap-6 items-start">
+          <div className="hidden lg:block lg:col-span-2">
+            <div className="nx-panel nx-sharp px-4 py-5 rotate-[-2deg]">
+              <div className="nx-crosshair -top-3 -left-3" />
+              <div className="nx-crosshair -bottom-3 -right-3" />
+              <div className="nx-vert text-[42px] font-black tracking-[-0.06em] leading-none">
+                <span className="text-[var(--ink)]">NOVA</span>
+              </div>
+              <div className="mt-4 nx-mono text-[10px] text-[var(--ink-2)] uppercase tracking-[0.22em]">
+                HUMAN-MADE UI
+              </div>
             </div>
-
-            {/* Bottom Row - Learning From Typewriter */}
-            <motion.div
-              className="mt-10"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.4 }}
-            >
-              {/* Typewriter Input Visual */}
-              <div className="flex items-center justify-center w-full">
-                <div className="relative inline-flex items-center px-5 py-3 md:px-6 md:py-3 bg-transparent border border-zinc-700/50 rounded-full w-full md:w-auto">
-                  <span className="text-zinc-500 text-base md:text-lg mr-2 whitespace-nowrap">Learning From</span>
-                  <div className="relative whitespace-nowrap">
-                    <span className={`text-base md:text-lg font-semibold bg-gradient-to-r ${learningColors[wordIndex]} bg-clip-text text-transparent`}>
-                      {displayText}
-                    </span>
-                    <span className={`text-orange-500 font-light ${showCursor ? 'opacity-100' : 'opacity-0'}`}>|</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* 3-Step Journey - vertical on mobile, horizontal on desktop */}
-              <div className="flex flex-col md:flex-row items-center gap-5 md:gap-4 text-2xl md:text-base justify-center mt-8">
-                <span className="text-zinc-300">
-                  <span className="text-violet-400 font-semibold">Write</span> your dreams
-                </span>
-                <span className="text-zinc-600 hidden md:inline text-xl">→</span>
-                <span className="text-zinc-500 md:hidden text-3xl">↓</span>
-                <span className="text-zinc-300">
-                  <span className="text-orange-400 font-semibold">Face</span> problems
-                </span>
-                <span className="text-zinc-600 hidden md:inline text-xl">→</span>
-                <span className="text-zinc-500 md:hidden text-3xl">↓</span>
-                <span className="text-zinc-300">
-                  <span className="text-emerald-400 font-semibold">Build</span> capabilities
-                </span>
-              </div>
-            </motion.div>
           </div>
-        </section>
 
-        {/* Demo Section */}
-        <section id="demo-section" className="max-w-6xl mx-auto px-6 md:px-8 py-20">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
+            className="lg:col-span-7"
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.18, ease: [0.9, 0.02, 0.2, 0.98] }}
           >
-            {/* Headline */}
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                Real problems are <span className="text-red-400">expensive</span>. NovaX is <span className="text-emerald-400">affordable</span>.
-              </h2>
-              <p className="text-zinc-500 max-w-2xl mx-auto">
-                Experience real-world challenges without real-world consequences. Learn faster, fail safely, grow stronger.
-              </p>
-            </div>
+            <div className="relative nx-panel nx-sharp px-6 py-7 md:px-8 md:py-9">
+              <div className="nx-crosshair -top-3 -right-3" />
+              <div className="nx-crosshair -bottom-3 -left-3" />
 
-            {/* Content Grid */}
-            <div className="grid lg:grid-cols-2 gap-10 items-center">
-              {/* Left - Video */}
-              <div className="relative rounded-2xl overflow-hidden bg-zinc-900 border border-zinc-800 aspect-video">
-                <iframe
-                  className="w-full h-full"
-                  src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-                  title="NovaX Arena Demo"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="border-2 border-[var(--ink)] bg-[var(--acid-yellow)] px-3 py-1.5 nx-mono text-[10px] uppercase tracking-[0.2em]">
+                    {t.badge}
+                  </div>
+                  <div className="nx-mono text-[10px] text-[var(--ink-3)]">
+                    {isAuthenticated ? "AUTH:ON" : "AUTH:OFF"} / {hasProfile ? "CAL:OK" : "CAL:WAIT"}
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setLang("en")}
+                    className={cn(
+                      "border-2 border-[var(--ink)] px-3 py-1.5 nx-mono text-[10px] tracking-[0.22em] transition-transform duration-100 [transition-timing-function:steps(4,end)]",
+                      lang === "en" ? "bg-[var(--acid-lime)]" : "bg-[var(--paper)] hover:-translate-y-0.5"
+                    )}
+                  >
+                    EN
+                  </button>
+                  <button
+                    onClick={() => setLang("id")}
+                    className={cn(
+                      "border-2 border-[var(--ink)] px-3 py-1.5 nx-mono text-[10px] tracking-[0.22em] transition-transform duration-100 [transition-timing-function:steps(4,end)]",
+                      lang === "id" ? "bg-[var(--acid-cyan)]" : "bg-[var(--paper)] hover:-translate-y-0.5"
+                    )}
+                  >
+                    ID
+                  </button>
+                </div>
               </div>
 
-              {/* Right - Explanation */}
-              <div className="space-y-6">
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center shrink-0">
-                    <Target className="w-5 h-5 text-red-400" />
+              <div className="mt-7">
+                <div className="relative">
+                  <div className="absolute -top-6 -left-1 text-[64px] md:text-[96px] font-black text-[rgba(11,11,12,0.06)] leading-none select-none">
+                    {t.headline1}
                   </div>
-                  <div>
-                    <h3 className="text-white font-semibold text-lg mb-1">Real Mistakes, No Real Cost</h3>
-                    <p className="text-zinc-400 text-sm">Making mistakes in the real world costs money, time, and reputation. Here, you learn from mistakes for free.</p>
-                  </div>
+                  <h1 className="relative text-[44px] md:text-[72px] font-black leading-[0.9] tracking-[-0.06em]">
+                    <span className="text-[var(--ink)]">{t.headline1}</span>{" "}
+                    <span className="px-2 bg-[var(--acid-orange)] border-2 border-[var(--ink)]">{t.headline2}</span>
+                  </h1>
                 </div>
 
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-orange-500/10 flex items-center justify-center shrink-0">
-                    <Zap className="w-5 h-5 text-orange-400" />
-                  </div>
-                  <div>
-                    <h3 className="text-white font-semibold text-lg mb-1">AI-Powered Pressure</h3>
-                    <p className="text-zinc-400 text-sm">Our AI adapts to your skill level and pushes you just enough to grow without overwhelming you.</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center shrink-0">
-                    <TrendingUp className="w-5 h-5 text-emerald-400" />
-                  </div>
-                  <div>
-                    <h3 className="text-white font-semibold text-lg mb-1">Measurable Growth</h3>
-                    <p className="text-zinc-400 text-sm">Track your progress with XP, capability badges and artifacts that prove your real improvement.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Punchline */}
-            <motion.div
-              className="mt-16 text-center"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3 }}
-            >
-              <p className="text-2xl md:text-4xl font-bold text-white">
-                Get proof of your <span className="text-gradient-fire">real capabilities</span>, not grades.
-              </p>
-              <p className="mt-4 text-zinc-400 text-sm">
-                <span className="text-cyan-400 font-medium">More fun</span> than watching, <span className="text-violet-400 font-medium">more effective</span> than reading.
-              </p>
-            </motion.div>
-          </motion.div>
-        </section>
-
-        {/* Features Section */}
-        <section className="max-w-6xl mx-auto px-6 md:px-8 py-24">
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true, margin: "-100px" }}
-          >
-            {/* Section Header */}
-            <div className="text-center mb-16">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-              >
-                <h2 className="text-3xl md:text-5xl text-white font-bold mb-4">
-                  Confrontation Based <span className="text-gradient-magic">System</span>
-                </h2>
-                <p className="text-zinc-500 max-w-xl mx-auto text-lg">
-                  Backed by science. Each element is designed for growth through pressure..
+                <p className="mt-5 text-[16px] md:text-[18px] nx-ink-muted max-w-xl">
+                  {t.description} <span className="font-semibold text-[var(--ink)] underline decoration-[var(--acid-magenta)] decoration-[3px] underline-offset-4">{t.descriptionHighlight}</span>
                 </p>
-              </motion.div>
-            </div>
 
-            {/* Features - Modern Cards */}
-            <div className="grid md:grid-cols-3 gap-6">
-              {features.map((feature, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.15, duration: 0.5 }}
-                  className="relative p-6 rounded-xl bg-zinc-900/50 backdrop-blur-sm border border-zinc-800/50 hover:border-zinc-700/50 transition-colors duration-300"
-                >
-                  {/* Small accent line at top */}
-                  <div className={`absolute top-0 left-6 right-6 h-px bg-gradient-to-r ${feature.gradient} opacity-40`} />
-
-                  {/* Icon - small and subtle */}
-                  <div className="mb-4">
-                    <feature.icon className={`w-5 h-5 ${i === 0 ? 'text-orange-400' : i === 1 ? 'text-emerald-400' : 'text-violet-400'}`} />
+                <div className="mt-7 flex flex-wrap items-center gap-4">
+                  <Button onClick={handleStart} variant="gradient" size="xl" className="group">
+                    {hasProfile ? t.ctaArena : t.ctaCalibrate}
+                    <IconArrowRight className="w-5 h-5 ml-2 transition-transform duration-100 [transition-timing-function:steps(4,end)] group-hover:translate-x-1" />
+                  </Button>
+                  <button
+                    onClick={() => document.getElementById("demo-section")?.scrollIntoView()}
+                    className="nx-panel nx-sharp px-4 py-3 flex items-center gap-3 transition-transform duration-100 [transition-timing-function:steps(4,end)] hover:-translate-x-1 hover:-translate-y-1"
+                    style={{ boxShadow: "8px 8px 0 var(--ink)" }}
+                  >
+                    <span className="w-10 h-10 border-2 border-[var(--ink)] bg-[var(--paper-2)] flex items-center justify-center">
+                      <IconPlay className="w-5 h-5" />
+                    </span>
+                    <div className="text-left">
+                      <div className="text-sm font-bold">WATCH DEMO</div>
+                      <div className="nx-mono text-[10px] text-[var(--ink-3)]">NO SMOOTH SCROLL</div>
+                    </div>
+                  </button>
+                  <div className="nx-mono text-[10px] text-[var(--ink-2)] border-2 border-[var(--ink)] px-3 py-2 bg-[var(--paper)]">
+                    {hasProfile ? t.readyBattle : t.calibrationTime}
                   </div>
-
-                  <h3 className="text-white font-medium text-lg mb-2">
-                    {feature.title}
-                  </h3>
-
-                  <p className="text-zinc-400 text-sm leading-relaxed">
-                    {feature.description}
-                  </p>
-                </motion.div>
-              ))}
-            </div>
-
-            {/* Warning Banner */}
-            <motion.div
-              className="mt-20"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              <div className="relative overflow-hidden bg-gradient-to-r from-zinc-900 via-zinc-900/95 to-zinc-900 border border-red-500/20 rounded-2xl p-8 text-center max-w-3xl mx-auto">
-                {/* Red glow */}
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-24 bg-red-500/20 rounded-full blur-3xl" />
-
-                <div className="relative z-10">
-                  <p className="text-lg text-zinc-400">
-                    <span className="text-red-400 font-semibold">⚠️ Important:</span>{' '}
-                    Built by students for students. Competing healthily and<span className="text-white font-medium"> disrupting the world.</span>
-                  </p>
                 </div>
               </div>
-            </motion.div>
+
+              <div className="mt-10 nx-panel nx-sharp px-5 py-4 nx-bg-stripes">
+                <div className="flex items-center gap-3">
+                  <div className="nx-mono text-[10px] uppercase tracking-[0.22em]">Learning From</div>
+                  <div className="nx-mono text-[12px] text-[var(--ink-3)]">/</div>
+                  <div className="flex items-center gap-1">
+                    <span className="text-[14px] md:text-[16px] font-bold">{displayText}</span>
+                    <span className={cn("nx-mono text-[14px]", showCursor ? "opacity-100" : "opacity-0")}>|</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </motion.div>
+
+          <div className="lg:col-span-3 lg:pt-6">
+            <div className="space-y-5">
+              <div className="nx-panel nx-sharp px-5 py-5 rotate-[1.6deg]">
+                <div className="flex items-center justify-between">
+                  <div className="nx-mono text-[10px] uppercase tracking-[0.22em]">LIVE FEED</div>
+                  <IconSpark className="w-5 h-5" />
+                </div>
+                <div className="mt-4 grid grid-cols-1 gap-3">
+                  {stats.map((s) => {
+                    const StatIcon = s.icon;
+                    return (
+                      <div key={s.label} className="border-2 border-[var(--ink)] bg-[var(--paper-2)] px-4 py-3 flex items-center gap-3">
+                        <div className={cn("w-10 h-10 border-2 border-[var(--ink)] flex items-center justify-center", s.accent)}>
+                          <StatIcon className="w-5 h-5" />
+                        </div>
+                        <div className="min-w-0">
+                          <div className="text-2xl font-black leading-none">{s.value}</div>
+                          <div className="nx-mono text-[10px] text-[var(--ink-3)] uppercase tracking-[0.18em] truncate">{s.label}</div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="nx-panel nx-sharp px-5 py-5 -rotate-[1deg]">
+                <div className="nx-mono text-[10px] text-[var(--ink-3)]">MANIFEST / 00</div>
+                <div className="mt-3 text-[18px] font-black leading-[1.05]">
+                  <span className="bg-[var(--acid-magenta)] border-2 border-[var(--ink)] px-1">QUOTE</span>{" "}
+                  {t.quote}
+                </div>
+                <div className="mt-4 space-y-3">
+                  {t.features.map((f) => {
+                    const FeatureIcon = f.icon;
+                    return (
+                      <div key={f.title} className="border-2 border-[var(--ink)] bg-[var(--paper-2)] px-4 py-3">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <FeatureIcon className="w-4 h-4" />
+                            <div className="font-bold">{f.title}</div>
+                          </div>
+                          <div className="nx-mono text-[10px] text-[var(--ink-3)]">+</div>
+                        </div>
+                        <div className="mt-1 text-[13px] nx-ink-muted">{f.description}</div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <section id="demo-section" className="mt-14">
+          <div className="grid md:grid-cols-12 gap-6 items-start">
+            <div className="md:col-span-7">
+              <div className="nx-panel nx-sharp overflow-hidden">
+                <div className="nx-hard-gradient border-b-[3px] border-[var(--ink)] px-6 py-4 flex items-center justify-between">
+                  <div className="text-lg font-black tracking-[-0.04em]">DEMO</div>
+                  <div className="nx-mono text-[10px] uppercase tracking-[0.22em]">YT EMBED</div>
+                </div>
+                <div className="aspect-video bg-[var(--paper-2)]">
+                  <iframe
+                    className="w-full h-full"
+                    src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                    title="NovaX Arena Demo"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="md:col-span-5 md:pt-8">
+              <div className="nx-panel nx-sharp px-6 py-6 rotate-[0.8deg]">
+                <div className="nx-mono text-[10px] text-[var(--ink-3)] uppercase tracking-[0.22em]">NO PASTEL / NO SOFT SHADOW</div>
+                <div className="mt-3 text-2xl md:text-3xl font-black leading-[1] tracking-[-0.05em]">
+                  Real problems are <span className="bg-[var(--acid-yellow)] border-2 border-[var(--ink)] px-1">EXPENSIVE</span>.
+                </div>
+                <div className="mt-3 text-lg font-bold">
+                  NovaX is <span className="bg-[var(--acid-lime)] border-2 border-[var(--ink)] px-1">AFFORDABLE</span>.
+                </div>
+                <div className="mt-4 nx-ink-muted">
+                  Experience pressure without cost. Learn faster, fail safely, keep receipts.
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
       </div>
     </div>

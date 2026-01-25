@@ -60,23 +60,22 @@ export default function Profile() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
+      <div className="min-h-screen nx-page relative overflow-hidden flex items-center justify-center">
+        <div className="absolute inset-0 pointer-events-none nx-bg-wires opacity-[0.55]" />
+        <div className="absolute inset-0 pointer-events-none nx-bg-dots opacity-[0.2]" />
         <motion.div
           className="flex flex-col items-center gap-4"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
         >
-          <div className="relative">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center">
-              <User className="w-8 h-8 text-white" />
+          <div className="nx-panel nx-sharp px-8 py-8 text-center">
+            <div className="nx-crosshair -top-3 -left-3" />
+            <div className="nx-crosshair -bottom-3 -right-3" />
+            <div className="w-16 h-16 border-[3px] border-[var(--ink)] bg-[var(--acid-magenta)] flex items-center justify-center mx-auto">
+              <User className="w-8 h-8 text-[var(--ink)]" />
             </div>
-            <motion.div
-              className="absolute inset-0 rounded-2xl bg-violet-500/30"
-              animate={{ scale: [1, 1.3, 1], opacity: [0.5, 0, 0.5] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-            />
+            <p className="mt-4 text-[var(--ink-2)] font-semibold">Loading profile...</p>
           </div>
-          <p className="text-zinc-400 font-medium">Loading profile...</p>
         </motion.div>
       </div>
     );
@@ -95,13 +94,13 @@ export default function Profile() {
   ];
 
   return (
-    <div className="min-h-screen bg-black relative">
-      {/* Background effects */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-[-15%] left-[50%] -translate-x-1/2 w-[800px] h-[400px] bg-violet-600/10 rounded-full blur-3xl" />
-      </div>
+    <div className="min-h-screen nx-page relative overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none nx-bg-wires opacity-[0.55]" />
+      <div className="absolute inset-0 pointer-events-none nx-bg-dots opacity-[0.18]" />
+      <div className="absolute -top-24 -right-24 w-[520px] h-[520px] nx-blob border-[3px] border-[var(--ink)] bg-[var(--acid-magenta)] opacity-[0.08]" />
+      <div className="absolute -bottom-24 -left-28 w-[560px] h-[560px] nx-blob border-[3px] border-[var(--ink)] bg-[var(--acid-lime)] opacity-[0.08]" />
 
-      <div className="relative z-10 max-w-4xl mx-auto px-6 md:px-8 py-8">
+      <div className="nx-stage relative pt-24 md:pt-28">
         {/* Profile Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -111,20 +110,23 @@ export default function Profile() {
           {/* Archetype Icon */}
           <div className="relative inline-block mb-6">
             <motion.div
-              className={cn("w-28 h-28 rounded-3xl flex items-center justify-center bg-gradient-to-br", archetype.gradient, "shadow-lg")}
+              className={cn(
+                "w-28 h-28 nx-sharp border-[3px] border-[var(--ink)] flex items-center justify-center bg-gradient-to-br",
+                archetype.gradient
+              )}
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ delay: 0.2, type: "spring" }}
             >
-              <Icon className="w-14 h-14 text-white" />
+              <Icon className="w-14 h-14 text-[var(--ink)]" />
             </motion.div>
             <motion.div
-              className="absolute -bottom-2 -right-2 w-8 h-8 bg-zinc-900 border border-zinc-700 rounded-xl flex items-center justify-center"
+              className="absolute -bottom-2 -right-2 w-10 h-10 bg-[var(--paper)] border-[3px] border-[var(--ink)] nx-sharp flex items-center justify-center"
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ delay: 0.4 }}
             >
-              <Sparkles className="w-4 h-4 text-violet-400" />
+              <Sparkles className="w-4 h-4 text-[var(--ink)]" />
             </motion.div>
           </div>
 
@@ -132,7 +134,7 @@ export default function Profile() {
             {archetype.label}
           </h1>
 
-          <p className="text-zinc-500 capitalize text-lg">
+          <p className="nx-ink-muted capitalize text-lg">
             {profile.domain?.replace('_', ' ')} • {profile.aspiration?.replace('_', ' ')}
           </p>
         </motion.div>
@@ -145,13 +147,13 @@ export default function Profile() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 + i * 0.1 }}
-              className="group bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-2xl p-5 text-center hover:border-zinc-700 transition-all duration-300"
+              className="group nx-panel nx-sharp p-5 text-center"
             >
-              <div className={cn("w-11 h-11 rounded-xl mx-auto mb-3 flex items-center justify-center transition-transform group-hover:scale-110", stat.bg)}>
+              <div className={cn("w-11 h-11 border-2 border-[var(--ink)] mx-auto mb-3 flex items-center justify-center transition-transform duration-100 [transition-timing-function:steps(4,end)] group-hover:-translate-x-0.5 group-hover:-translate-y-0.5", stat.bg)}>
                 <stat.icon className={cn("w-5 h-5", stat.color)} />
               </div>
-              <p className="text-3xl font-bold text-white font-mono mb-1">{stat.value}</p>
-              <p className="text-xs text-zinc-500">{stat.label}</p>
+              <p className="text-3xl font-bold text-[var(--ink)] nx-mono mb-1">{stat.value}</p>
+              <p className="text-xs nx-ink-muted">{stat.label}</p>
             </motion.div>
           ))}
         </div>
@@ -175,29 +177,29 @@ export default function Profile() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-2xl p-8 mb-8"
+          className="nx-panel nx-sharp p-8 mb-8"
         >
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-xl bg-violet-500/15 flex items-center justify-center">
-              <Target className="w-5 h-5 text-violet-400" />
+            <div className="w-10 h-10 border-2 border-[var(--ink)] bg-[var(--acid-cyan)]/20 flex items-center justify-center nx-sharp">
+              <Target className="w-5 h-5 text-[var(--ink)]" />
             </div>
-            <h2 className="text-white font-bold text-xl">Archetype Distribution</h2>
+            <h2 className="text-[var(--ink)] font-black text-xl tracking-[-0.04em]">Archetype Distribution</h2>
           </div>
 
           <ArchetypeRadar profile={profile} />
 
           {/* XP Breakdown */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8 pt-6 border-t border-zinc-800">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8 pt-6 border-t-2 border-[var(--ink)]">
             {Object.entries(archetypeConfig).map(([key, config]) => {
               const xp = profile[`xp_${key}`] || 0;
               const ConfigIcon = config.icon;
               return (
                 <div key={key} className="text-center group">
-                  <div className={cn("w-8 h-8 rounded-lg mx-auto mb-2 flex items-center justify-center transition-all group-hover:scale-110", config.bg)}>
+                  <div className={cn("w-8 h-8 border-2 border-[var(--ink)] mx-auto mb-2 flex items-center justify-center transition-transform duration-100 [transition-timing-function:steps(4,end)] group-hover:-translate-x-0.5 group-hover:-translate-y-0.5", config.bg)}>
                     <ConfigIcon className={cn("w-4 h-4", config.color)} />
                   </div>
                   <p className={cn("font-mono text-2xl font-bold", config.color)}>{xp}</p>
-                  <p className="text-xs text-zinc-600">{config.label}</p>
+                  <p className="text-xs nx-ink-muted">{config.label}</p>
                 </div>
               );
             })}
@@ -209,15 +211,15 @@ export default function Profile() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
-          className="bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-2xl p-8 mb-8"
+          className="nx-panel nx-sharp p-8 mb-8"
         >
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-xl bg-orange-500/15 flex items-center justify-center">
-              <Award className="w-5 h-5 text-orange-400" />
+            <div className="w-10 h-10 border-2 border-[var(--ink)] bg-[var(--acid-orange)]/20 flex items-center justify-center nx-sharp">
+              <Award className="w-5 h-5 text-[var(--ink)]" />
             </div>
             <div>
-              <h2 className="text-white font-bold text-xl">Badges/Achievements</h2>
-              <p className="text-sm text-zinc-500">Proof of your battles</p>
+              <h2 className="text-[var(--ink)] font-black text-xl tracking-[-0.04em]">Badges/Achievements</h2>
+              <p className="text-sm nx-ink-muted">Proof of your battles</p>
             </div>
           </div>
           <BadgeDisplay achievements={achievements} />
@@ -228,15 +230,15 @@ export default function Profile() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7 }}
-          className="bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-2xl p-8"
+          className="nx-panel nx-sharp p-8"
         >
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-xl bg-cyan-500/15 flex items-center justify-center">
-              <Sparkles className="w-5 h-5 text-cyan-400" />
+            <div className="w-10 h-10 border-2 border-[var(--ink)] bg-[var(--acid-yellow)]/20 flex items-center justify-center nx-sharp">
+              <Sparkles className="w-5 h-5 text-[var(--ink)]" />
             </div>
             <div>
-              <h2 className="text-white font-bold text-xl">Portfolio Artifacts</h2>
-              <p className="text-sm text-zinc-500">Problems you've conquered</p>
+              <h2 className="text-[var(--ink)] font-black text-xl tracking-[-0.04em]">Portfolio Artifacts</h2>
+              <p className="text-sm nx-ink-muted">Problems you've conquered</p>
             </div>
           </div>
 
@@ -248,42 +250,42 @@ export default function Profile() {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.8 + index * 0.1 }}
-                  className="bg-zinc-950/50 border border-zinc-800 rounded-xl p-5 hover:border-zinc-700 transition-all group"
+                  className="nx-panel-static nx-sharp p-5 group"
                 >
                   <div className="flex items-start justify-between gap-4 mb-3">
                     <div className="flex-1 min-w-0">
-                      <span className="font-mono text-xs text-zinc-600">
+                      <span className="nx-mono text-xs nx-ink-faint">
                         {artifact.problem_id}
                       </span>
-                      <h3 className="text-white font-semibold truncate group-hover:text-orange-400 transition-colors">{artifact.problem_title}</h3>
+                      <h3 className="text-[var(--ink)] font-black truncate tracking-[-0.02em]">{artifact.problem_title}</h3>
                     </div>
                     <span className={cn(
-                      "shrink-0 px-3 py-1.5 rounded-lg text-xs font-mono font-medium",
-                      artifact.difficulty <= 3 ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/20" :
-                        artifact.difficulty <= 6 ? "bg-yellow-500/15 text-yellow-400 border border-yellow-500/20" :
-                          "bg-red-500/15 text-red-400 border border-red-500/20"
+                      "shrink-0 px-3 py-1.5 nx-sharp text-xs nx-mono font-bold border-2 border-[var(--ink)]",
+                      artifact.difficulty <= 3 ? "bg-[var(--acid-lime)]/40 text-[var(--ink)]" :
+                        artifact.difficulty <= 6 ? "bg-[var(--acid-yellow)]/50 text-[var(--ink)]" :
+                          "bg-[var(--acid-magenta)]/25 text-[var(--ink)]"
                     )}>
                       Difficulty {artifact.difficulty}
                     </span>
                   </div>
 
-                  <p className="text-zinc-400 text-sm mb-2">
+                  <p className="nx-ink-muted text-sm mb-2">
                     Conquered as{' '}
-                    <span className="text-orange-400 capitalize font-medium">
+                    <span className="text-[var(--ink)] capitalize font-semibold underline decoration-[var(--acid-orange)] decoration-[3px] underline-offset-4">
                       {artifact.archetype_role?.replace('_', ' ')}
                     </span>
                   </p>
 
                   {artifact.insight && (
-                    <p className="text-sm italic text-zinc-500 bg-zinc-800/30 rounded-lg px-3 py-2 mt-3">
+                    <p className="text-sm italic nx-ink-muted bg-[var(--paper-2)] border-2 border-[var(--ink)] nx-sharp px-3 py-2 mt-3">
                       "{artifact.insight}"
                     </p>
                   )}
 
                   {artifact.level_up_verified && (
                     <div className="flex items-center gap-1.5 mt-3">
-                      <TrendingUp className="w-3.5 h-3.5 text-emerald-400" />
-                      <span className="text-xs text-emerald-400 font-medium">
+                      <TrendingUp className="w-3.5 h-3.5 text-[var(--ink)]" />
+                      <span className="text-xs text-[var(--ink)] font-semibold">
                         Level Up Verified
                       </span>
                     </div>
@@ -293,13 +295,13 @@ export default function Profile() {
             </div>
           ) : (
             <div className="text-center py-16">
-              <div className="w-16 h-16 bg-zinc-800 rounded-2xl mx-auto mb-4 flex items-center justify-center">
-                <Trophy className="w-8 h-8 text-zinc-600" />
+              <div className="w-16 h-16 bg-[var(--paper-2)] border-[3px] border-[var(--ink)] mx-auto mb-4 flex items-center justify-center nx-sharp">
+                <Trophy className="w-8 h-8 text-[var(--ink)]" />
               </div>
-              <p className="text-lg text-zinc-400 font-medium mb-2">
+              <p className="text-lg text-[var(--ink)] font-semibold mb-2">
                 Belum ada artifact
               </p>
-              <p className="text-zinc-600 max-w-sm mx-auto">
+              <p className="nx-ink-muted max-w-sm mx-auto">
                 Selesaikan arena untuk mengumpulkan bukti pertempuranmu
               </p>
             </div>

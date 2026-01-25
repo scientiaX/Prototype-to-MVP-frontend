@@ -27,17 +27,17 @@ export default function ArchetypeRadar({ profile }) {
     <div className="w-full h-64">
       <ResponsiveContainer width="100%" height="100%">
         <RadarChart data={normalizedData}>
-          <PolarGrid stroke="#27272a" />
+          <PolarGrid stroke="rgba(11, 11, 12, 0.22)" />
           <PolarAngleAxis 
             dataKey="archetype" 
-            tick={{ fill: '#71717a', fontSize: 12 }}
+            tick={{ fill: 'rgba(11, 11, 12, 0.62)', fontSize: 12 }}
           />
           <Radar
             name="XP"
             dataKey="xp"
-            stroke="#f97316"
-            fill="#f97316"
-            fillOpacity={0.3}
+            stroke="#ff4d00"
+            fill="#ff4d00"
+            fillOpacity={0.22}
           />
         </RadarChart>
       </ResponsiveContainer>

@@ -77,55 +77,53 @@ export default function Leaderboard() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
+      <div className="min-h-screen nx-page relative overflow-hidden flex items-center justify-center">
+        <div className="absolute inset-0 pointer-events-none nx-bg-wires opacity-[0.55]" />
+        <div className="absolute inset-0 pointer-events-none nx-bg-dots opacity-[0.2]" />
         <motion.div
           className="flex flex-col items-center gap-4"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
         >
-          <div className="relative">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-yellow-500 to-amber-600 flex items-center justify-center">
-              <Trophy className="w-8 h-8 text-black" />
+          <div className="nx-panel nx-sharp px-8 py-8 text-center">
+            <div className="nx-crosshair -top-3 -left-3" />
+            <div className="nx-crosshair -bottom-3 -right-3" />
+            <div className="w-16 h-16 border-[3px] border-[var(--ink)] bg-[var(--acid-yellow)] flex items-center justify-center mx-auto">
+              <Trophy className="w-8 h-8 text-[var(--ink)]" />
             </div>
-            <motion.div
-              className="absolute inset-0 rounded-2xl bg-yellow-500/30"
-              animate={{ scale: [1, 1.3, 1], opacity: [0.5, 0, 0.5] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-            />
+            <p className="mt-4 text-[var(--ink-2)] font-semibold">Loading rankings...</p>
           </div>
-          <p className="text-zinc-400 font-medium">Loading rankings...</p>
         </motion.div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-black relative">
-      {/* Background effects */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-[-10%] left-[30%] w-[500px] h-[500px] bg-yellow-600/8 rounded-full blur-3xl" />
-        <div className="absolute bottom-[-20%] right-[20%] w-[400px] h-[400px] bg-orange-600/6 rounded-full blur-3xl" />
-      </div>
+    <div className="min-h-screen nx-page relative overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none nx-bg-wires opacity-[0.55]" />
+      <div className="absolute inset-0 pointer-events-none nx-bg-dots opacity-[0.18]" />
+      <div className="absolute -top-24 -right-24 w-[520px] h-[520px] nx-blob border-[3px] border-[var(--ink)] bg-[var(--acid-yellow)] opacity-[0.08]" />
+      <div className="absolute -bottom-24 -left-28 w-[560px] h-[560px] nx-blob border-[3px] border-[var(--ink)] bg-[var(--acid-orange)] opacity-[0.08]" />
 
-      <div className="relative z-10 max-w-4xl mx-auto px-6 md:px-8 py-8">
+      <div className="nx-stage relative pt-24 md:pt-28">
         {/* Header */}
         <motion.div
           className="text-center mb-10"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-gradient-to-r from-yellow-500/15 to-amber-500/10 border border-yellow-500/25 mb-4">
-            <Medal className="w-3.5 h-3.5 text-yellow-400" />
-            <span className="text-xs font-semibold text-yellow-400 tracking-wider uppercase font-mono">Rankings</span>
+          <div className="inline-flex items-center gap-2.5 px-4 py-2 border-2 border-[var(--ink)] bg-[var(--acid-yellow)] mb-4">
+            <Medal className="w-3.5 h-3.5 text-[var(--ink)]" />
+            <span className="text-xs font-black text-[var(--ink)] tracking-wider uppercase nx-mono">Rankings</span>
           </div>
-          <h1 className="text-3xl md:text-5xl font-bold text-white mb-3">
+          <h1 className="text-3xl md:text-5xl font-black text-[var(--ink)] mb-3 tracking-[-0.06em]">
             Leaderboard
           </h1>
         </motion.div>
 
         {/* Mode Tabs */}
         <motion.div
-          className="bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-2xl p-2 mb-6"
+          className="nx-panel nx-sharp p-2 mb-6"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
@@ -134,15 +132,15 @@ export default function Leaderboard() {
             <button
               onClick={() => setActiveTab('growth')}
               className={cn(
-                "relative flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl text-sm font-medium transition-all duration-300",
+                "relative flex items-center justify-center gap-2 py-3.5 px-4 nx-sharp text-sm font-semibold transition-all duration-100 [transition-timing-function:steps(4,end)]",
                 activeTab === 'growth'
-                  ? "text-black"
-                  : "text-zinc-400 hover:text-white hover:bg-zinc-800/50"
+                  ? "text-[var(--ink)]"
+                  : "text-[var(--ink-2)] hover:text-[var(--ink)]"
               )}
             >
               {activeTab === 'growth' && (
                 <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-orange-500 to-red-600 rounded-xl"
+                  className="absolute inset-0 bg-[var(--acid-orange)] border-2 border-[var(--ink)]"
                   layoutId="activeTab"
                   transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                 />
@@ -153,15 +151,15 @@ export default function Leaderboard() {
             <button
               onClick={() => setActiveTab('reliability')}
               className={cn(
-                "relative flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl text-sm font-medium transition-all duration-300",
+                "relative flex items-center justify-center gap-2 py-3.5 px-4 nx-sharp text-sm font-semibold transition-all duration-100 [transition-timing-function:steps(4,end)]",
                 activeTab === 'reliability'
-                  ? "text-black"
-                  : "text-zinc-400 hover:text-white hover:bg-zinc-800/50"
+                  ? "text-[var(--ink)]"
+                  : "text-[var(--ink-2)] hover:text-[var(--ink)]"
               )}
             >
               {activeTab === 'reliability' && (
                 <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-orange-500 to-red-600 rounded-xl"
+                  className="absolute inset-0 bg-[var(--acid-orange)] border-2 border-[var(--ink)]"
                   layoutId="activeTab"
                   transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                 />
@@ -182,10 +180,10 @@ export default function Leaderboard() {
           <button
             onClick={() => setArchetypeFilter('all')}
             className={cn(
-              "px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200",
+              "px-4 py-2.5 nx-sharp text-sm font-semibold transition-transform duration-100 [transition-timing-function:steps(4,end)] border-2 border-[var(--ink)]",
               archetypeFilter === 'all'
-                ? "bg-white text-black"
-                : "bg-zinc-800/80 text-zinc-400 hover:bg-zinc-700 hover:text-white"
+                ? "bg-[var(--acid-lime)] text-[var(--ink)]"
+                : "bg-[var(--paper)] text-[var(--ink-2)] hover:-translate-y-0.5"
             )}
           >
             <span className="flex items-center gap-2">
@@ -200,10 +198,10 @@ export default function Leaderboard() {
                 key={key}
                 onClick={() => setArchetypeFilter(key)}
                 className={cn(
-                  "flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200",
+                  "flex items-center gap-2 px-4 py-2.5 nx-sharp text-sm font-semibold transition-transform duration-100 [transition-timing-function:steps(4,end)] border-2 border-[var(--ink)]",
                   archetypeFilter === key
-                    ? `${config.bg} ${config.color} border border-current`
-                    : "bg-zinc-800/80 text-zinc-400 hover:bg-zinc-700 hover:text-white"
+                    ? `bg-[var(--paper-2)] ${config.color}`
+                    : "bg-[var(--paper)] text-[var(--ink-2)] hover:-translate-y-0.5"
                 )}
               >
                 <Icon className="w-4 h-4" />
@@ -232,20 +230,20 @@ export default function Leaderboard() {
                 transition={{ delay: 0.3 + index * 0.03 }}
                 onClick={() => setSelectedProfile(profile)}
                 className={cn(
-                  "group bg-zinc-900/80 backdrop-blur-sm border rounded-2xl flex items-center gap-4 p-4 transition-all duration-300 cursor-pointer",
+                  "group nx-panel-static nx-sharp flex items-center gap-4 p-4 cursor-pointer transition-transform duration-100 [transition-timing-function:steps(4,end)] hover:-translate-x-1 hover:-translate-y-1",
                   isCurrentUser
-                    ? "border-orange-500/40 bg-orange-500/5 hover:bg-orange-500/10"
-                    : "border-zinc-800 hover:border-zinc-700 hover:bg-zinc-800/50"
+                    ? "bg-[var(--acid-orange)]/10"
+                    : ""
                 )}
               >
                 {/* Rank */}
                 <div className="w-14 text-center shrink-0">
                   {isTopThree ? (
-                    <div className={cn("w-12 h-12 rounded-xl flex items-center justify-center mx-auto bg-gradient-to-br", rank.gradient, "shadow-lg")}>
-                      <Crown className="w-6 h-6 text-black" />
+                    <div className={cn("w-12 h-12 nx-sharp border-[3px] border-[var(--ink)] flex items-center justify-center mx-auto bg-gradient-to-br", rank.gradient)}>
+                      <Crown className="w-6 h-6 text-[var(--ink)]" />
                     </div>
                   ) : (
-                    <span className="font-mono text-xl text-zinc-500 font-bold">
+                    <span className="nx-mono text-xl text-[var(--ink-3)] font-bold">
                       {index + 1}
                     </span>
                   )}
@@ -259,14 +257,14 @@ export default function Leaderboard() {
                 {/* Info */}
                 <div className="flex-1 min-w-0">
                   <p className={cn(
-                    "font-semibold truncate text-lg",
-                    isCurrentUser ? "text-orange-400" : "text-white"
+                    "font-black truncate text-lg tracking-[-0.02em]",
+                    isCurrentUser ? "text-[var(--ink)]" : "text-[var(--ink)]"
                   )}>
                     {isCurrentUser ? 'Kamu' : displayName}
                   </p>
-                  <div className="flex items-center gap-2 text-sm text-zinc-500">
+                  <div className="flex items-center gap-2 text-sm nx-ink-muted">
                     <span>Level {profile.current_difficulty}</span>
-                    <span className="w-1 h-1 rounded-full bg-zinc-600" />
+                    <span className="w-1 h-1 bg-[var(--ink)]" />
                     <span>{profile.total_arenas_completed || 0} arenas</span>
                   </div>
                 </div>
@@ -275,11 +273,11 @@ export default function Leaderboard() {
                 <div className="text-right shrink-0">
                   <p className={cn(
                     "text-2xl font-bold font-mono",
-                    isTopThree && rank ? rank.color : "text-white"
+                    isTopThree && rank ? rank.color : "text-[var(--ink)]"
                   )}>
                     {score}
                   </p>
-                  <p className="text-xs text-zinc-600 uppercase tracking-wide">
+                  <p className="text-xs nx-ink-faint uppercase tracking-wide">
                     XP
                   </p>
                 </div>
@@ -290,14 +288,14 @@ export default function Leaderboard() {
 
         {filteredProfiles.length === 0 && (
           <motion.div
-            className="bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-2xl p-16 text-center"
+            className="nx-panel nx-sharp p-16 text-center"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
           >
-            <div className="w-16 h-16 bg-zinc-800 rounded-2xl mx-auto mb-4 flex items-center justify-center">
-              <Users className="w-8 h-8 text-zinc-600" />
+            <div className="w-16 h-16 bg-[var(--paper-2)] border-[3px] border-[var(--ink)] mx-auto mb-4 flex items-center justify-center nx-sharp">
+              <Users className="w-8 h-8 text-[var(--ink)]" />
             </div>
-            <p className="text-lg text-zinc-400">Belum ada data untuk ditampilkan.</p>
+            <p className="text-lg nx-ink-muted">Belum ada data untuk ditampilkan.</p>
           </motion.div>
         )}
 
@@ -308,14 +306,13 @@ export default function Leaderboard() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
         >
-          <div className="relative overflow-hidden bg-zinc-900/50 border border-orange-500/20 rounded-2xl p-6">
-            <div className="absolute top-0 left-0 w-24 h-24 bg-orange-500/10 rounded-full blur-2xl" />
-            <div className="relative z-10 flex items-start gap-3">
-              <div className="w-8 h-8 rounded-lg bg-orange-500/15 flex items-center justify-center shrink-0 mt-0.5">
-                <Sparkles className="w-4 h-4 text-orange-400" />
+          <div className="nx-panel nx-sharp p-6">
+            <div className="flex items-start gap-3">
+              <div className="w-8 h-8 nx-sharp border-2 border-[var(--ink)] bg-[var(--acid-orange)]/20 flex items-center justify-center shrink-0 mt-0.5">
+                <Sparkles className="w-4 h-4 text-[var(--ink)]" />
               </div>
-              <p className="text-sm text-zinc-400">
-                <span className="text-orange-400 font-semibold">Note: </span>
+              <p className="text-sm nx-ink-muted">
+                <span className="text-[var(--ink)] font-semibold">Note: </span>
                 {activeTab === 'growth'
                   ? 'Growth leaderboard | Based on XP delta.'
                   : 'All-Time.'
@@ -329,24 +326,24 @@ export default function Leaderboard() {
         <AnimatePresence>
           {selectedProfile && (
             <motion.div
-              className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+              className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setSelectedProfile(null)}
             >
               <motion.div
-                className="bg-zinc-900 border border-zinc-700 rounded-2xl max-w-md w-full overflow-hidden"
+                className="nx-panel nx-sharp max-w-md w-full overflow-hidden"
                 initial={{ scale: 0.9, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.9, opacity: 0 }}
                 onClick={(e) => e.stopPropagation()}
               >
                 {/* Modal Header */}
-                <div className="relative bg-gradient-to-r from-orange-500/20 to-red-500/20 p-6">
+                <div className="relative bg-[var(--paper-2)] border-b-[3px] border-[var(--ink)] p-6">
                   <button
                     onClick={() => setSelectedProfile(null)}
-                    className="absolute top-4 right-4 w-8 h-8 rounded-full bg-zinc-800/80 flex items-center justify-center text-zinc-400 hover:text-white hover:bg-zinc-700 transition-colors"
+                    className="absolute top-4 right-4 w-10 h-10 nx-sharp border-2 border-[var(--ink)] bg-[var(--paper)] flex items-center justify-center text-[var(--ink)] transition-transform duration-100 [transition-timing-function:steps(4,end)] hover:-translate-x-0.5 hover:-translate-y-0.5"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -355,13 +352,13 @@ export default function Leaderboard() {
                       const arch = archetypeConfig[selectedProfile.primary_archetype] || archetypeConfig.analyst;
                       const ArchIcon = arch.icon;
                       return (
-                        <div className={cn("w-16 h-16 rounded-2xl flex items-center justify-center", arch.bg)}>
+                        <div className={cn("w-16 h-16 nx-sharp border-[3px] border-[var(--ink)] flex items-center justify-center", arch.bg)}>
                           <ArchIcon className={cn("w-8 h-8", arch.color)} />
                         </div>
                       );
                     })()}
                     <div>
-                      <h3 className="text-xl font-bold text-white">
+                      <h3 className="text-xl font-black text-[var(--ink)]">
                         {selectedProfile.name || 'Anonymous'}
                       </h3>
                       <p className={cn("text-sm font-medium", (archetypeConfig[selectedProfile.primary_archetype] || archetypeConfig.analyst).color)}>
@@ -376,38 +373,38 @@ export default function Leaderboard() {
                   {/* Stats Row */}
                   <div className="grid grid-cols-3 gap-4">
                     <div className="text-center">
-                      <p className="text-2xl font-bold text-white font-mono">
+                      <p className="text-2xl font-bold text-[var(--ink)] font-mono">
                         {selectedProfile.current_difficulty || 1}
                       </p>
-                      <p className="text-xs text-zinc-500 uppercase">Level</p>
+                      <p className="text-xs nx-ink-faint uppercase">Level</p>
                     </div>
                     <div className="text-center">
                       <p className="text-2xl font-bold text-orange-400 font-mono">
                         {(selectedProfile.xp_risk_taker || 0) + (selectedProfile.xp_analyst || 0) +
                           (selectedProfile.xp_builder || 0) + (selectedProfile.xp_strategist || 0)}
                       </p>
-                      <p className="text-xs text-zinc-500 uppercase">Total XP</p>
+                      <p className="text-xs nx-ink-faint uppercase">Total XP</p>
                     </div>
                     <div className="text-center">
-                      <p className="text-2xl font-bold text-white font-mono">
+                      <p className="text-2xl font-bold text-[var(--ink)] font-mono">
                         {selectedProfile.total_arenas_completed || 0}
                       </p>
-                      <p className="text-xs text-zinc-500 uppercase">Arenas</p>
+                      <p className="text-xs nx-ink-faint uppercase">Arenas</p>
                     </div>
                   </div>
 
                   {/* XP Breakdown */}
                   <div className="space-y-3">
-                    <p className="text-sm font-medium text-zinc-400">XP Breakdown</p>
+                    <p className="text-sm font-semibold nx-ink-muted">XP Breakdown</p>
                     <div className="grid grid-cols-2 gap-2">
                       {Object.entries(archetypeConfig).map(([key, config]) => {
                         const xpKey = `xp_${key}`;
                         const xpValue = selectedProfile[xpKey] || 0;
                         const ArchetypeIcon = config.icon;
                         return (
-                          <div key={key} className={cn("flex items-center gap-2 p-3 rounded-xl", config.bg)}>
+                          <div key={key} className={cn("flex items-center gap-2 p-3 nx-sharp border-2 border-[var(--ink)]", config.bg)}>
                             <ArchetypeIcon className={cn("w-4 h-4", config.color)} />
-                            <span className="text-sm text-zinc-300">{config.label}</span>
+                            <span className="text-sm text-[var(--ink)] font-semibold">{config.label}</span>
                             <span className={cn("ml-auto font-mono font-bold", config.color)}>{xpValue}</span>
                           </div>
                         );
@@ -417,8 +414,8 @@ export default function Leaderboard() {
 
                   {/* Highest Difficulty */}
                   {selectedProfile.highest_difficulty_conquered > 0 && (
-                    <div className="flex items-center justify-between p-4 bg-zinc-800/50 rounded-xl">
-                      <span className="text-sm text-zinc-400">Highest Difficulty Conquered</span>
+                    <div className="flex items-center justify-between p-4 bg-[var(--paper-2)] border-2 border-[var(--ink)] nx-sharp">
+                      <span className="text-sm nx-ink-muted">Highest Difficulty Conquered</span>
                       <span className="text-lg font-bold text-yellow-400 font-mono">
                         Level {selectedProfile.highest_difficulty_conquered}
                       </span>

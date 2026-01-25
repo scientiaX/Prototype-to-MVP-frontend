@@ -151,9 +151,9 @@ export default function Calibration() {
                   <img
                     src="/favicon.png"
                     alt="NovaX"
-                    className="w-24 h-24 rounded-3xl shadow-lg shadow-orange-500/30"
+                    className="w-24 h-24 nx-sharp border-[3px] border-[var(--ink)] bg-[var(--paper)]"
                   />
-                  <div className="absolute inset-0 rounded-3xl bg-orange-500/20 blur-xl opacity-60" />
+                  <div className="absolute inset-0 nx-sharp border-[3px] border-[var(--ink)] bg-[var(--acid-orange)] opacity-[0.08]" />
                 </div>
                 <motion.div
                   className="absolute -top-1 -right-1 w-8 h-8 bg-violet-500/20 rounded-full flex items-center justify-center"
@@ -223,7 +223,7 @@ export default function Calibration() {
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ type: "spring", duration: 0.8 }}
-                className="w-20 h-20 bg-gradient-to-br from-violet-500 to-purple-600 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-violet-500/30"
+                className="w-20 h-20 bg-gradient-to-br from-violet-500 to-purple-600 nx-sharp border-[3px] border-[var(--ink)] flex items-center justify-center mx-auto mb-6"
               >
                 <Calendar className="w-10 h-10 text-white" />
               </motion.div>

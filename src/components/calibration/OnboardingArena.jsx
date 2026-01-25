@@ -788,18 +788,18 @@ export default function OnboardingArena({
                         className="space-y-6"
                     >
                         <div className="text-center">
-                            <h2 className="text-2xl font-bold text-white mb-2">
+                            <h2 className="text-2xl font-bold text-[var(--ink)] mb-2">
                                 {t('Kunci pilihan.', 'Lock it in.')}
                             </h2>
-                            <p className="text-zinc-500">
+                            <p className="text-[var(--ink-2)]">
                                 {t('Sekali kunci, lanjut.', 'Once locked, we move.')}
                             </p>
                         </div>
 
-                        <div className="bg-zinc-900/80 border border-zinc-800 rounded-2xl p-6 flex items-center gap-4">
+                        <div className="nx-panel nx-sharp p-6 flex items-center gap-4">
                             <div className="text-4xl">{selectedChoice.icon}</div>
                             <div className="flex-1">
-                                <p className="text-white font-semibold">{selectedChoice.text}</p>
+                                <p className="text-[var(--ink)] font-semibold">{selectedChoice.text}</p>
                             </div>
                         </div>
 
@@ -808,7 +808,7 @@ export default function OnboardingArena({
                                 whileHover={{ scale: 1.03 }}
                                 whileTap={{ scale: 0.98 }}
                                 onClick={handleLockChoice}
-                                className="w-full px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-xl shadow-lg shadow-orange-500/30"
+                                className="w-full px-8 py-4 bg-[var(--acid-orange)] text-[var(--ink)] font-bold border-[3px] border-[var(--ink)] shadow-[6px_6px_0_var(--ink)] hover:translate-x-[-3px] hover:translate-y-[-3px] transition-all duration-100 [transition-timing-function:steps(4,end)] nx-sharp"
                             >
                                 {t('KUNCI PILIHAN', 'LOCK CHOICE')}
                             </motion.button>
@@ -821,7 +821,7 @@ export default function OnboardingArena({
                                         setSelectedChoice(null);
                                         setStep('choice');
                                     }}
-                                    className="w-full px-8 py-3 bg-zinc-900/60 border border-zinc-800 text-zinc-300 font-semibold rounded-xl hover:border-zinc-700 transition-colors"
+                                    className="w-full px-8 py-3 bg-[var(--paper)] text-[var(--ink)] font-semibold border-[3px] border-[var(--ink)] shadow-[6px_6px_0_var(--ink)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all duration-100 [transition-timing-function:steps(4,end)] nx-sharp"
                                 >
                                     {t('Ubah sekali', 'Change once')}
                                 </button>
