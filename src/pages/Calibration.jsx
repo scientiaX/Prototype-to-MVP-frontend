@@ -279,6 +279,7 @@ export default function Calibration() {
               currentIndex={0}
               totalQuestions={1}
               selectedValue={selectedDomain}
+              language={selectedLanguage}
               hasTextInput={false}
             />
           </motion.div>

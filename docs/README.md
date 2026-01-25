@@ -19,7 +19,7 @@ This folder contains all project documentation. For easy navigation:
 - [arena_first_3_minutes_high_impact_entry_design.md](./arena_first_3_minutes_high_impact_entry_design.md) - Entry flow design
 
 ## 🎯 NovaX Design
-- [nova_x_desain_mode_10_menit.md](./nova_x_desain_mode_10_menit.md) - 10-minute mode design
+- [nova_x_desain_mode_10_menit.md](./nova_x_desain_mode_10_menit.md) - 5-minute mode design
 - [nova_x_onboarding_arena_pbl_first_match_tutorial.md](./nova_x_onboarding_arena_pbl_first_match_tutorial.md) - Onboarding PBL specs
 - [nova_x_missing_execution_specs_thread_audit.md](./nova_x_missing_execution_specs_thread_audit.md) - Execution specs audit
 - [penghilangan_friksi_kognitif_inti_nova_x_draft_eksekusi.md](./penghilangan_friksi_kognitif_inti_nova_x_draft_eksekusi.md) - Cognitive friction reduction
