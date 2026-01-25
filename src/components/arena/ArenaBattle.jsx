@@ -347,14 +347,16 @@ export default function ArenaBattle({ problem, session, onSubmit, onAbandon, pro
             <span className="font-mono text-sm">{exchangeHistory.length}</span>
           </div>
 
-          {/* Timer */}
-          <div className={cn(
-            "flex items-center gap-2 px-4 py-2 rounded-lg font-mono",
-            screenManager.styles.timer
-          )}>
-            <Clock className="w-4 h-4" />
-            {formatTime(timeElapsed)}
-          </div>
+          {/* Timer - CONDITIONAL: only show when urgent/critical per Arena docs */}
+          {(screenManager.visualState === 'urgent' || screenManager.visualState === 'critical') && (
+            <div className={cn(
+              "flex items-center gap-2 px-4 py-2 rounded-lg font-mono",
+              screenManager.styles.timer
+            )}>
+              <Clock className="w-4 h-4" />
+              {formatTime(timeElapsed)}
+            </div>
+          )}
 
           {/* Abandon */}
           <Button
@@ -394,6 +396,7 @@ export default function ArenaBattle({ problem, session, onSubmit, onAbandon, pro
               onSubmit={handleActionSubmit}
               onActivity={screenManager.recordActivity}
               onRequestHint={handleRequestHint}
+              options={screenManager.dynamicOptions}
             />
           )}
 
