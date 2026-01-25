@@ -1,6 +1,6 @@
 # NovaX – Onboarding Arena PBL (First Match Tutorial)
 
-Dokumen ini adalah **spesifikasi eksekusi** untuk onboarding NovaX berbasis **arena PBL singkat (3–5 menit)**. Tujuannya: memberi *taste* NovaX di menit pertama, **sangat ringan**, **nagih**, dan **memberi insight kecil yang terasa relevan**, tanpa terasa seperti tes atau latihan.
+Dokumen ini adalah **spesifikasi eksekusi** untuk onboarding NovaX berbasis **arena PBL singkat (5 menit)**. Tujuannya: memberi *taste* NovaX di menit pertama, **sangat ringan**, **nagih**, dan **memberi insight kecil yang terasa relevan**, tanpa terasa seperti tes atau latihan.
 
 Dokumen ini siap dilempar ke tim eksekusi (product/AI/UX). Bahasa non-teknis dijaga, **detail teknis ditambahkan seperlunya**.
 
@@ -36,9 +36,7 @@ Dokumen ini siap dilempar ke tim eksekusi (product/AI/UX). Bahasa non-teknis dij
 3. PBL mikro berbasis bidang (AI-assisted, non-statis)
 4. Insight mikro + dopamine loop ringan
 5. Kalibrasi diam-diam → Level & Archetype awal
-6. Bridge ke Arena 5 Menit (Quick)
-
----
+6.- [ ] Bridge ke Arena 5 Menit (Quick) <!-- id: 4 -->
 
 ## Step 0 — Input Minimum (≤20 detik)
 
@@ -198,7 +196,7 @@ Ini **tercerahkan sedikit**, bukan terceramahi.
 
 | Arena Onboarding | Arena Harian (Quick) |
 |-----------------|--------------|
-| 3–5 menit | 4–5 menit |
+| 5 menit | 4–5 menit |
 | 1–2 keputusan | 1–4 keputusan |
 | Demo rasa | Ritual harian |
 | Kalibrasi awal | Progress nyata |

@@ -1,6 +1,6 @@
 # NovaX – Desain Mode 5 Menit (Quick Arena)
 
-Dokumen ini menjelaskan desain **Mode 5 Menit** (sebelumnya 10 menit) secara rinci: bagaimana alurnya harus terasa **sangat ringan**, **candu secara perilaku**, dan **memberi rasa kemajuan nyata**, sambil tetap efektif secara struktural untuk tujuan jangka panjang NovaX.
+Dokumen ini menjelaskan desain **Mode 5 Menit** secara rinci: bagaimana alurnya harus terasa **sangat ringan**, **candu secara perilaku**, dan **memberi rasa kemajuan nyata**, sambil tetap efektif secara struktural untuk tujuan jangka panjang NovaX.
 
 ---
 
