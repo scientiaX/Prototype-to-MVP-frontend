@@ -254,6 +254,11 @@ export default function ArenaBattle({ problem, session, onSubmit, onAbandon, pro
             screenManager.setDynamicOptions(data.options);
           }
 
+          // Update visual state from backend contextual signals
+          if (data.suggested_visual_state && screenManager.setVisualState) {
+            screenManager.setVisualState(data.suggested_visual_state);
+          }
+
           screenManager.goToScreen(SCREENS.ACTION);
         }, 3000);
 
