@@ -13,20 +13,31 @@ import { Button } from "@/components/ui/button";
 // Session storage keys
 const ARENA_SESSION_KEY = 'arena_active_session';
 
+// Arena mode durations (updated: lighter experience)
+const ARENA_MODES = {
+  quick: { duration: 5, label: 'Quick', labelId: 'Quick', description: '4-5 menit' },
+  standard: { duration: 15, label: 'Standard', labelId: 'Standard', description: '15 menit' }
+};
+
 export default function Arena() {
   const [profile, setProfile] = useState(null);
-  const [problems, setProblems] = useState([]);
+  // Separate problem lists per mode
+  const [quickProblems, setQuickProblems] = useState([]);
+  const [standardProblems, setStandardProblems] = useState([]);
   const [selectedProblem, setSelectedProblem] = useState(null);
   const [currentSession, setCurrentSession] = useState(null);
   const [result, setResult] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isGenerating, setIsGenerating] = useState(false);
-  const [generatingDuration, setGeneratingDuration] = useState(null); // 30 or 10
+  const [generatingMode, setGeneratingMode] = useState(null); // 'quick' or 'standard'
   const [view, setView] = useState('selection'); // 'selection' | 'entry' | 'battle' | 'result'
-  const [gameMode, setGameMode] = useState(null); // null = mode selection, 'solo' = solo mode, 'multiplayer' = coming soon
-  const [entryFlowData, setEntryFlowData] = useState(null); // Data from entry flow
+  const [gameMode, setGameMode] = useState(null); // null = mode selection, 'solo' = solo mode
+  const [arenaTab, setArenaTab] = useState('quick'); // 'quick' or 'standard' - swipe tabs
+  const [entryFlowData, setEntryFlowData] = useState(null);
   const [isRestoringSession, setIsRestoringSession] = useState(false);
-  const [active10MinArena, setActive10MinArena] = useState(null); // Track active 10-min arena
+  // Independent active problem tracking per mode
+  const [activeQuickProblem, setActiveQuickProblem] = useState(null);
+  const [activeStandardProblem, setActiveStandardProblem] = useState(null);
   const navigate = useNavigate();
 
   // Save session state to sessionStorage whenever it changes
@@ -121,7 +132,6 @@ export default function Arena() {
       const restored = restoreSessionState();
       if (restored) {
         setIsRestoringSession(true);
-        // Small delay to ensure state is set
         setTimeout(() => setIsRestoringSession(false), 100);
       }
 
@@ -131,10 +141,14 @@ export default function Arena() {
         p.difficulty <= profiles[0].current_difficulty + 2
       );
 
-      setProblems(relevantProblems);
+      // Separate problems by mode
+      const quick = relevantProblems.filter(p => p.duration_type === 'quick');
+      const standard = relevantProblems.filter(p => p.duration_type !== 'quick');
+
+      setQuickProblems(quick);
+      setStandardProblems(standard);
     } catch (error) {
       console.error('Error loading arena data:', error);
-      // If authentication failed, redirect to login
       navigate('/login?redirect=/arena');
       return;
     }
@@ -142,25 +156,36 @@ export default function Arena() {
     setIsLoading(false);
   };
 
-  const generateProblem = async (durationMinutes = 30) => {
-    // Check if 10-minute arena limit is reached
-    if (durationMinutes === 10 && active10MinArena) {
-      return; // Don't generate - limit reached
+  const generateProblem = async (mode = 'standard') => {
+    const modeConfig = ARENA_MODES[mode];
+    const isQuick = mode === 'quick';
+
+    // Check if this mode already has an active problem
+    if (isQuick && activeQuickProblem) {
+      return; // Don't generate - complete existing first
+    }
+    if (!isQuick && activeStandardProblem) {
+      return; // Don't generate - complete existing first
     }
 
     setIsGenerating(true);
-    setGeneratingDuration(durationMinutes);
+    setGeneratingMode(mode);
     try {
-      const newProblem = await apiClient.api.problems.generate(profile, { durationMinutes });
-      setProblems(prev => [newProblem, ...prev]);
+      const newProblem = await apiClient.api.problems.generate(profile, {
+        durationMinutes: modeConfig.duration
+      });
 
-      // Track active 10-minute arena
-      if (durationMinutes === 10) {
-        setActive10MinArena(newProblem);
+      // Add to appropriate list
+      if (isQuick) {
+        setQuickProblems(prev => [newProblem, ...prev]);
+        setActiveQuickProblem(newProblem);
+      } else {
+        setStandardProblems(prev => [newProblem, ...prev]);
+        setActiveStandardProblem(newProblem);
       }
     } finally {
       setIsGenerating(false);
-      setGeneratingDuration(null);
+      setGeneratingMode(null);
     }
   };
 
@@ -188,7 +213,6 @@ export default function Arena() {
     setIsLoading(true);
 
     try {
-      // Include conversation history in submission
       const response = await apiClient.api.arena.submit(
         currentSession._id,
         solution,
@@ -208,11 +232,13 @@ export default function Arena() {
         exchange_count: conversationMessages.filter(m => m.role === 'user').length
       });
       setView('result');
-      // Clear session state when session is completed
       clearSessionState();
-      // Clear 10-minute arena tracking if this was a 10-min arena
-      if (selectedProblem?.duration_minutes === 10) {
-        setActive10MinArena(null);
+
+      // Clear active tracking based on mode
+      if (selectedProblem?.duration_type === 'quick') {
+        setActiveQuickProblem(null);
+      } else {
+        setActiveStandardProblem(null);
       }
     } catch (error) {
       console.error('Submit error:', error);
@@ -225,12 +251,15 @@ export default function Arena() {
     if (currentSession) {
       await apiClient.api.arena.abandon(currentSession._id);
     }
-    // Clear session state when abandoned
     clearSessionState();
-    // Clear 10-minute arena tracking if this was a 10-min arena
-    if (selectedProblem?.duration_minutes === 10) {
-      setActive10MinArena(null);
+
+    // Clear active tracking based on mode
+    if (selectedProblem?.duration_type === 'quick') {
+      setActiveQuickProblem(null);
+    } else {
+      setActiveStandardProblem(null);
     }
+
     setView('selection');
     setSelectedProblem(null);
     setCurrentSession(null);
@@ -560,150 +589,167 @@ export default function Arena() {
           )}
         </div>
 
-        {/* Generate Buttons */}
+        {/* Swipe Tabs - Quick / Standard */}
         <motion.div
-          className="flex flex-wrap gap-3 mb-10"
+          className="mb-8"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.25 }}
+        >
+          <div className="inline-flex bg-zinc-900 rounded-xl p-1 border border-zinc-800">
+            <button
+              onClick={() => setArenaTab('quick')}
+              className={`relative px-6 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 ${arenaTab === 'quick'
+                  ? 'text-black'
+                  : 'text-zinc-400 hover:text-white'
+                }`}
+            >
+              {arenaTab === 'quick' && (
+                <motion.div
+                  layoutId="activeTab"
+                  className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-emerald-500 rounded-lg"
+                  transition={{ type: 'spring', bounce: 0.2, duration: 0.4 }}
+                />
+              )}
+              <span className="relative z-10 flex items-center gap-2">
+                <Zap className="w-4 h-4" />
+                Quick
+                <span className="text-xs opacity-70">4-5 min</span>
+              </span>
+            </button>
+            <button
+              onClick={() => setArenaTab('standard')}
+              className={`relative px-6 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 ${arenaTab === 'standard'
+                  ? 'text-black'
+                  : 'text-zinc-400 hover:text-white'
+                }`}
+            >
+              {arenaTab === 'standard' && (
+                <motion.div
+                  layoutId="activeTab"
+                  className="absolute inset-0 bg-gradient-to-r from-orange-500 to-red-600 rounded-lg"
+                  transition={{ type: 'spring', bounce: 0.2, duration: 0.4 }}
+                />
+              )}
+              <span className="relative z-10 flex items-center gap-2">
+                <Clock className="w-4 h-4" />
+                Standard
+                <span className="text-xs opacity-70">15 min</span>
+              </span>
+            </button>
+          </div>
+        </motion.div>
+
+        {/* Generate Button for Current Tab */}
+        <motion.div
+          className="mb-8"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
         >
           <Button
-            onClick={() => generateProblem(30)}
-            disabled={isGenerating}
-            variant="gradient"
+            onClick={() => generateProblem(arenaTab)}
+            disabled={isGenerating || (arenaTab === 'quick' ? !!activeQuickProblem : !!activeStandardProblem)}
+            variant={arenaTab === 'quick' ? 'outline' : 'gradient'}
             size="lg"
-            className="group"
+            className={`group ${arenaTab === 'quick'
+              ? (activeQuickProblem ? 'border-zinc-600 text-zinc-500' : 'border-emerald-500/30 hover:border-emerald-500/50 text-emerald-400')
+              : ''}`}
           >
-            {isGenerating && generatingDuration === 30 ? (
+            {isGenerating && generatingMode === arenaTab ? (
               <>
                 <Loader2 className="w-4 h-4 animate-spin" />
                 Generating...
               </>
-            ) : (
+            ) : (arenaTab === 'quick' ? activeQuickProblem : activeStandardProblem) ? (
               <>
-                <Clock className="w-4 h-4" />
-                <span>30 Menit</span>
-                <span className="text-xs opacity-70 ml-1">(Standar)</span>
-              </>
-            )}
-          </Button>
-
-          <Button
-            onClick={() => generateProblem(10)}
-            disabled={isGenerating || !!active10MinArena}
-            variant="outline"
-            size="lg"
-            className={`group ${active10MinArena
-              ? 'border-zinc-600 text-zinc-500 cursor-not-allowed'
-              : 'border-emerald-500/30 hover:border-emerald-500/50 text-emerald-400 hover:text-emerald-300'}`}
-          >
-            {isGenerating && generatingDuration === 10 ? (
-              <>
-                <Loader2 className="w-4 h-4 animate-spin" />
-                Generating...
-              </>
-            ) : active10MinArena ? (
-              <>
-                <Zap className="w-4 h-4" />
-                <span>10 Menit</span>
-                <span className="text-xs opacity-70 ml-1">(Selesaikan dulu)</span>
+                {arenaTab === 'quick' ? <Zap className="w-4 h-4" /> : <Clock className="w-4 h-4" />}
+                <span>Selesaikan dulu</span>
               </>
             ) : (
               <>
-                <Zap className="w-4 h-4" />
-                <span>10 Menit</span>
-                <span className="text-xs opacity-70 ml-1">(Ringan)</span>
+                <Sparkles className="w-4 h-4" />
+                <span>Generate {arenaTab === 'quick' ? 'Quick' : 'Standard'} Problem</span>
               </>
             )}
           </Button>
         </motion.div>
 
-        {/* Problems Grid */}
-        {problems.length > 0 ? (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <AnimatePresence mode="popLayout">
-              {problems.map((problem, index) => (
-                <motion.div
-                  key={problem.id}
-                  initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ delay: index * 0.05, duration: 0.3 }}
-                  layout
-                >
-                  <ProblemCard
-                    problem={problem}
-                    onStart={startProblem}
-                  />
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </div>
-        ) : (
-          <motion.div
-            className="bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-2xl p-16 text-center"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-          >
-            <div className="w-20 h-20 bg-zinc-800 rounded-2xl mx-auto mb-6 flex items-center justify-center">
-              <Target className="w-10 h-10 text-zinc-600" />
-            </div>
-            <p className="text-xl text-zinc-400 mb-2 font-medium">
-              Belum ada masalah untuk level-mu
-            </p>
-            <p className="text-zinc-600 mb-8 max-w-md mx-auto">
-              Generate masalah pertama untuk mulai bertarung dan menguji kemampuanmu
-            </p>
-            <div className="flex gap-3 justify-center flex-wrap">
-              <Button
-                onClick={() => generateProblem(30)}
-                disabled={isGenerating}
-                variant="gradient"
-                size="lg"
-              >
-                {isGenerating && generatingDuration === 30 ? (
-                  <>
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    Generating...
-                  </>
-                ) : (
-                  <>
-                    <Clock className="w-4 h-4" />
-                    30 Menit (Standar)
-                  </>
-                )}
-              </Button>
-              <Button
-                onClick={() => generateProblem(10)}
-                disabled={isGenerating || !!active10MinArena}
-                variant="outline"
-                size="lg"
-                className={active10MinArena
-                  ? 'border-zinc-600 text-zinc-500'
-                  : 'border-emerald-500/30 hover:border-emerald-500/50 text-emerald-400'}
-              >
-                {isGenerating && generatingDuration === 10 ? (
-                  <>
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    Generating...
-                  </>
-                ) : active10MinArena ? (
-                  <>
-                    <Zap className="w-4 h-4" />
-                    10 Menit (Selesaikan dulu)
-                  </>
-                ) : (
-                  <>
-                    <Zap className="w-4 h-4" />
-                    10 Menit (Ringan)
-                  </>
-                )}
-              </Button>
-            </div>
-          </motion.div>
-        )}
+        {/* Problems Grid - Show based on current tab */}
+        <AnimatePresence mode="wait">
+          {arenaTab === 'quick' ? (
+            <motion.div
+              key="quick-problems"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              transition={{ duration: 0.2 }}
+            >
+              {quickProblems.length > 0 ? (
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {quickProblems.map((problem, index) => (
+                    <motion.div
+                      key={problem.id || problem.problem_id}
+                      initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      transition={{ delay: index * 0.05, duration: 0.3 }}
+                    >
+                      <ProblemCard problem={problem} onStart={startProblem} />
+                    </motion.div>
+                  ))}
+                </div>
+              ) : (
+                <div className="bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-2xl p-16 text-center">
+                  <div className="w-20 h-20 bg-emerald-500/10 rounded-2xl mx-auto mb-6 flex items-center justify-center">
+                    <Zap className="w-10 h-10 text-emerald-500" />
+                  </div>
+                  <p className="text-xl text-zinc-400 mb-2 font-medium">
+                    Belum ada Quick problem
+                  </p>
+                  <p className="text-zinc-600 mb-6 max-w-md mx-auto">
+                    Generate problem ringan untuk sesi 4-5 menit
+                  </p>
+                </div>
+              )}
+            </motion.div>
+          ) : (
+            <motion.div
+              key="standard-problems"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.2 }}
+            >
+              {standardProblems.length > 0 ? (
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {standardProblems.map((problem, index) => (
+                    <motion.div
+                      key={problem.id || problem.problem_id}
+                      initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      transition={{ delay: index * 0.05, duration: 0.3 }}
+                    >
+                      <ProblemCard problem={problem} onStart={startProblem} />
+                    </motion.div>
+                  ))}
+                </div>
+              ) : (
+                <div className="bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-2xl p-16 text-center">
+                  <div className="w-20 h-20 bg-orange-500/10 rounded-2xl mx-auto mb-6 flex items-center justify-center">
+                    <Target className="w-10 h-10 text-orange-500" />
+                  </div>
+                  <p className="text-xl text-zinc-400 mb-2 font-medium">
+                    Belum ada Standard problem
+                  </p>
+                  <p className="text-zinc-600 mb-6 max-w-md mx-auto">
+                    Generate problem standar untuk sesi 15 menit
+                  </p>
+                </div>
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-
     </div>
   );
 }

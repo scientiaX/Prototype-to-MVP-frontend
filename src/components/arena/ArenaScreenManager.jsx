@@ -152,6 +152,7 @@ export const useArenaScreenManager = (initialScreen = SCREENS.SITUATION) => {
     const [visualState, setVisualState] = useState(VISUAL_STATES.CALM);
     const [interactionType, setInteractionType] = useState(INTERACTION_TYPES.TEXT_COMMIT);
     const [exchangeCount, setExchangeCount] = useState(0);
+    const [dynamicOptions, setDynamicOptions] = useState(null); // AI-generated options
 
     const lastActivityRef = useRef(Date.now());
     const idleTimerRef = useRef(null);
@@ -214,6 +215,7 @@ export const useArenaScreenManager = (initialScreen = SCREENS.SITUATION) => {
         setVisualState(VISUAL_STATES.CALM);
         setCurrentScreen(SCREENS.SITUATION);
         setExchangeCount(0);
+        setDynamicOptions(null);
         lastActivityRef.current = Date.now();
     }, []);
 
@@ -222,6 +224,7 @@ export const useArenaScreenManager = (initialScreen = SCREENS.SITUATION) => {
         visualState,
         interactionType,
         exchangeCount,
+        dynamicOptions,
         styles: getVisualStateClasses(visualState),
         tone: AI_TONES[visualState],
 
@@ -232,7 +235,8 @@ export const useArenaScreenManager = (initialScreen = SCREENS.SITUATION) => {
         onValidSubmit,
         resetState,
         setInteractionType,
-        setVisualState
+        setVisualState,
+        setDynamicOptions
     };
 };
 

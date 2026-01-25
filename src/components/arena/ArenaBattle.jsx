@@ -240,9 +240,20 @@ export default function ArenaBattle({ problem, session, onSubmit, onAbandon, pro
         setIsLoading(false);
         screenManager.goToScreen(SCREENS.FEEDBACK);
 
-        // After 3 seconds, transition to next question
+        // After 3 seconds, transition to next question with dynamic interaction type
         setTimeout(() => {
           setCurrentQuestion(data.question || "Apa langkah selanjutnya?");
+
+          // Use backend-provided interaction type if available
+          if (data.interaction_type && screenManager.setInteractionType) {
+            screenManager.setInteractionType(data.interaction_type);
+          }
+
+          // Set AI-generated options if provided for OPTION_SELECT
+          if (data.options && data.interaction_type === 'OPTION_SELECT' && screenManager.setDynamicOptions) {
+            screenManager.setDynamicOptions(data.options);
+          }
+
           screenManager.goToScreen(SCREENS.ACTION);
         }, 3000);
 
