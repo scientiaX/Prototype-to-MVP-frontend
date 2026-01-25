@@ -198,6 +198,7 @@ export default function OnboardingArena({
     const [profile, setProfile] = useState(null);
     const [error, setError] = useState(null);
     const [canChangeChoice, setCanChangeChoice] = useState(true);
+    const [changeOfMindCount, setChangeOfMindCount] = useState(0);
     const decisionsRef = useRef([]);
     const profileRef = useRef(null);
     const [roundIndex, setRoundIndex] = useState(0);
@@ -217,7 +218,7 @@ export default function OnboardingArena({
             setConsequence('');
             setInsight('');
             setDecisionStartTime(null);
-            setCanChangeChoice(true);
+            setChangeOfMindCount(0);
 
             if (resetAll) {
                 const nextTotal = 6 + Math.floor(Math.random() * 4);
@@ -232,6 +233,7 @@ export default function OnboardingArena({
 
             const lang = pickLanguage(language);
             const effectiveRoundIndex = resetAll ? 0 : (roundIndexOverride ?? roundIndex);
+            setCanChangeChoice(effectiveRoundIndex === 0);
             const last = decisionsRef.current?.[decisionsRef.current.length - 1] || null;
             const lastText = lang === 'en'
                 ? 'Based on your last move, a new constraint appears.'
@@ -304,25 +306,31 @@ export default function OnboardingArena({
         setDecisionStartTime(Date.now());
     }, []);
 
-    const handleChoiceSelect = (choice) => {
-        setSelectedChoice(choice);
-        setStep('lock');
-    };
+    const shouldShowInsightThisRound = useCallback(() => {
+        const isLastRound = roundIndex + 1 >= totalRoundsRef.current;
+        const decisionsCount = decisionsRef.current.length;
+        if (isLastRound) return true;
+        if (decisionsCount <= 0) return false;
+        return decisionsCount % 3 === 0;
+    }, [roundIndex]);
 
-    const handleLockChoice = async () => {
+    const commitChoice = useCallback(async (choice) => {
         try {
-            if (!selectedChoice) return;
+            if (!choice) return;
             if (!problem) return;
 
-            // Calculate time to decide
+            const now = Date.now();
             const timeToDecide = decisionStartTime ? (Date.now() - decisionStartTime) : 0;
 
-            // Record decision
             const decision = {
                 problem_id: problem.id,
-                choice_id: selectedChoice.id,
-                archetype_signal: selectedChoice.archetype_signal,
-                time_to_decide: timeToDecide
+                choice_id: choice.id,
+                archetype_signal: choice.archetype_signal,
+                time_to_first_tap: timeToDecide,
+                time_to_lock: timeToDecide,
+                time_to_decide: timeToDecide,
+                change_of_mind_count: changeOfMindCount,
+                decided_at: now
             };
 
             const nextDecisions = [...decisionsRef.current, decision];
@@ -332,7 +340,7 @@ export default function OnboardingArena({
             const feedback = generateFeedback({
                 language,
                 decisions: nextDecisions,
-                choice: selectedChoice
+                choice
             });
 
             setConsequence(feedback.consequence);
@@ -340,12 +348,24 @@ export default function OnboardingArena({
             setStep('consequence');
         } catch (err) {
             console.error('Failed to get consequence:', err);
-            // Continue anyway with fallback
             setConsequence(language === 'en'
                 ? 'Your choice has been noted.'
                 : 'Pilihanmu sudah dicatat.');
             setStep('consequence');
         }
+    }, [problem, decisionStartTime, language, changeOfMindCount]);
+
+    const handleChoiceSelect = (choice) => {
+        setSelectedChoice(choice);
+        if (roundIndex === 0) {
+            setStep('lock');
+            return;
+        }
+        commitChoice(choice);
+    };
+
+    const handleLockChoice = async () => {
+        await commitChoice(selectedChoice);
     };
 
     const handleComplete = async () => {
@@ -397,6 +417,14 @@ export default function OnboardingArena({
             return;
         }
         await handleComplete();
+    };
+
+    const handleConsequenceContinue = async () => {
+        if (shouldShowInsightThisRound()) {
+            setStep('insight');
+            return;
+        }
+        await handleInsightContinue();
     };
 
     const handleEnterArena = () => {
@@ -595,6 +623,7 @@ export default function OnboardingArena({
                                 <button
                                     onClick={() => {
                                         setCanChangeChoice(false);
+                                        setChangeOfMindCount(prev => prev + 1);
                                         setSelectedChoice(null);
                                         setStep('choice');
                                     }}
@@ -640,7 +669,7 @@ export default function OnboardingArena({
                             transition={{ delay: 0.9 }}
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
-                            onClick={() => setStep('insight')}
+                            onClick={handleConsequenceContinue}
                             className="mt-10 px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold rounded-xl shadow-lg shadow-orange-500/30"
                         >
                             {t('Lanjut', 'Continue')}
