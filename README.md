@@ -42,8 +42,8 @@ Backend (Node.js + Express)
 
 ## ✨ Features
 
-- **Profile Calibration** - Psychometric assessment dengan multi-language support
-- **Problem Arena** - AI-generated real-world business problems
+- **Profile Calibration** - Psychometric assessment (English & Bahasa Indonesia)
+- **Problem Arena** - AI-generated real-world business problems (5m Quick / 15m Standard)
 - **AI Mentor** - Socratic questioning dengan adaptive interventions
 - **Gamification** - XP system, achievements, dan solution artifacts
 - **Leaderboard** - Growth-based dan reliability-based rankings

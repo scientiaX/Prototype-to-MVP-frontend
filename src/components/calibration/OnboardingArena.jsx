@@ -404,7 +404,7 @@ export default function OnboardingArena({
                                 {t('Arena singkat selesai.', 'Short arena complete.')}
                             </h2>
                             <p className="text-zinc-400">
-                                {t('Arena 10 menit siap. Masuk kapan saja.', 'The 10-minute arena is ready. Enter anytime.')}
+                                {t('Arena 5 menit siap. Masuk kapan saja.', 'The 5-minute arena is ready. Enter anytime.')}
                             </p>
                         </motion.div>
 

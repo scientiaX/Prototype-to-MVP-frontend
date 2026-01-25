@@ -36,7 +36,7 @@ Dokumen ini siap dilempar ke tim eksekusi (product/AI/UX). Bahasa non-teknis dij
 3. PBL mikro berbasis bidang (AI-assisted, non-statis)
 4. Insight mikro + dopamine loop ringan
 5. Kalibrasi diam-diam → Level & Archetype awal
-6. Bridge ke Arena 10 Menit
+6. Bridge ke Arena 5 Menit (Quick)
 
 ---
 
@@ -58,7 +58,7 @@ Dokumen ini siap dilempar ke tim eksekusi (product/AI/UX). Bahasa non-teknis dij
 ## Step 1 — Masuk Arena Onboarding
 
 ### Karakteristik arena onboarding:
-- Mirip Arena 10 Menit
+- Mirip Arena 5 Menit (Quick)
 - **Lebih ringan** (1–2 keputusan)
 - Tidak masuk streak
 - Tidak masuk leaderboard
@@ -165,7 +165,7 @@ Tidak ada:
 ## Step 8 — Bridge ke Arena Harian
 
 ### Copy transisi:
-> “Arena 10 menit siap. Masuk kapan saja.”
+> “Arena 5 menit siap. Masuk kapan saja.”
 
 ### UX:
 - Satu tombol
@@ -196,10 +196,10 @@ Ini **tercerahkan sedikit**, bukan terceramahi.
 
 ## Perbedaan dengan Arena 10 Menit
 
-| Arena Onboarding | Arena Harian |
+| Arena Onboarding | Arena Harian (Quick) |
 |-----------------|--------------|
-| 3–5 menit | 10 menit |
-| 1–2 keputusan | 2–4 keputusan |
+| 3–5 menit | 4–5 menit |
+| 1–2 keputusan | 1–4 keputusan |
 | Demo rasa | Ritual harian |
 | Kalibrasi awal | Progress nyata |
 

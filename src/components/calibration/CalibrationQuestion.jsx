@@ -13,6 +13,7 @@ export default function CalibrationQuestion({
   currentIndex,
   totalQuestions,
   selectedValue,
+  language = 'en',
   // New props for text input support
   hasTextInput = false,
   textInputLabel = '',
@@ -79,7 +80,7 @@ export default function CalibrationQuestion({
             className="flex items-center gap-1 text-zinc-500 hover:text-orange-400 transition-colors text-sm font-medium"
           >
             <ChevronLeft className="w-4 h-4" />
-            Kembali
+            {language === 'en' ? 'Back' : 'Kembali'}
           </button>
         )}
         <span className="text-zinc-500 text-sm font-mono bg-zinc-900/50 px-3 py-1.5 rounded-lg border border-zinc-800">
@@ -141,37 +142,41 @@ export default function CalibrationQuestion({
       </div>
 
       {/* Text Input for Proof (if hasTextInput is true) */}
-      {hasTextInput && selectedOption && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="mt-6"
-        >
-          <label className="block text-zinc-400 text-sm mb-2">
-            {textInputLabel}
-          </label>
-          <textarea
-            value={textProof}
-            onChange={(e) => setTextProof(e.target.value)}
-            placeholder={textInputPlaceholder}
-            className="w-full bg-zinc-900 border border-zinc-700 rounded-xl p-4 text-white placeholder-zinc-600 focus:border-orange-500 focus:outline-none transition-colors resize-none"
-            rows={3}
-          />
-          <p className="text-zinc-600 text-xs mt-2">
-            Opsional, tapi membantu AI memahami level kamu dengan lebih akurat
-          </p>
-
-          <Button
-            onClick={handleSubmit}
-            variant="gradient"
-            className="w-full mt-4 py-4"
-            disabled={!selectedOption}
+      {
+        hasTextInput && selectedOption && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="mt-6"
           >
-            Lanjut
-          </Button>
-        </motion.div>
-      )}
-    </motion.div>
+            <label className="block text-zinc-400 text-sm mb-2">
+              {textInputLabel}
+            </label>
+            <textarea
+              value={textProof}
+              onChange={(e) => setTextProof(e.target.value)}
+              placeholder={textInputPlaceholder}
+              className="w-full bg-zinc-900 border border-zinc-700 rounded-xl p-4 text-white placeholder-zinc-600 focus:border-orange-500 focus:outline-none transition-colors resize-none"
+              rows={3}
+            />
+            <p className="text-zinc-600 text-xs mt-2">
+              {language === 'en'
+                ? 'Optional, but helps AI understand your level accurately'
+                : 'Opsional, tapi membantu AI memahami level kamu dengan lebih akurat'}
+            </p>
+
+            <Button
+              onClick={handleSubmit}
+              variant="gradient"
+              className="w-full mt-4 py-4"
+              disabled={!selectedOption}
+            >
+              {language === 'en' ? 'Continue' : 'Lanjut'}
+            </Button>
+          </motion.div>
+        )
+      }
+    </motion.div >
   );
 }

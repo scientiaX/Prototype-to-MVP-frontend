@@ -104,30 +104,57 @@ export default function Home() {
     }
   };
 
-  // English-only content
+  // Multi-language content
+  const [lang, setLang] = useState('en');
+
   const t = {
-    badge: 'Novax Trial',
-    headline1: 'NovaX',
-    headline2: 'Arena',
-    description: 'Real-world experiential learning',
-    descriptionHighlight: 'in your hands.',
-    ctaCalibrate: 'Start Calibration',
-    ctaArena: 'Enter Arena',
-    notLoggedIn: 'more fun than watching, more effective than reading',
-    calibrationTime: '5-7 min calibration',
-    readyBattle: 'Ready to battle',
-    liveStats: 'Live Stats',
-    realTimeActivity: 'Real-time arena activity',
-    quote: 'No comfort zone. Only growth zone.',
-    sectionTitle: 'Confrontation-Based System',
-    sectionSubtitle: 'Backed by science. Every element designed for growth through pressure.',
-    warning: 'This is not a platform to feel comfortable. If you are looking for validation, this is not the place.',
-    features: [
-      { title: 'Adaptive Matching', description: 'AI matches problems to your archetype and capability level' },
-      { title: 'XP = Difficulty', description: 'Progress based on growth in challenges and real capabilities, not grinding' },
-      { title: 'Scar Badges', description: 'Badges prove you fought and grew, not just participated' }
-    ]
-  };
+    en: {
+      badge: 'Novax Trial',
+      headline1: 'NovaX',
+      headline2: 'Arena',
+      description: 'Real-world experiential learning',
+      descriptionHighlight: 'in your hands.',
+      ctaCalibrate: 'Start Calibration',
+      ctaArena: 'Enter Arena',
+      notLoggedIn: 'more fun than watching, more effective than reading',
+      calibrationTime: '5-7 min calibration',
+      readyBattle: 'Ready to battle',
+      liveStats: 'Live Stats',
+      realTimeActivity: 'Real-time arena activity',
+      quote: 'No comfort zone. Only growth zone.',
+      sectionTitle: 'Confrontation-Based System',
+      sectionSubtitle: 'Backed by science. Every element designed for growth through pressure.',
+      warning: 'This is not a platform to feel comfortable. If you are looking for validation, this is not the place.',
+      features: [
+        { title: 'Adaptive Matching', description: 'AI matches problems to your archetype and capability level' },
+        { title: 'XP = Difficulty', description: 'Progress based on growth in challenges and real capabilities, not grinding' },
+        { title: 'Scar Badges', description: 'Badges prove you fought and grew, not just participated' }
+      ]
+    },
+    id: {
+      badge: 'Novax Trial',
+      headline1: 'NovaX',
+      headline2: 'Arena',
+      description: 'Belajar dari pengalaman dunia nyata',
+      descriptionHighlight: 'di tanganmu.',
+      ctaCalibrate: 'Mulai Kalibrasi',
+      ctaArena: 'Masuk Arena',
+      notLoggedIn: 'lebih seru dari menonton, lebih efektif dari membaca',
+      calibrationTime: '5-7 menit kalibrasi',
+      readyBattle: 'Siap bertempur',
+      liveStats: 'Statistik Live',
+      realTimeActivity: 'Aktivitas arena real-time',
+      quote: 'Tidak ada zona nyaman. Hanya zona pertumbuhan.',
+      sectionTitle: 'Sistem Berbasis Konfrontasi',
+      sectionSubtitle: 'Didukung oleh sains. Setiap elemen didesain untuk tumbuh melalui tekanan.',
+      warning: 'Ini bukan platform untuk merasa nyaman. Jika kamu mencari validasi, ini bukan tempatnya.',
+      features: [
+        { title: 'Adaptive Matching', description: 'AI mencocokkan masalah dengan arketipe dan tingkat kemampuanmu' },
+        { title: 'XP = Kesulitan', description: 'Progres berdasarkan pertumbuhan dalam tantangan, bukan grinding' },
+        { title: 'Scar Badges', description: 'Badge membuktikan kamu telah berjuang dan tumbuh, bukan sekadar berpartisipasi' }
+      ]
+    }
+  }[lang];
 
   const features = [
     {
@@ -154,9 +181,9 @@ export default function Home() {
   ];
 
   const stats = [
-    { value: "247", label: "Active Battles", icon: Zap, color: "text-yellow-400" },
-    { value: "7.2", label: "Avg Difficulty", icon: BarChart3, color: "text-orange-400" },
-    { value: "1.2k", label: "Warriors", icon: Users, color: "text-cyan-400" }
+    { value: "247", label: lang === 'en' ? "Active Battles" : "Pertempuran Aktif", icon: Zap, color: "text-yellow-400" },
+    { value: "7.2", label: lang === 'en' ? "Avg Difficulty" : "Rerata Kesulitan", icon: BarChart3, color: "text-orange-400" },
+    { value: "1.2k", label: lang === 'en' ? "Warriors" : "Pejuang", icon: Users, color: "text-cyan-400" }
   ];
 
   return (
@@ -243,16 +270,38 @@ export default function Home() {
                 transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
                 className="flex-1 max-w-xl"
               >
-                {/* Badge */}
-                <motion.div
-                  className="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-gradient-to-r from-orange-500/15 to-red-500/10 border border-orange-500/25 mb-8"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.2, duration: 0.5 }}
-                >
-                  <div className="w-2 h-2 rounded-full bg-orange-400 animate-pulse" />
-                  <span className="text-xs font-semibold text-orange-400 tracking-wider uppercase font-mono">Novax Trial</span>
-                </motion.div>
+                {/* Badge and Language Toggle */}
+                <div className="flex flex-wrap items-center gap-4 mb-8">
+                  <motion.div
+                    className="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-full bg-gradient-to-r from-orange-500/15 to-red-500/10 border border-orange-500/25"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.2, duration: 0.5 }}
+                  >
+                    <div className="w-2 h-2 rounded-full bg-orange-400 animate-pulse" />
+                    <span className="text-xs font-semibold text-orange-400 tracking-wider uppercase font-mono">{t.badge}</span>
+                  </motion.div>
+
+                  <motion.div
+                    className="flex items-center bg-zinc-900/50 border border-zinc-800 rounded-full p-1"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.3 }}
+                  >
+                    <button
+                      onClick={() => setLang('en')}
+                      className={`px-3 py-1 rounded-full text-[10px] font-bold transition-all ${lang === 'en' ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20' : 'text-zinc-500 hover:text-zinc-300'}`}
+                    >
+                      EN
+                    </button>
+                    <button
+                      onClick={() => setLang('id')}
+                      className={`px-3 py-1 rounded-full text-[10px] font-bold transition-all ${lang === 'id' ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20' : 'text-zinc-500 hover:text-zinc-300'}`}
+                    >
+                      ID
+                    </button>
+                  </motion.div>
+                </div>
 
                 {/* Headline */}
                 <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-[0.95] tracking-tight">

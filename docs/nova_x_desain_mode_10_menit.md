@@ -1,12 +1,12 @@
-# NovaX – Desain Mode 10 Menit (Arena Harian)
+# NovaX – Desain Mode 5 Menit (Quick Arena)
 
-Dokumen ini menjelaskan desain **Mode 10 Menit** secara rinci: bagaimana alurnya harus terasa **sangat ringan**, **candu secara perilaku**, dan **memberi rasa kemajuan nyata**, sambil tetap efektif secara struktural untuk tujuan jangka panjang NovaX.
+Dokumen ini menjelaskan desain **Mode 5 Menit** (sebelumnya 10 menit) secara rinci: bagaimana alurnya harus terasa **sangat ringan**, **candu secara perilaku**, dan **memberi rasa kemajuan nyata**, sambil tetap efektif secara struktural untuk tujuan jangka panjang NovaX.
 
 ---
 
 ## Prinsip Inti (Tidak Boleh Dilanggar)
 
-Mode 10 menit **bukan belajar**, **bukan refleksi**, dan **bukan perencanaan hidup**.
+Mode 5 menit **bukan belajar**, **bukan refleksi**, dan **bukan perencanaan hidup**.
 Ia adalah:
 - **Arena singkat**
 - **Aksi kecil, bukan keputusan besar**
@@ -20,11 +20,11 @@ Target psikologis user saat keluar:
 
 ---
 
-## Struktur Waktu (Total ±10 Menit)
+## Struktur Waktu (Total ±5 Menit)
 
 ### 0. Masuk Arena (≤10 detik)
-- Satu tombol utama: **“Masuk Arena (10 Menit)”**
-- Tidak ada pilihan mode lain di depan
+- Satu tombol utama: **“Masuk Arena (Quick)”**
+- Pilihan durasi: **5 Menit** (Quick) dan **15 Menit** (Standard)
 - Tidak ada copy besar tentang hidup / tujuan
 
 Efek:
@@ -33,7 +33,7 @@ Efek:
 
 ---
 
-### 1. Konteks Mikro (±30 detik)
+### 1. Konteks Mikro (±20 detik)
 Sistem menampilkan **1 konteks singkat**:
 - Diambil dari domain yang dipilih saat onboarding (bisnis / teknologi / akademik / dll)
 - Tidak ada narasi panjang
@@ -47,7 +47,7 @@ Tujuan:
 
 ---
 
-### 2. Masalah Tunggal (±1 menit)
+### 2. Masalah Tunggal (±40 detik)
 Tampilkan **SATU masalah kecil**:
 - Jelas
 - Terbatas
@@ -66,13 +66,8 @@ Efek:
 
 ---
 
-### 3. Keputusan Cepat (≤30 detik)
+### 3. Keputusan Cepat (≤20 detik)
 User memilih satu opsi.
-
-Tidak ada:
-- konfirmasi panjang
-- peringatan moral
-- animasi berat
 
 Begitu dipilih → lanjut.
 
@@ -82,7 +77,7 @@ Efek:
 
 ---
 
-### 4. Konsekuensi Mikro (±2 menit)
+### 4. Konsekuensi Mikro (±1.5 menit)
 Sistem menunjukkan **konsekuensi singkat**:
 - Bukan ceramah
 - Bukan evaluasi panjang
@@ -101,13 +96,10 @@ Efek:
 
 ---
 
-### 5. Progress Signal (±1 menit)
+### 5. Progress Signal (±40 detik)
 Tampilkan **kemajuan mikro**:
 - XP kecil
 - Bar kemajuan tipis
-- Label seperti:
-  - “Konsistensi: +1”
-  - “Level Tantangan: Stabil”
 
 Penting:
 - XP **tidak besar**
@@ -115,32 +107,26 @@ Penting:
 
 Efek:
 - Otak mencatat *gue maju*
-- Tidak terasa manipulatif
 
 ---
 
-### 6. Perbandingan Sosial Ringan (±1 menit)
+### 6. Perbandingan Sosial Ringan (±40 detik)
 Tampilkan info sosial **tanpa leaderboard besar**:
 
 Contoh:
 > “64% user di domain ini memilih langkah lebih aman.”
 
-Atau:
-> “Kamu memilih opsi dengan risiko di atas rata-rata hari ini.”
-
 Efek:
 - Ego tersentil ringan
-- Tidak dipermalukan
 
 ---
 
-### 7. Penutup Tanpa Ajakan (≤30 detik)
+### 7. Penutup Tanpa Ajakan (≤20 detik)
 Tutup dengan kalimat netral:
 > “Arena hari ini selesai.”
 
 Bukan:
 - “Ayo lanjut!”
-- “Jangan menyerah!”
 
 Efek:
 - Tidak terasa dipaksa
@@ -156,7 +142,7 @@ Efek:
 
 ### 2. Loss Aversion Halus
 - Streak **tidak ditampilkan besar**
-- Tapi ada konteks musiman / progres harian
+- Tapi ada progres harian
 
 ### 3. Micro-Progress Harian
 - Tiap sesi terasa kecil
@@ -173,29 +159,25 @@ Efek:
 - Refleksi panjang
 - Pertanyaan identitas
 - Skor besar palsu
-- Motivational quotes
 - Pilihan terlalu banyak
 
-Jika satu saja masuk → mode 10 menit rusak.
+Jika satu saja masuk → mode 5 menit rusak.
 
 ---
 
-## Tujuan Akhir Mode 10 Menit
+## Tujuan Akhir Mode 5 Menit
 
 Bukan membuat user pintar hari ini.
 
 Tapi membuat user berkata:
 > “Masuk NovaX sebentar tuh aman.”
 
-Kalau ini tercapai:
-- DAU naik
-- Habit terbentuk
-- NovaX jadi default
+Terutama untuk mempertahankan DAU (Daily Active Users).
 
 ---
 
 ## Kalimat Pengunci
 
-> **Mode 10 menit bukan tentang perubahan besar.
+> **Mode 5 menit bukan tentang perubahan besar.
 Ia tentang tidak berhenti bergerak.**
 
