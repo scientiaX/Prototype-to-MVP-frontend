@@ -506,11 +506,11 @@ export default function Arena() {
 
   // Solo Mode - Original Arena Content
   return (
-    <div className="min-h-screen bg-black relative">
+    <div className="min-h-screen nx-page nx-bg-wires relative">
       {/* Background effects */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-orange-600/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-[-20%] left-[-10%] w-[500px] h-[500px] bg-violet-600/8 rounded-full blur-3xl" />
+        <div className="absolute -top-24 -right-24 w-[520px] h-[520px] nx-blob border-[3px] border-[var(--ink)] bg-[var(--acid-orange)] opacity-[0.12]" />
+        <div className="absolute -bottom-24 -left-24 w-[520px] h-[520px] nx-blob border-[3px] border-[var(--ink)] bg-[var(--acid-magenta)] opacity-[0.10]" />
       </div>
 
       <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-8 py-8">
@@ -523,21 +523,21 @@ export default function Arena() {
             <div className="flex items-center gap-3 mb-4">
               <button
                 onClick={() => setGameMode(null)}
-                className="w-10 h-10 rounded-xl bg-zinc-800 hover:bg-zinc-700 flex items-center justify-center text-zinc-400 hover:text-white transition-all duration-200"
+                className="w-10 h-10 nx-sharp bg-[var(--paper)] border-[3px] border-[var(--ink)] shadow-[4px_4px_0_var(--ink)] flex items-center justify-center text-[var(--ink)] transition-all duration-100 [transition-timing-function:steps(4,end)] hover:translate-x-[-1px] hover:translate-y-[-1px]"
               >
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
               </button>
-              <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-gradient-to-r from-orange-500/15 to-red-500/10 border border-orange-500/25">
-                <User className="w-3.5 h-3.5 text-orange-400" />
-                <span className="text-xs font-semibold text-orange-400 tracking-wider uppercase font-mono">Solo Arena</span>
+              <div className="inline-flex items-center gap-2.5 px-4 py-2 nx-sharp bg-[var(--paper)] border-[2px] border-[var(--ink)]">
+                <User className="w-3.5 h-3.5 text-[var(--ink)]" />
+                <span className="text-xs font-semibold text-[var(--ink)] tracking-wider uppercase font-mono">Solo Arena</span>
               </div>
             </div>
-            <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
+            <h1 className="text-3xl md:text-4xl font-bold text-[var(--ink)] mb-2">
               NovaX Arena
             </h1>
-            <p className="text-zinc-500">
+            <p className="text-[var(--ink-2)]">
               Hadapi masalah. Belajar. Naik level.
             </p>
           </motion.div>
@@ -549,24 +549,24 @@ export default function Arena() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2 }}
             >
-              <div className="bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-xl px-5 py-3.5 flex items-center gap-3 hover:border-zinc-700 transition-colors">
-                <div className="w-10 h-10 rounded-lg bg-orange-500/15 flex items-center justify-center">
-                  <Trophy className="w-5 h-5 text-orange-400" />
+              <div className="nx-panel-static nx-sharp px-5 py-3.5 flex items-center gap-3">
+                <div className="w-10 h-10 nx-sharp border-[2px] border-[var(--ink)] bg-[var(--paper-2)] flex items-center justify-center">
+                  <Trophy className="w-5 h-5 text-[var(--ink)]" />
                 </div>
                 <div>
-                  <p className="text-white font-mono font-bold text-xl leading-none">
+                  <p className="text-[var(--ink)] font-mono font-bold text-xl leading-none">
                     Level {profile.current_difficulty}
                   </p>
-                  <p className="text-xs text-zinc-500 mt-0.5">Current</p>
+                  <p className="text-xs text-[var(--ink-2)] mt-0.5">Current</p>
                 </div>
               </div>
-              <div className="bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-xl px-5 py-3.5 flex items-center gap-3 hover:border-zinc-700 transition-colors">
-                <div className="w-10 h-10 rounded-lg bg-yellow-500/15 flex items-center justify-center">
-                  <Zap className="w-5 h-5 text-yellow-400" />
+              <div className="nx-panel-static nx-sharp px-5 py-3.5 flex items-center gap-3">
+                <div className="w-10 h-10 nx-sharp border-[2px] border-[var(--ink)] bg-[var(--paper-2)] flex items-center justify-center">
+                  <Zap className="w-5 h-5 text-[var(--ink)]" />
                 </div>
                 <div>
-                  <p className="text-white font-mono font-bold text-xl leading-none">{totalXp}</p>
-                  <p className="text-xs text-zinc-500 mt-0.5">Total XP</p>
+                  <p className="text-[var(--ink)] font-mono font-bold text-xl leading-none">{totalXp}</p>
+                  <p className="text-xs text-[var(--ink-2)] mt-0.5">Total XP</p>
                 </div>
               </div>
             </motion.div>
@@ -580,18 +580,18 @@ export default function Arena() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25 }}
         >
-          <div className="inline-flex bg-zinc-900 rounded-xl p-1 border border-zinc-800">
+          <div className="inline-flex bg-[var(--paper)] nx-sharp p-1 border-[3px] border-[var(--ink)] shadow-[6px_6px_0_var(--ink)]">
             <button
               onClick={() => setArenaTab('quick')}
-              className={`relative px-6 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 ${arenaTab === 'quick'
-                  ? 'text-black'
-                  : 'text-zinc-400 hover:text-white'
+              className={`relative px-6 py-2.5 nx-sharp text-sm font-semibold transition-all duration-100 [transition-timing-function:steps(4,end)] ${arenaTab === 'quick'
+                  ? 'text-[var(--ink)]'
+                  : 'text-[var(--ink-2)] hover:text-[var(--ink)]'
                 }`}
             >
               {arenaTab === 'quick' && (
                 <motion.div
                   layoutId="activeTab"
-                  className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-emerald-500 rounded-lg"
+                  className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-emerald-500 nx-sharp"
                   transition={{ type: 'spring', bounce: 0.2, duration: 0.4 }}
                 />
               )}
@@ -603,15 +603,15 @@ export default function Arena() {
             </button>
             <button
               onClick={() => setArenaTab('standard')}
-              className={`relative px-6 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 ${arenaTab === 'standard'
-                  ? 'text-black'
-                  : 'text-zinc-400 hover:text-white'
+              className={`relative px-6 py-2.5 nx-sharp text-sm font-semibold transition-all duration-100 [transition-timing-function:steps(4,end)] ${arenaTab === 'standard'
+                  ? 'text-[var(--ink)]'
+                  : 'text-[var(--ink-2)] hover:text-[var(--ink)]'
                 }`}
             >
               {arenaTab === 'standard' && (
                 <motion.div
                   layoutId="activeTab"
-                  className="absolute inset-0 bg-gradient-to-r from-orange-500 to-red-600 rounded-lg"
+                  className="absolute inset-0 bg-gradient-to-r from-orange-500 to-red-600 nx-sharp"
                   transition={{ type: 'spring', bounce: 0.2, duration: 0.4 }}
                 />
               )}
@@ -634,11 +634,9 @@ export default function Arena() {
           <Button
             onClick={() => generateProblem(arenaTab)}
             disabled={isGenerating || (arenaTab === 'quick' ? !!activeQuickProblem : !!activeStandardProblem)}
-            variant={arenaTab === 'quick' ? 'outline' : 'gradient'}
+            variant={arenaTab === 'quick' ? 'success' : 'gradient'}
             size="lg"
-            className={`group ${arenaTab === 'quick'
-              ? (activeQuickProblem ? 'border-zinc-600 text-zinc-500' : 'border-emerald-500/30 hover:border-emerald-500/50 text-emerald-400')
-              : ''}`}
+            className="group"
           >
             {isGenerating && generatingMode === arenaTab ? (
               <>
@@ -683,14 +681,14 @@ export default function Arena() {
                   ))}
                 </div>
               ) : (
-                <div className="bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-2xl p-16 text-center">
-                  <div className="w-20 h-20 bg-emerald-500/10 rounded-2xl mx-auto mb-6 flex items-center justify-center">
+                <div className="nx-panel nx-sharp p-16 text-center">
+                  <div className="w-20 h-20 nx-sharp border-[3px] border-[var(--ink)] bg-[var(--paper-2)] mx-auto mb-6 flex items-center justify-center">
                     <Zap className="w-10 h-10 text-emerald-500" />
                   </div>
-                  <p className="text-xl text-zinc-400 mb-2 font-medium">
+                  <p className="text-xl text-[var(--ink)] mb-2 font-medium">
                     Belum ada Quick problem
                   </p>
-                  <p className="text-zinc-600 mb-6 max-w-md mx-auto">
+                  <p className="text-[var(--ink-2)] mb-6 max-w-md mx-auto">
                     Generate problem ringan untuk sesi 4-5 menit
                   </p>
                 </div>
@@ -718,14 +716,14 @@ export default function Arena() {
                   ))}
                 </div>
               ) : (
-                <div className="bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-2xl p-16 text-center">
-                  <div className="w-20 h-20 bg-orange-500/10 rounded-2xl mx-auto mb-6 flex items-center justify-center">
+                <div className="nx-panel nx-sharp p-16 text-center">
+                  <div className="w-20 h-20 nx-sharp border-[3px] border-[var(--ink)] bg-[var(--paper-2)] mx-auto mb-6 flex items-center justify-center">
                     <Target className="w-10 h-10 text-orange-500" />
                   </div>
-                  <p className="text-xl text-zinc-400 mb-2 font-medium">
+                  <p className="text-xl text-[var(--ink)] mb-2 font-medium">
                     Belum ada Standard problem
                   </p>
-                  <p className="text-zinc-600 mb-6 max-w-md mx-auto">
+                  <p className="text-[var(--ink-2)] mb-6 max-w-md mx-auto">
                     Generate problem standar untuk sesi 15 menit
                   </p>
                 </div>

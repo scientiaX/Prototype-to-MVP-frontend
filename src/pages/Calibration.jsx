@@ -110,14 +110,14 @@ export default function Calibration() {
   // Loading state
   if (isCheckingAuth) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
+      <div className="min-h-screen nx-page flex items-center justify-center">
         <Loader2 className="w-8 h-8 text-orange-500 animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-black flex flex-col items-center justify-center p-6 relative overflow-hidden">
+    <div className="min-h-screen nx-page nx-bg-wires flex flex-col items-center justify-center p-6 relative overflow-hidden">
       {/* Animated Background */}
       <div className="absolute inset-0 pointer-events-none">
         <motion.div
@@ -156,18 +156,18 @@ export default function Calibration() {
                   <div className="absolute inset-0 nx-sharp border-[3px] border-[var(--ink)] bg-[var(--acid-orange)] opacity-[0.08]" />
                 </div>
                 <motion.div
-                  className="absolute -top-1 -right-1 w-8 h-8 bg-violet-500/20 rounded-full flex items-center justify-center"
+                  className="absolute -top-1 -right-1 w-8 h-8 bg-[var(--paper)] nx-sharp border-[2px] border-[var(--ink)] flex items-center justify-center"
                   animate={{
                     scale: [1, 1.2, 1],
                     opacity: [0.7, 1, 0.7]
                   }}
                   transition={{ duration: 2, repeat: Infinity }}
                 >
-                  <Sparkles className="w-4 h-4 text-violet-400" />
+                  <Sparkles className="w-4 h-4 text-[var(--ink)]" />
                 </motion.div>
               </motion.div>
-              <h1 className="text-4xl md:text-5xl text-white font-bold mb-4">Choose Your Language</h1>
-              <p className="text-xl text-zinc-400">Pilih Bahasamu</p>
+              <h1 className="text-4xl md:text-5xl text-[var(--ink)] font-bold mb-4">Choose Your Language</h1>
+              <p className="text-xl text-[var(--ink-2)]">Pilih Bahasamu</p>
             </div>
 
             <div className="grid md:grid-cols-2 gap-5">
@@ -177,11 +177,11 @@ export default function Calibration() {
                 whileHover={{ scale: 1.02, y: -4 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => handleLanguageSelect('en')}
-                className="group bg-zinc-900/80 border border-zinc-800 hover:border-orange-500/50 rounded-2xl p-8 text-left transition-all"
+                className="group relative nx-panel nx-sharp p-8 text-left transition-all hover:border-[var(--acid-orange)]"
               >
                 <div className="text-5xl mb-5">🇬🇧</div>
-                <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-orange-400 transition-colors">English</h3>
-                <p className="text-zinc-500">Continue in English</p>
+                <h3 className="text-2xl font-bold text-[var(--ink)] mb-2 group-hover:text-[var(--acid-orange)] transition-colors">English</h3>
+                <p className="text-[var(--ink-2)]">Continue in English</p>
               </motion.button>
 
               <motion.button
@@ -190,11 +190,11 @@ export default function Calibration() {
                 whileHover={{ scale: 1.02, y: -4 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => handleLanguageSelect('id')}
-                className="group bg-zinc-900/80 border border-zinc-800 hover:border-orange-500/50 rounded-2xl p-8 text-left transition-all"
+                className="group relative nx-panel nx-sharp p-8 text-left transition-all hover:border-[var(--acid-orange)]"
               >
                 <div className="text-5xl mb-5">🇮🇩</div>
-                <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-orange-400 transition-colors">Bahasa Indonesia</h3>
-                <p className="text-zinc-500">Lanjutkan dalam Bahasa Indonesia</p>
+                <h3 className="text-2xl font-bold text-[var(--ink)] mb-2 group-hover:text-[var(--acid-orange)] transition-colors">Bahasa Indonesia</h3>
+                <p className="text-[var(--ink-2)]">Lanjutkan dalam Bahasa Indonesia</p>
               </motion.button>
             </div>
           </motion.div>
@@ -212,7 +212,7 @@ export default function Calibration() {
             {/* Back button */}
             <button
               onClick={() => setView('language')}
-              className="flex items-center gap-1 text-zinc-500 hover:text-orange-400 transition-colors text-sm font-medium mb-6"
+              className="flex items-center gap-1 text-[var(--ink-2)] hover:text-[var(--acid-orange)] transition-colors text-sm font-medium mb-6"
             >
               <ChevronLeft className="w-4 h-4" />
               {selectedLanguage === 'en' ? 'Back' : 'Kembali'}
@@ -225,12 +225,12 @@ export default function Calibration() {
                 transition={{ type: "spring", duration: 0.8 }}
                 className="w-20 h-20 bg-gradient-to-br from-violet-500 to-purple-600 nx-sharp border-[3px] border-[var(--ink)] flex items-center justify-center mx-auto mb-6"
               >
-                <Calendar className="w-10 h-10 text-white" />
+                <Calendar className="w-10 h-10 text-[var(--ink)]" />
               </motion.div>
-              <h1 className="text-3xl font-bold text-white mb-2">
+              <h1 className="text-3xl font-bold text-[var(--ink)] mb-2">
                 {selectedLanguage === 'en' ? 'How old are you?' : 'Berapa usiamu?'}
               </h1>
-              <p className="text-zinc-500">
+              <p className="text-[var(--ink-2)]">
                 {selectedLanguage === 'en'
                   ? 'This helps us personalize your experience'
                   : 'Ini membantu kami menyesuaikan pengalamanmu'}
@@ -247,11 +247,11 @@ export default function Calibration() {
                   whileHover={{ scale: 1.02, x: 8 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => handleAgeSelect(option)}
-                  className="w-full group bg-zinc-900/80 border border-zinc-800 hover:border-violet-500/50 rounded-xl p-5 text-left transition-all flex items-center gap-4"
+                  className="w-full group nx-panel nx-sharp p-5 text-left transition-all flex items-center gap-4 hover:border-[var(--accent-500)]"
                 >
                   <div className="text-3xl">{option.emoji}</div>
                   <div>
-                    <h3 className="text-lg font-bold text-white group-hover:text-violet-400 transition-colors">
+                    <h3 className="text-lg font-bold text-[var(--ink)] group-hover:text-[var(--accent-500)] transition-colors">
                       {option.label}
                     </h3>
                   </div>

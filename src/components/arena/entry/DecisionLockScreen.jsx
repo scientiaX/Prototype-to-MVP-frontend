@@ -30,7 +30,7 @@ export default function DecisionLockScreen({
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
-            className="min-h-screen bg-black flex flex-col items-center justify-center p-6"
+            className="min-h-screen flex flex-col items-center justify-center p-6"
         >
             <div className="max-w-md w-full">
                 {/* Selected choice display */}
@@ -39,15 +39,15 @@ export default function DecisionLockScreen({
                     animate={{ opacity: 1, y: 0 }}
                     className="text-center mb-8"
                 >
-                    <p className="text-zinc-500 text-sm mb-4 uppercase tracking-wider">Kamu memilih</p>
+                    <p className="text-[var(--ink-3)] text-sm mb-4 uppercase tracking-wider">Kamu memilih</p>
 
                     <motion.div
                         initial={{ scale: 0.9 }}
                         animate={{ scale: 1 }}
-                        className="bg-zinc-900 border-2 border-orange-500/50 rounded-xl p-6 inline-block"
+                        className="nx-panel nx-sharp p-6 inline-block"
                     >
                         <span className="text-4xl mb-3 block">{selectedChoice?.icon}</span>
-                        <p className="text-white text-xl font-bold">{selectedChoice?.text}</p>
+                        <p className="text-[var(--ink)] text-xl font-bold">{selectedChoice?.text}</p>
                     </motion.div>
                 </motion.div>
 
@@ -56,7 +56,7 @@ export default function DecisionLockScreen({
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.3 }}
-                    className="flex items-center justify-center gap-2 text-amber-400 mb-8"
+                    className="flex items-center justify-center gap-2 text-[var(--ink)] mb-8"
                 >
                     <AlertTriangle className="w-4 h-4" />
                     <span className="text-sm font-medium">Keputusan tidak bisa diubah</span>
@@ -75,15 +75,15 @@ export default function DecisionLockScreen({
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
                             className={cn(
-                                "w-full py-5 rounded-xl font-bold text-lg flex items-center justify-center gap-3 transition-all",
+                                "w-full py-5 font-bold text-lg flex items-center justify-center gap-3 transition-all duration-100 [transition-timing-function:steps(4,end)] border-[3px] border-[var(--ink)] nx-sharp",
                                 isLocking || isLoading
-                                    ? "bg-zinc-800 text-zinc-500 cursor-wait"
-                                    : "bg-gradient-to-r from-orange-500 to-red-600 text-black hover:from-orange-600 hover:to-red-700"
+                                    ? "bg-[var(--paper-2)] text-[var(--ink-3)] shadow-[6px_6px_0_var(--ink)] cursor-wait"
+                                    : "bg-[var(--acid-orange)] text-[var(--ink)] shadow-[8px_8px_0_var(--ink)] hover:translate-x-[-3px] hover:translate-y-[-3px]"
                             )}
                         >
                             {isLocking || isLoading ? (
                                 <>
-                                    <div className="w-5 h-5 border-2 border-zinc-400 border-t-transparent rounded-full animate-spin" />
+                                    <div className="w-5 h-5 border-[3px] border-[var(--ink)] border-t-transparent nx-sharp animate-spin" />
                                     Mengunci...
                                 </>
                             ) : (
@@ -104,15 +104,15 @@ export default function DecisionLockScreen({
                                 initial={{ scale: 0 }}
                                 animate={{ scale: 1 }}
                                 transition={{ type: 'spring', damping: 10 }}
-                                className="w-20 h-20 rounded-full bg-green-500/20 border-2 border-green-500 flex items-center justify-center mx-auto mb-4"
+                                className="w-20 h-20 bg-[var(--acid-lime)] border-[3px] border-[var(--ink)] shadow-[6px_6px_0_var(--ink)] nx-sharp flex items-center justify-center mx-auto mb-4"
                             >
-                                <Check className="w-10 h-10 text-green-400" />
+                                <Check className="w-10 h-10 text-[var(--ink)]" />
                             </motion.div>
                             <motion.p
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 transition={{ delay: 0.2 }}
-                                className="text-green-400 font-bold text-xl"
+                                className="text-[var(--ink)] font-bold text-xl"
                             >
                                 Keputusan Terkunci ✓
                             </motion.p>
@@ -130,7 +130,7 @@ export default function DecisionLockScreen({
                             transition={{ delay: 0.5 }}
                             className="mt-8 text-center"
                         >
-                            <p className="text-zinc-500 text-sm">
+                            <p className="text-[var(--ink-2)] text-sm">
                                 Langkah pertama selesai. Lihat apa yang terjadi selanjutnya...
                             </p>
                         </motion.div>
@@ -147,7 +147,7 @@ export default function DecisionLockScreen({
                             transition={{ duration: 1 }}
                             className="fixed inset-0 pointer-events-none flex items-center justify-center"
                         >
-                            <div className="w-32 h-32 rounded-full bg-green-500/30" />
+                            <div className="w-32 h-32 nx-blob bg-[var(--acid-lime)] opacity-[0.25]" />
                         </motion.div>
                     )}
                 </AnimatePresence>

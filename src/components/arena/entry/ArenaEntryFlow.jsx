@@ -131,7 +131,9 @@ export default function ArenaEntryFlow({
     };
 
     return (
-        <div className="min-h-screen bg-black">
+        <div className="min-h-screen nx-page relative overflow-hidden">
+            <div className="absolute inset-0 pointer-events-none nx-bg-wires opacity-[0.55]" />
+            <div className="absolute inset-0 pointer-events-none nx-bg-dots opacity-[0.2]" />
             {/* Skip button (dev/testing only or for returning users) */}
             {process.env.NODE_ENV === 'development' && (
                 <motion.button
@@ -139,7 +141,7 @@ export default function ArenaEntryFlow({
                     animate={{ opacity: 1 }}
                     transition={{ delay: 2 }}
                     onClick={onSkip}
-                    className="fixed top-4 right-4 z-50 px-3 py-1.5 text-xs text-zinc-600 hover:text-zinc-400 bg-zinc-900 rounded-lg border border-zinc-800 transition-colors"
+                    className="fixed top-4 right-4 z-50 px-3 py-2 text-xs bg-[var(--paper)] text-[var(--ink)] font-semibold border-[3px] border-[var(--ink)] shadow-[4px_4px_0_var(--ink)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all duration-100 [transition-timing-function:steps(4,end)] nx-sharp"
                 >
                     Skip Entry Flow
                 </motion.button>
@@ -147,9 +149,9 @@ export default function ArenaEntryFlow({
 
             {/* Progress bar */}
             <div className="fixed top-0 left-0 right-0 z-40">
-                <div className="h-1 bg-zinc-900">
+                <div className="h-2 bg-[var(--paper)] border-b-[3px] border-[var(--ink)] nx-sharp">
                     <motion.div
-                        className="h-full bg-gradient-to-r from-orange-500 to-red-500"
+                        className="h-full bg-[var(--acid-orange)]"
                         initial={{ width: '0%' }}
                         animate={{ width: `${entryFlow.progress}%` }}
                         transition={{ duration: 0.5 }}
@@ -159,7 +161,7 @@ export default function ArenaEntryFlow({
 
             {/* Total elapsed timer (discrete) */}
             <div className="fixed top-4 left-4 z-50">
-                <span className="text-zinc-700 text-xs font-mono">
+                <span className="text-[var(--ink-3)] text-xs font-mono">
                     {Math.floor(entryFlow.totalElapsed / 60)}:{String(entryFlow.totalElapsed % 60).padStart(2, '0')}
                 </span>
             </div>
@@ -172,6 +174,7 @@ export default function ArenaEntryFlow({
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.3 }}
+                    className="relative z-10"
                 >
                     {renderScreen()}
                 </motion.div>

@@ -43,11 +43,11 @@ export default function ArenaResult({
   };
 
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center p-6">
+    <div className="min-h-screen nx-page nx-bg-wires flex items-center justify-center p-6">
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="w-full max-w-2xl"
+        className="w-full max-w-2xl nx-panel nx-sharp p-6"
       >
         {/* Level up indicator */}
         {level_up_achieved ? (
@@ -57,9 +57,9 @@ export default function ArenaResult({
             transition={{ type: "spring", delay: 0.2 }}
             className="text-center mb-8"
           >
-            <div className="inline-flex items-center gap-3 px-6 py-3 bg-green-500/20 border border-green-500/50 rounded-full">
-              <TrendingUp className="w-6 h-6 text-green-500" />
-              <span className="text-green-500 font-bold text-lg">LEVEL UP</span>
+            <div className="inline-flex items-center gap-3 px-6 py-3 bg-[var(--acid-lime)] border-[3px] border-[var(--ink)] nx-sharp shadow-[4px_4px_0_var(--ink)]">
+              <TrendingUp className="w-6 h-6 text-[var(--ink)]" />
+              <span className="text-[var(--ink)] font-bold text-lg">LEVEL UP</span>
             </div>
           </motion.div>
         ) : (
@@ -69,18 +69,18 @@ export default function ArenaResult({
             transition={{ type: "spring", delay: 0.2 }}
             className="text-center mb-8"
           >
-            <div className="inline-flex items-center gap-3 px-6 py-3 bg-zinc-800/50 border border-zinc-700 rounded-full">
-              <Minus className="w-6 h-6 text-zinc-500" />
-              <span className="text-zinc-400 font-bold text-lg">STAGNASI</span>
+            <div className="inline-flex items-center gap-3 px-6 py-3 bg-[var(--paper-2)] border-[3px] border-[var(--ink)] nx-sharp shadow-[4px_4px_0_var(--ink)]">
+              <Minus className="w-6 h-6 text-[var(--ink)]" />
+              <span className="text-[var(--ink)] font-bold text-lg">STAGNASI</span>
             </div>
           </motion.div>
         )}
 
         {/* Problem completed */}
         <div className="text-center mb-8">
-          <span className="text-zinc-600 font-mono text-sm">{problem.problem_id}</span>
-          <h1 className="text-2xl font-bold text-white mt-1">{problem.title}</h1>
-          <div className="flex items-center justify-center gap-4 mt-3 text-zinc-500 text-sm">
+          <span className="text-[var(--ink-2)] font-mono text-sm">{problem.problem_id}</span>
+          <h1 className="text-2xl font-bold text-[var(--ink)] mt-1">{problem.title}</h1>
+          <div className="flex items-center justify-center gap-4 mt-3 text-[var(--ink-2)] text-sm">
             <div className="flex items-center gap-1">
               <Target className="w-4 h-4" />
               <span>Difficulty {problem.difficulty}</span>
@@ -93,8 +93,8 @@ export default function ArenaResult({
         </div>
 
         {/* XP Breakdown - Courage First (Friksi #2) */}
-        <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 mb-6">
-          <h2 className="text-zinc-400 text-sm font-semibold mb-4">XP EARNED</h2>
+        <div className="nx-panel-static nx-sharp p-6 mb-6">
+          <h2 className="text-[var(--ink)] text-sm font-semibold mb-4">XP EARNED</h2>
 
           {/* COURAGE XP - Shows First */}
           {xp_breakdown?.courage > 0 && (
@@ -103,15 +103,15 @@ export default function ArenaResult({
               animate={{ opacity: 1, y: 0 }}
               className="mb-4"
             >
-              <div className="flex items-center justify-between p-4 rounded-lg bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/40">
+              <div className="flex items-center justify-between p-4 nx-sharp bg-[var(--acid-yellow)] border-[3px] border-[var(--ink)] shadow-[4px_4px_0_var(--ink)]">
                 <div className="flex items-center gap-2">
                   <span className="text-2xl">🔥</span>
                   <div>
-                    <span className="text-amber-400 font-semibold">Courage XP</span>
-                    <p className="text-xs text-zinc-500">Reward untuk keberanian mencoba</p>
+                    <span className="text-[var(--ink)] font-semibold">Courage XP</span>
+                    <p className="text-xs text-[var(--ink-2)]">Reward untuk keberanian mencoba</p>
                   </div>
                 </div>
-                <span className="font-bold font-mono text-xl text-amber-400">
+                <span className="font-bold font-mono text-xl text-[var(--ink)]">
                   +{xp_breakdown.courage}
                 </span>
               </div>
@@ -125,10 +125,10 @@ export default function ArenaResult({
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ delay: 0.3 }}
-                      className="text-xs text-zinc-500 flex justify-between"
+                      className="text-xs text-[var(--ink-2)] flex justify-between"
                     >
                       <span className="capitalize">{key.replace('_', ' ')}</span>
-                      <span className="text-amber-400/70">+{value}</span>
+                      <span className="text-[var(--ink-2)]">+{value}</span>
                     </motion.div>
                   ))}
                 </div>
@@ -149,16 +149,16 @@ export default function ArenaResult({
                 <div
                   key={archetype}
                   className={cn(
-                    "flex items-center justify-between p-3 rounded-lg",
-                    xp > 0 ? "bg-green-500/10 border border-green-500/30" : "bg-zinc-900"
+                    "flex items-center justify-between p-3 nx-sharp border-[2px] border-[var(--ink)]",
+                    xp > 0 ? "bg-[var(--acid-lime)]" : "bg-[var(--paper-2)]"
                   )}
                 >
-                  <span className="text-zinc-300 capitalize">
+                  <span className="text-[var(--ink)] capitalize">
                     {archetypeLabels[archetype] || archetype}
                   </span>
                   <span className={cn(
                     "font-bold font-mono",
-                    xp > 0 ? "text-green-500" : "text-zinc-600"
+                    xp > 0 ? "text-[var(--ink)]" : "text-[var(--ink-2)]"
                   )}>
                     {xp > 0 ? `+${xp}` : '0'}
                   </span>
@@ -170,13 +170,13 @@ export default function ArenaResult({
 
         {/* Criteria met */}
         {criteria_met && criteria_met.length > 0 && (
-          <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 mb-6">
-            <h2 className="text-zinc-400 text-sm font-semibold mb-4">KRITERIA TERPENUHI</h2>
+          <div className="nx-panel-static nx-sharp p-6 mb-6">
+            <h2 className="text-[var(--ink)] text-sm font-semibold mb-4">KRITERIA TERPENUHI</h2>
             <div className="space-y-2">
               {criteria_met.map((criteria, i) => (
                 <div key={i} className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-green-500 rounded-full" />
-                  <span className="text-zinc-300 text-sm">{criteria}</span>
+                  <div className="w-2 h-2 bg-[var(--acid-lime)] nx-sharp border border-[var(--ink)]" />
+                  <span className="text-[var(--ink)] text-sm">{criteria}</span>
                 </div>
               ))}
             </div>
@@ -185,17 +185,17 @@ export default function ArenaResult({
 
         {/* AI Evaluation */}
         {ai_evaluation && (
-          <div className="bg-orange-500/10 border border-orange-500/30 rounded-xl p-6 mb-6">
-            <h2 className="text-orange-500 text-sm font-semibold mb-3">EVALUASI MENTOR</h2>
-            <p className="text-zinc-300 italic">"{ai_evaluation}"</p>
+          <div className="nx-panel-static nx-sharp p-6 mb-6 border-[3px] border-[var(--ink)] bg-[var(--paper-2)]">
+            <h2 className="text-[var(--ink)] text-sm font-semibold mb-3">EVALUASI MENTOR</h2>
+            <p className="text-[var(--ink)] italic">"{ai_evaluation}"</p>
           </div>
         )}
 
         {/* Insight */}
         {ai_insight && (
-          <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 mb-6">
-            <h2 className="text-zinc-400 text-sm font-semibold mb-3">INSIGHT</h2>
-            <p className="text-zinc-300 text-sm">{ai_insight}</p>
+          <div className="nx-panel-static nx-sharp p-6 mb-6">
+            <h2 className="text-[var(--ink)] text-sm font-semibold mb-3">INSIGHT</h2>
+            <p className="text-[var(--ink)] text-sm">{ai_insight}</p>
           </div>
         )}
 
@@ -204,13 +204,13 @@ export default function ArenaResult({
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="bg-gradient-to-r from-violet-500/10 to-purple-500/10 border border-violet-500/30 rounded-xl p-5 mb-8"
+          className="nx-panel-static nx-sharp p-5 mb-8 bg-[var(--paper-2)]"
         >
           <div className="flex items-center gap-3 mb-3">
             <span className="text-xl">📊</span>
-            <span className="text-violet-400 font-semibold text-sm">PERBANDINGAN</span>
+            <span className="text-[var(--ink)] font-semibold text-sm">PERBANDINGAN</span>
           </div>
-          <p className="text-zinc-300 text-sm leading-relaxed">
+          <p className="text-[var(--ink)] text-sm leading-relaxed">
             {xp_earned > 15
               ? "🔥 Kamu mengambil risiko di atas rata-rata user lain. Berani!"
               : xp_earned > 5
@@ -218,7 +218,7 @@ export default function ArenaResult({
                 : "🛡️ Kamu memilih pendekatan lebih aman dari 64% user lain."
             }
           </p>
-          <p className="text-zinc-500 text-xs mt-2 italic">
+          <p className="text-[var(--ink-2)] text-xs mt-2 italic">
             Berdasarkan pilihan user di problem serupa
           </p>
         </motion.div>
@@ -228,14 +228,15 @@ export default function ArenaResult({
           <Button
             variant="outline"
             onClick={onRetry}
-            className="flex-1 border-zinc-700 text-zinc-300 hover:bg-zinc-800"
+            className="flex-1"
           >
             <RotateCcw className="w-4 h-4 mr-2" />
             Coba Masalah Lain
           </Button>
           <Button
+            variant="gradient"
             onClick={onContinue}
-            className="flex-1 bg-orange-500 hover:bg-orange-600 text-black font-bold"
+            className="flex-1 font-bold"
           >
             Lanjut ke Arena
             <ArrowRight className="w-4 h-4 ml-2" />

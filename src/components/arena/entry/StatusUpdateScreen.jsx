@@ -71,7 +71,7 @@ export default function StatusUpdateScreen({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="min-h-screen bg-black flex flex-col items-center justify-center p-6"
+            className="min-h-screen flex flex-col items-center justify-center p-6"
         >
             <div className="max-w-md w-full">
                 {/* Header */}
@@ -80,11 +80,11 @@ export default function StatusUpdateScreen({
                     animate={{ opacity: 1, y: 0 }}
                     className="text-center mb-12"
                 >
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/15 border border-blue-500/30 mb-4">
-                        <TrendingUp className="w-4 h-4 text-blue-400" />
-                        <span className="text-blue-400 font-semibold text-sm uppercase tracking-wider">Status</span>
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-[var(--acid-cyan)] border-[3px] border-[var(--ink)] shadow-[4px_4px_0_var(--ink)] nx-sharp mb-4">
+                        <TrendingUp className="w-4 h-4 text-[var(--ink)]" />
+                        <span className="text-[var(--ink)] font-bold text-sm uppercase tracking-wider">Status</span>
                     </div>
-                    <h2 className="text-2xl font-bold text-white">Cara Berpikirmu</h2>
+                    <h2 className="text-2xl font-bold text-[var(--ink)]">Cara Berpikirmu</h2>
                 </motion.div>
 
                 {/* Progress stages */}
@@ -109,11 +109,11 @@ export default function StatusUpdateScreen({
                                     scale: isActive ? 1.02 : 1
                                 }}
                                 transition={{ delay: index * 0.15, duration: 0.3 }}
-                                className={`flex items-center gap-4 p-4 rounded-xl transition-all ${isActive
-                                        ? 'bg-orange-500/15 border border-orange-500/40'
+                                className={`relative flex items-center gap-4 p-4 border-[3px] border-[var(--ink)] shadow-[8px_8px_0_var(--ink)] transition-all duration-100 [transition-timing-function:steps(4,end)] nx-sharp ${isActive
+                                        ? 'bg-[var(--acid-orange)] translate-x-[-2px] translate-y-[-2px]'
                                         : isPast
-                                            ? 'bg-zinc-900/50 border border-zinc-800'
-                                            : 'bg-zinc-950 border border-zinc-900'
+                                            ? 'bg-[var(--paper-2)]'
+                                            : 'bg-[var(--paper)] opacity-[0.7]'
                                     }`}
                             >
                                 {/* Status indicator */}
@@ -124,24 +124,24 @@ export default function StatusUpdateScreen({
                                             animate={{ scale: 1 }}
                                             transition={{ type: 'spring', damping: 10 }}
                                         >
-                                            <CheckCircle className="w-6 h-6 text-green-400" />
+                                            <CheckCircle className="w-6 h-6 text-[var(--ink)]" />
                                         </motion.div>
                                     ) : isActive ? (
                                         <motion.div
                                             animate={{ scale: [1, 1.2, 1] }}
                                             transition={{ duration: 1.5, repeat: Infinity }}
-                                            className="w-6 h-6 rounded-full bg-orange-500 flex items-center justify-center"
+                                            className="w-6 h-6 bg-[var(--ink)] flex items-center justify-center nx-sharp"
                                         >
-                                            <div className="w-2 h-2 bg-black rounded-full" />
+                                            <div className="w-2 h-2 bg-[var(--paper)] nx-sharp" />
                                         </motion.div>
                                     ) : (
-                                        <Circle className="w-6 h-6 text-zinc-700" />
+                                        <Circle className="w-6 h-6 text-[var(--ink-3)]" />
                                     )}
                                 </div>
 
                                 {/* Label and description */}
                                 <div className="flex-1">
-                                    <p className={`font-semibold ${isActive ? 'text-orange-400' : isPast ? 'text-zinc-300' : 'text-zinc-600'
+                                    <p className={`font-bold ${isActive ? 'text-[var(--ink)]' : isPast ? 'text-[var(--ink)]' : 'text-[var(--ink-3)]'
                                         }`}>
                                         {stage.label}
                                     </p>
@@ -149,7 +149,7 @@ export default function StatusUpdateScreen({
                                         <motion.p
                                             initial={{ opacity: 0, height: 0 }}
                                             animate={{ opacity: 1, height: 'auto' }}
-                                            className="text-zinc-500 text-sm mt-1"
+                                            className="text-[var(--ink-2)] text-sm mt-1"
                                         >
                                             {stage.description}
                                         </motion.p>
@@ -158,7 +158,7 @@ export default function StatusUpdateScreen({
 
                                 {/* Connector line (except last) */}
                                 {index < stages.length - 1 && (
-                                    <div className="absolute left-8 top-full h-4 w-0.5 bg-zinc-800" />
+                                    <div className="absolute left-8 top-full h-4 w-0.5 bg-[var(--ink)]" />
                                 )}
                             </motion.div>
                         );
@@ -172,7 +172,7 @@ export default function StatusUpdateScreen({
                     transition={{ delay: 1.5 }}
                     className="text-center mb-8"
                 >
-                    <p className="text-zinc-400 italic">
+                    <p className="text-[var(--ink-2)] italic">
                         "Kamu sedang membentuk pola berpikir. Terus lanjut."
                     </p>
                 </motion.div>
@@ -185,7 +185,7 @@ export default function StatusUpdateScreen({
                     >
                         <button
                             onClick={onContinue}
-                            className="w-full py-4 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white font-semibold transition-all"
+                            className="w-full py-4 bg-[var(--acid-orange)] text-[var(--ink)] font-semibold border-[3px] border-[var(--ink)] shadow-[8px_8px_0_var(--ink)] hover:translate-x-[-3px] hover:translate-y-[-3px] transition-all duration-100 [transition-timing-function:steps(4,end)] nx-sharp"
                         >
                             Lanjut ke Refleksi →
                         </button>
@@ -198,7 +198,7 @@ export default function StatusUpdateScreen({
                     animate={{ opacity: 1 }}
                     className="fixed bottom-8 left-1/2 -translate-x-1/2"
                 >
-                    <span className="text-zinc-600 text-xs font-mono">{timeRemaining}s</span>
+                    <span className="text-[var(--ink-3)] text-xs font-mono">{timeRemaining}s</span>
                 </motion.div>
             </div>
         </motion.div>

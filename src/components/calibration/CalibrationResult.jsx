@@ -77,18 +77,18 @@ export default function CalibrationResult({ profile, language, onEnterArena }) {
         className="relative inline-block mb-8"
       >
         <div className={cn(
-          "w-28 h-28 rounded-3xl flex items-center justify-center bg-gradient-to-br shadow-lg",
+          "w-28 h-28 nx-sharp border-[3px] border-[var(--ink)] shadow-[8px_8px_0_var(--ink)] flex items-center justify-center bg-gradient-to-br",
           archetype.gradient
         )}>
-          <Icon className="w-14 h-14 text-white" />
+          <Icon className="w-14 h-14 text-[var(--ink)]" />
         </div>
         <motion.div
-          className="absolute -top-2 -right-2 w-8 h-8 bg-zinc-900 border border-zinc-700 rounded-xl flex items-center justify-center"
+          className="absolute -top-2 -right-2 w-8 h-8 bg-[var(--paper)] border-[2px] border-[var(--ink)] shadow-[3px_3px_0_var(--ink)] nx-sharp flex items-center justify-center"
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ delay: 0.6 }}
         >
-          <Sparkles className="w-4 h-4 text-violet-400" />
+          <Sparkles className="w-4 h-4 text-[var(--ink)]" />
         </motion.div>
       </motion.div>
 
@@ -97,13 +97,13 @@ export default function CalibrationResult({ profile, language, onEnterArena }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}
       >
-        <p className="text-zinc-500 text-sm font-mono mb-3 tracking-widest">
+        <p className="text-[var(--ink-3)] text-sm font-mono mb-3 tracking-widest">
           {isEnglish ? 'INITIAL ARCHETYPE' : 'ARKETIPE AWAL'}
         </p>
         <h1 className={cn("text-5xl font-bold mb-5", archetype.color)}>
           {archetype.label}
         </h1>
-        <p className="text-zinc-400 mb-10 max-w-md mx-auto text-lg leading-relaxed">
+        <p className="text-[var(--ink-2)] mb-10 max-w-md mx-auto text-lg leading-relaxed">
           {archetype.description}
         </p>
       </motion.div>
@@ -115,19 +115,19 @@ export default function CalibrationResult({ profile, language, onEnterArena }) {
         transition={{ delay: 0.5 }}
         className="grid grid-cols-2 gap-4 mb-8"
       >
-        <div className="bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-2xl p-5 hover:border-zinc-700 transition-colors">
-          <p className="text-zinc-500 text-xs font-mono mb-2 tracking-wide">
+        <div className="nx-panel nx-sharp p-5">
+          <p className="text-[var(--ink-3)] text-xs font-mono mb-2 tracking-wide">
             {t.calibration.result.startingDifficulty.toUpperCase()}
           </p>
-          <p className="text-3xl font-bold text-white font-mono">
+          <p className="text-3xl font-bold text-[var(--ink)] font-mono">
             Level {profile.current_difficulty}
           </p>
         </div>
-        <div className="bg-zinc-900/80 backdrop-blur-sm border border-zinc-800 rounded-2xl p-5 hover:border-zinc-700 transition-colors">
-          <p className="text-zinc-500 text-xs font-mono mb-2 tracking-wide">
+        <div className="nx-panel nx-sharp p-5">
+          <p className="text-[var(--ink-3)] text-xs font-mono mb-2 tracking-wide">
             {t.calibration.result.riskAppetite.toUpperCase()}
           </p>
-          <p className="text-3xl font-bold text-orange-400 font-mono">
+          <p className="text-3xl font-bold text-[var(--ink)] font-mono">
             {Math.round(profile.risk_appetite * 100)}%
           </p>
         </div>
@@ -138,13 +138,14 @@ export default function CalibrationResult({ profile, language, onEnterArena }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6 }}
-        className="bg-zinc-900/50 border border-orange-500/20 rounded-2xl p-5 mb-10 text-left relative overflow-hidden"
+        className="nx-panel nx-sharp p-5 mb-10 text-left"
       >
-        <div className="absolute top-0 left-0 w-24 h-24 bg-orange-500/10 rounded-full blur-2xl" />
-        <div className="relative z-10 flex items-start gap-3">
-          <AlertTriangle className="w-5 h-5 text-orange-400 shrink-0 mt-0.5" />
-          <p className="text-zinc-400 text-sm leading-relaxed">
-            <span className="text-orange-400 font-semibold">
+        <div className="flex items-start gap-3">
+          <span className="w-8 h-8 bg-[var(--acid-orange)] border-[2px] border-[var(--ink)] shadow-[3px_3px_0_var(--ink)] nx-sharp flex items-center justify-center shrink-0 mt-0.5">
+            <AlertTriangle className="w-5 h-5 text-[var(--ink)]" />
+          </span>
+          <p className="text-[var(--ink-2)] text-sm leading-relaxed">
+            <span className="bg-[var(--acid-yellow)] px-1 border border-[var(--ink)] nx-sharp font-bold text-[var(--ink)]">
               {isEnglish ? 'Note:' : 'Catatan:'}
             </span>{' '}
             {isEnglish

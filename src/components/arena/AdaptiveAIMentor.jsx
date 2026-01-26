@@ -2,7 +2,6 @@ import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from "@/components/ui/button";
 import { AlertCircle, Brain, Timer } from 'lucide-react';
-import { cn } from "@/lib/utils";
 
 export default function AdaptiveAIMentor({ 
   stage,
@@ -24,26 +23,26 @@ export default function AdaptiveAIMentor({
         className="fixed bottom-24 right-6 z-40 max-w-md"
       >
         <motion.div 
-          className="bg-zinc-900 border-2 border-orange-500 rounded-2xl w-full p-6 shadow-2xl"
+          className="nx-panel nx-sharp w-full p-6"
           layoutId="mentor-dialog"
         >
           {/* Header */}
           <div className="flex items-center gap-3 mb-4">
             {isThinking ? (
-              <div className="w-10 h-10 rounded-lg bg-orange-500/10 flex items-center justify-center">
-                <Brain className="w-5 h-5 text-orange-500 animate-pulse" />
+              <div className="w-10 h-10 nx-sharp border-[2px] border-[var(--ink)] bg-[var(--acid-orange)] shadow-[3px_3px_0_var(--ink)] flex items-center justify-center">
+                <Brain className="w-5 h-5 text-[var(--ink)] animate-pulse" />
               </div>
             ) : (
-              <div className="w-10 h-10 rounded-lg bg-orange-500/10 flex items-center justify-center">
-                <AlertCircle className="w-5 h-5 text-orange-500" />
+              <div className="w-10 h-10 nx-sharp border-[2px] border-[var(--ink)] bg-[var(--acid-yellow)] shadow-[3px_3px_0_var(--ink)] flex items-center justify-center">
+                <AlertCircle className="w-5 h-5 text-[var(--ink)]" />
               </div>
             )}
             <div>
-              <h3 className="text-orange-500 font-semibold">AI Mentor</h3>
+              <h3 className="text-[var(--ink)] font-bold">AI Mentor</h3>
               {countdown > 0 && stage === 'countdown' && (
                 <div className="flex items-center gap-2 mt-1">
-                  <Timer className="w-3 h-3 text-red-500" />
-                  <span className="text-red-500 text-xs font-mono">
+                  <Timer className="w-3 h-3 text-[var(--ink)]" />
+                  <span className="text-[var(--ink)] text-xs font-mono bg-[var(--acid-yellow)] border border-[var(--ink)] px-1 nx-sharp">
                     {countdown}s until question changes
                   </span>
                 </div>
@@ -56,14 +55,14 @@ export default function AdaptiveAIMentor({
             {isThinking ? (
               <div className="flex items-center gap-2">
                 <div className="flex gap-1">
-                  <span className="w-2 h-2 bg-orange-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                  <span className="w-2 h-2 bg-orange-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                  <span className="w-2 h-2 bg-orange-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                  <span className="w-2 h-2 bg-[var(--acid-orange)] border border-[var(--ink)] nx-sharp animate-bounce" style={{ animationDelay: '0ms' }} />
+                  <span className="w-2 h-2 bg-[var(--acid-orange)] border border-[var(--ink)] nx-sharp animate-bounce" style={{ animationDelay: '150ms' }} />
+                  <span className="w-2 h-2 bg-[var(--acid-orange)] border border-[var(--ink)] nx-sharp animate-bounce" style={{ animationDelay: '300ms' }} />
                 </div>
-                <span className="text-zinc-400 text-sm">Menganalisis...</span>
+                <span className="text-[var(--ink-2)] text-sm">Menganalisis...</span>
               </div>
             ) : (
-              <p className="text-zinc-300 leading-relaxed italic">
+              <p className="text-[var(--ink-2)] leading-relaxed italic">
                 "{message}"
               </p>
             )}
@@ -76,14 +75,13 @@ export default function AdaptiveAIMentor({
                 <div className="grid grid-cols-2 gap-3">
                   <Button
                     onClick={onUnderstandClick}
-                    className="bg-green-500 hover:bg-green-600 text-black font-semibold"
+                    variant="success"
                   >
                     Ya, paham
                   </Button>
                   <Button
                     onClick={onNotUnderstandClick}
                     variant="outline"
-                    className="border-zinc-700 text-zinc-300 hover:bg-zinc-800"
                   >
                     Tidak paham
                   </Button>
@@ -91,8 +89,8 @@ export default function AdaptiveAIMentor({
               )}
 
               {stage === 'countdown' && (
-                <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-3">
-                  <p className="text-red-500 text-xs text-center">
+                <div className="bg-[var(--acid-magenta)] border-[3px] border-[var(--ink)] shadow-[4px_4px_0_var(--ink)] nx-sharp p-3">
+                  <p className="text-[var(--ink)] text-xs text-center font-bold">
                     Pertanyaan akan diganti dalam <strong>{countdown} detik</strong>
                   </p>
                 </div>
@@ -100,7 +98,7 @@ export default function AdaptiveAIMentor({
 
               {stage === 'over_analysis_warning' && (
                 <div className="text-center">
-                  <p className="text-zinc-500 text-xs">
+                  <p className="text-[var(--ink-3)] text-xs">
                     Pop-up akan hilang otomatis. Mulai mengetik untuk melanjutkan.
                   </p>
                 </div>

@@ -75,7 +75,7 @@ export default function ConsequenceRevealScreen({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="min-h-screen bg-black flex flex-col items-center justify-center p-6"
+            className="min-h-screen flex flex-col items-center justify-center p-6"
         >
             <div className="max-w-lg w-full">
                 {/* Header with dramatic effect */}
@@ -89,18 +89,18 @@ export default function ConsequenceRevealScreen({
                         initial={{ rotate: 0 }}
                         animate={{ rotate: [0, -5, 5, 0] }}
                         transition={{ delay: 0.5, duration: 0.5 }}
-                        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-red-500/20 border border-red-500/40 mb-4"
+                        className="inline-flex items-center gap-2 px-5 py-2.5 bg-[var(--acid-orange)] border-[3px] border-[var(--ink)] shadow-[4px_4px_0_var(--ink)] nx-sharp mb-4"
                     >
-                        <Zap className="w-5 h-5 text-red-400" />
-                        <span className="text-red-400 font-bold uppercase tracking-wider">Konsekuensi</span>
+                        <Zap className="w-5 h-5 text-[var(--ink)]" />
+                        <span className="text-[var(--ink)] font-bold uppercase tracking-wider">Konsekuensi</span>
                     </motion.div>
                 </motion.div>
 
                 {/* Loading state */}
                 {isLoading ? (
                     <div className="flex flex-col items-center gap-4 py-12">
-                        <div className="w-10 h-10 border-2 border-red-500 border-t-transparent rounded-full animate-spin" />
-                        <p className="text-zinc-500 text-sm">Menghitung dampak keputusan...</p>
+                        <div className="w-10 h-10 border-[3px] border-[var(--ink)] border-t-transparent nx-sharp animate-spin" />
+                        <p className="text-[var(--ink-2)] text-sm">Menghitung dampak keputusan...</p>
                     </div>
                 ) : (
                     <>
@@ -114,13 +114,13 @@ export default function ConsequenceRevealScreen({
                                             initial={{ opacity: 0, x: -30, scale: 0.95 }}
                                             animate={{ opacity: 1, x: 0, scale: 1 }}
                                             transition={{ type: 'spring', damping: 15 }}
-                                            className="bg-red-500/10 border border-red-500/30 rounded-xl p-5"
+                                            className="nx-panel nx-sharp p-5"
                                         >
                                             <div className="flex items-start gap-3">
-                                                <div className="w-8 h-8 rounded-full bg-red-500/20 flex items-center justify-center flex-shrink-0">
-                                                    <X className="w-4 h-4 text-red-400" />
+                                                <div className="w-8 h-8 bg-[var(--paper-2)] border-[2px] border-[var(--ink)] nx-sharp flex items-center justify-center flex-shrink-0">
+                                                    <X className="w-4 h-4 text-[var(--ink)]" />
                                                 </div>
-                                                <p className="text-white text-lg leading-relaxed">
+                                                <p className="text-[var(--ink)] text-lg leading-relaxed">
                                                     {consequence}
                                                 </p>
                                             </div>
@@ -139,13 +139,13 @@ export default function ConsequenceRevealScreen({
                                     transition={{ delay: 0.5 }}
                                     className="flex flex-wrap justify-center gap-3 mb-6"
                                 >
-                                    <span className="px-3 py-1.5 rounded-full bg-red-500/15 border border-red-500/30 text-red-400 text-sm font-medium">
+                                    <span className="px-3 py-1.5 bg-[var(--paper)] border-[2px] border-[var(--ink)] nx-sharp text-[var(--ink)] text-sm font-semibold">
                                         Risiko ↑
                                     </span>
-                                    <span className="px-3 py-1.5 rounded-full bg-yellow-500/15 border border-yellow-500/30 text-yellow-400 text-sm font-medium">
+                                    <span className="px-3 py-1.5 bg-[var(--paper)] border-[2px] border-[var(--ink)] nx-sharp text-[var(--ink)] text-sm font-semibold">
                                         Kompleksitas ↑
                                     </span>
-                                    <span className="px-3 py-1.5 rounded-full bg-blue-500/15 border border-blue-500/30 text-blue-400 text-sm font-medium">
+                                    <span className="px-3 py-1.5 bg-[var(--paper)] border-[2px] border-[var(--ink)] nx-sharp text-[var(--ink)] text-sm font-semibold">
                                         Tekanan ↑
                                     </span>
                                 </motion.div>
@@ -161,7 +161,7 @@ export default function ConsequenceRevealScreen({
                                     transition={{ delay: 0.3 }}
                                     className="text-center mb-6"
                                 >
-                                    <p className="text-zinc-400 text-lg italic">
+                                    <p className="text-[var(--ink-2)] text-lg italic">
                                         "{insightMessage}"
                                     </p>
                                 </motion.div>
@@ -176,29 +176,29 @@ export default function ConsequenceRevealScreen({
                                     animate={{ opacity: 1, y: 0, scale: 1 }}
                                     transition={{ delay: 0.5, type: 'spring', damping: 15 }}
                                     className={cn(
-                                        "rounded-xl p-4 mb-6 border",
+                                        "p-4 mb-6 border-[3px] border-[var(--ink)] shadow-[6px_6px_0_var(--ink)] nx-sharp",
                                         predictionAccurate
-                                            ? "bg-green-500/10 border-green-500/30"
-                                            : "bg-zinc-800/50 border-zinc-700"
+                                            ? "bg-[var(--acid-lime)]"
+                                            : "bg-[var(--paper)]"
                                     )}
                                 >
                                     <div className="flex items-center gap-3">
                                         {predictionAccurate ? (
-                                            <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0" />
+                                            <CheckCircle className="w-6 h-6 text-[var(--ink)] flex-shrink-0" />
                                         ) : (
-                                            <Target className="w-6 h-6 text-zinc-400 flex-shrink-0" />
+                                            <Target className="w-6 h-6 text-[var(--ink)] flex-shrink-0" />
                                         )}
                                         <div>
                                             <p className={cn(
                                                 "text-sm font-medium",
-                                                predictionAccurate ? "text-green-400" : "text-zinc-300"
+                                                predictionAccurate ? "text-[var(--ink)]" : "text-[var(--ink)]"
                                             )}>
                                                 {predictionAccurate
                                                     ? "🎯 Tebakanmu tepat!"
                                                     : "🤔 Hasilnya berbeda dari dugaanmu"
                                                 }
                                             </p>
-                                            <p className="text-xs text-zinc-500 mt-1">
+                                            <p className="text-xs text-[var(--ink-2)] mt-1">
                                                 {predictionAccurate
                                                     ? "Kamu mulai memahami pola skenario ini."
                                                     : "Ini pembelajaran baru: realitas sering berbeda dari ekspektasi."
@@ -219,7 +219,7 @@ export default function ConsequenceRevealScreen({
                                 >
                                     <button
                                         onClick={onContinue}
-                                        className="w-full py-4 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white font-semibold transition-all"
+                                        className="w-full py-4 bg-[var(--acid-orange)] text-[var(--ink)] font-semibold border-[3px] border-[var(--ink)] shadow-[8px_8px_0_var(--ink)] hover:translate-x-[-3px] hover:translate-y-[-3px] transition-all duration-100 [transition-timing-function:steps(4,end)] nx-sharp"
                                     >
                                         Lanjut →
                                     </button>
@@ -236,7 +236,7 @@ export default function ConsequenceRevealScreen({
                     transition={{ delay: 1 }}
                     className="fixed bottom-8 left-1/2 -translate-x-1/2"
                 >
-                    <span className="text-zinc-600 text-xs font-mono">{timeRemaining}s</span>
+                    <span className="text-[var(--ink-3)] text-xs font-mono">{timeRemaining}s</span>
                 </motion.div>
             </div>
 

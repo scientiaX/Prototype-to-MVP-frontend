@@ -45,33 +45,33 @@ export default function FeedbackScreen({
             case 'assumption_found':
                 return {
                     icon: <Zap className="w-8 h-8" />,
-                    color: 'text-yellow-400',
-                    bg: 'bg-yellow-500/10',
-                    border: 'border-yellow-500/30',
+                    color: 'text-[var(--ink)]',
+                    bg: 'bg-[var(--acid-yellow)]',
+                    border: 'border-[3px] border-[var(--ink)]',
                     prefix: null
                 };
             case 'tradeoff_locked':
                 return {
                     icon: <Check className="w-8 h-8" />,
-                    color: 'text-green-400',
-                    bg: 'bg-green-500/10',
-                    border: 'border-green-500/30',
+                    color: 'text-[var(--ink)]',
+                    bg: 'bg-[var(--acid-lime)]',
+                    border: 'border-[3px] border-[var(--ink)]',
                     prefix: null
                 };
             case 'reasoning_improved':
                 return {
                     icon: <TrendingUp className="w-8 h-8" />,
-                    color: 'text-blue-400',
-                    bg: 'bg-blue-500/10',
-                    border: 'border-blue-500/30',
+                    color: 'text-[var(--ink)]',
+                    bg: 'bg-[var(--acid-cyan)]',
+                    border: 'border-[3px] border-[var(--ink)]',
                     prefix: null
                 };
             case 'warning':
                 return {
                     icon: <AlertTriangle className="w-8 h-8" />,
-                    color: 'text-orange-400',
-                    bg: 'bg-orange-500/10',
-                    border: 'border-orange-500/30',
+                    color: 'text-[var(--ink)]',
+                    bg: 'bg-[var(--acid-orange)]',
+                    border: 'border-[3px] border-[var(--ink)]',
                     prefix: null
                 };
 
@@ -80,44 +80,44 @@ export default function FeedbackScreen({
             case 'trap':
                 return {
                     icon: <Target className="w-8 h-8" />,
-                    color: 'text-amber-400',
-                    bg: 'bg-amber-500/10',
-                    border: 'border-amber-500/30',
+                    color: 'text-[var(--ink)]',
+                    bg: 'bg-[var(--acid-yellow)]',
+                    border: 'border-[3px] border-[var(--ink)]',
                     prefix: '🎯 Jebakan Terdeteksi'
                 };
             case 'model_critique':
             case 'model':
                 return {
                     icon: <Brain className="w-8 h-8" />,
-                    color: 'text-purple-400',
-                    bg: 'bg-purple-500/10',
-                    border: 'border-purple-500/30',
+                    color: 'text-[var(--ink)]',
+                    bg: 'bg-[var(--paper-2)]',
+                    border: 'border-[3px] border-[var(--ink)]',
                     prefix: '🧠 Model Berpikir'
                 };
             case 'archetype_framing':
             case 'archetype':
                 return {
                     icon: <Shield className="w-8 h-8" />,
-                    color: 'text-indigo-400',
-                    bg: 'bg-indigo-500/10',
-                    border: 'border-indigo-500/30',
+                    color: 'text-[var(--ink)]',
+                    bg: 'bg-[var(--acid-magenta)]',
+                    border: 'border-[3px] border-[var(--ink)]',
                     prefix: archetypeInfo?.label ? `👤 Gaya ${archetypeInfo.label}` : '👤 Gaya Berpikir'
                 };
             case 'normalize':
                 return {
                     icon: <Users className="w-8 h-8" />,
-                    color: 'text-cyan-400',
-                    bg: 'bg-cyan-500/10',
-                    border: 'border-cyan-500/30',
+                    color: 'text-[var(--ink)]',
+                    bg: 'bg-[var(--acid-cyan)]',
+                    border: 'border-[3px] border-[var(--ink)]',
                     prefix: '📊 Pola Umum'
                 };
 
             default:
                 return {
                     icon: <Check className="w-8 h-8" />,
-                    color: 'text-green-400',
-                    bg: 'bg-green-500/10',
-                    border: 'border-green-500/30',
+                    color: 'text-[var(--ink)]',
+                    bg: 'bg-[var(--paper-2)]',
+                    border: 'border-[3px] border-[var(--ink)]',
                     prefix: null
                 };
         }
@@ -129,15 +129,15 @@ export default function FeedbackScreen({
     const getProgressChip = () => {
         switch (progressStatus) {
             case 'forming':
-                return { text: 'Forming', color: 'bg-zinc-700 text-zinc-300' };
+                return { text: 'Forming', color: 'bg-[var(--paper)] text-[var(--ink)] border-[2px] border-[var(--ink)]' };
             case 'developing':
-                return { text: 'Developing', color: 'bg-blue-500/20 text-blue-400' };
+                return { text: 'Developing', color: 'bg-[var(--acid-cyan)] text-[var(--ink)] border-[2px] border-[var(--ink)]' };
             case 'consistent':
-                return { text: 'Consistent', color: 'bg-green-500/20 text-green-400' };
+                return { text: 'Consistent', color: 'bg-[var(--acid-lime)] text-[var(--ink)] border-[2px] border-[var(--ink)]' };
             case 'stabilized':
-                return { text: 'Decision Stabilized', color: 'bg-orange-500/20 text-orange-400' };
+                return { text: 'Decision Stabilized', color: 'bg-[var(--acid-orange)] text-[var(--ink)] border-[2px] border-[var(--ink)]' };
             default:
-                return { text: 'Processing', color: 'bg-zinc-700 text-zinc-300' };
+                return { text: 'Processing', color: 'bg-[var(--paper)] text-[var(--ink)] border-[2px] border-[var(--ink)]' };
         }
     };
 
@@ -156,7 +156,7 @@ export default function FeedbackScreen({
                     initial={{ scale: 0.9, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     transition={{ type: 'spring', damping: 15 }}
-                    className={`rounded-2xl p-8 border ${config.border} ${config.bg} text-center`}
+                    className={`nx-panel nx-sharp p-8 ${config.border} ${config.bg} text-center`}
                 >
                     {/* Externalized Prefix Label (Friksi #3) */}
                     {config.prefix && (
@@ -176,7 +176,7 @@ export default function FeedbackScreen({
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
                         transition={{ delay: 0.1, type: 'spring' }}
-                        className={`w-16 h-16 rounded-full ${config.bg} border ${config.border} flex items-center justify-center mx-auto mb-4`}
+                        className={`w-16 h-16 nx-sharp bg-[var(--paper)] ${config.border} flex items-center justify-center mx-auto mb-4`}
                     >
                         <span className={config.color}>{config.icon}</span>
                     </motion.div>
@@ -199,7 +199,7 @@ export default function FeedbackScreen({
                             transition={{ delay: 0.25 }}
                             className="mt-3 mb-2"
                         >
-                            <span className="text-xs text-zinc-500">
+                            <span className="text-xs text-[var(--ink-2)]">
                                 Kekuatan: {archetypeInfo.strength} • Tantangan: {archetypeInfo.weakness}
                             </span>
                         </motion.div>
@@ -212,7 +212,7 @@ export default function FeedbackScreen({
                         transition={{ delay: 0.3 }}
                         className="inline-block"
                     >
-                        <span className={`px-3 py-1 rounded-full text-xs font-medium ${progress.color}`}>
+                        <span className={`px-3 py-1 nx-sharp text-xs font-medium ${progress.color}`}>
                             {progress.text}
                         </span>
                     </motion.div>
@@ -228,7 +228,8 @@ export default function FeedbackScreen({
                     >
                         <Button
                             onClick={onContinue}
-                            className={`w-full ${styles.button} py-4 text-lg font-bold`}
+                            variant="gradient"
+                            className="w-full py-4 text-lg font-bold nx-sharp"
                         >
                             Lanjut
                             <ArrowRight className="w-5 h-5 ml-2" />

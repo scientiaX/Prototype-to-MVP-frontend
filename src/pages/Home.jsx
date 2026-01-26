@@ -156,10 +156,10 @@ export default function Home() {
               <div className="nx-crosshair -top-3 -left-3" />
               <div className="nx-crosshair -bottom-3 -right-3" />
               <div className="nx-vert text-[42px] font-black tracking-[-0.06em] leading-none">
-                <span className="text-[var(--ink)]">NOVA</span>
+                <span className="text-[var(--ink)]">INTUITIVE</span>
               </div>
               <div className="mt-4 nx-mono text-[10px] text-[var(--ink-2)] uppercase tracking-[0.22em]">
-                HUMAN-MADE UI
+                PROBLEM-BASED-LEARNING
               </div>
             </div>
           </div>

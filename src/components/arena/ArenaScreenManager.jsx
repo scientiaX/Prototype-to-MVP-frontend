@@ -49,35 +49,35 @@ export const getVisualStateClasses = (state) => {
     switch (state) {
         case VISUAL_STATES.CALM:
             return {
-                container: `${base} bg-zinc-950`,
-                accent: 'text-zinc-400',
-                border: 'border-zinc-800',
-                button: 'bg-zinc-800 hover:bg-zinc-700 text-white',
+                container: `${base} nx-page nx-bg-wires`,
+                accent: 'text-[var(--ink-2)]',
+                border: 'border-[var(--ink)]',
+                button: '',
                 timer: 'hidden'
             };
         case VISUAL_STATES.FOCUSED:
             return {
-                container: `${base} bg-zinc-900`,
-                accent: 'text-orange-400',
-                border: 'border-orange-500/30',
-                button: 'bg-orange-500 hover:bg-orange-600 text-black',
-                timer: 'text-zinc-400'
+                container: `${base} nx-page nx-bg-dots`,
+                accent: 'text-[var(--acid-orange)]',
+                border: 'border-[var(--ink)]',
+                button: '',
+                timer: 'text-[var(--ink)] bg-[var(--acid-yellow)] border-[2px] border-[var(--ink)] shadow-[4px_4px_0_var(--ink)]'
             };
         case VISUAL_STATES.URGENT:
             return {
-                container: `${base} bg-zinc-900`,
-                accent: 'text-red-500',
-                border: 'border-red-500/50',
-                button: 'bg-red-500 hover:bg-red-600 text-white animate-pulse',
-                timer: 'text-red-500 animate-pulse'
+                container: `${base} nx-page nx-bg-stripes`,
+                accent: 'text-[var(--acid-magenta)]',
+                border: 'border-[var(--ink)]',
+                button: '',
+                timer: 'text-[var(--ink)] bg-[var(--acid-yellow)] border-[2px] border-[var(--ink)] shadow-[4px_4px_0_var(--ink)]'
             };
         case VISUAL_STATES.CRITICAL:
             return {
-                container: `${base} bg-black`,
-                accent: 'text-red-600',
-                border: 'border-red-600',
-                button: 'bg-red-600 hover:bg-red-700 text-white',
-                timer: 'text-red-600 text-2xl font-bold'
+                container: `${base} nx-page nx-bg-stripes`,
+                accent: 'text-[var(--ink)]',
+                border: 'border-[var(--ink)]',
+                button: '',
+                timer: 'text-[var(--ink)] bg-[var(--acid-yellow)] border-[2px] border-[var(--ink)] shadow-[4px_4px_0_var(--ink)] text-2xl font-bold'
             };
         default:
             return getVisualStateClasses(VISUAL_STATES.CALM);

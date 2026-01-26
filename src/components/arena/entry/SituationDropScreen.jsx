@@ -71,7 +71,7 @@ export default function SituationDropScreen({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="min-h-screen bg-black flex flex-col items-center justify-center p-6"
+            className="min-h-screen flex flex-col items-center justify-center p-6"
         >
             <div className="max-w-xl w-full">
                 {/* Role Badge */}
@@ -82,11 +82,11 @@ export default function SituationDropScreen({
                         transition={{ delay: 0.2 }}
                         className="flex items-center gap-2 mb-8 justify-center"
                     >
-                        <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-violet-500/15 border border-violet-500/30">
-                            <span className="text-violet-400">
+                        <div className="flex items-center gap-2 px-4 py-2 bg-[var(--paper)] border-[3px] border-[var(--ink)] shadow-[4px_4px_0_var(--ink)] nx-sharp">
+                            <span className="text-[var(--ink)]">
                                 {getRoleIcon()}
                             </span>
-                            <span className="text-violet-400 font-semibold text-sm uppercase tracking-wider">
+                            <span className="text-[var(--ink)] font-bold text-sm uppercase tracking-wider">
                                 {roleLabel.replace(/_/g, ' ')}
                             </span>
                         </div>
@@ -100,14 +100,14 @@ export default function SituationDropScreen({
                     transition={{ delay: 0.4 }}
                     className="text-center mb-12"
                 >
-                    <p className="text-2xl md:text-3xl text-white leading-relaxed font-light">
+                    <p className="text-2xl md:text-3xl text-[var(--ink)] leading-relaxed font-light">
                         <span className="opacity-100">{revealedText}</span>
                         <span className="opacity-20">{remainingText ? ` ${remainingText}` : ''}</span>
                         {textRevealed < words.length && (
                             <motion.span
                                 animate={{ opacity: [1, 0, 1] }}
                                 transition={{ duration: 0.8, repeat: Infinity }}
-                                className="inline-block w-0.5 h-8 bg-orange-500 ml-1 align-middle"
+                                className="inline-block w-0.5 h-8 bg-[var(--acid-orange)] ml-1 align-middle"
                             />
                         )}
                     </p>
@@ -123,7 +123,7 @@ export default function SituationDropScreen({
                     <button
                         onClick={canContinue ? onContinue : undefined}
                         disabled={!canContinue}
-                        className="group inline-flex items-center gap-2 text-zinc-500 hover:text-zinc-300 transition-colors"
+                        className="group inline-flex items-center gap-2 text-[var(--ink-2)] hover:text-[var(--acid-orange)] transition-colors"
                     >
                         <span className="text-sm">Tap untuk lanjut</span>
                         <motion.span
@@ -142,15 +142,15 @@ export default function SituationDropScreen({
                     transition={{ delay: 1 }}
                     className="fixed bottom-8 left-1/2 -translate-x-1/2 w-48"
                 >
-                    <div className="h-1 bg-zinc-800 rounded-full overflow-hidden">
+                    <div className="h-2 bg-[var(--paper)] border-[2px] border-[var(--ink)] nx-sharp overflow-hidden">
                         <motion.div
-                            className="h-full bg-gradient-to-r from-orange-500 to-red-500"
+                            className="h-full bg-[var(--acid-orange)]"
                             initial={{ width: '0%' }}
                             animate={{ width: `${((20 - timeRemaining) / 20) * 100}%` }}
                             transition={{ duration: 0.5 }}
                         />
                     </div>
-                    <p className="text-center text-zinc-600 text-xs mt-2 font-mono">
+                    <p className="text-center text-[var(--ink-3)] text-xs mt-2 font-mono">
                         {timeRemaining}s
                     </p>
                 </motion.div>

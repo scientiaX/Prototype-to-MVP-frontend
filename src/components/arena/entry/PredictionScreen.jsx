@@ -75,28 +75,17 @@ export default function PredictionScreen({
         }, 500);
     };
 
-    const getColorClasses = (color, isSelected) => {
-        const colors = {
-            green: {
-                selected: 'border-green-500 bg-green-500/20 text-green-400',
-                hover: 'hover:border-green-500/50 hover:bg-green-500/10'
-            },
-            yellow: {
-                selected: 'border-yellow-500 bg-yellow-500/20 text-yellow-400',
-                hover: 'hover:border-yellow-500/50 hover:bg-yellow-500/10'
-            },
-            red: {
-                selected: 'border-red-500 bg-red-500/20 text-red-400',
-                hover: 'hover:border-red-500/50 hover:bg-red-500/10'
-            },
-            default: {
-                selected: 'border-orange-500 bg-orange-500/20 text-orange-400',
-                hover: 'hover:border-orange-500/50 hover:bg-orange-500/10'
-            }
-        };
-
-        const colorSet = colors[color] || colors.default;
-        return isSelected ? colorSet.selected : colorSet.hover;
+    const getSelectedBg = (color) => {
+        switch (color) {
+            case 'green':
+                return 'bg-[var(--acid-lime)]';
+            case 'yellow':
+                return 'bg-[var(--acid-yellow)]';
+            case 'red':
+                return 'bg-[var(--acid-orange)]';
+            default:
+                return 'bg-[var(--paper-2)]';
+        }
     };
 
     return (
@@ -104,7 +93,7 @@ export default function PredictionScreen({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="min-h-screen bg-black flex flex-col items-center justify-center p-6"
+            className="min-h-screen flex flex-col items-center justify-center p-6"
         >
             <div className="max-w-lg w-full">
                 {/* Header */}
@@ -113,9 +102,9 @@ export default function PredictionScreen({
                     animate={{ opacity: 1, y: 0 }}
                     className="text-center mb-8"
                 >
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/15 border border-amber-500/30 mb-4">
-                        <Zap className="w-4 h-4 text-amber-400" />
-                        <span className="text-amber-400 font-semibold text-sm uppercase tracking-wider">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-[var(--acid-yellow)] border-[3px] border-[var(--ink)] shadow-[4px_4px_0_var(--ink)] nx-sharp mb-4">
+                        <Zap className="w-4 h-4 text-[var(--ink)]" />
+                        <span className="text-[var(--ink)] font-bold text-sm uppercase tracking-wider">
                             Prediksi
                         </span>
                     </div>
@@ -128,8 +117,8 @@ export default function PredictionScreen({
                     transition={{ delay: 0.1 }}
                     className="text-center mb-6"
                 >
-                    <p className="text-zinc-400 text-sm mb-2">{contextText}</p>
-                    <h2 className="text-2xl font-bold text-white">
+                    <p className="text-[var(--ink-2)] text-sm mb-2">{contextText}</p>
+                    <h2 className="text-2xl font-bold text-[var(--ink)]">
                         Menurutmu, apa yang akan terjadi?
                     </h2>
                 </motion.div>
@@ -150,12 +139,11 @@ export default function PredictionScreen({
                             onClick={() => handleSelect(option)}
                             disabled={isSubmitting}
                             className={cn(
-                                "w-full p-4 rounded-xl border-2 text-left transition-all duration-300",
+                                "w-full p-4 text-left border-[3px] border-[var(--ink)] shadow-[8px_8px_0_var(--ink)] transition-all duration-100 [transition-timing-function:steps(4,end)] nx-sharp",
                                 selectedPrediction?.id === option.id
-                                    ? getColorClasses(option.color, true)
+                                    ? cn(getSelectedBg(option.color), "translate-x-[-2px] translate-y-[-2px]")
                                     : cn(
-                                        "border-zinc-800 text-white",
-                                        !isSubmitting && getColorClasses(option.color, false)
+                                        "bg-[var(--paper)] text-[var(--ink)] hover:bg-[var(--paper-2)] hover:translate-x-[-2px] hover:translate-y-[-2px]"
                                     ),
                                 isSubmitting && selectedPrediction?.id !== option.id && "opacity-30"
                             )}
@@ -180,9 +168,8 @@ export default function PredictionScreen({
                                 onClick={handleSubmit}
                                 disabled={isSubmitting}
                                 className={cn(
-                                    "w-full py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-3 transition-all",
-                                    "bg-gradient-to-r from-amber-500 to-orange-600 text-black",
-                                    "hover:from-amber-600 hover:to-orange-700",
+                                    "w-full py-4 font-bold text-lg flex items-center justify-center gap-3 border-[3px] border-[var(--ink)] shadow-[8px_8px_0_var(--ink)] transition-all duration-100 [transition-timing-function:steps(4,end)] nx-sharp",
+                                    "bg-[var(--acid-yellow)] text-[var(--ink)] hover:translate-x-[-3px] hover:translate-y-[-3px]",
                                     isSubmitting && "opacity-50"
                                 )}
                             >
@@ -201,7 +188,7 @@ export default function PredictionScreen({
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
-                            className="mt-6 flex items-center justify-center gap-2 text-zinc-600 text-sm"
+                            className="mt-6 flex items-center justify-center gap-2 text-[var(--ink-2)] text-sm"
                         >
                             <HelpCircle className="w-4 h-4" />
                             <span>Tidak ada yang salah. Ikuti intuisimu.</span>
@@ -214,7 +201,7 @@ export default function PredictionScreen({
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 1 }}
-                    className="text-zinc-700 text-xs text-center mt-8"
+                    className="text-[var(--ink-3)] text-xs text-center mt-8"
                 >
                     Tebakan != skor. Ini tentang membangun intuisi.
                 </motion.p>
@@ -225,7 +212,7 @@ export default function PredictionScreen({
                     animate={{ opacity: 1 }}
                     className="fixed bottom-8 left-1/2 -translate-x-1/2"
                 >
-                    <span className="text-zinc-600 text-xs font-mono">{timeRemaining}s</span>
+                    <span className="text-[var(--ink-3)] text-xs font-mono">{timeRemaining}s</span>
                 </motion.div>
             </div>
         </motion.div>

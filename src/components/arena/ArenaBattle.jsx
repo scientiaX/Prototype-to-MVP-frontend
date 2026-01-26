@@ -352,16 +352,16 @@ export default function ArenaBattle({ problem, session, onSubmit, onAbandon, pro
       {/* Header - Always visible - z-[100] to be above main nav */}
       <div className={cn(
         "fixed top-0 left-0 right-0 z-[100] px-6 py-3 flex items-center justify-between",
-        "bg-black backdrop-blur-sm border-b border-zinc-800"
+        "bg-[var(--paper)] border-b-[3px] border-[var(--ink)]"
       )}>
         <div className="flex items-center gap-4">
-          <span className="text-zinc-600 font-mono text-xs">{problem.problem_id}</span>
+          <span className="text-[var(--ink-2)] font-mono text-xs">{problem.problem_id}</span>
           <ProgressChip status={progressStatus} />
         </div>
 
         <div className="flex items-center gap-4">
           {/* Exchange counter */}
-          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-900 text-zinc-400">
+          <div className="flex items-center gap-1.5 px-3 py-1.5 nx-sharp border-[2px] border-[var(--ink)] bg-[var(--paper-2)] text-[var(--ink)]">
             <MessageCircle className="w-4 h-4" />
             <span className="font-mono text-sm">{exchangeHistory.length}</span>
           </div>
@@ -369,7 +369,7 @@ export default function ArenaBattle({ problem, session, onSubmit, onAbandon, pro
           {/* Timer - CONDITIONAL: only show when urgent/critical per Arena docs */}
           {(screenManager.visualState === 'urgent' || screenManager.visualState === 'critical') && (
             <div className={cn(
-              "flex items-center gap-2 px-4 py-2 rounded-lg font-mono",
+              "flex items-center gap-2 px-4 py-2 nx-sharp font-mono",
               screenManager.styles.timer
             )}>
               <Clock className="w-4 h-4" />
@@ -382,7 +382,7 @@ export default function ArenaBattle({ problem, session, onSubmit, onAbandon, pro
             variant="ghost"
             size="icon"
             onClick={onAbandon}
-            className="text-zinc-500 hover:text-red-500"
+            className="text-[var(--ink-2)] hover:text-[var(--acid-magenta)]"
           >
             <X className="w-5 h-5" />
           </Button>
@@ -436,8 +436,8 @@ export default function ArenaBattle({ problem, session, onSubmit, onAbandon, pro
 
       {/* Loading overlay */}
       {isLoading && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="w-8 h-8 border-2 border-orange-500 border-t-transparent rounded-full animate-spin" />
+        <div className="fixed inset-0 bg-[var(--ink)]/40 flex items-center justify-center z-50">
+          <div className="w-8 h-8 border-[3px] border-[var(--ink)] border-t-transparent nx-sharp animate-spin" />
         </div>
       )}
     </div>

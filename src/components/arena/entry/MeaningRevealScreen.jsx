@@ -65,7 +65,7 @@ export default function MeaningRevealScreen({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="min-h-screen bg-black flex flex-col items-center justify-center p-6"
+            className="min-h-screen flex flex-col items-center justify-center p-6"
         >
             <div className="max-w-lg w-full text-center">
                 {/* Selected symbol */}
@@ -85,7 +85,7 @@ export default function MeaningRevealScreen({
                     transition={{ delay: 0.3 }}
                     className="mb-6"
                 >
-                    <p className="text-zinc-500 text-sm mb-1">Pilihanmu mengindikasikan:</p>
+                    <p className="text-[var(--ink-3)] text-sm mb-1">Pilihanmu mengindikasikan:</p>
                 </motion.div>
 
                 {/* Stage 1: Approach Name */}
@@ -96,9 +96,9 @@ export default function MeaningRevealScreen({
                         transition={{ type: 'spring', damping: 15 }}
                         className="mb-6"
                     >
-                        <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-gradient-to-r from-orange-500/20 to-red-500/20 border border-orange-500/40">
+                        <div className="inline-flex items-center gap-3 px-6 py-3 bg-[var(--acid-orange)] border-[3px] border-[var(--ink)] shadow-[6px_6px_0_var(--ink)] nx-sharp">
                             <span className="text-2xl">{meaning.icon}</span>
-                            <span className="text-2xl font-bold text-orange-400">
+                            <span className="text-2xl font-black text-[var(--ink)]">
                                 {meaning.approach}
                             </span>
                         </div>
@@ -112,7 +112,7 @@ export default function MeaningRevealScreen({
                         animate={{ opacity: 1, y: 0 }}
                         className="mb-8"
                     >
-                        <p className="text-zinc-300 text-lg leading-relaxed">
+                        <p className="text-[var(--ink-2)] text-lg leading-relaxed">
                             {meaning.description}
                         </p>
                     </motion.div>
@@ -131,7 +131,7 @@ export default function MeaningRevealScreen({
                                 initial={{ opacity: 0, scale: 0.8 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ delay: i * 0.1 }}
-                                className="px-3 py-1 rounded-full bg-zinc-800 text-zinc-300 text-sm"
+                                className="px-3 py-1 bg-[var(--paper-2)] border-[2px] border-[var(--ink)] nx-sharp text-[var(--ink)] text-sm font-semibold"
                             >
                                 {trait}
                             </motion.span>
@@ -147,7 +147,7 @@ export default function MeaningRevealScreen({
                     >
                         <button
                             onClick={() => onContinue({ choice: selectedChoice, meaning })}
-                            className="w-full py-4 rounded-xl bg-gradient-to-r from-orange-500 to-red-600 text-black font-bold text-lg hover:from-orange-600 hover:to-red-700 transition-all flex items-center justify-center gap-2"
+                            className="w-full py-4 bg-[var(--acid-orange)] text-[var(--ink)] font-bold text-lg border-[3px] border-[var(--ink)] shadow-[8px_8px_0_var(--ink)] hover:translate-x-[-3px] hover:translate-y-[-3px] transition-all duration-100 [transition-timing-function:steps(4,end)] nx-sharp flex items-center justify-center gap-2"
                         >
                             <Sparkles className="w-5 h-5" />
                             Lanjut dengan Gaya Ini
@@ -161,7 +161,7 @@ export default function MeaningRevealScreen({
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 2 }}
-                    className="text-zinc-600 text-xs mt-8"
+                    className="text-[var(--ink-3)] text-xs mt-8"
                 >
                     Ini bukan label permanen. Ini titik awal untuk memahami gaya berpikirmu.
                 </motion.p>
@@ -172,7 +172,7 @@ export default function MeaningRevealScreen({
                     animate={{ opacity: 1 }}
                     className="fixed bottom-8 left-1/2 -translate-x-1/2"
                 >
-                    <span className="text-zinc-600 text-xs font-mono">{timeRemaining}s</span>
+                    <span className="text-[var(--ink-3)] text-xs font-mono">{timeRemaining}s</span>
                 </motion.div>
             </div>
         </motion.div>

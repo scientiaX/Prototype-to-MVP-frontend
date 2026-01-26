@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Check, Zap, TrendingUp, AlertTriangle, Lightbulb } from 'lucide-react';
+import { Check, TrendingUp, AlertTriangle, Lightbulb } from 'lucide-react';
 
 /**
  * MicroToast - Minimal feedback notifications
@@ -11,39 +11,27 @@ import { Check, Zap, TrendingUp, AlertTriangle, Lightbulb } from 'lucide-react';
 const TOAST_CONFIG = {
     assumption_found: {
         icon: Lightbulb,
-        color: 'text-yellow-400',
-        bg: 'bg-yellow-500/15',
-        border: 'border-yellow-500/30'
+        accentBg: 'bg-[var(--acid-yellow)]'
     },
     tradeoff_locked: {
         icon: Check,
-        color: 'text-green-400',
-        bg: 'bg-green-500/15',
-        border: 'border-green-500/30'
+        accentBg: 'bg-[var(--acid-lime)]'
     },
     reasoning_improved: {
         icon: TrendingUp,
-        color: 'text-blue-400',
-        bg: 'bg-blue-500/15',
-        border: 'border-blue-500/30'
+        accentBg: 'bg-[var(--acid-cyan)]'
     },
     decision_stabilized: {
         icon: Check,
-        color: 'text-orange-400',
-        bg: 'bg-orange-500/15',
-        border: 'border-orange-500/30'
+        accentBg: 'bg-[var(--acid-orange)]'
     },
     warning: {
         icon: AlertTriangle,
-        color: 'text-red-400',
-        bg: 'bg-red-500/15',
-        border: 'border-red-500/30'
+        accentBg: 'bg-[var(--acid-magenta)]'
     },
     hint: {
         icon: Lightbulb,
-        color: 'text-blue-400',
-        bg: 'bg-blue-500/15',
-        border: 'border-blue-500/30'
+        accentBg: 'bg-[var(--acid-cyan)]'
     }
 };
 
@@ -67,12 +55,12 @@ export function MicroToast({ type, message, duration = 2000, onDismiss }) {
                     initial={{ opacity: 0, y: -20, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: -20, scale: 0.95 }}
-                    className={`fixed top-6 left-1/2 -translate-x-1/2 z-50 
-            flex items-center gap-2 px-4 py-2 rounded-full 
-            ${config.bg} border ${config.border} shadow-lg`}
+                    className="fixed top-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 px-4 py-2 bg-[var(--paper)] border-[3px] border-[var(--ink)] shadow-[6px_6px_0_var(--ink)] nx-sharp"
                 >
-                    <Icon className={`w-4 h-4 ${config.color}`} />
-                    <span className={`text-sm font-medium ${config.color}`}>{message}</span>
+                    <span className={`w-6 h-6 ${config.accentBg} border-[2px] border-[var(--ink)] nx-sharp flex items-center justify-center`}>
+                        <Icon className="w-4 h-4 text-[var(--ink)]" />
+                    </span>
+                    <span className="text-sm font-bold text-[var(--ink)]">{message}</span>
                 </motion.div>
             )}
         </AnimatePresence>
@@ -119,18 +107,14 @@ export function useMicroToast() {
                     initial={{ opacity: 0, y: -20, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: -20, scale: 0.95 }}
-                    className={`fixed top-20 left-1/2 -translate-x-1/2 z-[90] 
-                        flex items-center gap-2 px-4 py-2 rounded-full 
-                        ${TOAST_CONFIG[toast.type]?.bg || 'bg-zinc-800'} 
-                        border ${TOAST_CONFIG[toast.type]?.border || 'border-zinc-700'} 
-                        shadow-lg`}
+                    className="fixed top-20 left-1/2 -translate-x-1/2 z-[90] flex items-center gap-2 px-4 py-2 bg-[var(--paper)] border-[3px] border-[var(--ink)] shadow-[6px_6px_0_var(--ink)] nx-sharp"
                 >
-                    {React.createElement(TOAST_CONFIG[toast.type]?.icon || Check, {
-                        className: `w-4 h-4 ${TOAST_CONFIG[toast.type]?.color || 'text-white'}`
-                    })}
-                    <span className={`text-sm font-medium ${TOAST_CONFIG[toast.type]?.color || 'text-white'}`}>
-                        {toast.message}
+                    <span className={`w-6 h-6 ${TOAST_CONFIG[toast.type]?.accentBg || 'bg-[var(--paper-2)]'} border-[2px] border-[var(--ink)] nx-sharp flex items-center justify-center`}>
+                        {React.createElement(TOAST_CONFIG[toast.type]?.icon || Check, {
+                            className: "w-4 h-4 text-[var(--ink)]"
+                        })}
                     </span>
+                    <span className="text-sm font-bold text-[var(--ink)]">{toast.message}</span>
                 </motion.div>
             )}
         </AnimatePresence>
@@ -145,10 +129,10 @@ export function useMicroToast() {
  */
 export function ProgressChip({ status }) {
     const statusConfig = {
-        forming: { text: 'Forming', color: 'bg-zinc-700 text-zinc-400' },
-        developing: { text: 'Developing', color: 'bg-blue-500/20 text-blue-400' },
-        consistent: { text: 'Consistent', color: 'bg-green-500/20 text-green-400' },
-        stabilized: { text: 'Stabilized', color: 'bg-orange-500/20 text-orange-400' }
+        forming: { text: 'Forming', bg: 'bg-[var(--paper-2)]' },
+        developing: { text: 'Developing', bg: 'bg-[var(--acid-cyan)]' },
+        consistent: { text: 'Consistent', bg: 'bg-[var(--acid-lime)]' },
+        stabilized: { text: 'Stabilized', bg: 'bg-[var(--acid-orange)]' }
     };
 
     const config = statusConfig[status] || statusConfig.forming;
@@ -158,7 +142,7 @@ export function ProgressChip({ status }) {
             key={status}
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className={`px-3 py-1 rounded-full text-xs font-medium ${config.color}`}
+            className={`px-3 py-1 text-xs font-bold ${config.bg} text-[var(--ink)] border-[2px] border-[var(--ink)] nx-sharp`}
         >
             {config.text}
         </motion.span>

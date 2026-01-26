@@ -23,9 +23,9 @@ export default function PureActionScreen({
     // Pure choices - NO meaningful labels, just symbols
     // The meaning is assigned AFTER the user selects
     const pureChoices = [
-        { id: 'A', symbol: '🔺', color: 'from-red-500 to-orange-500' },
-        { id: 'B', symbol: '🔷', color: 'from-blue-500 to-cyan-500' },
-        { id: 'C', symbol: '🟡', color: 'from-yellow-500 to-amber-500' }
+        { id: 'A', symbol: '🔺', bg: 'bg-[var(--acid-orange)]' },
+        { id: 'B', symbol: '🔷', bg: 'bg-[var(--acid-cyan)]' },
+        { id: 'C', symbol: '🟡', bg: 'bg-[var(--acid-yellow)]' }
     ];
 
     const handleSelect = async (choice) => {
@@ -45,7 +45,7 @@ export default function PureActionScreen({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="min-h-screen bg-black flex flex-col items-center justify-center p-6"
+            className="min-h-screen flex flex-col items-center justify-center p-6"
         >
             <div className="max-w-lg w-full text-center">
                 {/* Timer (subtle) */}
@@ -54,14 +54,14 @@ export default function PureActionScreen({
                     animate={{ opacity: 1 }}
                     className="mb-8"
                 >
-                    <span className="text-zinc-600 text-xs font-mono">{timeRemaining}s</span>
+                    <span className="text-[var(--ink-3)] text-xs font-mono">{timeRemaining}s</span>
                 </motion.div>
 
                 {/* Question - intentionally vague */}
                 <motion.h2
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="text-3xl font-bold text-white mb-4"
+                    className="text-3xl font-bold text-[var(--ink)] mb-4"
                 >
                     {questionText}
                 </motion.h2>
@@ -71,7 +71,7 @@ export default function PureActionScreen({
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.2 }}
-                    className="text-zinc-500 text-sm mb-12"
+                    className="text-[var(--ink-2)] text-sm mb-12"
                 >
                     Tidak ada yang salah. Ikuti intuisimu.
                 </motion.p>
@@ -95,15 +95,15 @@ export default function PureActionScreen({
                             onClick={() => handleSelect(choice)}
                             disabled={isSelecting}
                             className={`
-                                w-28 h-28 text-5xl rounded-2xl 
-                                transition-all duration-300 
+                                w-28 h-28 text-5xl
+                                transition-all duration-100 [transition-timing-function:steps(4,end)]
                                 flex items-center justify-center
                                 ${selectedChoice?.id === choice.id
-                                    ? `bg-gradient-to-br ${choice.color} shadow-lg shadow-white/20`
-                                    : 'bg-zinc-900 hover:bg-zinc-800 hover:scale-105'
+                                    ? `${choice.bg} shadow-[10px_10px_0_var(--ink)] translate-x-[-3px] translate-y-[-3px]`
+                                    : 'bg-[var(--paper)] shadow-[10px_10px_0_var(--ink)] hover:bg-[var(--paper-2)] hover:translate-x-[-3px] hover:translate-y-[-3px]'
                                 }
                                 ${isSelecting && selectedChoice?.id !== choice.id ? 'opacity-30' : ''}
-                                border-2 ${selectedChoice?.id === choice.id ? 'border-white' : 'border-zinc-800'}
+                                border-[3px] border-[var(--ink)] nx-sharp
                             `}
                         >
                             <motion.span
@@ -125,7 +125,7 @@ export default function PureActionScreen({
                         animate={{ opacity: 1, y: 0 }}
                         className="mt-8"
                     >
-                        <span className="text-zinc-400 text-sm">
+                        <span className="text-[var(--ink-2)] text-sm">
                             Memproses pilihanmu...
                         </span>
                     </motion.div>
@@ -136,7 +136,7 @@ export default function PureActionScreen({
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 1 }}
-                    className="text-zinc-700 text-xs mt-12"
+                    className="text-[var(--ink-3)] text-xs mt-12"
                 >
                     Arti pilihanmu akan terungkap setelah memilih
                 </motion.p>

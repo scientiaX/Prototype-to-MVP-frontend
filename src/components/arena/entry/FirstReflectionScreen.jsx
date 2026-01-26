@@ -78,7 +78,7 @@ export default function FirstReflectionScreen({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="min-h-screen bg-black flex flex-col items-center justify-center p-6"
+            className="min-h-screen flex flex-col items-center justify-center p-6"
         >
             <div className="max-w-lg w-full">
                 {/* Header */}
@@ -87,13 +87,13 @@ export default function FirstReflectionScreen({
                     animate={{ opacity: 1, y: 0 }}
                     className="text-center mb-8"
                 >
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-violet-500/15 border border-violet-500/30 mb-4">
-                        <MessageSquare className="w-4 h-4 text-violet-400" />
-                        <span className="text-violet-400 font-semibold text-sm uppercase tracking-wider">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-[var(--acid-magenta)] border-[3px] border-[var(--ink)] shadow-[4px_4px_0_var(--ink)] nx-sharp mb-4">
+                        <MessageSquare className="w-4 h-4 text-[var(--ink)]" />
+                        <span className="text-[var(--ink)] font-bold text-sm uppercase tracking-wider">
                             Refleksi Singkat
                         </span>
                         {/* Optional badge */}
-                        <span className="text-zinc-500 text-xs">(opsional)</span>
+                        <span className="text-[var(--ink-2)] text-xs">(opsional)</span>
                     </div>
                 </motion.div>
 
@@ -104,7 +104,7 @@ export default function FirstReflectionScreen({
                     transition={{ delay: 0.2 }}
                     className="mb-8"
                 >
-                    <p className="text-2xl text-white font-light text-center leading-relaxed">
+                    <p className="text-2xl text-[var(--ink)] font-light text-center leading-relaxed">
                         "{question}"
                     </p>
                 </motion.div>
@@ -117,10 +117,10 @@ export default function FirstReflectionScreen({
                     className="mb-6"
                 >
                     <div className={cn(
-                        "relative rounded-xl border-2 transition-all duration-300",
+                        "relative border-[3px] border-[var(--ink)] shadow-[8px_8px_0_var(--ink)] transition-all duration-100 [transition-timing-function:steps(4,end)] nx-sharp",
                         isFocused
-                            ? "border-violet-500 bg-zinc-900/80"
-                            : "border-zinc-800 bg-zinc-900/50"
+                            ? "bg-[var(--paper-2)]"
+                            : "bg-[var(--paper)]"
                     )}>
                         <textarea
                             value={text}
@@ -129,16 +129,16 @@ export default function FirstReflectionScreen({
                             onBlur={() => setIsFocused(false)}
                             placeholder="Tulis jawaban singkatmu... (opsional)"
                             rows={3}
-                            className="w-full bg-transparent p-4 text-white placeholder-zinc-600 resize-none focus:outline-none text-lg"
+                            className="w-full bg-transparent p-4 text-[var(--ink)] placeholder:text-[var(--ink-3)] resize-none focus:outline-none text-lg"
                         />
 
                         {/* Character counter */}
                         <div className="absolute bottom-3 right-3 flex items-center gap-2">
                             <span className={cn(
                                 "text-xs font-mono",
-                                text.length < minChars ? "text-zinc-500"
-                                    : text.length > maxChars * 0.9 ? "text-orange-400"
-                                        : "text-green-400"
+                                text.length < minChars ? "text-[var(--ink-3)]"
+                                    : text.length > maxChars * 0.9 ? "text-[var(--acid-orange)]"
+                                        : "text-[var(--ink)]"
                             )}>
                                 {text.length}/{maxChars}
                             </span>
@@ -153,7 +153,7 @@ export default function FirstReflectionScreen({
                                     initial={{ opacity: 0, y: 10 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0 }}
-                                    className="flex items-center gap-2 text-violet-400 text-xs"
+                                    className="flex items-center gap-2 text-[var(--ink)] text-xs"
                                 >
                                     <Gift className="w-3 h-3" />
                                     <span>Refleksi membuka insight bonus!</span>
@@ -175,10 +175,10 @@ export default function FirstReflectionScreen({
                         onClick={handleSubmit}
                         disabled={!isValid}
                         className={cn(
-                            "w-full py-5 rounded-xl font-bold text-lg flex items-center justify-center gap-3 transition-all",
+                            "w-full py-5 font-bold text-lg flex items-center justify-center gap-3 transition-all duration-100 [transition-timing-function:steps(4,end)] border-[3px] border-[var(--ink)] nx-sharp",
                             isValid
-                                ? "bg-gradient-to-r from-violet-500 to-purple-600 text-white hover:from-violet-600 hover:to-purple-700"
-                                : "bg-zinc-800 text-zinc-500 cursor-not-allowed"
+                                ? "bg-[var(--acid-magenta)] text-[var(--ink)] shadow-[8px_8px_0_var(--ink)] hover:translate-x-[-3px] hover:translate-y-[-3px]"
+                                : "bg-[var(--paper-2)] text-[var(--ink-3)] shadow-[6px_6px_0_var(--ink)] cursor-not-allowed"
                         )}
                     >
                         <Sparkles className="w-5 h-5" />
@@ -194,7 +194,7 @@ export default function FirstReflectionScreen({
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0 }}
                                 onClick={handleSkip}
-                                className="w-full py-3 rounded-xl text-zinc-500 hover:text-zinc-300 text-sm flex items-center justify-center gap-2 transition-all hover:bg-zinc-900"
+                                className="w-full py-3 bg-[var(--paper)] text-[var(--ink)] text-sm font-semibold flex items-center justify-center gap-2 border-[3px] border-[var(--ink)] shadow-[6px_6px_0_var(--ink)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all duration-100 [transition-timing-function:steps(4,end)] nx-sharp"
                             >
                                 <SkipForward className="w-4 h-4" />
                                 Lewati untuk sekarang
@@ -210,7 +210,7 @@ export default function FirstReflectionScreen({
                     transition={{ delay: 2 }}
                     className="mt-8 text-center"
                 >
-                    <p className="text-zinc-700 text-xs flex items-center justify-center gap-1">
+                    <p className="text-[var(--ink-3)] text-xs flex items-center justify-center gap-1">
                         <Lightbulb className="w-3 h-3" />
                         Refleksi membuka jalur insight tersembunyi
                     </p>
@@ -222,7 +222,7 @@ export default function FirstReflectionScreen({
                     animate={{ opacity: 1 }}
                     className="fixed bottom-8 left-1/2 -translate-x-1/2"
                 >
-                    <span className="text-zinc-600 text-xs font-mono">{timeRemaining}s</span>
+                    <span className="text-[var(--ink-3)] text-xs font-mono">{timeRemaining}s</span>
                 </motion.div>
             </div>
         </motion.div>

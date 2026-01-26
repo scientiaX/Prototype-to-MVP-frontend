@@ -371,27 +371,6 @@ h6 {
 }
 
 /* ================================================
-   GLASS EFFECTS
-   ================================================ */
-
-.glass {
-  background: var(--paper);
-  border: 3px solid var(--ink);
-  box-shadow: 10px 10px 0 var(--ink);
-}
-
-.glass-navbar {
-  background: var(--paper);
-  border-bottom: 3px solid var(--ink);
-}
-
-.glass-card {
-  background: var(--paper);
-  border: 3px solid var(--ink);
-  box-shadow: 10px 10px 0 var(--ink);
-}
-
-/* ================================================
    CARDS
    ================================================ */
 
@@ -418,14 +397,6 @@ h6 {
 
 .card-interactive:hover {
   transform: translate(-3px, -3px);
-}
-
-.card-glass {
-  background: var(--paper);
-  border: 3px solid var(--ink);
-  border-radius: 0;
-  box-shadow: 10px 10px 0 var(--ink);
-  transition: transform var(--steps-fast), background var(--steps-fast);
 }
 
 /* ================================================
