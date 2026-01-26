@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { User, Briefcase, TrendingUp } from 'lucide-react';
 
@@ -14,14 +14,18 @@ export default function SituationDropScreen({
     problem,
     roleLabel,
     onContinue,
-    timeRemaining
+    timeRemaining,
+    durationSeconds = 20
 }) {
     const [textRevealed, setTextRevealed] = useState(0);
     const [canContinue, setCanContinue] = useState(false);
+    const didContinueRef = useRef(false);
 
     // Typewriter effect - reveal text progressively
     useEffect(() => {
         const words = problem?.context?.split(' ') || [];
+        const durationMs = Math.max(1000, Number(durationSeconds) * 1000);
+        const msPerWord = Math.max(35, Math.min(110, Math.round((durationMs * 0.7) / Math.max(1, words.length))));
         const timer = setInterval(() => {
             setTextRevealed(prev => {
                 if (prev >= words.length) {
@@ -30,22 +34,26 @@ export default function SituationDropScreen({
                 }
                 return prev + 1;
             });
-        }, 80); // 80ms per word
+        }, msPerWord);
 
         return () => clearInterval(timer);
-    }, [problem?.context]);
+    }, [problem?.context, durationSeconds]);
 
     // Enable continue after 3 seconds minimum
     useEffect(() => {
+        const durationMs = Math.max(1000, Number(durationSeconds) * 1000);
+        const minDelayMs = Math.max(800, Math.min(3200, Math.round(durationMs * 0.18)));
         const timer = setTimeout(() => {
             setCanContinue(true);
-        }, 3000);
+        }, minDelayMs);
         return () => clearTimeout(timer);
-    }, []);
+    }, [durationSeconds]);
 
     // Auto-advance after timeout or when text fully revealed
     useEffect(() => {
+        if (didContinueRef.current) return;
         if (timeRemaining <= 0) {
+            didContinueRef.current = true;
             onContinue();
         }
     }, [timeRemaining, onContinue]);
@@ -146,13 +154,10 @@ export default function SituationDropScreen({
                         <motion.div
                             className="h-full bg-[var(--acid-orange)]"
                             initial={{ width: '0%' }}
-                            animate={{ width: `${((20 - timeRemaining) / 20) * 100}%` }}
+                            animate={{ width: `${Math.max(0, Math.min(100, ((Number(durationSeconds) - timeRemaining) / Math.max(1, Number(durationSeconds))) * 100))}%` }}
                             transition={{ duration: 0.5 }}
                         />
                     </div>
-                    <p className="text-center text-[var(--ink-3)] text-xs mt-2 font-mono">
-                        {timeRemaining}s
-                    </p>
                 </motion.div>
             </div>
         </motion.div>

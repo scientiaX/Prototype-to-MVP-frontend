@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Clock, AlertCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -17,9 +17,23 @@ export default function ForcedChoiceScreen({
     onSelectChoice,
     onContinue,
     timeRemaining,
+    durationSeconds = 25,
     isLoading
 }) {
-    const isUrgent = timeRemaining <= 10;
+    const urgentThreshold = Math.max(3, Math.round(Number(durationSeconds) * 0.25));
+    const isUrgent = timeRemaining <= urgentThreshold;
+    const didAutoRef = useRef(false);
+
+    useEffect(() => {
+        if (didAutoRef.current) return;
+        if (isLoading) return;
+        if (timeRemaining > 0) return;
+        if (!Array.isArray(choices) || choices.length === 0) return;
+
+        didAutoRef.current = true;
+        if (!selectedChoice) onSelectChoice(choices[0]);
+        onContinue();
+    }, [timeRemaining, isLoading, choices, selectedChoice, onSelectChoice, onContinue]);
 
     return (
         <motion.div
@@ -48,7 +62,7 @@ export default function ForcedChoiceScreen({
                         "font-mono font-bold",
                         isUrgent ? "text-[var(--ink)]" : "text-[var(--ink)]"
                     )}>
-                        {timeRemaining}s
+                        {isUrgent ? 'NOW' : 'DECIDE'}
                     </span>
                 </motion.div>
 

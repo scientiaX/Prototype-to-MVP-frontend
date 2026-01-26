@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { TrendingUp, Circle, CheckCircle } from 'lucide-react';
 
@@ -13,10 +13,12 @@ import { TrendingUp, Circle, CheckCircle } from 'lucide-react';
 export default function StatusUpdateScreen({
     progressStatus,
     onContinue,
-    timeRemaining
+    timeRemaining,
+    durationSeconds = 30
 }) {
     const [animationStep, setAnimationStep] = useState(0);
     const [canContinue, setCanContinue] = useState(false);
+    const didContinueRef = useRef(false);
 
     // Status stages
     const stages = [
@@ -36,6 +38,8 @@ export default function StatusUpdateScreen({
     useEffect(() => {
         const currentIndex = getCurrentStageIndex();
         let step = 0;
+        const durationMs = Math.max(1000, Number(durationSeconds) * 1000);
+        const stageStepMs = Math.max(350, Math.min(900, Math.round(durationMs * 0.18)));
 
         const timer = setInterval(() => {
             if (step <= currentIndex) {
@@ -44,22 +48,26 @@ export default function StatusUpdateScreen({
             } else {
                 clearInterval(timer);
             }
-        }, 600);
+        }, stageStepMs);
 
         return () => clearInterval(timer);
-    }, [progressStatus]);
+    }, [progressStatus, durationSeconds]);
 
     // Enable continue after animation
     useEffect(() => {
+        const durationMs = Math.max(1000, Number(durationSeconds) * 1000);
+        const minDelayMs = Math.max(900, Math.min(3200, Math.round(durationMs * 0.12)));
         const timer = setTimeout(() => {
             setCanContinue(true);
-        }, 3000);
+        }, minDelayMs);
         return () => clearTimeout(timer);
-    }, []);
+    }, [durationSeconds]);
 
     // Auto-advance
     useEffect(() => {
+        if (didContinueRef.current) return;
         if (timeRemaining <= 0) {
+            didContinueRef.current = true;
             onContinue();
         }
     }, [timeRemaining, onContinue]);
@@ -192,14 +200,6 @@ export default function StatusUpdateScreen({
                     </motion.div>
                 )}
 
-                {/* Timer */}
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="fixed bottom-8 left-1/2 -translate-x-1/2"
-                >
-                    <span className="text-[var(--ink-3)] text-xs font-mono">{timeRemaining}s</span>
-                </motion.div>
             </div>
         </motion.div>
     );

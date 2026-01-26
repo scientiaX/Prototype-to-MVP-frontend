@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MessageSquare, ArrowRight, Sparkles, SkipForward, Gift, Lightbulb } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -19,12 +19,14 @@ export default function FirstReflectionScreen({
     reflectionQuestion,
     onSubmit,
     onSkip, // NEW: handler for skip
-    timeRemaining
+    timeRemaining,
+    durationSeconds = 60
 }) {
     const [text, setText] = useState('');
     const [isFocused, setIsFocused] = useState(false);
     const [showSkip, setShowSkip] = useState(false);
     const [showHiddenPowerHint, setShowHiddenPowerHint] = useState(false);
+    const didFinishRef = useRef(false);
 
     // Lowered minimum for less friction
     const minChars = 10; // Reduced from 20
@@ -35,12 +37,14 @@ export default function FirstReflectionScreen({
 
     // Show skip button after delay
     useEffect(() => {
+        const durationMs = Math.max(1000, Number(durationSeconds) * 1000);
+        const delayMs = Math.max(900, Math.min(3200, Math.round(durationMs * 0.06)));
         const timer = setTimeout(() => {
             setShowSkip(true);
-        }, 3000); // Show skip after 3 seconds
+        }, delayMs);
 
         return () => clearTimeout(timer);
-    }, []);
+    }, [durationSeconds]);
 
     // Show hidden power hint when user starts typing
     useEffect(() => {
@@ -68,6 +72,28 @@ export default function FirstReflectionScreen({
             });
         }
     };
+
+    useEffect(() => {
+        if (didFinishRef.current) return;
+        if (timeRemaining > 0) return;
+
+        didFinishRef.current = true;
+        if (text.length >= minChars) {
+            onSubmit({
+                text,
+                skipped: false,
+                unlocks_bonus: true
+            });
+            return;
+        }
+        if (onSkip) {
+            onSkip({
+                skipped: true,
+                text: text.trim() || null,
+                unlocks_bonus: false
+            });
+        }
+    }, [timeRemaining, text, minChars, onSubmit, onSkip]);
 
     // Default question if none provided
     const question = reflectionQuestion ||
@@ -216,14 +242,6 @@ export default function FirstReflectionScreen({
                     </p>
                 </motion.div>
 
-                {/* Timer */}
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="fixed bottom-8 left-1/2 -translate-x-1/2"
-                >
-                    <span className="text-[var(--ink-3)] text-xs font-mono">{timeRemaining}s</span>
-                </motion.div>
             </div>
         </motion.div>
     );

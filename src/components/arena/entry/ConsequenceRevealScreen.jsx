@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Zap, X, AlertCircle, Target, CheckCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -20,6 +20,7 @@ export default function ConsequenceRevealScreen({
     selectedChoice,
     onContinue,
     timeRemaining,
+    durationSeconds = 30,
     isLoading,
     // NEW: Prediction comparison props (Friksi #4)
     userPrediction = null,
@@ -29,6 +30,7 @@ export default function ConsequenceRevealScreen({
     const [showInsight, setShowInsight] = useState(false);
     const [showPredictionResult, setShowPredictionResult] = useState(false);
     const [canContinue, setCanContinue] = useState(false);
+    const didContinueRef = useRef(false);
 
     // Check if prediction was accurate
     const predictionAccurate = userPrediction && actualOutcome &&
@@ -39,33 +41,41 @@ export default function ConsequenceRevealScreen({
         if (isLoading) return;
 
         const revealTimers = [];
+        const durationMs = Math.max(1000, Number(durationSeconds) * 1000);
+        const totalPhases = Math.max(1, (consequences?.length || 0) + 2);
+        const stepMs = Math.max(800, Math.min(2200, Math.round((durationMs * 0.75) / totalPhases)));
+        const initialDelayMs = Math.max(600, Math.min(1500, Math.round(durationMs * 0.08)));
 
         // Reveal each consequence with delay
-        consequences.forEach((_, index) => {
+        (consequences || []).forEach((_, index) => {
             const timer = setTimeout(() => {
                 setRevealedIndex(index);
-            }, 1500 + index * 2000); // First at 1.5s, then every 2s
+            }, initialDelayMs + index * stepMs);
             revealTimers.push(timer);
         });
 
         // Show insight after all consequences
+        const insightDelayMs = initialDelayMs + (consequences?.length || 0) * stepMs + Math.max(500, Math.min(1200, Math.round(stepMs * 0.55)));
         const insightTimer = setTimeout(() => {
             setShowInsight(true);
-        }, 1500 + consequences.length * 2000 + 1000);
+        }, insightDelayMs);
         revealTimers.push(insightTimer);
 
         // Enable continue after insight
+        const continueDelayMs = insightDelayMs + Math.max(700, Math.min(2200, Math.round(stepMs * 0.8)));
         const continueTimer = setTimeout(() => {
             setCanContinue(true);
-        }, 1500 + consequences.length * 2000 + 2500);
+        }, continueDelayMs);
         revealTimers.push(continueTimer);
 
         return () => revealTimers.forEach(t => clearTimeout(t));
-    }, [consequences, isLoading]);
+    }, [consequences, isLoading, durationSeconds]);
 
     // Auto-advance when time runs out
     useEffect(() => {
+        if (didContinueRef.current) return;
         if (timeRemaining <= 0 && !isLoading) {
+            didContinueRef.current = true;
             onContinue();
         }
     }, [timeRemaining, isLoading, onContinue]);
@@ -229,15 +239,6 @@ export default function ConsequenceRevealScreen({
                     </>
                 )}
 
-                {/* Timer (subtle) */}
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 1 }}
-                    className="fixed bottom-8 left-1/2 -translate-x-1/2"
-                >
-                    <span className="text-[var(--ink-3)] text-xs font-mono">{timeRemaining}s</span>
-                </motion.div>
             </div>
 
             {/* Screen shake effect on first consequence */}

@@ -94,8 +94,9 @@ export const useEntryFlowManager = (problem, profile) => {
     const [currentScreen, setCurrentScreen] = useState(
         savedState?.currentScreen || ENTRY_SCREENS.SITUATION_DROP
     );
-    const [screenStartTime, setScreenStartTime] = useState(Date.now());
-    const [totalElapsed, setTotalElapsed] = useState(savedState?.totalElapsed || 0);
+    const [flowStartTime, setFlowStartTime] = useState(savedState?.flowStartTime || Date.now());
+    const [screenStartTime, setScreenStartTime] = useState(savedState?.screenStartTime || Date.now());
+    const [clockTick, setClockTick] = useState(Date.now());
 
     // User decision state - restore from session if available
     const [choices, setChoices] = useState(savedState?.choices || []);
@@ -111,17 +112,14 @@ export const useEntryFlowManager = (problem, profile) => {
     const [isLoadingChoices, setIsLoadingChoices] = useState(false);
     const [isLoadingConsequences, setIsLoadingConsequences] = useState(false);
 
-    // Timer refs
-    const timerRef = useRef(null);
-    const elapsedTimerRef = useRef(null);
-
     // Save entry flow state to sessionStorage
     const saveEntryFlowState = useCallback(() => {
         if (problem?.problem_id && currentScreen !== ENTRY_SCREENS.COMPLETED) {
             const entryFlowState = {
                 problemId: problem.problem_id,
                 currentScreen,
-                totalElapsed,
+                flowStartTime,
+                screenStartTime,
                 choices,
                 selectedChoice,
                 isLocked,
@@ -134,7 +132,7 @@ export const useEntryFlowManager = (problem, profile) => {
             };
             sessionStorage.setItem(ENTRY_FLOW_STATE_KEY, JSON.stringify(entryFlowState));
         }
-    }, [problem?.problem_id, currentScreen, totalElapsed, choices, selectedChoice, isLocked, consequences, insightMessage, progressStatus, reflectionText, reflectionQuestion]);
+    }, [problem?.problem_id, currentScreen, flowStartTime, screenStartTime, choices, selectedChoice, isLocked, consequences, insightMessage, progressStatus, reflectionText, reflectionQuestion]);
 
     // Save state whenever relevant values change
     useEffect(() => {
@@ -150,13 +148,10 @@ export const useEntryFlowManager = (problem, profile) => {
         return () => window.removeEventListener('beforeunload', handleBeforeUnload);
     }, [saveEntryFlowState]);
 
-    // Track total elapsed time
+    // Tick clock for timeRemaining + totalElapsed calculations (timestamp-based, no drift)
     useEffect(() => {
-        elapsedTimerRef.current = setInterval(() => {
-            setTotalElapsed(prev => prev + 1);
-        }, 1000);
-
-        return () => clearInterval(elapsedTimerRef.current);
+        const interval = setInterval(() => setClockTick(Date.now()), 400);
+        return () => clearInterval(interval);
     }, []);
 
     // Get current screen index
@@ -175,9 +170,9 @@ export const useEntryFlowManager = (problem, profile) => {
     const getTimeRemaining = useCallback(() => {
         const timing = SCREEN_TIMING[currentScreen];
         if (!timing) return 0;
-        const elapsed = Date.now() - screenStartTime;
+        const elapsed = clockTick - screenStartTime;
         return Math.max(0, Math.ceil((timing - elapsed) / 1000));
-    }, [currentScreen, screenStartTime]);
+    }, [currentScreen, screenStartTime, clockTick]);
 
     // Navigate to next screen
     const nextScreen = useCallback(() => {
@@ -311,7 +306,12 @@ export const useEntryFlowManager = (problem, profile) => {
     }, [currentScreen, choices.length, fetchChoices]);
 
     // Submit reflection and complete entry flow
-    const submitReflection = useCallback((text) => {
+    const submitReflection = useCallback((payload) => {
+        const text = typeof payload === 'string'
+            ? payload
+            : typeof payload?.text === 'string'
+                ? payload.text
+                : '';
         setReflectionText(text);
         nextScreen(); // Go to COMPLETED
     }, [nextScreen]);
@@ -321,6 +321,7 @@ export const useEntryFlowManager = (problem, profile) => {
 
     // Get entry flow data for main arena
     const getEntryFlowData = useCallback(() => {
+        const totalElapsed = Math.max(0, Math.floor((clockTick - flowStartTime) / 1000));
         return {
             selectedChoice,
             consequences,
@@ -330,12 +331,12 @@ export const useEntryFlowManager = (problem, profile) => {
             totalTimeSeconds: totalElapsed,
             progressStatus
         };
-    }, [selectedChoice, consequences, insightMessage, reflectionText, reflectionQuestion, totalElapsed, progressStatus]);
+    }, [selectedChoice, consequences, insightMessage, reflectionText, reflectionQuestion, progressStatus, clockTick, flowStartTime]);
 
     return {
         // State
         currentScreen,
-        totalElapsed,
+        totalElapsed: Math.max(0, Math.floor((clockTick - flowStartTime) / 1000)),
         choices,
         selectedChoice,
         isLocked,

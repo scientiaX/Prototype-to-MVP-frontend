@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     useEntryFlowManager,
@@ -25,31 +25,8 @@ export default function ArenaEntryFlow({
     onSkip
 }) {
     const entryFlow = useEntryFlowManager(problem, profile);
-
-    // Time remaining for current screen
-    const [screenTimeRemaining, setScreenTimeRemaining] = useState(20);
-
-    // Update time remaining based on current screen
-    useEffect(() => {
-        const timing = SCREEN_TIMING[entryFlow.currentScreen];
-        if (!timing) return;
-
-        // Reset time for new screen
-        setScreenTimeRemaining(Math.ceil(timing / 1000));
-
-        // Countdown timer
-        const timer = setInterval(() => {
-            setScreenTimeRemaining(prev => {
-                if (prev <= 1) {
-                    clearInterval(timer);
-                    return 0;
-                }
-                return prev - 1;
-            });
-        }, 1000);
-
-        return () => clearInterval(timer);
-    }, [entryFlow.currentScreen]);
+    const screenDurationMs = SCREEN_TIMING[entryFlow.currentScreen] || 0;
+    const screenDurationSeconds = Math.max(1, Math.ceil(screenDurationMs / 1000));
 
     // Handle entry flow completion
     useEffect(() => {
@@ -68,7 +45,8 @@ export default function ArenaEntryFlow({
                         problem={problem}
                         roleLabel={problem?.role_label}
                         onContinue={entryFlow.nextScreen}
-                        timeRemaining={screenTimeRemaining}
+                        timeRemaining={entryFlow.timeRemaining}
+                        durationSeconds={screenDurationSeconds}
                     />
                 );
 
@@ -79,7 +57,8 @@ export default function ArenaEntryFlow({
                         selectedChoice={entryFlow.selectedChoice}
                         onSelectChoice={entryFlow.selectChoice}
                         onContinue={entryFlow.nextScreen}
-                        timeRemaining={screenTimeRemaining}
+                        timeRemaining={entryFlow.timeRemaining}
+                        durationSeconds={screenDurationSeconds}
                         isLoading={entryFlow.isLoadingChoices}
                     />
                 );
@@ -101,7 +80,8 @@ export default function ArenaEntryFlow({
                         insightMessage={entryFlow.insightMessage}
                         selectedChoice={entryFlow.selectedChoice}
                         onContinue={entryFlow.nextScreen}
-                        timeRemaining={screenTimeRemaining}
+                        timeRemaining={entryFlow.timeRemaining}
+                        durationSeconds={screenDurationSeconds}
                         isLoading={entryFlow.isLoadingConsequences}
                     />
                 );
@@ -111,7 +91,8 @@ export default function ArenaEntryFlow({
                     <StatusUpdateScreen
                         progressStatus={entryFlow.progressStatus}
                         onContinue={entryFlow.nextScreen}
-                        timeRemaining={screenTimeRemaining}
+                        timeRemaining={entryFlow.timeRemaining}
+                        durationSeconds={screenDurationSeconds}
                     />
                 );
 
@@ -121,7 +102,9 @@ export default function ArenaEntryFlow({
                         selectedChoice={entryFlow.selectedChoice}
                         reflectionQuestion={entryFlow.reflectionQuestion}
                         onSubmit={entryFlow.submitReflection}
-                        timeRemaining={screenTimeRemaining}
+                        onSkip={entryFlow.submitReflection}
+                        timeRemaining={entryFlow.timeRemaining}
+                        durationSeconds={screenDurationSeconds}
                     />
                 );
 
