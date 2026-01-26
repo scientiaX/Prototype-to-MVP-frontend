@@ -19,6 +19,7 @@ export default function FirstReflectionScreen({
     reflectionQuestion,
     onSubmit,
     onSkip, // NEW: handler for skip
+    onActivity,
     timeRemaining,
     durationSeconds = 60
 }) {
@@ -55,6 +56,7 @@ export default function FirstReflectionScreen({
 
     const handleSubmit = () => {
         if (isValid) {
+            onActivity?.();
             onSubmit({
                 text,
                 skipped: false,
@@ -65,6 +67,7 @@ export default function FirstReflectionScreen({
 
     const handleSkip = () => {
         if (onSkip) {
+            onActivity?.();
             onSkip({
                 skipped: true,
                 text: text.trim() || null, // Send partial text if any
@@ -150,7 +153,10 @@ export default function FirstReflectionScreen({
                     )}>
                         <textarea
                             value={text}
-                            onChange={(e) => setText(e.target.value.slice(0, maxChars))}
+                            onChange={(e) => {
+                                setText(e.target.value.slice(0, maxChars));
+                                onActivity?.();
+                            }}
                             onFocus={() => setIsFocused(true)}
                             onBlur={() => setIsFocused(false)}
                             placeholder="Tulis jawaban singkatmu... (opsional)"
