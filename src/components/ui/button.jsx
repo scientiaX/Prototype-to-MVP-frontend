@@ -15,9 +15,7 @@ const buttonVariants = {
     danger:
       "bg-[var(--acid-magenta)] text-[var(--ink)] border-[3px] border-[var(--ink)] shadow-[6px_6px_0_var(--ink)] hover:translate-x-[-3px] hover:translate-y-[-3px]",
     success:
-      "bg-[var(--acid-lime)] text-[var(--ink)] border-[3px] border-[var(--ink)] shadow-[6px_6px_0_var(--ink)] hover:translate-x-[-3px] hover:translate-y-[-3px]",
-    glass:
-      "bg-[var(--paper)] text-[var(--ink)] border-[3px] border-[var(--ink)] shadow-[6px_6px_0_var(--ink)] hover:translate-x-[-2px] hover:translate-y-[-2px]"
+      "bg-[var(--acid-lime)] text-[var(--ink)] border-[3px] border-[var(--ink)] shadow-[6px_6px_0_var(--ink)] hover:translate-x-[-3px] hover:translate-y-[-3px]"
   },
   size: {
     sm: "h-8 px-3 text-xs gap-1.5",

@@ -12,9 +12,9 @@ const archetypeConfig = {
 };
 
 const rankConfig = [
-  { color: 'text-yellow-400', bg: 'bg-yellow-400/15', border: 'border-yellow-400/30', gradient: 'from-yellow-500 to-amber-600' },
-  { color: 'text-zinc-300', bg: 'bg-zinc-300/15', border: 'border-zinc-400/30', gradient: 'from-zinc-400 to-zinc-500' },
-  { color: 'text-amber-600', bg: 'bg-amber-600/15', border: 'border-amber-600/30', gradient: 'from-amber-600 to-orange-700' }
+  { color: 'text-[var(--ink)]', gradient: 'from-[var(--acid-yellow)] to-[var(--acid-orange)]' },
+  { color: 'text-[var(--ink)]', gradient: 'from-[var(--paper)] to-[var(--paper-2)]' },
+  { color: 'text-[var(--ink)]', gradient: 'from-[var(--acid-orange)] to-[var(--acid-magenta)]' }
 ];
 
 export default function Leaderboard() {
@@ -326,7 +326,7 @@ export default function Leaderboard() {
         <AnimatePresence>
           {selectedProfile && (
             <motion.div
-              className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4"
+              className="fixed inset-0 bg-[rgba(11,11,12,0.6)] flex items-center justify-center z-50 p-4"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
