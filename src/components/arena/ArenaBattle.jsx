@@ -583,7 +583,7 @@ export default function ArenaBattle({ problem, session, onSubmit, onAbandon, pro
             variant="ghost"
             size="icon"
             onClick={onAbandon}
-            className="text-[var(--ink-2)] hover:text-[var(--acid-magenta)]"
+            className="text-[var(--ink-2)] hover:text-[var(--acid-orange)]"
           >
             <X className="w-5 h-5" />
           </Button>

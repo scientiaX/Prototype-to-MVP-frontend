@@ -89,7 +89,7 @@ export default function AdaptiveAIMentor({
               )}
 
               {stage === 'countdown' && (
-                <div className="bg-[var(--acid-magenta)] border-[3px] border-[var(--ink)] shadow-[4px_4px_0_var(--ink)] nx-sharp p-3">
+                <div className="bg-[var(--acid-orange)] border-[3px] border-[var(--ink)] shadow-[4px_4px_0_var(--ink)] nx-sharp p-3">
                   <p className="text-[var(--ink)] text-xs text-center font-bold">
                     Pertanyaan akan diganti dalam <strong>{countdown} detik</strong>
                   </p>

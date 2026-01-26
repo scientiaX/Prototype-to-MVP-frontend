@@ -225,8 +225,7 @@ export default function Home() {
         <div className="grid lg:grid-cols-12 gap-6 items-start">
           <div className="lg:col-span-4">
             <div className="sticky top-[92px] nx-panel nx-sharp px-5 py-5">
-              <div className="nx-mono text-[10px] text-[var(--ink-2)] uppercase tracking-[0.22em]">Signal Rail</div>
-              <div className="mt-5 space-y-2">
+              <div className="space-y-2">
                 {t.signals.map((s, index) => (
                   <div key={s.kicker} className="flex items-center gap-3">
                     <div
@@ -280,9 +279,6 @@ export default function Home() {
                       {s.line}
                     </div>
                     <div className="mt-5 h-px w-full bg-[rgba(231,234,240,0.1)]" />
-                    <div className="mt-5 nx-mono text-[10px] text-[var(--ink-2)] uppercase tracking-[0.22em]">
-                      Scroll to advance
-                    </div>
                   </motion.div>
                 </section>
               ))}

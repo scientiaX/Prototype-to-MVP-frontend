@@ -464,7 +464,7 @@ export default function Arena() {
               </div>
 
               <h2 className="text-4xl md:text-5xl font-black text-[var(--ink)] mb-4 tracking-[-0.06em]">
-                Coming <span className="underline decoration-[var(--acid-magenta)] decoration-[4px] underline-offset-4">Soon</span>
+                Coming <span className="underline decoration-[var(--acid-orange)] decoration-[4px] underline-offset-4">Soon</span>
               </h2>
               <p className="text-[var(--ink-2)] mb-8 max-w-md mx-auto">
                 Mode Multiplayer sedang dalam pengembangan. Bersiaplah untuk berkompetisi dengan player lain!

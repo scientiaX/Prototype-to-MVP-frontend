@@ -51,18 +51,11 @@ export default function CalibrationQuestion({
           <div
             key={i}
             className={cn(
-              "h-1.5 flex-1 nx-sharp transition-all duration-500 relative overflow-hidden",
-              i < currentIndex ? "bg-gradient-to-r from-orange-500 to-red-500" :
-                i === currentIndex ? "bg-[var(--ink)]" : "bg-[var(--wire-2)]"
+              "h-1.5 flex-1 nx-sharp transition-colors duration-200",
+              i < currentIndex ? "bg-[rgba(51,209,122,0.7)]" :
+                i === currentIndex ? "bg-[rgba(231,234,240,0.34)]" : "bg-[rgba(231,234,240,0.12)]"
             )}
           >
-            {i === currentIndex && (
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-orange-500/50 to-transparent"
-                animate={{ x: [-100, 200] }}
-                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-              />
-            )}
           </div>
         ))}
       </div>
@@ -86,7 +79,7 @@ export default function CalibrationQuestion({
         <span className="text-[var(--ink-2)] text-sm font-mono bg-[var(--paper-2)] px-3 py-1.5 nx-sharp border-[2px] border-[var(--ink)]">
           {String(currentIndex + 1).padStart(2, '0')} / {String(totalQuestions).padStart(2, '0')}
         </span>
-        <div className="h-px flex-1 bg-gradient-to-r from-[var(--ink)]/30 to-transparent" />
+        <div className="h-px flex-1 bg-[rgba(231,234,240,0.12)]" />
       </motion.div>
 
       {/* Question text */}
@@ -111,18 +104,18 @@ export default function CalibrationQuestion({
             whileTap={{ scale: 0.98 }}
             onClick={() => handleOptionClick(option.value)}
             className={cn(
-              "group w-full text-left p-4 nx-sharp border-[3px] shadow-[6px_6px_0_var(--ink)] transition-all duration-100 [transition-timing-function:steps(4,end)] relative overflow-hidden hover:translate-x-[-2px] hover:translate-y-[-2px]",
+              "group w-full text-left p-4 nx-sharp border border-[rgba(231,234,240,0.18)] transition-colors duration-150",
               (selectedOption === option.value || selectedValue === option.value)
-                ? "border-[var(--ink)] bg-[var(--acid-orange)] text-[var(--ink)]"
-                : "border-[var(--ink)] bg-[var(--paper)] text-[var(--ink)] hover:bg-[var(--paper-2)]"
+                ? "bg-[rgba(51,209,122,0.08)] border-[rgba(51,209,122,0.45)] text-[var(--ink)]"
+                : "bg-[rgba(231,234,240,0.02)] text-[var(--ink)] hover:bg-[rgba(231,234,240,0.04)] hover:border-[rgba(231,234,240,0.28)]"
             )}
           >
             <div className="relative z-10 flex items-center gap-3">
               <div className={cn(
-                "w-7 h-7 nx-sharp border-[2px] border-[var(--ink)] flex items-center justify-center shrink-0 transition-all",
+                "w-7 h-7 nx-sharp border border-[rgba(231,234,240,0.22)] flex items-center justify-center shrink-0 transition-colors",
                 (selectedOption === option.value || selectedValue === option.value)
-                  ? "bg-[var(--paper)] text-[var(--ink)]"
-                  : "bg-[var(--paper-2)] text-[var(--ink)]"
+                  ? "bg-[rgba(51,209,122,0.18)] border-[rgba(51,209,122,0.55)] text-[var(--ink)]"
+                  : "bg-[rgba(231,234,240,0.04)] text-[var(--ink)]"
               )}>
                 {(selectedOption === option.value || selectedValue === option.value) ? (
                   <Check className="w-4 h-4" />
@@ -154,7 +147,7 @@ export default function CalibrationQuestion({
               value={textProof}
               onChange={(e) => setTextProof(e.target.value)}
               placeholder={textInputPlaceholder}
-              className="w-full nx-sharp border-[3px] border-[var(--ink)] bg-[var(--paper)] p-4 text-[var(--ink)] placeholder:text-[var(--ink-3)] focus:border-[var(--acid-orange)] focus:outline-none transition-colors resize-none"
+              className="w-full nx-sharp border border-[rgba(231,234,240,0.18)] bg-[rgba(231,234,240,0.02)] p-4 text-[var(--ink)] placeholder:text-[var(--ink-3)] focus:border-[rgba(51,209,122,0.45)] focus:outline-none transition-colors resize-none"
               rows={3}
             />
             <p className="text-[var(--ink-2)] text-xs mt-2">

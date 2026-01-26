@@ -66,7 +66,7 @@ export const getVisualStateClasses = (state) => {
         case VISUAL_STATES.URGENT:
             return {
                 container: `${base} nx-page nx-bg-stripes`,
-                accent: 'text-[var(--acid-magenta)]',
+                accent: 'text-[var(--acid-orange)]',
                 border: 'border-[var(--ink)]',
                 button: '',
                 timer: 'text-[var(--ink)] bg-[var(--acid-yellow)] border-[2px] border-[var(--ink)] shadow-[4px_4px_0_var(--ink)]'

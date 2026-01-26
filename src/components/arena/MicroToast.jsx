@@ -27,7 +27,7 @@ const TOAST_CONFIG = {
     },
     warning: {
         icon: AlertTriangle,
-        accentBg: 'bg-[var(--acid-magenta)]'
+        accentBg: 'bg-[var(--acid-orange)]'
     },
     hint: {
         icon: Lightbulb,

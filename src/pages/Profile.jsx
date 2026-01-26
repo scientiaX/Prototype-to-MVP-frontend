@@ -256,7 +256,7 @@ export default function Profile() {
                       "shrink-0 px-3 py-1.5 nx-sharp text-xs nx-mono font-bold border-2 border-[var(--ink)]",
                       artifact.difficulty <= 3 ? "bg-[var(--acid-lime)]/40 text-[var(--ink)]" :
                         artifact.difficulty <= 6 ? "bg-[var(--acid-yellow)]/50 text-[var(--ink)]" :
-                          "bg-[var(--acid-magenta)]/25 text-[var(--ink)]"
+                          "bg-[var(--acid-orange)]/25 text-[var(--ink)]"
                     )}>
                       Difficulty {artifact.difficulty}
                     </span>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Send, HelpCircle, Lock, ArrowRight, Check, X, Loader2 } from 'lucide-react';
+import { ClipboardList, Send, HelpCircle, Lock, ArrowRight, Check, X, Loader2, ThumbsDown, ThumbsUp } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
@@ -157,7 +157,11 @@ export default function ActionScreen({
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                     >
-                        <div className={`text-6xl mb-6 ${styles.accent}`}>📋</div>
+                        <div className="mb-6 flex items-center justify-center">
+                            <div className={cn("w-16 h-16 nx-sharp border border-[rgba(231,234,240,0.18)] bg-[rgba(231,234,240,0.04)] flex items-center justify-center", styles.accent)}>
+                                <ClipboardList className="w-8 h-8 text-[var(--ink)]" />
+                            </div>
+                        </div>
                         <h3 className="text-xl font-bold text-[var(--ink)] mb-4">TASK</h3>
                         <p className="text-[var(--ink-2)] text-lg mb-8 max-w-md mx-auto">
                             {taskInstruction || "Selesaikan tugas ini sebelum melanjutkan."}
@@ -194,7 +198,7 @@ export default function ActionScreen({
                             maxLength={limits.max}
                         />
                         <div className="flex justify-end text-xs text-[var(--ink-2)]">
-                            <span className={charCount > limits.max * 0.9 ? 'text-orange-400' : ''}>
+                            <span className={charCount > limits.max * 0.9 ? 'text-[var(--acid-orange)]' : ''}>
                                 {charCount}/{limits.max}
                             </span>
                         </div>
@@ -215,7 +219,7 @@ export default function ActionScreen({
                             maxLength={limits.max}
                         />
                         <div className="flex justify-end text-xs text-[var(--ink-2)]">
-                            <span className={charCount > limits.max * 0.9 ? 'text-orange-400' : ''}>
+                            <span className={charCount > limits.max * 0.9 ? 'text-[var(--acid-orange)]' : ''}>
                                 {charCount}/{limits.max}
                             </span>
                         </div>
@@ -229,13 +233,17 @@ export default function ActionScreen({
             case INTERACTION_TYPES.QUICK_CHOICE:
                 // Quick emoji/icon buttons - instant tap, no typing
                 const quickOptions = options.length > 0 ? options : [
-                    { emoji: '👍', label: 'Setuju' },
-                    { emoji: '🤔', label: 'Ragu' },
-                    { emoji: '👎', label: 'Tidak' }
+                    { icon: ThumbsUp, label: 'Setuju' },
+                    { icon: HelpCircle, label: 'Ragu' },
+                    { icon: ThumbsDown, label: 'Tidak' }
                 ];
                 return (
                     <div className="flex justify-center gap-6 py-8">
                         {quickOptions.map((opt, i) => (
+                            (() => {
+                                const choiceLabel = typeof opt === 'string' ? opt : (opt.label || opt.value || '');
+                                const IconComp = typeof opt === 'object' ? opt.icon : null;
+                                return (
                             <motion.button
                                 key={i}
                                 onClick={() => {
@@ -243,21 +251,23 @@ export default function ActionScreen({
                                     onActivity?.();
                                     // Auto-submit on tap for quick choice
                                     setTimeout(() => {
-                                        onSubmit({ type: interactionType, choice: opt.label || opt.emoji, index: i });
+                                        onSubmit({ type: interactionType, choice: choiceLabel, index: i });
                                     }, 300);
                                 }}
                                 className={cn(
-                                    "flex flex-col items-center gap-2 p-6 nx-sharp border-[3px] border-[var(--ink)] shadow-[6px_6px_0_var(--ink)] transition-all duration-100 [transition-timing-function:steps(4,end)] hover:translate-x-[-2px] hover:translate-y-[-2px]",
+                                    "flex flex-col items-center gap-2 p-6 nx-sharp border border-[rgba(231,234,240,0.18)] bg-[rgba(231,234,240,0.02)] transition-colors duration-150 hover:bg-[rgba(231,234,240,0.04)] hover:border-[rgba(231,234,240,0.28)]",
                                     selectedOption === i
-                                        ? "bg-[var(--acid-orange)]"
-                                        : "bg-[var(--paper)] hover:bg-[var(--paper-2)]"
+                                        ? "bg-[rgba(51,209,122,0.08)] border-[rgba(51,209,122,0.45)]"
+                                        : ""
                                 )}
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
                             >
-                                <span className="text-4xl">{opt.emoji}</span>
-                                <span className="text-xs text-[var(--ink-2)]">{opt.label}</span>
+                                {IconComp && <IconComp className="w-9 h-9 text-[var(--ink)]" />}
+                                <span className="text-xs text-[var(--ink-2)]">{choiceLabel}</span>
                             </motion.button>
+                                );
+                            })()
                         ))}
                     </div>
                 );
@@ -287,8 +297,8 @@ export default function ActionScreen({
                         <div className="text-center mt-4">
                             <span className={cn(
                                 "text-2xl font-bold",
-                                spectrumValue < 30 ? "text-[var(--acid-magenta)]" :
-                                    spectrumValue > 70 ? "text-[var(--acid-lime)]" : "text-[var(--acid-orange)]"
+                                spectrumValue < 30 ? "text-[var(--acid-orange)]" :
+                                    spectrumValue > 70 ? "text-[var(--acid-lime)]" : "text-[var(--ink)]"
                             )}>
                                 {spectrumValue}%
                             </span>
@@ -383,7 +393,7 @@ export default function ActionScreen({
                             maxLength={limits.max}
                         />
                         <div className="flex justify-end text-xs text-[var(--ink-2)]">
-                            <span className={charCount > limits.max * 0.9 ? 'text-orange-400' : ''}>
+                            <span className={charCount > limits.max * 0.9 ? 'text-[var(--acid-orange)]' : ''}>
                                 {charCount}/{limits.max}
                             </span>
                         </div>

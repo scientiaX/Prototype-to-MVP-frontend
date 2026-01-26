@@ -99,7 +99,7 @@ export default function FeedbackScreen({
                 return {
                     icon: <Shield className="w-8 h-8" />,
                     color: 'text-[var(--ink)]',
-                    bg: 'bg-[var(--acid-magenta)]',
+                    bg: 'bg-[var(--acid-orange)]',
                     border: 'border-[3px] border-[var(--ink)]',
                     prefix: archetypeInfo?.label ? `👤 Gaya ${archetypeInfo.label}` : '👤 Gaya Berpikir'
                 };

@@ -116,7 +116,7 @@ export default function FirstReflectionScreen({
                     animate={{ opacity: 1, y: 0 }}
                     className="text-center mb-8"
                 >
-                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-[var(--acid-magenta)] border-[3px] border-[var(--ink)] shadow-[4px_4px_0_var(--ink)] nx-sharp mb-4">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 bg-[var(--acid-orange)] border-[3px] border-[var(--ink)] shadow-[4px_4px_0_var(--ink)] nx-sharp mb-4">
                         <MessageSquare className="w-4 h-4 text-[var(--ink)]" />
                         <span className="text-[var(--ink)] font-bold text-sm uppercase tracking-wider">
                             Refleksi Singkat
@@ -209,7 +209,7 @@ export default function FirstReflectionScreen({
                         className={cn(
                             "w-full py-5 font-bold text-lg flex items-center justify-center gap-3 transition-all duration-100 [transition-timing-function:steps(4,end)] border-[3px] border-[var(--ink)] nx-sharp",
                             isValid
-                                ? "bg-[var(--acid-magenta)] text-[var(--ink)] shadow-[8px_8px_0_var(--ink)] hover:translate-x-[-3px] hover:translate-y-[-3px]"
+                                ? "bg-[var(--acid-orange)] text-[var(--ink)] shadow-[8px_8px_0_var(--ink)] hover:translate-x-[-3px] hover:translate-y-[-3px]"
                                 : "bg-[var(--paper-2)] text-[var(--ink-3)] shadow-[6px_6px_0_var(--ink)] cursor-not-allowed"
                         )}
                     >

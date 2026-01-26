@@ -44,11 +44,11 @@ export default function SituationScreen({
                         {Array.from({ length: 10 }).map((_, i) => (
                             <div
                                 key={i}
-                                className={`w-2 h-2 nx-sharp ${i < problem.difficulty
-                                        ? problem.difficulty <= 3 ? "bg-green-500"
-                                            : problem.difficulty <= 6 ? "bg-yellow-500"
-                                                : "bg-red-500"
-                                        : "bg-[var(--wire-2)]"
+                                className={`w-2 h-2 nx-sharp border border-[rgba(231,234,240,0.12)] ${i < problem.difficulty
+                                        ? (problem.difficulty >= 7 && i >= 6
+                                            ? "bg-[rgba(255,106,61,0.85)] border-[rgba(255,106,61,0.35)]"
+                                            : "bg-[rgba(51,209,122,0.75)] border-[rgba(51,209,122,0.35)]")
+                                        : "bg-[rgba(231,234,240,0.06)]"
                                     }`}
                             />
                         ))}
@@ -72,7 +72,7 @@ export default function SituationScreen({
 
                 {/* Objective Card */}
                 <motion.div
-                    className="nx-panel nx-sharp p-6 mb-4 bg-[var(--acid-orange)]"
+                    className="nx-panel nx-sharp p-6 mb-4 bg-[rgba(255,106,61,0.08)] border-[rgba(255,106,61,0.35)]"
                     initial={{ opacity: 0, scale: 0.98 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.2 }}
@@ -93,13 +93,13 @@ export default function SituationScreen({
                         transition={{ delay: 0.3 }}
                     >
                         <div className="flex items-center gap-2 mb-3">
-                            <AlertTriangle className="w-4 h-4 text-[var(--acid-magenta)]" />
+                            <AlertTriangle className="w-4 h-4 text-[var(--acid-orange)]" />
                             <h2 className="text-sm font-semibold text-[var(--ink)]">BATASAN</h2>
                         </div>
                         <ul className="space-y-2">
                             {problem.constraints.map((c, i) => (
                                 <li key={i} className="text-[var(--ink)] text-sm flex items-start gap-2">
-                                    <span className="text-[var(--acid-magenta)]">•</span>
+                                    <span className="text-[var(--acid-orange)]">•</span>
                                     {c}
                                 </li>
                             ))}

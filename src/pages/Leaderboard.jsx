@@ -372,7 +372,7 @@ export default function Leaderboard() {
                       <p className="text-xs nx-ink-faint uppercase">Level</p>
                     </div>
                     <div className="text-center">
-                      <p className="text-2xl font-bold text-orange-400 font-mono">
+                      <p className="text-2xl font-bold text-[var(--acid-lime)] font-mono">
                         {(selectedProfile.xp_risk_taker || 0) + (selectedProfile.xp_analyst || 0) +
                           (selectedProfile.xp_builder || 0) + (selectedProfile.xp_strategist || 0)}
                       </p>
@@ -409,7 +409,7 @@ export default function Leaderboard() {
                   {selectedProfile.highest_difficulty_conquered > 0 && (
                     <div className="flex items-center justify-between p-4 bg-[var(--paper-2)] border-2 border-[var(--ink)] nx-sharp">
                       <span className="text-sm nx-ink-muted">Highest Difficulty Conquered</span>
-                      <span className="text-lg font-bold text-yellow-400 font-mono">
+                      <span className="text-lg font-bold text-[var(--acid-lime)] font-mono">
                         Level {selectedProfile.highest_difficulty_conquered}
                       </span>
                     </div>

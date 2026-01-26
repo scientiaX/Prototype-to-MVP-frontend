@@ -8,27 +8,24 @@ export default function ProblemCard({ problem, onStart }) {
   const getDifficultyConfig = (difficulty) => {
     if (difficulty <= 3) {
       return {
-        color: 'text-emerald-700',
-        bg: 'bg-emerald-400/20',
-        border: 'border-emerald-700',
+        color: 'text-[var(--acid-lime)]',
+        bg: 'bg-[rgba(51,209,122,0.12)]',
+        border: 'border-[rgba(51,209,122,0.55)]',
         label: 'Easy',
-        gradient: 'from-emerald-500 to-green-600'
       };
     } else if (difficulty <= 6) {
       return {
-        color: 'text-yellow-700',
-        bg: 'bg-yellow-400/25',
-        border: 'border-yellow-700',
+        color: 'text-[var(--ink)]',
+        bg: 'bg-[rgba(231,234,240,0.04)]',
+        border: 'border-[rgba(231,234,240,0.22)]',
         label: 'Medium',
-        gradient: 'from-yellow-500 to-orange-500'
       };
     } else {
       return {
-        color: 'text-red-700',
-        bg: 'bg-red-400/20',
-        border: 'border-red-700',
+        color: 'text-[var(--acid-orange)]',
+        bg: 'bg-[rgba(255,106,61,0.12)]',
+        border: 'border-[rgba(255,106,61,0.55)]',
         label: 'Hard',
-        gradient: 'from-red-500 to-rose-600'
       };
     }
   };

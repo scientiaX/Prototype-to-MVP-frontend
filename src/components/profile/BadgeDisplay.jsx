@@ -1,47 +1,59 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Award, Zap, Target, TrendingUp, Shield } from 'lucide-react';
+import { Award, Asterisk, Zap, Target, TrendingUp, Shield } from 'lucide-react';
 import { cn } from "@/lib/utils";
 
 const badgeConfig = {
   first_blood: {
     icon: Zap,
     label: 'First Blood',
-    color: 'text-red-500',
-    bgColor: 'bg-red-500/10',
-    borderColor: 'border-red-500/30'
+    tone: 'secondary'
   },
   difficulty_jump: {
     icon: TrendingUp,
     label: 'Difficulty Jump',
-    color: 'text-green-500',
-    bgColor: 'bg-green-500/10',
-    borderColor: 'border-green-500/30'
+    tone: 'primary'
   },
   risk_confronted: {
     icon: Target,
     label: 'Risk Confronted',
-    color: 'text-orange-500',
-    bgColor: 'bg-orange-500/10',
-    borderColor: 'border-orange-500/30'
+    tone: 'secondary'
   },
   streak_breaker: {
     icon: Shield,
     label: 'Streak Breaker',
-    color: 'text-purple-500',
-    bgColor: 'bg-purple-500/10',
-    borderColor: 'border-purple-500/30'
+    tone: 'neutral'
   },
   domain_master: {
     icon: Award,
     label: 'Domain Master',
-    color: 'text-yellow-500',
-    bgColor: 'bg-yellow-500/10',
-    borderColor: 'border-yellow-500/30'
+    tone: 'primary'
   }
 };
 
 export default function BadgeDisplay({ achievements }) {
+  const getToneClasses = (tone) => {
+    if (tone === 'primary') {
+      return {
+        color: 'text-[var(--acid-lime)]',
+        bg: 'bg-[rgba(51,209,122,0.12)]',
+        border: 'border-[rgba(51,209,122,0.35)]'
+      };
+    }
+    if (tone === 'secondary') {
+      return {
+        color: 'text-[var(--acid-orange)]',
+        bg: 'bg-[rgba(255,106,61,0.12)]',
+        border: 'border-[rgba(255,106,61,0.35)]'
+      };
+    }
+    return {
+      color: 'text-[var(--ink)]',
+      bg: 'bg-[rgba(231,234,240,0.04)]',
+      border: 'border-[rgba(231,234,240,0.18)]'
+    };
+  };
+
   if (!achievements || achievements.length === 0) {
     return (
       <div className="text-center py-8">
@@ -55,6 +67,7 @@ export default function BadgeDisplay({ achievements }) {
       {achievements.map((achievement, index) => {
         const config = badgeConfig[achievement.badge_type] || badgeConfig.difficulty_jump;
         const Icon = config.icon;
+        const tone = getToneClasses(config.tone);
         
         return (
           <motion.div
@@ -68,16 +81,16 @@ export default function BadgeDisplay({ achievements }) {
           >
             {achievement.is_highest && (
               <div className="absolute -top-3 -right-3 w-8 h-8 bg-[var(--acid-yellow)] border-[3px] border-[var(--ink)] nx-sharp flex items-center justify-center">
-                <span className="text-[var(--ink)] text-xs font-black">★</span>
+                <Asterisk className="w-4 h-4 text-[#0b0b0c]" />
               </div>
             )}
             
             <div className="flex items-center gap-3 mb-2">
-              <div className={cn("w-10 h-10 border-2 border-[var(--ink)] nx-sharp flex items-center justify-center", config.bgColor)}>
-                <Icon className={cn("w-5 h-5", config.color)} />
+              <div className={cn("w-10 h-10 border nx-sharp flex items-center justify-center", tone.bg, tone.border)}>
+                <Icon className={cn("w-5 h-5", tone.color)} />
               </div>
               <div>
-                <p className={cn("font-black text-sm tracking-[-0.02em]", config.color)}>
+                <p className={cn("font-black text-sm tracking-[-0.02em]", tone.color)}>
                   {config.label}
                 </p>
                 <p className="nx-ink-faint text-xs nx-mono">

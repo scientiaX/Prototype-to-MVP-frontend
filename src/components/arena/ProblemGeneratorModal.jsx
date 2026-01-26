@@ -173,7 +173,7 @@ export default function ProblemGeneratorModal({
                       i >= customization.minDifficulty - 1 && i < customization.maxDifficulty
                         ? i < 3 ? "bg-[var(--acid-lime)]"
                           : i < 6 ? "bg-[var(--acid-yellow)]"
-                          : "bg-[var(--acid-magenta)]"
+                          : "bg-[var(--acid-orange)]"
                         : "bg-[var(--wire)]"
                     )}
                   />
