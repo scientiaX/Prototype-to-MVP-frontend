@@ -1,21 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import apiClient from '@/api/apiClient';
-import { Trophy, Zap, TrendingUp, Target, Brain, Wrench, Crown, Medal, Sparkles, Users, X } from 'lucide-react';
+import { BarChart3, Brain, Info, Target, TrendingUp, Users, Wrench, X, Zap } from 'lucide-react';
 import { cn } from "@/lib/utils";
 
 const archetypeConfig = {
-  risk_taker: { icon: Zap, label: 'Risk Taker', color: 'text-red-400', bg: 'bg-red-500/15' },
-  analyst: { icon: Brain, label: 'Analyst', color: 'text-cyan-400', bg: 'bg-cyan-500/15' },
-  builder: { icon: Wrench, label: 'Builder', color: 'text-emerald-400', bg: 'bg-emerald-500/15' },
-  strategist: { icon: Target, label: 'Strategist', color: 'text-violet-400', bg: 'bg-violet-500/15' }
+  risk_taker: { icon: Zap, label: 'Risk Taker', color: 'text-[var(--ink)]', bg: 'bg-[rgba(231,234,240,0.04)]' },
+  analyst: { icon: Brain, label: 'Analyst', color: 'text-[var(--ink)]', bg: 'bg-[rgba(231,234,240,0.04)]' },
+  builder: { icon: Wrench, label: 'Builder', color: 'text-[var(--ink)]', bg: 'bg-[rgba(231,234,240,0.04)]' },
+  strategist: { icon: Target, label: 'Strategist', color: 'text-[var(--ink)]', bg: 'bg-[rgba(231,234,240,0.04)]' }
 };
-
-const rankConfig = [
-  { color: 'text-[var(--ink)]', gradient: 'from-[var(--acid-yellow)] to-[var(--acid-orange)]' },
-  { color: 'text-[var(--ink)]', gradient: 'from-[var(--paper)] to-[var(--paper-2)]' },
-  { color: 'text-[var(--ink)]', gradient: 'from-[var(--acid-orange)] to-[var(--acid-magenta)]' }
-];
 
 export default function Leaderboard() {
   const [profiles, setProfiles] = useState([]);
@@ -78,8 +72,8 @@ export default function Leaderboard() {
   if (isLoading) {
     return (
       <div className="min-h-screen nx-page relative overflow-hidden flex items-center justify-center">
-        <div className="absolute inset-0 pointer-events-none nx-bg-wires opacity-[0.55]" />
-        <div className="absolute inset-0 pointer-events-none nx-bg-dots opacity-[0.2]" />
+        <div className="absolute inset-0 pointer-events-none nx-bg-wires opacity-[0.7]" />
+        <div className="absolute inset-0 pointer-events-none nx-bg-dots opacity-[0.22]" />
         <motion.div
           className="flex flex-col items-center gap-4"
           initial={{ opacity: 0, scale: 0.9 }}
@@ -88,8 +82,8 @@ export default function Leaderboard() {
           <div className="nx-panel nx-sharp px-8 py-8 text-center">
             <div className="nx-crosshair -top-3 -left-3" />
             <div className="nx-crosshair -bottom-3 -right-3" />
-            <div className="w-16 h-16 border-[3px] border-[var(--ink)] bg-[var(--acid-yellow)] flex items-center justify-center mx-auto">
-              <Trophy className="w-8 h-8 text-[var(--ink)]" />
+            <div className="w-16 h-16 border border-[rgba(231,234,240,0.18)] bg-[rgba(231,234,240,0.04)] flex items-center justify-center mx-auto">
+              <BarChart3 className="w-8 h-8 text-[var(--ink)]" />
             </div>
             <p className="mt-4 text-[var(--ink-2)] font-semibold">Loading rankings...</p>
           </div>
@@ -100,10 +94,8 @@ export default function Leaderboard() {
 
   return (
     <div className="min-h-screen nx-page relative overflow-hidden">
-      <div className="absolute inset-0 pointer-events-none nx-bg-wires opacity-[0.55]" />
-      <div className="absolute inset-0 pointer-events-none nx-bg-dots opacity-[0.18]" />
-      <div className="absolute -top-24 -right-24 w-[520px] h-[520px] nx-blob border-[3px] border-[var(--ink)] bg-[var(--acid-yellow)] opacity-[0.08]" />
-      <div className="absolute -bottom-24 -left-28 w-[560px] h-[560px] nx-blob border-[3px] border-[var(--ink)] bg-[var(--acid-orange)] opacity-[0.08]" />
+      <div className="absolute inset-0 pointer-events-none nx-bg-wires opacity-[0.7]" />
+      <div className="absolute inset-0 pointer-events-none nx-bg-dots opacity-[0.22]" />
 
       <div className="nx-stage relative pt-24 md:pt-28">
         {/* Header */}
@@ -112,8 +104,8 @@ export default function Leaderboard() {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <div className="inline-flex items-center gap-2.5 px-4 py-2 border-2 border-[var(--ink)] bg-[var(--acid-yellow)] mb-4">
-            <Medal className="w-3.5 h-3.5 text-[var(--ink)]" />
+          <div className="inline-flex items-center gap-2.5 px-4 py-2 border border-[rgba(231,234,240,0.18)] bg-[rgba(231,234,240,0.04)] mb-4">
+            <BarChart3 className="w-3.5 h-3.5 text-[var(--ink)]" />
             <span className="text-xs font-black text-[var(--ink)] tracking-wider uppercase nx-mono">Rankings</span>
           </div>
           <h1 className="text-3xl md:text-5xl font-black text-[var(--ink)] mb-3 tracking-[-0.06em]">
@@ -132,7 +124,7 @@ export default function Leaderboard() {
             <button
               onClick={() => setActiveTab('growth')}
               className={cn(
-                "relative flex items-center justify-center gap-2 py-3.5 px-4 nx-sharp text-sm font-semibold transition-all duration-100 [transition-timing-function:steps(4,end)]",
+                "relative flex items-center justify-center gap-2 py-3.5 px-4 nx-sharp text-sm font-semibold transition-colors duration-150",
                 activeTab === 'growth'
                   ? "text-[var(--ink)]"
                   : "text-[var(--ink-2)] hover:text-[var(--ink)]"
@@ -140,7 +132,7 @@ export default function Leaderboard() {
             >
               {activeTab === 'growth' && (
                 <motion.div
-                  className="absolute inset-0 bg-[var(--acid-orange)] border-2 border-[var(--ink)]"
+                  className="absolute left-3 right-3 -bottom-0.5 h-[2px] bg-[var(--acid-lime)]"
                   layoutId="activeTab"
                   transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                 />
@@ -151,7 +143,7 @@ export default function Leaderboard() {
             <button
               onClick={() => setActiveTab('reliability')}
               className={cn(
-                "relative flex items-center justify-center gap-2 py-3.5 px-4 nx-sharp text-sm font-semibold transition-all duration-100 [transition-timing-function:steps(4,end)]",
+                "relative flex items-center justify-center gap-2 py-3.5 px-4 nx-sharp text-sm font-semibold transition-colors duration-150",
                 activeTab === 'reliability'
                   ? "text-[var(--ink)]"
                   : "text-[var(--ink-2)] hover:text-[var(--ink)]"
@@ -159,12 +151,12 @@ export default function Leaderboard() {
             >
               {activeTab === 'reliability' && (
                 <motion.div
-                  className="absolute inset-0 bg-[var(--acid-orange)] border-2 border-[var(--ink)]"
+                  className="absolute left-3 right-3 -bottom-0.5 h-[2px] bg-[var(--acid-orange)]"
                   layoutId="activeTab"
                   transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                 />
               )}
-              <Trophy className="w-4 h-4 relative z-10" />
+              <BarChart3 className="w-4 h-4 relative z-10" />
               <span className="relative z-10">All-Time</span>
             </button>
           </div>
@@ -180,10 +172,10 @@ export default function Leaderboard() {
           <button
             onClick={() => setArchetypeFilter('all')}
             className={cn(
-              "px-4 py-2.5 nx-sharp text-sm font-semibold transition-transform duration-100 [transition-timing-function:steps(4,end)] border-2 border-[var(--ink)]",
+              "px-4 py-2.5 nx-sharp text-sm font-semibold transition-colors duration-150 border border-[rgba(231,234,240,0.18)]",
               archetypeFilter === 'all'
-                ? "bg-[var(--acid-lime)] text-[var(--ink)]"
-                : "bg-[var(--paper)] text-[var(--ink-2)] hover:-translate-y-0.5"
+                ? "bg-[rgba(51,209,122,0.14)] border-[rgba(51,209,122,0.35)] text-[var(--ink)]"
+                : "bg-transparent text-[var(--ink-2)] hover:text-[var(--ink)] hover:bg-[rgba(231,234,240,0.04)]"
             )}
           >
             <span className="flex items-center gap-2">
@@ -198,10 +190,10 @@ export default function Leaderboard() {
                 key={key}
                 onClick={() => setArchetypeFilter(key)}
                 className={cn(
-                  "flex items-center gap-2 px-4 py-2.5 nx-sharp text-sm font-semibold transition-transform duration-100 [transition-timing-function:steps(4,end)] border-2 border-[var(--ink)]",
+                  "flex items-center gap-2 px-4 py-2.5 nx-sharp text-sm font-semibold transition-colors duration-150 border border-[rgba(231,234,240,0.18)]",
                   archetypeFilter === key
-                    ? `bg-[var(--paper-2)] ${config.color}`
-                    : "bg-[var(--paper)] text-[var(--ink-2)] hover:-translate-y-0.5"
+                    ? `bg-[rgba(231,234,240,0.04)] ${config.color}`
+                    : "bg-transparent text-[var(--ink-2)] hover:text-[var(--ink)] hover:bg-[rgba(231,234,240,0.04)]"
                 )}
               >
                 <Icon className="w-4 h-4" />
@@ -219,7 +211,6 @@ export default function Leaderboard() {
             const score = activeTab === 'growth' ? getGrowthScore(profile) : getAllTimeXP(profile);
             const isCurrentUser = profile.user_id === currentUser?.id || profile.email === currentUser?.email;
             const isTopThree = index < 3;
-            const rank = rankConfig[index] || null;
             const displayName = profile.name || 'Anonymous';
 
             return (
@@ -230,7 +221,7 @@ export default function Leaderboard() {
                 transition={{ delay: 0.3 + index * 0.03 }}
                 onClick={() => setSelectedProfile(profile)}
                 className={cn(
-                  "group nx-panel-static nx-sharp flex items-center gap-4 p-4 cursor-pointer transition-transform duration-100 [transition-timing-function:steps(4,end)] hover:-translate-x-1 hover:-translate-y-1",
+                  "group nx-panel-static nx-sharp flex items-center gap-4 p-4 cursor-pointer transition-transform duration-150 hover:-translate-y-0.5",
                   isCurrentUser
                     ? "bg-[var(--acid-orange)]/10"
                     : ""
@@ -238,19 +229,21 @@ export default function Leaderboard() {
               >
                 {/* Rank */}
                 <div className="w-14 text-center shrink-0">
-                  {isTopThree ? (
-                    <div className={cn("w-12 h-12 nx-sharp border-[3px] border-[var(--ink)] flex items-center justify-center mx-auto bg-gradient-to-br", rank.gradient)}>
-                      <Crown className="w-6 h-6 text-[var(--ink)]" />
-                    </div>
-                  ) : (
-                    <span className="nx-mono text-xl text-[var(--ink-3)] font-bold">
+                  <div className={cn(
+                    "w-12 h-12 nx-sharp border flex items-center justify-center mx-auto",
+                    isTopThree ? "bg-[rgba(51,209,122,0.14)] border-[rgba(51,209,122,0.35)]" : "bg-[rgba(231,234,240,0.04)] border-[rgba(231,234,240,0.18)]"
+                  )}>
+                    <span className={cn(
+                      "nx-mono text-lg font-bold",
+                      isTopThree ? "text-[var(--ink)]" : "text-[var(--ink-2)]"
+                    )}>
                       {index + 1}
                     </span>
-                  )}
+                  </div>
                 </div>
 
                 {/* Archetype Icon */}
-                <div className={cn("w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-transform group-hover:scale-110", archetype.bg)}>
+                <div className={cn("w-12 h-12 nx-sharp border border-[rgba(231,234,240,0.18)] flex items-center justify-center shrink-0", archetype.bg)}>
                   <Icon className={cn("w-6 h-6", archetype.color)} />
                 </div>
 
@@ -273,7 +266,7 @@ export default function Leaderboard() {
                 <div className="text-right shrink-0">
                   <p className={cn(
                     "text-2xl font-bold font-mono",
-                    isTopThree && rank ? rank.color : "text-[var(--ink)]"
+                    "text-[var(--ink)]"
                   )}>
                     {score}
                   </p>
@@ -308,8 +301,8 @@ export default function Leaderboard() {
         >
           <div className="nx-panel nx-sharp p-6">
             <div className="flex items-start gap-3">
-              <div className="w-8 h-8 nx-sharp border-2 border-[var(--ink)] bg-[var(--acid-orange)]/20 flex items-center justify-center shrink-0 mt-0.5">
-                <Sparkles className="w-4 h-4 text-[var(--ink)]" />
+              <div className="w-8 h-8 nx-sharp border border-[rgba(231,234,240,0.18)] bg-[rgba(231,234,240,0.04)] flex items-center justify-center shrink-0 mt-0.5">
+                <Info className="w-4 h-4 text-[var(--ink)]" />
               </div>
               <p className="text-sm nx-ink-muted">
                 <span className="text-[var(--ink)] font-semibold">Note: </span>
@@ -340,7 +333,7 @@ export default function Leaderboard() {
                 onClick={(e) => e.stopPropagation()}
               >
                 {/* Modal Header */}
-                <div className="relative bg-[var(--paper-2)] border-b-[3px] border-[var(--ink)] p-6">
+                <div className="relative bg-[rgba(231,234,240,0.03)] border-b border-[rgba(231,234,240,0.18)] p-6">
                   <button
                     onClick={() => setSelectedProfile(null)}
                     className="absolute top-4 right-4 w-10 h-10 nx-sharp border-2 border-[var(--ink)] bg-[var(--paper)] flex items-center justify-center text-[var(--ink)] transition-transform duration-100 [transition-timing-function:steps(4,end)] hover:-translate-x-0.5 hover:-translate-y-0.5"

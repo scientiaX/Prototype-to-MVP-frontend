@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Loader2, Zap, ArrowRight, ChevronLeft, Sparkles } from 'lucide-react';
+import { ArrowRight, Brain, ChevronLeft, Compass, Loader2, Sparkles, Wrench, Zap } from 'lucide-react';
 import apiClient from '@/api/apiClient';
 
 const DOMAIN_ROLE_POOL = {
@@ -499,6 +499,13 @@ export default function OnboardingArena({
     // Translation helper
     const t = (id, en) => language === 'en' ? en : id;
 
+    const archetypeIconMap = {
+        risk_taker: Zap,
+        analyst: Brain,
+        builder: Wrench,
+        strategist: Compass
+    };
+
     useEffect(() => {
         if (pollingRef.current) {
             clearInterval(pollingRef.current);
@@ -567,8 +574,8 @@ export default function OnboardingArena({
                         exit={{ opacity: 0 }}
                         className="flex flex-col items-center justify-center py-20"
                     >
-                        <div className="w-16 h-16 bg-[var(--acid-orange)] border-[3px] border-[var(--ink)] shadow-[6px_6px_0_var(--ink)] nx-sharp flex items-center justify-center mb-6">
-                            <Loader2 className="w-8 h-8 text-[var(--ink)] animate-spin" />
+                        <div className="w-16 h-16 bg-[rgba(231,234,240,0.04)] border border-[rgba(231,234,240,0.18)] nx-sharp flex items-center justify-center mb-6">
+                            <Loader2 className="w-8 h-8 text-[var(--acid-orange)] animate-spin" />
                         </div>
                         <p className="text-[var(--ink-2)]">
                             {t('Menyiapkan tantangan...', 'Preparing challenge...')}
@@ -585,10 +592,10 @@ export default function OnboardingArena({
                         exit={{ opacity: 0, y: -20 }}
                         className="text-center py-20"
                     >
-                        <p className="text-red-700 mb-6">{error}</p>
+                        <p className="text-[var(--acid-orange)] mb-6">{error}</p>
                         <button
                             onClick={loadProblem}
-                            className="px-6 py-3 bg-[var(--acid-orange)] text-[var(--ink)] font-bold border-[3px] border-[var(--ink)] shadow-[6px_6px_0_var(--ink)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all duration-100 [transition-timing-function:steps(4,end)] nx-sharp"
+                            className="px-6 py-3 bg-[rgba(255,106,61,0.18)] text-[var(--ink)] font-semibold border border-[rgba(255,106,61,0.35)] hover:bg-[rgba(255,106,61,0.24)] transition-colors duration-150 nx-sharp"
                         >
                             {t('Coba Lagi', 'Try Again')}
                         </button>
@@ -621,7 +628,7 @@ export default function OnboardingArena({
                             <div className="nx-panel nx-sharp p-6">
                             {/* Role badge */}
                             <div className="flex items-center gap-2 mb-4">
-                                <span className="px-3 py-1 bg-[var(--acid-orange)] text-[var(--ink)] border-[2px] border-[var(--ink)] nx-sharp text-sm font-bold">
+                                <span className="px-3 py-1 bg-[rgba(255,106,61,0.18)] text-[var(--ink)] border border-[rgba(255,106,61,0.35)] nx-sharp text-sm font-bold">
                                     {problem.role}
                                 </span>
                                 <span className="text-[var(--ink-3)] text-sm">•</span>
@@ -641,7 +648,7 @@ export default function OnboardingArena({
                             </p>
 
                             {/* Objective */}
-                            <div className="bg-[var(--paper-2)] border-[2px] border-[var(--ink)] nx-sharp p-4">
+                            <div className="bg-[rgba(231,234,240,0.03)] border border-[rgba(231,234,240,0.16)] nx-sharp p-4">
                                 <p className="text-[var(--ink)] font-semibold">
                                     {problem.objective}
                                 </p>
@@ -650,9 +657,9 @@ export default function OnboardingArena({
                         </button>
 
                         <div className="max-w-xs mx-auto">
-                            <div className="h-2 bg-[var(--paper)] border-[2px] border-[var(--ink)] nx-sharp overflow-hidden">
+                            <div className="h-2 bg-[rgba(231,234,240,0.04)] border border-[rgba(231,234,240,0.16)] nx-sharp overflow-hidden">
                                 <motion.div
-                                    className="h-full bg-[var(--acid-orange)]"
+                                    className="h-full bg-[var(--acid-lime)]"
                                     initial={false}
                                     animate={{ width: `${Math.round(((roundIndex + 1) / Math.max(1, totalRounds)) * 100)}%` }}
                                     transition={{ type: 'spring', stiffness: 120, damping: 22 }}
@@ -676,7 +683,7 @@ export default function OnboardingArena({
                                 initial={{ opacity: 0, y: -8 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: -8 }}
-                                className="mx-auto max-w-md px-4 py-3 bg-[var(--paper)] border-[3px] border-[var(--ink)] shadow-[6px_6px_0_var(--ink)] nx-sharp text-[var(--ink)] text-sm text-center"
+                                className="mx-auto max-w-md px-4 py-3 bg-[rgba(231,234,240,0.04)] border border-[rgba(231,234,240,0.18)] nx-sharp text-[var(--ink)] text-sm text-center"
                             >
                                 {nudgeMessage}
                             </motion.div>
@@ -693,6 +700,9 @@ export default function OnboardingArena({
 
                         <div className="space-y-3">
                             {choices.map((choice, idx) => (
+                                (() => {
+                                    const ChoiceIcon = archetypeIconMap[choice.archetype_signal] || Sparkles;
+                                    return (
                                 <motion.button
                                     key={choice.id}
                                     initial={{ opacity: 0, x: -20 }}
@@ -703,7 +713,9 @@ export default function OnboardingArena({
                                     onClick={() => handleChoiceSelect(choice)}
                                     className="w-full group nx-panel nx-sharp p-5 text-left transition-colors flex items-center gap-4 hover:border-[var(--acid-orange)] hover:bg-[var(--paper-2)]"
                                 >
-                                    <div className="text-3xl">{choice.icon}</div>
+                                    <div className="w-12 h-12 border border-[rgba(231,234,240,0.18)] bg-[rgba(231,234,240,0.04)] flex items-center justify-center">
+                                        <ChoiceIcon className="w-6 h-6 text-[var(--ink)]" />
+                                    </div>
                                     <div className="flex-1">
                                         <p className="text-[var(--ink)] font-semibold group-hover:text-[var(--acid-orange)] transition-colors">
                                             {choice.text}
@@ -711,6 +723,8 @@ export default function OnboardingArena({
                                     </div>
                                     <ArrowRight className="w-5 h-5 text-[var(--ink-3)] group-hover:text-[var(--acid-orange)] transition-colors" />
                                 </motion.button>
+                                    );
+                                })()
                             ))}
                         </div>
 
@@ -797,7 +811,14 @@ export default function OnboardingArena({
                         </div>
 
                         <div className="nx-panel nx-sharp p-6 flex items-center gap-4">
-                            <div className="text-4xl">{selectedChoice.icon}</div>
+                            {(() => {
+                                const LockIcon = archetypeIconMap[selectedChoice.archetype_signal] || Sparkles;
+                                return (
+                                    <div className="w-14 h-14 border border-[rgba(231,234,240,0.18)] bg-[rgba(231,234,240,0.04)] flex items-center justify-center">
+                                        <LockIcon className="w-7 h-7 text-[var(--ink)]" />
+                                    </div>
+                                );
+                            })()}
                             <div className="flex-1">
                                 <p className="text-[var(--ink)] font-semibold">{selectedChoice.text}</p>
                             </div>
@@ -808,7 +829,7 @@ export default function OnboardingArena({
                                 whileHover={{ scale: 1.03 }}
                                 whileTap={{ scale: 0.98 }}
                                 onClick={handleLockChoice}
-                                className="w-full px-8 py-4 bg-[var(--acid-orange)] text-[var(--ink)] font-bold border-[3px] border-[var(--ink)] shadow-[6px_6px_0_var(--ink)] hover:translate-x-[-3px] hover:translate-y-[-3px] transition-all duration-100 [transition-timing-function:steps(4,end)] nx-sharp"
+                                className="w-full px-8 py-4 bg-[rgba(255,106,61,0.18)] text-[var(--ink)] font-bold border border-[rgba(255,106,61,0.35)] hover:bg-[rgba(255,106,61,0.24)] transition-colors duration-150 nx-sharp"
                             >
                                 {t('KUNCI PILIHAN', 'LOCK CHOICE')}
                             </motion.button>
@@ -821,7 +842,7 @@ export default function OnboardingArena({
                                         setSelectedChoice(null);
                                         setStep('choice');
                                     }}
-                                    className="w-full px-8 py-3 bg-[var(--paper)] text-[var(--ink)] font-semibold border-[3px] border-[var(--ink)] shadow-[6px_6px_0_var(--ink)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all duration-100 [transition-timing-function:steps(4,end)] nx-sharp"
+                                    className="w-full px-8 py-3 bg-[rgba(231,234,240,0.04)] text-[var(--ink)] font-semibold border border-[rgba(231,234,240,0.18)] hover:bg-[rgba(231,234,240,0.06)] transition-colors duration-150 nx-sharp"
                                 >
                                     {t('Ubah sekali', 'Change once')}
                                 </button>
@@ -843,7 +864,7 @@ export default function OnboardingArena({
                             initial={{ scale: 0 }}
                             animate={{ scale: 1 }}
                             transition={{ type: "spring", duration: 0.5 }}
-                            className="w-20 h-20 bg-[var(--acid-yellow)] border-[3px] border-[var(--ink)] shadow-[6px_6px_0_var(--ink)] nx-sharp flex items-center justify-center mx-auto mb-8"
+                            className="w-20 h-20 bg-[rgba(231,234,240,0.04)] border border-[rgba(231,234,240,0.18)] nx-sharp flex items-center justify-center mx-auto mb-8"
                         >
                             <Zap className="w-10 h-10 text-[var(--ink)]" />
                         </motion.div>
@@ -864,7 +885,7 @@ export default function OnboardingArena({
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             onClick={handleConsequenceContinue}
-                            className="mt-10 px-8 py-4 bg-[var(--acid-orange)] text-[var(--ink)] font-bold border-[3px] border-[var(--ink)] shadow-[6px_6px_0_var(--ink)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all duration-100 [transition-timing-function:steps(4,end)] nx-sharp"
+                            className="mt-10 px-8 py-4 bg-[rgba(231,234,240,0.04)] text-[var(--ink)] font-bold border border-[rgba(231,234,240,0.18)] hover:bg-[rgba(231,234,240,0.06)] transition-colors duration-150 nx-sharp"
                         >
                             {t('Lanjut', 'Continue')}
                         </motion.button>
@@ -884,7 +905,7 @@ export default function OnboardingArena({
                             initial={{ scale: 0 }}
                             animate={{ scale: 1 }}
                             transition={{ type: "spring", duration: 0.5 }}
-                            className="w-16 h-16 bg-[var(--acid-magenta)] border-[3px] border-[var(--ink)] shadow-[6px_6px_0_var(--ink)] nx-sharp flex items-center justify-center mx-auto mb-8"
+                            className="w-16 h-16 bg-[rgba(231,234,240,0.04)] border border-[rgba(231,234,240,0.18)] nx-sharp flex items-center justify-center mx-auto mb-8"
                         >
                             <Sparkles className="w-8 h-8 text-[var(--ink)]" />
                         </motion.div>
@@ -914,7 +935,7 @@ export default function OnboardingArena({
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             onClick={handleInsightContinue}
-                            className="px-8 py-4 bg-[var(--acid-orange)] text-[var(--ink)] font-bold border-[3px] border-[var(--ink)] shadow-[6px_6px_0_var(--ink)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all duration-100 [transition-timing-function:steps(4,end)] nx-sharp"
+                            className="px-8 py-4 bg-[rgba(231,234,240,0.04)] text-[var(--ink)] font-bold border border-[rgba(231,234,240,0.18)] hover:bg-[rgba(231,234,240,0.06)] transition-colors duration-150 nx-sharp"
                         >
                             {roundIndex + 1 < totalRoundsRef.current ? t('Lanjut', 'Next') : t('Selesai', 'Finish')}
                         </motion.button>
@@ -953,7 +974,7 @@ export default function OnboardingArena({
                             transition={{ type: "spring", duration: 0.8 }}
                             className="mb-8"
                         >
-                            <div className="inline-flex items-center gap-2 px-4 py-2 bg-[var(--acid-lime)] text-[var(--ink)] border-[3px] border-[var(--ink)] shadow-[4px_4px_0_var(--ink)] nx-sharp text-lg font-bold">
+                            <div className="inline-flex items-center gap-2 px-4 py-2 bg-[var(--acid-lime)] text-[#0b0b0c] border border-[rgba(11,11,12,0.65)] nx-sharp text-lg font-bold">
                                 <Zap className="w-5 h-5" />
                                 +{xpEarned} XP
                             </div>
@@ -992,9 +1013,9 @@ export default function OnboardingArena({
                             transition={{ delay: 0.5 }}
                             className="max-w-xs mx-auto mb-8"
                         >
-                            <div className="h-2 bg-[var(--paper)] border-[2px] border-[var(--ink)] nx-sharp overflow-hidden">
+                            <div className="h-2 bg-[rgba(231,234,240,0.04)] border border-[rgba(231,234,240,0.16)] nx-sharp overflow-hidden">
                                 <motion.div
-                                    className="h-full bg-[var(--acid-orange)]"
+                                    className="h-full bg-[var(--acid-lime)]"
                                     initial={false}
                                     animate={{ width: '100%' }}
                                     transition={{ type: 'spring', stiffness: 120, damping: 22 }}
@@ -1010,7 +1031,7 @@ export default function OnboardingArena({
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             onClick={handleEnterArena}
-                            className="px-10 py-4 bg-[var(--acid-orange)] text-[var(--ink)] font-bold text-lg border-[3px] border-[var(--ink)] shadow-[8px_8px_0_var(--ink)] hover:translate-x-[-3px] hover:translate-y-[-3px] transition-all duration-100 [transition-timing-function:steps(4,end)] nx-sharp"
+                            className="px-10 py-4 bg-[var(--acid-lime)] text-[#0b0b0c] font-bold text-lg border border-[rgba(11,11,12,0.65)] hover:bg-[#2fcf74] transition-colors duration-150 nx-sharp"
                         >
                             {t('Masuk Arena', 'Enter Arena')}
                         </motion.button>

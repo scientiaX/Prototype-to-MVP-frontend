@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { motion } from 'framer-motion';
-import { IconUser, IconLock, IconMail, IconArrowRight, IconFlame, IconSpark, IconLoader } from '@/components/ui/raw-icons';
+import { ArrowRight, KeySquare, Loader2, Lock, Mail, Sparkles, User } from 'lucide-react';
 import apiClient from '@/api/apiClient';
 import { getTranslation } from '@/components/utils/translations';
 import { cn } from "@/lib/utils";
@@ -74,15 +74,13 @@ export default function Login() {
 
     return (
         <div className="min-h-screen nx-page relative overflow-hidden">
-            <div className="absolute inset-0 pointer-events-none nx-bg-wires opacity-[0.55]" />
-            <div className="absolute inset-0 pointer-events-none nx-bg-dots opacity-[0.2]" />
-            <div className="absolute -top-20 -left-24 w-[520px] h-[520px] nx-blob border-[3px] border-[var(--ink)] bg-[var(--acid-orange)] opacity-[0.10]" />
-            <div className="absolute -bottom-24 -right-24 w-[460px] h-[460px] nx-blob border-[3px] border-[var(--ink)] bg-[var(--acid-cyan)] opacity-[0.10]" />
+            <div className="absolute inset-0 pointer-events-none nx-bg-wires opacity-[0.7]" />
+            <div className="absolute inset-0 pointer-events-none nx-bg-dots opacity-[0.22]" />
 
             <div className="nx-stage relative">
                 <div className="grid lg:grid-cols-12 gap-6 items-start">
                     <div className="lg:col-span-5">
-                        <div className="nx-panel nx-sharp px-6 py-6 rotate-[-1deg]">
+                        <div className="nx-panel nx-sharp px-6 py-6">
                             <div className="nx-crosshair -top-3 -left-3" />
                             <div className="nx-crosshair -bottom-3 -right-3" />
                             <div className="flex items-start justify-between gap-4">
@@ -92,7 +90,7 @@ export default function Login() {
                                     </div>
                                     <h1 className="mt-2 text-3xl md:text-4xl font-black tracking-[-0.06em] leading-[0.95]">
                                         {t.login.title}{" "}
-                                        <span className="bg-[var(--acid-lime)] border-2 border-[var(--ink)] px-1">
+                                        <span className="bg-[rgba(51,209,122,0.14)] border border-[rgba(51,209,122,0.35)] px-1">
                                             {t.login.titleHighlight}
                                         </span>
                                     </h1>
@@ -100,15 +98,15 @@ export default function Login() {
                                         {t.login.subtitle}
                                     </p>
                                 </div>
-                                <div className="w-14 h-14 border-[3px] border-[var(--ink)] bg-[var(--paper-2)] flex items-center justify-center rotate-[4deg]">
-                                    <IconFlame className="w-8 h-8" />
+                                <div className="w-14 h-14 border border-[rgba(231,234,240,0.18)] bg-[rgba(231,234,240,0.04)] flex items-center justify-center">
+                                    <KeySquare className="w-7 h-7 text-[var(--ink)]" />
                                 </div>
                             </div>
 
-                            <div className="mt-6 border-2 border-[var(--ink)] bg-[var(--paper-2)] px-4 py-3">
+                            <div className="mt-6 border border-[rgba(231,234,240,0.18)] bg-[rgba(231,234,240,0.03)] px-4 py-3">
                                 <div className="flex items-center justify-between">
                                     <div className="nx-mono text-[10px] uppercase tracking-[0.22em]">RULES</div>
-                                    <IconSpark className="w-5 h-5" />
+                                    <Sparkles className="w-5 h-5 text-[var(--ink)]" />
                                 </div>
                                 <div className="mt-2 text-sm nx-ink-muted">
                                     No soft glow. No polite rounding. Just hard borders and decisions.
@@ -143,7 +141,7 @@ export default function Login() {
                                         "absolute left-4 top-1/2 -translate-y-1/2 transition-transform duration-100 [transition-timing-function:steps(4,end)]",
                                         focused === 'name' ? "text-[var(--ink)] -translate-x-0.5" : "text-[var(--ink-3)]"
                                     )}>
-                                        <IconUser className="w-5 h-5" />
+                                        <User className="w-5 h-5" />
                                     </div>
                                     <input
                                         type="text"
@@ -151,7 +149,7 @@ export default function Login() {
                                         onChange={(e) => setName(e.target.value)}
                                         onFocus={() => setFocused('name')}
                                         onBlur={() => setFocused(null)}
-                                        className="w-full pl-12 pr-4 py-3.5 bg-[var(--paper)] border-[3px] border-[var(--ink)] text-[var(--ink)] placeholder-[rgba(11,11,12,0.35)] focus:outline-none transition-all duration-100 [transition-timing-function:steps(4,end)] hover:-translate-x-0.5 hover:-translate-y-0.5"
+                                        className="w-full pl-12 pr-4 py-3.5 bg-[rgba(231,234,240,0.03)] border border-[rgba(231,234,240,0.18)] text-[var(--ink)] placeholder-[rgba(231,234,240,0.38)] focus:outline-none focus:border-[rgba(51,209,122,0.45)] transition-colors duration-150"
                                         placeholder={t.login.namePlaceholder}
                                     />
                                 </div>
@@ -168,7 +166,7 @@ export default function Login() {
                                     "absolute left-4 top-1/2 -translate-y-1/2 transition-transform duration-100 [transition-timing-function:steps(4,end)]",
                                     focused === 'email' ? "text-[var(--ink)] -translate-x-0.5" : "text-[var(--ink-3)]"
                                 )}>
-                                    <IconMail className="w-5 h-5" />
+                                        <Mail className="w-5 h-5" />
                                 </div>
                                 <input
                                     type="email"
@@ -176,7 +174,7 @@ export default function Login() {
                                     onChange={(e) => setEmail(e.target.value)}
                                     onFocus={() => setFocused('email')}
                                     onBlur={() => setFocused(null)}
-                                    className="w-full pl-12 pr-4 py-3.5 bg-[var(--paper)] border-[3px] border-[var(--ink)] text-[var(--ink)] placeholder-[rgba(11,11,12,0.35)] focus:outline-none transition-all duration-100 [transition-timing-function:steps(4,end)] hover:-translate-x-0.5 hover:-translate-y-0.5"
+                                    className="w-full pl-12 pr-4 py-3.5 bg-[rgba(231,234,240,0.03)] border border-[rgba(231,234,240,0.18)] text-[var(--ink)] placeholder-[rgba(231,234,240,0.38)] focus:outline-none focus:border-[rgba(51,209,122,0.45)] transition-colors duration-150"
                                     placeholder={t.login.emailPlaceholder}
                                     autoFocus={!isRegister}
                                 />
@@ -193,7 +191,7 @@ export default function Login() {
                                     "absolute left-4 top-1/2 -translate-y-1/2 transition-transform duration-100 [transition-timing-function:steps(4,end)]",
                                     focused === 'password' ? "text-[var(--ink)] -translate-x-0.5" : "text-[var(--ink-3)]"
                                 )}>
-                                    <IconLock className="w-5 h-5" />
+                                        <Lock className="w-5 h-5" />
                                 </div>
                                 <input
                                     type="password"
@@ -201,14 +199,14 @@ export default function Login() {
                                     onChange={(e) => setPassword(e.target.value)}
                                     onFocus={() => setFocused('password')}
                                     onBlur={() => setFocused(null)}
-                                    className="w-full pl-12 pr-4 py-3.5 bg-[var(--paper)] border-[3px] border-[var(--ink)] text-[var(--ink)] placeholder-[rgba(11,11,12,0.35)] focus:outline-none transition-all duration-100 [transition-timing-function:steps(4,end)] hover:-translate-x-0.5 hover:-translate-y-0.5"
+                                    className="w-full pl-12 pr-4 py-3.5 bg-[rgba(231,234,240,0.03)] border border-[rgba(231,234,240,0.18)] text-[var(--ink)] placeholder-[rgba(231,234,240,0.38)] focus:outline-none focus:border-[rgba(51,209,122,0.45)] transition-colors duration-150"
                                     placeholder={t.login.passwordPlaceholder}
                                 />
                             </div>
                         </div>
 
                         {error && (
-                            <p className="text-[var(--ink)] text-sm bg-[var(--acid-magenta)]/20 border-2 border-[var(--ink)] px-4 py-2">{error}</p>
+                            <p className="text-[var(--ink)] text-sm bg-[rgba(255,106,61,0.14)] border border-[rgba(255,106,61,0.35)] px-4 py-2">{error}</p>
                         )}
 
                         <Button
@@ -220,13 +218,13 @@ export default function Login() {
                         >
                             {loading ? (
                                 <>
-                                    <IconLoader className="w-5 h-5 mr-2 animate-spin" />
+                                    <Loader2 className="w-5 h-5 mr-2 animate-spin" />
                                     Loading...
                                 </>
                             ) : (
                                 <>
                                     {isRegister ? t.login.registerButton : t.login.loginButton}
-                                    <IconArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-100 [transition-timing-function:steps(4,end)]" />
+                                    <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-150" />
                                 </>
                             )}
                         </Button>
@@ -239,7 +237,7 @@ export default function Login() {
                                 setIsRegister(!isRegister);
                                 setError('');
                             }}
-                            className="w-full text-center text-sm font-semibold text-[var(--ink-2)] hover:text-[var(--ink)] transition-all duration-100 [transition-timing-function:steps(4,end)]"
+                            className="w-full text-center text-sm font-semibold text-[var(--ink-2)] hover:text-[var(--ink)] transition-colors duration-150"
                         >
                             {isRegister ? t.login.switchToLogin : t.login.switchToRegister}
                         </button>

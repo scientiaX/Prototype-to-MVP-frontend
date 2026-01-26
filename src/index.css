@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -10,20 +10,20 @@
 
 /* CSS Custom Properties */
 :root {
-  --paper: #f6f2e8;
-  --paper-2: #efe9dd;
-  --ink: #0b0b0c;
-  --ink-2: rgba(11, 11, 12, 0.72);
-  --ink-3: rgba(11, 11, 12, 0.46);
-  --acid-orange: #ff4d00;
-  --acid-magenta: #ff1f8f;
-  --acid-lime: #b7ff00;
-  --acid-cyan: #00d4ff;
-  --acid-yellow: #ffe800;
-  --wire: rgba(11, 11, 12, 0.16);
-  --wire-2: rgba(11, 11, 12, 0.28);
-  --steps-fast: 120ms steps(4, end);
-  --steps-base: 180ms steps(5, end);
+  --paper: #0b0b0c;
+  --paper-2: #14161b;
+  --ink: #e7eaf0;
+  --ink-2: rgba(231, 234, 240, 0.74);
+  --ink-3: rgba(231, 234, 240, 0.5);
+  --acid-lime: #33d17a;
+  --acid-orange: #ff6a3d;
+  --acid-magenta: #ff6a3d;
+  --acid-cyan: #2a2f3a;
+  --acid-yellow: #aeb6c2;
+  --wire: rgba(231, 234, 240, 0.06);
+  --wire-2: rgba(231, 234, 240, 0.12);
+  --steps-fast: 140ms cubic-bezier(0.2, 0.85, 0.25, 1);
+  --steps-base: 180ms cubic-bezier(0.2, 0.85, 0.25, 1);
 
   /* Colors - Primary (Fire) */
   --primary-50: #fff7ed;
@@ -72,8 +72,8 @@
   --zinc-950: #09090b;
 
   /* Typography */
-  --font-sans: 'Space Grotesk', system-ui, -apple-system, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --font-sans: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
 
   /* Spacing */
   --space-1: 0.25rem;
@@ -149,32 +149,32 @@ body {
   width: 100%;
   max-width: 1240px;
   margin: 0 auto;
-  padding: 28px 20px 56px;
+  padding: 24px 20px 56px;
 }
 
 @media (min-width: 768px) {
   .nx-stage {
-    padding: 42px 34px 72px;
+    padding: 32px 32px 72px;
   }
 }
 
 .nx-panel {
   position: relative;
-  background: var(--paper);
-  border: 3px solid var(--ink);
-  box-shadow: 10px 10px 0 var(--ink);
+  background: var(--paper-2);
+  border: 1px solid var(--acid-cyan);
+  box-shadow: 0 0 0 1px rgba(231, 234, 240, 0.06), 0 22px 60px rgba(0, 0, 0, 0.55);
   transition: transform var(--steps-fast), background var(--steps-fast);
 }
 
 .nx-panel:hover {
-  transform: translate(-3px, -3px);
+  transform: translateY(-1px);
 }
 
 .nx-panel-static {
   position: relative;
-  background: var(--paper);
-  border: 3px solid var(--ink);
-  box-shadow: 10px 10px 0 var(--ink);
+  background: var(--paper-2);
+  border: 1px solid var(--acid-cyan);
+  box-shadow: 0 0 0 1px rgba(231, 234, 240, 0.06), 0 22px 60px rgba(0, 0, 0, 0.55);
 }
 
 .nx-blob {
@@ -214,10 +214,10 @@ body {
 .nx-bg-stripes {
   background-image: repeating-linear-gradient(
     90deg,
-    rgba(11, 11, 12, 0.06),
-    rgba(11, 11, 12, 0.06) 8px,
-    rgba(11, 11, 12, 0) 8px,
-    rgba(11, 11, 12, 0) 14px
+    rgba(231, 234, 240, 0.04),
+    rgba(231, 234, 240, 0.04) 8px,
+    rgba(231, 234, 240, 0) 8px,
+    rgba(231, 234, 240, 0) 14px
   );
 }
 
@@ -229,7 +229,7 @@ body {
   position: absolute;
   width: 22px;
   height: 22px;
-  border: 1px solid var(--ink);
+  border: 1px solid rgba(231, 234, 240, 0.28);
   pointer-events: none;
 }
 
@@ -237,7 +237,7 @@ body {
 .nx-crosshair::after {
   content: "";
   position: absolute;
-  background: var(--ink);
+  background: rgba(231, 234, 240, 0.28);
 }
 
 .nx-crosshair::before {
@@ -270,8 +270,8 @@ body {
    ================================================ */
 
 ::selection {
-  background: var(--acid-yellow);
-  color: var(--ink);
+  background: var(--acid-lime);
+  color: #0b0b0c;
 }
 
 ::-webkit-scrollbar {
@@ -284,13 +284,13 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--ink);
+  background: rgba(231, 234, 240, 0.18);
   border-radius: 0;
   transition: background var(--steps-fast);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(11, 11, 12, 0.72);
+  background: rgba(231, 234, 240, 0.28);
 }
 
 /* ================================================
@@ -375,28 +375,28 @@ h6 {
    ================================================ */
 
 .card {
-  background: var(--paper);
-  border: 3px solid var(--ink);
+  background: var(--paper-2);
+  border: 1px solid var(--acid-cyan);
   border-radius: 0;
-  box-shadow: 10px 10px 0 var(--ink);
+  box-shadow: 0 0 0 1px rgba(231, 234, 240, 0.06), 0 22px 60px rgba(0, 0, 0, 0.55);
   transition: transform var(--steps-fast), background var(--steps-fast);
 }
 
 .card:hover {
-  transform: translate(-3px, -3px);
+  transform: translateY(-1px);
 }
 
 .card-interactive {
-  background: var(--paper);
-  border: 3px solid var(--ink);
+  background: var(--paper-2);
+  border: 1px solid var(--acid-cyan);
   border-radius: 0;
-  box-shadow: 10px 10px 0 var(--ink);
+  box-shadow: 0 0 0 1px rgba(231, 234, 240, 0.06), 0 22px 60px rgba(0, 0, 0, 0.55);
   transition: transform var(--steps-fast), background var(--steps-fast);
   cursor: pointer;
 }
 
 .card-interactive:hover {
-  transform: translate(-3px, -3px);
+  transform: translateY(-1px);
 }
 
 /* ================================================
@@ -414,9 +414,9 @@ h6 {
   letter-spacing: 0.05em;
   text-transform: uppercase;
   border-radius: 0;
-  background: var(--paper-2);
-  color: var(--ink);
-  border: 2px solid var(--ink);
+  background: rgba(231, 234, 240, 0.04);
+  color: var(--ink-2);
+  border: 1px solid rgba(231, 234, 240, 0.16);
   transition: transform var(--steps-fast), background var(--steps-fast);
 }
 
@@ -871,7 +871,7 @@ h6 {
    ================================================ */
 
 :focus-visible {
-  outline: 2px solid var(--primary-500);
+  outline: 2px solid var(--acid-lime);
   outline-offset: 2px;
 }
 

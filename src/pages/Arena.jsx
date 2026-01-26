@@ -7,7 +7,7 @@ import ProblemCard from '@/components/arena/ProblemCard';
 import ArenaBattle from '@/components/arena/ArenaBattle';
 import ArenaResult from '@/components/arena/ArenaResult';
 import { ArenaEntryFlow } from '@/components/arena/entry';
-import { Loader2, Trophy, Zap, Sparkles, Swords, Target, Users, User, Clock, Lock } from 'lucide-react';
+import { BarChart3, ChevronLeft, Clock, Gauge, Loader2, Lock, Sparkles, Swords, Target, User, Users, Zap } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 
 // Session storage keys
@@ -281,8 +281,8 @@ export default function Arena() {
   if (isLoading && view === 'selection') {
     return (
       <div className="min-h-screen nx-page relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none nx-bg-wires opacity-[0.55]" />
-        <div className="absolute inset-0 pointer-events-none nx-bg-dots opacity-[0.2]" />
+        <div className="absolute inset-0 pointer-events-none nx-bg-wires opacity-[0.7]" />
+        <div className="absolute inset-0 pointer-events-none nx-bg-dots opacity-[0.22]" />
         <motion.div
           className="nx-stage flex flex-col items-center justify-center min-h-screen gap-4"
           initial={{ opacity: 0, scale: 0.9 }}
@@ -291,7 +291,7 @@ export default function Arena() {
           <div className="nx-panel nx-sharp px-8 py-8 text-center">
             <div className="nx-crosshair -top-3 -left-3" />
             <div className="nx-crosshair -bottom-3 -right-3" />
-            <div className="w-16 h-16 border-[3px] border-[var(--ink)] bg-[var(--acid-orange)] flex items-center justify-center mx-auto">
+            <div className="w-16 h-16 border border-[rgba(231,234,240,0.18)] bg-[rgba(231,234,240,0.04)] flex items-center justify-center mx-auto">
               <Swords className="w-8 h-8 text-[var(--ink)]" />
             </div>
             <p className="mt-4 text-[var(--ink-2)] font-semibold">Loading arena...</p>
@@ -345,10 +345,8 @@ export default function Arena() {
   if (gameMode === null) {
     return (
       <div className="min-h-screen nx-page relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none nx-bg-wires opacity-[0.55]" />
-        <div className="absolute inset-0 pointer-events-none nx-bg-dots opacity-[0.2]" />
-        <div className="absolute -top-24 -right-24 w-[520px] h-[520px] nx-blob border-[3px] border-[var(--ink)] bg-[var(--acid-orange)] opacity-[0.10]" />
-        <div className="absolute -bottom-24 -left-28 w-[560px] h-[560px] nx-blob border-[3px] border-[var(--ink)] bg-[var(--acid-cyan)] opacity-[0.10]" />
+        <div className="absolute inset-0 pointer-events-none nx-bg-wires opacity-[0.7]" />
+        <div className="absolute inset-0 pointer-events-none nx-bg-dots opacity-[0.22]" />
 
         <div className="nx-stage relative pt-24 md:pt-28">
           <motion.div
@@ -356,7 +354,7 @@ export default function Arena() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <div className="inline-flex items-center gap-2.5 px-4 py-2 border-2 border-[var(--ink)] bg-[var(--acid-yellow)] mb-5">
+            <div className="inline-flex items-center gap-2.5 px-4 py-2 border border-[rgba(231,234,240,0.18)] bg-[rgba(231,234,240,0.04)] mb-5">
               <div className="w-2 h-2 bg-[var(--ink)]" />
               <span className="text-xs font-black tracking-wider uppercase nx-mono">Choose Mode</span>
             </div>
@@ -371,7 +369,7 @@ export default function Arena() {
             {/* Solo Mode */}
             <motion.button
               onClick={() => setGameMode('solo')}
-              className="group relative nx-panel nx-sharp p-8 text-left transition-transform duration-100 [transition-timing-function:steps(4,end)] hover:-translate-x-1 hover:-translate-y-1"
+              className="group relative nx-panel nx-sharp p-8 text-left transition-transform duration-150 hover:-translate-y-0.5"
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2 }}
@@ -381,7 +379,7 @@ export default function Arena() {
               <div className="relative">
                 <div className="nx-crosshair -top-3 -left-3" />
                 <div className="nx-crosshair -bottom-3 -right-3" />
-                <div className="w-16 h-16 bg-[var(--acid-orange)] border-[3px] border-[var(--ink)] flex items-center justify-center mb-6 transition-transform duration-100 [transition-timing-function:steps(4,end)] group-hover:-translate-x-1 group-hover:-translate-y-1">
+                <div className="w-16 h-16 bg-[rgba(231,234,240,0.04)] border border-[rgba(231,234,240,0.18)] flex items-center justify-center mb-6">
                   <User className="w-8 h-8 text-[var(--ink)]" />
                 </div>
 
@@ -402,7 +400,7 @@ export default function Arena() {
             {/* Multiplayer Mode */}
             <motion.button
               onClick={() => setGameMode('multiplayer')}
-              className="group relative nx-panel nx-sharp p-8 text-left transition-transform duration-100 [transition-timing-function:steps(4,end)] hover:-translate-x-1 hover:-translate-y-1"
+              className="group relative nx-panel nx-sharp p-8 text-left transition-transform duration-150 hover:-translate-y-0.5"
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3 }}
@@ -412,7 +410,7 @@ export default function Arena() {
               <div className="relative">
                 <div className="nx-crosshair -top-3 -left-3" />
                 <div className="nx-crosshair -bottom-3 -right-3" />
-                <div className="w-16 h-16 bg-[var(--acid-cyan)] border-[3px] border-[var(--ink)] flex items-center justify-center mb-6 transition-transform duration-100 [transition-timing-function:steps(4,end)] group-hover:-translate-x-1 group-hover:-translate-y-1">
+                <div className="w-16 h-16 bg-[rgba(231,234,240,0.04)] border border-[rgba(231,234,240,0.18)] flex items-center justify-center mb-6">
                   <Users className="w-8 h-8 text-[var(--ink)]" />
                 </div>
 
@@ -420,7 +418,7 @@ export default function Arena() {
                   <h3 className="text-2xl font-black text-[var(--ink)] tracking-[-0.04em]">
                     Multiplayer
                   </h3>
-                  <span className="px-2.5 py-1 bg-[var(--acid-magenta)]/20 border-2 border-[var(--ink)] text-xs font-black text-[var(--ink)] uppercase tracking-wider nx-mono">
+                  <span className="px-2.5 py-1 bg-[rgba(231,234,240,0.04)] border border-[rgba(231,234,240,0.18)] text-xs font-black text-[var(--ink)] uppercase tracking-wider nx-mono">
                     Soon
                   </span>
                 </div>
@@ -444,10 +442,8 @@ export default function Arena() {
   if (gameMode === 'multiplayer') {
     return (
       <div className="min-h-screen nx-page relative overflow-hidden flex items-center justify-center">
-        <div className="absolute inset-0 pointer-events-none nx-bg-wires opacity-[0.55]" />
-        <div className="absolute inset-0 pointer-events-none nx-bg-dots opacity-[0.2]" />
-        <div className="absolute -top-24 -left-24 w-[520px] h-[520px] nx-blob border-[3px] border-[var(--ink)] bg-[var(--acid-magenta)] opacity-[0.10]" />
-        <div className="absolute -bottom-24 -right-24 w-[520px] h-[520px] nx-blob border-[3px] border-[var(--ink)] bg-[var(--acid-lime)] opacity-[0.10]" />
+        <div className="absolute inset-0 pointer-events-none nx-bg-wires opacity-[0.7]" />
+        <div className="absolute inset-0 pointer-events-none nx-bg-dots opacity-[0.22]" />
 
         <div className="relative z-10 nx-stage max-w-2xl text-center">
           <motion.div
@@ -459,10 +455,10 @@ export default function Arena() {
               <div className="nx-crosshair -top-3 -left-3" />
               <div className="nx-crosshair -bottom-3 -right-3" />
               <div className="relative inline-block mb-8">
-                <div className="w-24 h-24 bg-[var(--acid-cyan)] border-[3px] border-[var(--ink)] flex items-center justify-center mx-auto">
+                <div className="w-24 h-24 bg-[rgba(231,234,240,0.04)] border border-[rgba(231,234,240,0.18)] flex items-center justify-center mx-auto">
                   <Users className="w-12 h-12 text-[var(--ink)]" />
                 </div>
-                <div className="absolute -bottom-3 -right-3 w-11 h-11 bg-[var(--paper)] border-[3px] border-[var(--ink)] flex items-center justify-center">
+                <div className="absolute -bottom-3 -right-3 w-11 h-11 bg-[rgba(231,234,240,0.04)] border border-[rgba(231,234,240,0.18)] flex items-center justify-center">
                   <Lock className="w-5 h-5 text-[var(--ink)]" />
                 </div>
               </div>
@@ -484,7 +480,7 @@ export default function Arena() {
                   <p className="text-sm nx-ink-muted">Team Mode</p>
                 </div>
                 <div className="nx-panel-static nx-sharp p-4">
-                  <Trophy className="w-6 h-6 text-[var(--ink)] mx-auto mb-2" />
+                  <BarChart3 className="w-6 h-6 text-[var(--ink)] mx-auto mb-2" />
                   <p className="text-sm nx-ink-muted">Ranked Match</p>
                 </div>
                 <div className="nx-panel-static nx-sharp p-4">
@@ -508,10 +504,7 @@ export default function Arena() {
   return (
     <div className="min-h-screen nx-page nx-bg-wires relative">
       {/* Background effects */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute -top-24 -right-24 w-[520px] h-[520px] nx-blob border-[3px] border-[var(--ink)] bg-[var(--acid-orange)] opacity-[0.12]" />
-        <div className="absolute -bottom-24 -left-24 w-[520px] h-[520px] nx-blob border-[3px] border-[var(--ink)] bg-[var(--acid-magenta)] opacity-[0.10]" />
-      </div>
+      <div className="absolute inset-0 pointer-events-none nx-bg-dots opacity-[0.22]" />
 
       <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-8 py-8">
         {/* Header */}
@@ -523,11 +516,9 @@ export default function Arena() {
             <div className="flex items-center gap-3 mb-4">
               <button
                 onClick={() => setGameMode(null)}
-                className="w-10 h-10 nx-sharp bg-[var(--paper)] border-[3px] border-[var(--ink)] shadow-[4px_4px_0_var(--ink)] flex items-center justify-center text-[var(--ink)] transition-all duration-100 [transition-timing-function:steps(4,end)] hover:translate-x-[-1px] hover:translate-y-[-1px]"
+                className="w-10 h-10 nx-sharp bg-[rgba(231,234,240,0.04)] border border-[rgba(231,234,240,0.18)] flex items-center justify-center text-[var(--ink)] transition-colors duration-150 hover:bg-[rgba(231,234,240,0.06)]"
               >
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
+                <ChevronLeft className="w-5 h-5" />
               </button>
               <div className="inline-flex items-center gap-2.5 px-4 py-2 nx-sharp bg-[var(--paper)] border-[2px] border-[var(--ink)]">
                 <User className="w-3.5 h-3.5 text-[var(--ink)]" />
@@ -550,8 +541,8 @@ export default function Arena() {
               transition={{ delay: 0.2 }}
             >
               <div className="nx-panel-static nx-sharp px-5 py-3.5 flex items-center gap-3">
-                <div className="w-10 h-10 nx-sharp border-[2px] border-[var(--ink)] bg-[var(--paper-2)] flex items-center justify-center">
-                  <Trophy className="w-5 h-5 text-[var(--ink)]" />
+                <div className="w-10 h-10 nx-sharp border border-[rgba(231,234,240,0.18)] bg-[rgba(231,234,240,0.04)] flex items-center justify-center">
+                  <Gauge className="w-5 h-5 text-[var(--ink)]" />
                 </div>
                 <div>
                   <p className="text-[var(--ink)] font-mono font-bold text-xl leading-none">
@@ -561,7 +552,7 @@ export default function Arena() {
                 </div>
               </div>
               <div className="nx-panel-static nx-sharp px-5 py-3.5 flex items-center gap-3">
-                <div className="w-10 h-10 nx-sharp border-[2px] border-[var(--ink)] bg-[var(--paper-2)] flex items-center justify-center">
+                <div className="w-10 h-10 nx-sharp border border-[rgba(231,234,240,0.18)] bg-[rgba(231,234,240,0.04)] flex items-center justify-center">
                   <Zap className="w-5 h-5 text-[var(--ink)]" />
                 </div>
                 <div>
@@ -580,10 +571,10 @@ export default function Arena() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25 }}
         >
-          <div className="inline-flex bg-[var(--paper)] nx-sharp p-1 border-[3px] border-[var(--ink)] shadow-[6px_6px_0_var(--ink)]">
+          <div className="inline-flex bg-[rgba(231,234,240,0.03)] nx-sharp p-1 border border-[rgba(231,234,240,0.18)]">
             <button
               onClick={() => setArenaTab('quick')}
-              className={`relative px-6 py-2.5 nx-sharp text-sm font-semibold transition-all duration-100 [transition-timing-function:steps(4,end)] ${arenaTab === 'quick'
+              className={`relative px-6 py-2.5 nx-sharp text-sm font-semibold transition-colors duration-150 ${arenaTab === 'quick'
                   ? 'text-[var(--ink)]'
                   : 'text-[var(--ink-2)] hover:text-[var(--ink)]'
                 }`}
@@ -591,7 +582,7 @@ export default function Arena() {
               {arenaTab === 'quick' && (
                 <motion.div
                   layoutId="activeTab"
-                  className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-emerald-500 nx-sharp"
+                  className="absolute left-3 right-3 -bottom-0.5 h-[2px] bg-[var(--acid-lime)]"
                   transition={{ type: 'spring', bounce: 0.2, duration: 0.4 }}
                 />
               )}
@@ -603,7 +594,7 @@ export default function Arena() {
             </button>
             <button
               onClick={() => setArenaTab('standard')}
-              className={`relative px-6 py-2.5 nx-sharp text-sm font-semibold transition-all duration-100 [transition-timing-function:steps(4,end)] ${arenaTab === 'standard'
+              className={`relative px-6 py-2.5 nx-sharp text-sm font-semibold transition-colors duration-150 ${arenaTab === 'standard'
                   ? 'text-[var(--ink)]'
                   : 'text-[var(--ink-2)] hover:text-[var(--ink)]'
                 }`}
@@ -611,7 +602,7 @@ export default function Arena() {
               {arenaTab === 'standard' && (
                 <motion.div
                   layoutId="activeTab"
-                  className="absolute inset-0 bg-gradient-to-r from-orange-500 to-red-600 nx-sharp"
+                  className="absolute left-3 right-3 -bottom-0.5 h-[2px] bg-[var(--acid-orange)]"
                   transition={{ type: 'spring', bounce: 0.2, duration: 0.4 }}
                 />
               )}
@@ -682,8 +673,8 @@ export default function Arena() {
                 </div>
               ) : (
                 <div className="nx-panel nx-sharp p-16 text-center">
-                  <div className="w-20 h-20 nx-sharp border-[3px] border-[var(--ink)] bg-[var(--paper-2)] mx-auto mb-6 flex items-center justify-center">
-                    <Zap className="w-10 h-10 text-emerald-500" />
+                  <div className="w-20 h-20 nx-sharp border border-[rgba(231,234,240,0.18)] bg-[rgba(231,234,240,0.04)] mx-auto mb-6 flex items-center justify-center">
+                    <Zap className="w-10 h-10 text-[var(--acid-lime)]" />
                   </div>
                   <p className="text-xl text-[var(--ink)] mb-2 font-medium">
                     Belum ada Quick problem
@@ -717,8 +708,8 @@ export default function Arena() {
                 </div>
               ) : (
                 <div className="nx-panel nx-sharp p-16 text-center">
-                  <div className="w-20 h-20 nx-sharp border-[3px] border-[var(--ink)] bg-[var(--paper-2)] mx-auto mb-6 flex items-center justify-center">
-                    <Target className="w-10 h-10 text-orange-500" />
+                  <div className="w-20 h-20 nx-sharp border border-[rgba(231,234,240,0.18)] bg-[rgba(231,234,240,0.04)] mx-auto mb-6 flex items-center justify-center">
+                    <Target className="w-10 h-10 text-[var(--acid-orange)]" />
                   </div>
                   <p className="text-xl text-[var(--ink)] mb-2 font-medium">
                     Belum ada Standard problem

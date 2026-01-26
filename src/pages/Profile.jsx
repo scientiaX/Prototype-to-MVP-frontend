@@ -6,14 +6,14 @@ import { createPageUrl } from '@/utils';
 import ArchetypeRadar from '@/components/profile/ArchetypeRadar';
 import BadgeDisplay from '@/components/profile/BadgeDisplay';
 import MonthlyProgress from '@/components/profile/MonthlyProgress';
-import { Loader2, Zap, Target, Brain, Wrench, Trophy, TrendingUp, Award, User, Sparkles } from 'lucide-react';
+import { Archive, BarChart3, Gauge, Loader2, ShieldCheck, Target, User, Zap } from 'lucide-react';
 import { cn } from "@/lib/utils";
 
 const archetypeConfig = {
-  risk_taker: { icon: Zap, label: 'Risk Taker', color: 'text-red-400', bg: 'bg-red-500/15', border: 'border-red-500/30', gradient: 'from-red-500 to-orange-600' },
-  analyst: { icon: Brain, label: 'Analyst', color: 'text-cyan-400', bg: 'bg-cyan-500/15', border: 'border-cyan-500/30', gradient: 'from-cyan-500 to-blue-600' },
-  builder: { icon: Wrench, label: 'Builder', color: 'text-emerald-400', bg: 'bg-emerald-500/15', border: 'border-emerald-500/30', gradient: 'from-emerald-500 to-green-600' },
-  strategist: { icon: Target, label: 'Strategist', color: 'text-violet-400', bg: 'bg-violet-500/15', border: 'border-violet-500/30', gradient: 'from-violet-500 to-purple-600' }
+  risk_taker: { icon: Zap, label: 'Risk Taker' },
+  analyst: { icon: BarChart3, label: 'Analyst' },
+  builder: { icon: Target, label: 'Builder' },
+  strategist: { icon: Gauge, label: 'Strategist' }
 };
 
 export default function Profile() {
@@ -61,8 +61,8 @@ export default function Profile() {
   if (isLoading) {
     return (
       <div className="min-h-screen nx-page relative overflow-hidden flex items-center justify-center">
-        <div className="absolute inset-0 pointer-events-none nx-bg-wires opacity-[0.55]" />
-        <div className="absolute inset-0 pointer-events-none nx-bg-dots opacity-[0.2]" />
+        <div className="absolute inset-0 pointer-events-none nx-bg-wires opacity-[0.7]" />
+        <div className="absolute inset-0 pointer-events-none nx-bg-dots opacity-[0.22]" />
         <motion.div
           className="flex flex-col items-center gap-4"
           initial={{ opacity: 0, scale: 0.9 }}
@@ -71,7 +71,7 @@ export default function Profile() {
           <div className="nx-panel nx-sharp px-8 py-8 text-center">
             <div className="nx-crosshair -top-3 -left-3" />
             <div className="nx-crosshair -bottom-3 -right-3" />
-            <div className="w-16 h-16 border-[3px] border-[var(--ink)] bg-[var(--acid-magenta)] flex items-center justify-center mx-auto">
+            <div className="w-16 h-16 border border-[rgba(231,234,240,0.18)] bg-[rgba(231,234,240,0.04)] flex items-center justify-center mx-auto">
               <User className="w-8 h-8 text-[var(--ink)]" />
             </div>
             <p className="mt-4 text-[var(--ink-2)] font-semibold">Loading profile...</p>
@@ -87,18 +87,16 @@ export default function Profile() {
     (profile.xp_builder || 0) + (profile.xp_strategist || 0);
 
   const stats = [
-    { icon: Trophy, value: profile.current_difficulty, label: 'Current Level', color: 'text-orange-400', bg: 'bg-orange-500/15' },
-    { icon: Zap, value: totalXp, label: 'Total XP', color: 'text-yellow-400', bg: 'bg-yellow-500/15' },
-    { icon: TrendingUp, value: profile.highest_difficulty_conquered || 0, label: 'Highest Conquered', color: 'text-emerald-400', bg: 'bg-emerald-500/15' },
-    { icon: Target, value: profile.total_arenas_completed || 0, label: 'Arenas Completed', color: 'text-cyan-400', bg: 'bg-cyan-500/15' }
+    { icon: Gauge, value: profile.current_difficulty, label: 'Current Level', accent: 'bg-[rgba(51,209,122,0.14)] border-[rgba(51,209,122,0.35)]' },
+    { icon: Zap, value: totalXp, label: 'Total XP', accent: 'bg-[rgba(231,234,240,0.04)] border-[rgba(231,234,240,0.18)]' },
+    { icon: BarChart3, value: profile.highest_difficulty_conquered || 0, label: 'Highest Conquered', accent: 'bg-[rgba(255,106,61,0.14)] border-[rgba(255,106,61,0.35)]' },
+    { icon: Target, value: profile.total_arenas_completed || 0, label: 'Arenas Completed', accent: 'bg-[rgba(231,234,240,0.04)] border-[rgba(231,234,240,0.18)]' }
   ];
 
   return (
     <div className="min-h-screen nx-page relative overflow-hidden">
-      <div className="absolute inset-0 pointer-events-none nx-bg-wires opacity-[0.55]" />
-      <div className="absolute inset-0 pointer-events-none nx-bg-dots opacity-[0.18]" />
-      <div className="absolute -top-24 -right-24 w-[520px] h-[520px] nx-blob border-[3px] border-[var(--ink)] bg-[var(--acid-magenta)] opacity-[0.08]" />
-      <div className="absolute -bottom-24 -left-28 w-[560px] h-[560px] nx-blob border-[3px] border-[var(--ink)] bg-[var(--acid-lime)] opacity-[0.08]" />
+      <div className="absolute inset-0 pointer-events-none nx-bg-wires opacity-[0.7]" />
+      <div className="absolute inset-0 pointer-events-none nx-bg-dots opacity-[0.22]" />
 
       <div className="nx-stage relative pt-24 md:pt-28">
         {/* Profile Header */}
@@ -111,8 +109,7 @@ export default function Profile() {
           <div className="relative inline-block mb-6">
             <motion.div
               className={cn(
-                "w-28 h-28 nx-sharp border-[3px] border-[var(--ink)] flex items-center justify-center bg-gradient-to-br",
-                archetype.gradient
+                "w-28 h-28 nx-sharp border border-[rgba(231,234,240,0.18)] bg-[rgba(231,234,240,0.04)] flex items-center justify-center"
               )}
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
@@ -120,17 +117,9 @@ export default function Profile() {
             >
               <Icon className="w-14 h-14 text-[var(--ink)]" />
             </motion.div>
-            <motion.div
-              className="absolute -bottom-2 -right-2 w-10 h-10 bg-[var(--paper)] border-[3px] border-[var(--ink)] nx-sharp flex items-center justify-center"
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: 0.4 }}
-            >
-              <Sparkles className="w-4 h-4 text-[var(--ink)]" />
-            </motion.div>
           </div>
 
-          <h1 className={cn("text-4xl md:text-5xl font-bold mb-3", archetype.color)}>
+          <h1 className={cn("text-4xl md:text-5xl font-bold mb-3 text-[var(--ink)]")}>
             {archetype.label}
           </h1>
 
@@ -149,8 +138,8 @@ export default function Profile() {
               transition={{ delay: 0.1 + i * 0.1 }}
               className="group nx-panel nx-sharp p-5 text-center"
             >
-              <div className={cn("w-11 h-11 border-2 border-[var(--ink)] mx-auto mb-3 flex items-center justify-center transition-transform duration-100 [transition-timing-function:steps(4,end)] group-hover:-translate-x-0.5 group-hover:-translate-y-0.5", stat.bg)}>
-                <stat.icon className={cn("w-5 h-5", stat.color)} />
+              <div className={cn("w-11 h-11 border mx-auto mb-3 flex items-center justify-center", stat.accent)}>
+                <stat.icon className="w-5 h-5 text-[var(--ink)]" />
               </div>
               <p className="text-3xl font-bold text-[var(--ink)] nx-mono mb-1">{stat.value}</p>
               <p className="text-xs nx-ink-muted">{stat.label}</p>
@@ -180,7 +169,7 @@ export default function Profile() {
           className="nx-panel nx-sharp p-8 mb-8"
         >
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 border-2 border-[var(--ink)] bg-[var(--acid-cyan)]/20 flex items-center justify-center nx-sharp">
+            <div className="w-10 h-10 border border-[rgba(231,234,240,0.18)] bg-[rgba(231,234,240,0.04)] flex items-center justify-center nx-sharp">
               <Target className="w-5 h-5 text-[var(--ink)]" />
             </div>
             <h2 className="text-[var(--ink)] font-black text-xl tracking-[-0.04em]">Archetype Distribution</h2>
@@ -193,12 +182,16 @@ export default function Profile() {
             {Object.entries(archetypeConfig).map(([key, config]) => {
               const xp = profile[`xp_${key}`] || 0;
               const ConfigIcon = config.icon;
+              const isPrimary = key === profile.primary_archetype;
               return (
                 <div key={key} className="text-center group">
-                  <div className={cn("w-8 h-8 border-2 border-[var(--ink)] mx-auto mb-2 flex items-center justify-center transition-transform duration-100 [transition-timing-function:steps(4,end)] group-hover:-translate-x-0.5 group-hover:-translate-y-0.5", config.bg)}>
-                    <ConfigIcon className={cn("w-4 h-4", config.color)} />
+                  <div className={cn(
+                    "w-8 h-8 border mx-auto mb-2 flex items-center justify-center",
+                    isPrimary ? "bg-[rgba(51,209,122,0.14)] border-[rgba(51,209,122,0.35)]" : "bg-[rgba(231,234,240,0.04)] border-[rgba(231,234,240,0.18)]"
+                  )}>
+                    <ConfigIcon className="w-4 h-4 text-[var(--ink)]" />
                   </div>
-                  <p className={cn("font-mono text-2xl font-bold", config.color)}>{xp}</p>
+                  <p className={cn("font-mono text-2xl font-bold", isPrimary ? "text-[var(--acid-lime)]" : "text-[var(--ink)]")}>{xp}</p>
                   <p className="text-xs nx-ink-muted">{config.label}</p>
                 </div>
               );
@@ -214,8 +207,8 @@ export default function Profile() {
           className="nx-panel nx-sharp p-8 mb-8"
         >
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 border-2 border-[var(--ink)] bg-[var(--acid-orange)]/20 flex items-center justify-center nx-sharp">
-              <Award className="w-5 h-5 text-[var(--ink)]" />
+            <div className="w-10 h-10 border border-[rgba(231,234,240,0.18)] bg-[rgba(231,234,240,0.04)] flex items-center justify-center nx-sharp">
+              <ShieldCheck className="w-5 h-5 text-[var(--ink)]" />
             </div>
             <div>
               <h2 className="text-[var(--ink)] font-black text-xl tracking-[-0.04em]">Badges/Achievements</h2>
@@ -233,8 +226,8 @@ export default function Profile() {
           className="nx-panel nx-sharp p-8"
         >
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 border-2 border-[var(--ink)] bg-[var(--acid-yellow)]/20 flex items-center justify-center nx-sharp">
-              <Sparkles className="w-5 h-5 text-[var(--ink)]" />
+            <div className="w-10 h-10 border border-[rgba(231,234,240,0.18)] bg-[rgba(231,234,240,0.04)] flex items-center justify-center nx-sharp">
+              <Archive className="w-5 h-5 text-[var(--ink)]" />
             </div>
             <div>
               <h2 className="text-[var(--ink)] font-black text-xl tracking-[-0.04em]">Portfolio Artifacts</h2>
@@ -295,8 +288,8 @@ export default function Profile() {
             </div>
           ) : (
             <div className="text-center py-16">
-              <div className="w-16 h-16 bg-[var(--paper-2)] border-[3px] border-[var(--ink)] mx-auto mb-4 flex items-center justify-center nx-sharp">
-                <Trophy className="w-8 h-8 text-[var(--ink)]" />
+              <div className="w-16 h-16 bg-[rgba(231,234,240,0.04)] border border-[rgba(231,234,240,0.18)] mx-auto mb-4 flex items-center justify-center nx-sharp">
+                <Archive className="w-8 h-8 text-[var(--ink)]" />
               </div>
               <p className="text-lg text-[var(--ink)] font-semibold mb-2">
                 Belum ada artifact
