@@ -52,18 +52,13 @@ export default function Home() {
       badge: "Novax Trial",
       headline1: "NovaX",
       headline2: "Arena",
-      subtitle: "Learning happens through real-world problem arenas.",
-      subtitleHighlight: "Not material. Not theory.",
+      subtitle: "Real-world experiential learning",
+      subtitleHighlight: "in your hands.",
       ctaCalibrate: "Start Calibration",
       ctaArena: "Enter Arena",
       calibrationTime: "5-7 min calibration",
       readyBattle: "Ready to battle",
       quote: "No comfort zone. Only growth zone.",
-      ctaHint: {
-        notAuth: "Login to start your run",
-        noProfile: "5-7 quick questions to set your starting point",
-        hasProfile: "Ready for the next confrontation?"
-      },
       features: [
         { icon: IconTarget, title: "Adaptive Matching", description: "AI matches problems to your archetype + capability level." },
         { icon: IconTrendingUp, title: "XP = Difficulty", description: "Progress comes from pressure, not grinding." },
@@ -74,18 +69,13 @@ export default function Home() {
       badge: "Novax Trial",
       headline1: "NovaX",
       headline2: "Arena",
-      subtitle: "Belajar terjadi lewat arena masalah nyata.",
-      subtitleHighlight: "Bukan materi. Bukan teori.",
+      subtitle: "Belajar dari pengalaman dunia nyata",
+      subtitleHighlight: "di tanganmu.",
       ctaCalibrate: "Mulai Kalibrasi",
       ctaArena: "Masuk Arena",
       calibrationTime: "5-7 menit kalibrasi",
       readyBattle: "Siap bertempur",
       quote: "Tidak ada zona nyaman. Hanya zona pertumbuhan.",
-      ctaHint: {
-        notAuth: "Login untuk memulai perjalanan",
-        noProfile: "5-7 pertanyaan singkat untuk menentukan starting point",
-        hasProfile: "Siap untuk konfrontasi berikutnya?"
-      },
       features: [
         { icon: IconTarget, title: "Adaptive Matching", description: "AI mencocokkan masalah dengan arketipe + levelmu." },
         { icon: IconTrendingUp, title: "XP = Kesulitan", description: "Progres dari tekanan, bukan grinding." },
@@ -180,10 +170,6 @@ export default function Home() {
                   <div className="nx-mono text-[10px] text-[var(--ink-2)] border-2 border-[var(--ink)] px-3 py-2 bg-[var(--paper)]">
                     {hasProfile ? t.readyBattle : t.calibrationTime}
                   </div>
-                </div>
-
-                <div className="mt-4 nx-mono text-[10px] text-[var(--ink-3)] uppercase tracking-[0.16em]">
-                  {!isAuthenticated ? t.ctaHint.notAuth : hasProfile ? t.ctaHint.hasProfile : t.ctaHint.noProfile}
                 </div>
               </div>
             </div>
