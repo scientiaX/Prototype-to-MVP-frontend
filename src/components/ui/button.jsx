@@ -5,17 +5,17 @@ import { Loader2 } from "lucide-react";
 const buttonVariants = {
   variant: {
     default:
-      "bg-[rgba(231,234,240,0.04)] text-[var(--ink)] border border-[var(--acid-cyan)] hover:bg-[rgba(231,234,240,0.06)] hover:border-[rgba(231,234,240,0.28)]",
+      "bg-[rgba(91,220,255,0.08)] text-[var(--ink)] border border-[rgba(91,220,255,0.35)] hover:bg-[rgba(91,220,255,0.14)] hover:border-[rgba(123,107,255,0.45)]",
     gradient:
-      "bg-[var(--acid-lime)] text-[#0b0b0c] border border-[rgba(11,11,12,0.78)] hover:bg-[#2fcf74]",
+      "bg-[linear-gradient(135deg,var(--spatial-violet),var(--spatial-cyan))] text-[#05070f] border border-[rgba(6,9,18,0.8)] hover:brightness-110",
     outline:
-      "bg-transparent text-[var(--ink)] border border-[rgba(231,234,240,0.18)] hover:bg-[rgba(231,234,240,0.04)] hover:border-[rgba(231,234,240,0.34)]",
+      "bg-transparent text-[var(--ink)] border border-[rgba(123,107,255,0.3)] hover:bg-[rgba(123,107,255,0.14)] hover:border-[rgba(91,220,255,0.5)]",
     ghost:
-      "bg-transparent text-[var(--ink-2)] border border-transparent hover:border-[rgba(231,234,240,0.18)] hover:text-[var(--ink)] hover:bg-[rgba(231,234,240,0.04)]",
+      "bg-transparent text-[var(--ink-2)] border border-transparent hover:border-[rgba(91,220,255,0.35)] hover:text-[var(--ink)] hover:bg-[rgba(91,220,255,0.12)]",
     danger:
-      "bg-[var(--acid-orange)] text-[#0b0b0c] border border-[rgba(11,11,12,0.78)] hover:bg-[#ff5c2b]",
+      "bg-[linear-gradient(135deg,var(--spatial-rose),var(--acid-orange))] text-[#05070f] border border-[rgba(6,9,18,0.8)] hover:brightness-110",
     success:
-      "bg-[var(--acid-lime)] text-[#0b0b0c] border border-[rgba(11,11,12,0.78)] hover:bg-[#2fcf74]"
+      "bg-[linear-gradient(135deg,var(--acid-lime),var(--spatial-cyan))] text-[#05070f] border border-[rgba(6,9,18,0.8)] hover:brightness-110"
   },
   size: {
     sm: "h-8 px-3 text-xs gap-1.5",
@@ -40,7 +40,7 @@ const Button = React.forwardRef(({
       ref={ref}
       disabled={disabled || isLoading}
       className={cn(
-        "inline-flex items-center justify-center font-medium select-none rounded-none transition-all duration-150 focus-visible:outline-none focus-visible:ring-0 disabled:pointer-events-none disabled:opacity-50",
+        "inline-flex items-center justify-center font-semibold select-none rounded-[var(--radius-1)] shadow-[0_12px_28px_rgba(7,10,22,0.5)] transition-all duration-150 focus-visible:outline-none focus-visible:ring-0 disabled:pointer-events-none disabled:opacity-50",
         buttonVariants.variant[variant],
         buttonVariants.size[size],
         className

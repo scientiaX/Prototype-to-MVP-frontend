@@ -43,22 +43,22 @@ export default function ProblemCard({ problem, onStart }) {
     if (difficulty <= 3) {
       return {
         color: 'text-[var(--acid-lime)]',
-        bg: 'bg-[rgba(51,209,122,0.12)]',
-        border: 'border-[rgba(51,209,122,0.55)]',
+        bg: 'bg-[rgba(77,255,199,0.18)]',
+        border: 'border-[rgba(77,255,199,0.55)]',
         label: 'Easy',
       };
     } else if (difficulty <= 6) {
       return {
-        color: 'text-[var(--ink)]',
-        bg: 'bg-[rgba(231,234,240,0.04)]',
-        border: 'border-[rgba(231,234,240,0.22)]',
+        color: 'text-[var(--spatial-cyan)]',
+        bg: 'bg-[rgba(91,220,255,0.16)]',
+        border: 'border-[rgba(91,220,255,0.45)]',
         label: 'Medium',
       };
     } else {
       return {
         color: 'text-[var(--acid-orange)]',
-        bg: 'bg-[rgba(255,106,61,0.12)]',
-        border: 'border-[rgba(255,106,61,0.55)]',
+        bg: 'bg-[rgba(255,155,92,0.18)]',
+        border: 'border-[rgba(255,155,92,0.55)]',
         label: 'Hard',
       };
     }

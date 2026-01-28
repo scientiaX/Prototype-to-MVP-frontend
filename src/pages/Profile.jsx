@@ -135,7 +135,7 @@ export default function Profile() {
           <div className="nx-panel nx-sharp px-8 py-8 text-center">
             <div className="nx-crosshair -top-3 -left-3" />
             <div className="nx-crosshair -bottom-3 -right-3" />
-            <div className="w-16 h-16 border border-[rgba(230,237,243,0.2)] bg-[rgba(230,237,243,0.04)] flex items-center justify-center mx-auto">
+            <div className="w-16 h-16 border border-[rgba(91,220,255,0.35)] bg-[rgba(91,220,255,0.12)] flex items-center justify-center mx-auto">
               <IconUser className="w-8 h-8 text-[var(--ink)]" />
             </div>
             <p className="mt-4 text-[var(--ink-2)] font-semibold">Loading profile...</p>
@@ -151,10 +151,10 @@ export default function Profile() {
     (profile.xp_builder || 0) + (profile.xp_strategist || 0);
 
   const stats = [
-    { icon: IconGauge, value: profile.current_difficulty, label: 'Current Level', accent: 'bg-[rgba(45,255,138,0.14)] border-[rgba(45,255,138,0.35)]' },
-    { icon: IconBolt, value: totalXp, label: 'Total XP', accent: 'bg-[rgba(230,237,243,0.04)] border-[rgba(230,237,243,0.2)]' },
-    { icon: IconBars, value: profile.highest_difficulty_conquered || 0, label: 'Highest Conquered', accent: 'bg-[rgba(255,122,69,0.14)] border-[rgba(255,122,69,0.35)]' },
-    { icon: IconTarget, value: profile.total_arenas_completed || 0, label: 'Arenas Completed', accent: 'bg-[rgba(230,237,243,0.04)] border-[rgba(230,237,243,0.2)]' }
+    { icon: IconGauge, value: profile.current_difficulty, label: 'Current Level', accent: 'bg-[rgba(77,255,199,0.16)] border-[rgba(77,255,199,0.5)]' },
+    { icon: IconBolt, value: totalXp, label: 'Total XP', accent: 'bg-[rgba(91,220,255,0.12)] border-[rgba(91,220,255,0.35)]' },
+    { icon: IconBars, value: profile.highest_difficulty_conquered || 0, label: 'Highest Conquered', accent: 'bg-[rgba(255,155,92,0.18)] border-[rgba(255,155,92,0.45)]' },
+    { icon: IconTarget, value: profile.total_arenas_completed || 0, label: 'Arenas Completed', accent: 'bg-[rgba(123,107,255,0.16)] border-[rgba(123,107,255,0.45)]' }
   ];
 
   return (
@@ -173,7 +173,7 @@ export default function Profile() {
           <div className="relative inline-block mb-6">
             <motion.div
               className={cn(
-                "w-28 h-28 nx-sharp border border-[rgba(231,234,240,0.18)] bg-[rgba(231,234,240,0.04)] flex items-center justify-center"
+                "w-28 h-28 nx-sharp border border-[rgba(91,220,255,0.3)] bg-[rgba(91,220,255,0.12)] flex items-center justify-center"
               )}
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
@@ -233,7 +233,7 @@ export default function Profile() {
           className="nx-panel nx-sharp p-8 mb-8"
         >
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 border border-[rgba(231,234,240,0.18)] bg-[rgba(231,234,240,0.04)] flex items-center justify-center nx-sharp">
+            <div className="w-10 h-10 border border-[rgba(91,220,255,0.3)] bg-[rgba(91,220,255,0.12)] flex items-center justify-center nx-sharp">
               <IconTarget className="w-5 h-5 text-[var(--ink)]" />
             </div>
             <h2 className="text-[var(--ink)] font-black text-xl tracking-[-0.04em]">Archetype Distribution</h2>
@@ -251,7 +251,7 @@ export default function Profile() {
                 <div key={key} className="text-center group">
                   <div className={cn(
                     "w-8 h-8 border mx-auto mb-2 flex items-center justify-center",
-                    isPrimary ? "bg-[rgba(51,209,122,0.14)] border-[rgba(51,209,122,0.35)]" : "bg-[rgba(231,234,240,0.04)] border-[rgba(231,234,240,0.18)]"
+                    isPrimary ? "bg-[rgba(77,255,199,0.18)] border-[rgba(77,255,199,0.5)]" : "bg-[rgba(123,107,255,0.12)] border-[rgba(123,107,255,0.35)]"
                   )}>
                     <ConfigIcon className="w-4 h-4 text-[var(--ink)]" />
                   </div>
@@ -271,7 +271,7 @@ export default function Profile() {
           className="nx-panel nx-sharp p-8 mb-8"
         >
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 border border-[rgba(231,234,240,0.18)] bg-[rgba(231,234,240,0.04)] flex items-center justify-center nx-sharp">
+            <div className="w-10 h-10 border border-[rgba(91,220,255,0.3)] bg-[rgba(91,220,255,0.12)] flex items-center justify-center nx-sharp">
               <IconShield className="w-5 h-5 text-[var(--ink)]" />
             </div>
             <div>
@@ -290,7 +290,7 @@ export default function Profile() {
           className="nx-panel nx-sharp p-8"
         >
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 border border-[rgba(231,234,240,0.18)] bg-[rgba(231,234,240,0.04)] flex items-center justify-center nx-sharp">
+            <div className="w-10 h-10 border border-[rgba(91,220,255,0.3)] bg-[rgba(91,220,255,0.12)] flex items-center justify-center nx-sharp">
               <IconArchive className="w-5 h-5 text-[var(--ink)]" />
             </div>
             <div>
@@ -352,7 +352,7 @@ export default function Profile() {
             </div>
           ) : (
             <div className="text-center py-16">
-              <div className="w-16 h-16 bg-[rgba(231,234,240,0.04)] border border-[rgba(231,234,240,0.18)] mx-auto mb-4 flex items-center justify-center nx-sharp">
+              <div className="w-16 h-16 bg-[rgba(91,220,255,0.12)] border border-[rgba(91,220,255,0.3)] mx-auto mb-4 flex items-center justify-center nx-sharp">
               <IconArchive className="w-8 h-8 text-[var(--ink)]" />
               </div>
               <p className="text-lg text-[var(--ink)] font-semibold mb-2">

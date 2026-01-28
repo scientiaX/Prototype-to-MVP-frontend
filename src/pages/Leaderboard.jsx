@@ -66,10 +66,10 @@ const IconClose = (props) => (
 );
 
 const archetypeConfig = {
-  risk_taker: { icon: IconPulse, label: 'Risk Taker', color: 'text-[var(--ink)]', bg: 'bg-[rgba(230,237,243,0.04)]' },
-  analyst: { icon: IconBars, label: 'Analyst', color: 'text-[var(--ink)]', bg: 'bg-[rgba(230,237,243,0.04)]' },
-  builder: { icon: IconFrame, label: 'Builder', color: 'text-[var(--ink)]', bg: 'bg-[rgba(230,237,243,0.04)]' },
-  strategist: { icon: IconCompass, label: 'Strategist', color: 'text-[var(--ink)]', bg: 'bg-[rgba(230,237,243,0.04)]' }
+  risk_taker: { icon: IconPulse, label: 'Risk Taker', color: 'text-[var(--ink)]', bg: 'bg-[rgba(91,220,255,0.12)]' },
+  analyst: { icon: IconBars, label: 'Analyst', color: 'text-[var(--ink)]', bg: 'bg-[rgba(91,220,255,0.12)]' },
+  builder: { icon: IconFrame, label: 'Builder', color: 'text-[var(--ink)]', bg: 'bg-[rgba(123,107,255,0.14)]' },
+  strategist: { icon: IconCompass, label: 'Strategist', color: 'text-[var(--ink)]', bg: 'bg-[rgba(123,107,255,0.14)]' }
 };
 
 export default function Leaderboard() {
@@ -143,7 +143,7 @@ export default function Leaderboard() {
           <div className="nx-panel nx-sharp px-8 py-8 text-center">
             <div className="nx-crosshair -top-3 -left-3" />
             <div className="nx-crosshair -bottom-3 -right-3" />
-            <div className="w-16 h-16 border border-[rgba(230,237,243,0.2)] bg-[rgba(230,237,243,0.04)] flex items-center justify-center mx-auto">
+            <div className="w-16 h-16 border border-[rgba(91,220,255,0.35)] bg-[rgba(91,220,255,0.12)] flex items-center justify-center mx-auto">
               <IconBars className="w-8 h-8 text-[var(--ink)]" />
             </div>
             <p className="mt-4 text-[var(--ink-2)] font-semibold">Loading rankings...</p>
@@ -165,7 +165,7 @@ export default function Leaderboard() {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <div className="inline-flex items-center gap-2.5 px-4 py-2 border border-[rgba(230,237,243,0.2)] bg-[rgba(230,237,243,0.04)] mb-4">
+          <div className="inline-flex items-center gap-2.5 px-4 py-2 border border-[rgba(91,220,255,0.35)] bg-[rgba(91,220,255,0.12)] mb-4">
             <IconBars className="w-3.5 h-3.5 text-[var(--ink)]" />
             <span className="text-xs font-black text-[var(--ink)] tracking-wider uppercase nx-mono">Rankings</span>
           </div>
@@ -362,7 +362,7 @@ export default function Leaderboard() {
         >
           <div className="nx-panel nx-sharp p-6">
             <div className="flex items-start gap-3">
-              <div className="w-8 h-8 nx-sharp border border-[rgba(230,237,243,0.2)] bg-[rgba(230,237,243,0.04)] flex items-center justify-center shrink-0 mt-0.5">
+              <div className="w-8 h-8 nx-sharp border border-[rgba(91,220,255,0.3)] bg-[rgba(91,220,255,0.12)] flex items-center justify-center shrink-0 mt-0.5">
                 <IconInfo className="w-4 h-4 text-[var(--ink)]" />
               </div>
               <p className="text-sm nx-ink-muted">

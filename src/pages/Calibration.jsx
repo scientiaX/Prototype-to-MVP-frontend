@@ -171,7 +171,7 @@ export default function Calibration() {
       <div className="nx-stage relative flex items-center justify-center min-h-screen">
         <div className="w-full max-w-5xl grid md:grid-cols-[56px_1fr] gap-6 items-start">
           <div className="hidden md:flex flex-col items-center pt-6">
-            <div className="w-[2px] flex-1 bg-[rgba(231,234,240,0.10)]" />
+            <div className="w-[2px] flex-1 bg-[rgba(91,220,255,0.18)]" />
             <div className="flex flex-col items-center gap-5 py-5">
               {steps.map((s, idx) => {
                 const isActive = idx === currentStepIndex;
@@ -183,14 +183,14 @@ export default function Calibration() {
                       isActive
                         ? 'w-3 h-3 bg-[var(--acid-lime)]'
                         : isDone
-                          ? 'w-2.5 h-2.5 bg-[rgba(231,234,240,0.24)]'
-                          : 'w-2.5 h-2.5 bg-[rgba(231,234,240,0.12)]'
+                          ? 'w-2.5 h-2.5 bg-[rgba(91,220,255,0.4)]'
+                          : 'w-2.5 h-2.5 bg-[rgba(123,107,255,0.25)]'
                     }
                   />
                 );
               })}
             </div>
-            <div className="w-[2px] flex-1 bg-[rgba(231,234,240,0.10)]" />
+            <div className="w-[2px] flex-1 bg-[rgba(91,220,255,0.18)]" />
           </div>
 
           <AnimatePresence mode="wait">
@@ -214,12 +214,12 @@ export default function Calibration() {
                       <img
                         src="/favicon.png"
                         alt="NovaX"
-                        className="w-24 h-24 nx-sharp border border-[rgba(231,234,240,0.22)] bg-[rgba(231,234,240,0.03)]"
+                        className="w-24 h-24 nx-sharp border border-[rgba(91,220,255,0.35)] bg-[rgba(91,220,255,0.12)]"
                       />
-                      <div className="absolute inset-0 nx-sharp border border-[rgba(231,234,240,0.10)] bg-[rgba(231,234,240,0.02)]" />
+                      <div className="absolute inset-0 nx-sharp border border-[rgba(123,107,255,0.22)] bg-[rgba(123,107,255,0.08)]" />
                     </div>
                     <motion.div
-                      className="absolute -top-1 -right-1 w-8 h-8 bg-[rgba(231,234,240,0.06)] nx-sharp border border-[rgba(231,234,240,0.18)] flex items-center justify-center"
+                      className="absolute -top-1 -right-1 w-8 h-8 bg-[rgba(91,220,255,0.18)] nx-sharp border border-[rgba(91,220,255,0.35)] flex items-center justify-center"
                       animate={{
                         scale: [1, 1.15, 1],
                         opacity: [0.7, 1, 0.7]
@@ -240,9 +240,9 @@ export default function Calibration() {
                     whileHover={{ scale: 1.02, y: -2 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={() => handleLanguageSelect('en')}
-                    className="group relative nx-panel nx-sharp p-8 text-left transition-colors hover:border-[rgba(51,209,122,0.35)] hover:bg-[rgba(231,234,240,0.02)]"
+                    className="group relative nx-panel nx-sharp p-8 text-left transition-colors hover:border-[rgba(77,255,199,0.5)] hover:bg-[rgba(91,220,255,0.12)]"
                   >
-                    <div className="w-12 h-12 border border-[rgba(230,237,243,0.2)] bg-[rgba(230,237,243,0.04)] flex items-center justify-center mb-5">
+                    <div className="w-12 h-12 border border-[rgba(91,220,255,0.3)] bg-[rgba(91,220,255,0.12)] flex items-center justify-center mb-5">
                       <IconGlobe className="w-6 h-6 text-[var(--ink)]" />
                     </div>
                     <h3 className="text-2xl font-bold text-[var(--ink)] mb-2">English</h3>
@@ -255,9 +255,9 @@ export default function Calibration() {
                     whileHover={{ scale: 1.02, y: -2 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={() => handleLanguageSelect('id')}
-                    className="group relative nx-panel nx-sharp p-8 text-left transition-colors hover:border-[rgba(51,209,122,0.35)] hover:bg-[rgba(231,234,240,0.02)]"
+                    className="group relative nx-panel nx-sharp p-8 text-left transition-colors hover:border-[rgba(77,255,199,0.5)] hover:bg-[rgba(91,220,255,0.12)]"
                   >
-                    <div className="w-12 h-12 border border-[rgba(230,237,243,0.2)] bg-[rgba(230,237,243,0.04)] flex items-center justify-center mb-5">
+                    <div className="w-12 h-12 border border-[rgba(91,220,255,0.3)] bg-[rgba(91,220,255,0.12)] flex items-center justify-center mb-5">
                       <IconGlobe className="w-6 h-6 text-[var(--ink)]" />
                     </div>
                     <h3 className="text-2xl font-bold text-[var(--ink)] mb-2">Bahasa Indonesia</h3>
@@ -289,7 +289,7 @@ export default function Calibration() {
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ type: "spring", duration: 0.8 }}
-                    className="w-20 h-20 bg-[rgba(231,234,240,0.04)] nx-sharp border border-[rgba(231,234,240,0.18)] flex items-center justify-center mx-auto mb-6"
+                    className="w-20 h-20 bg-[rgba(91,220,255,0.12)] nx-sharp border border-[rgba(91,220,255,0.3)] flex items-center justify-center mx-auto mb-6"
                   >
                     <IconSpark className="w-10 h-10 text-[var(--ink)]" />
                   </motion.div>
@@ -315,9 +315,9 @@ export default function Calibration() {
                         whileHover={{ scale: 1.02, x: 8 }}
                         whileTap={{ scale: 0.98 }}
                         onClick={() => handleAgeSelect(option)}
-                        className="w-full group nx-panel nx-sharp p-5 text-left transition-colors flex items-center gap-4 hover:border-[rgba(51,209,122,0.35)] hover:bg-[rgba(231,234,240,0.02)]"
+                        className="w-full group nx-panel nx-sharp p-5 text-left transition-colors flex items-center gap-4 hover:border-[rgba(77,255,199,0.5)] hover:bg-[rgba(91,220,255,0.12)]"
                       >
-                        <div className="w-12 h-12 border border-[rgba(231,234,240,0.18)] bg-[rgba(231,234,240,0.04)] flex items-center justify-center">
+                        <div className="w-12 h-12 border border-[rgba(91,220,255,0.3)] bg-[rgba(91,220,255,0.12)] flex items-center justify-center">
                           <AgeIcon className="w-6 h-6 text-[var(--ink)]" />
                         </div>
                         <div>

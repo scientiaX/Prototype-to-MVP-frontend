@@ -10,20 +10,24 @@
 
 /* CSS Custom Properties */
 :root {
-  --paper: #0a0b0e;
-  --paper-2: #12151c;
-  --paper-3: #0e1117;
-  --ink: #e6edf3;
-  --ink-2: rgba(230, 237, 243, 0.7);
-  --ink-3: rgba(230, 237, 243, 0.45);
-  --acid-lime: #2dff8a;
-  --acid-orange: #ff7a45;
-  --acid-cyan: #1f2733;
-  --acid-yellow: #c9b27d;
-  --wire: rgba(230, 237, 243, 0.05);
-  --wire-2: rgba(230, 237, 243, 0.1);
-  --steps-fast: 110ms cubic-bezier(0.2, 0.85, 0.25, 1);
-  --steps-base: 160ms cubic-bezier(0.2, 0.85, 0.25, 1);
+  --paper: #080b16;
+  --paper-2: #0f1324;
+  --paper-3: #131a2f;
+  --ink: #e9f1ff;
+  --ink-2: rgba(233, 241, 255, 0.72);
+  --ink-3: rgba(233, 241, 255, 0.46);
+  --acid-lime: #4dffc7;
+  --acid-orange: #ff9b5c;
+  --acid-cyan: #1b2a4a;
+  --acid-yellow: #ffd37a;
+  --spatial-cyan: #5bdcff;
+  --spatial-violet: #7b6bff;
+  --spatial-rose: #ff7fb6;
+  --spatial-blue: #5aa3ff;
+  --wire: rgba(91, 220, 255, 0.06);
+  --wire-2: rgba(123, 107, 255, 0.12);
+  --steps-fast: 120ms cubic-bezier(0.18, 0.7, 0.2, 1);
+  --steps-base: 180ms cubic-bezier(0.18, 0.7, 0.2, 1);
 
   /* Typography */
   --font-sans: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
@@ -41,7 +45,13 @@
   --space-12: 3rem;
   --space-16: 4rem;
   --space-20: 5rem;
-
+  --radius-1: 10px;
+  --radius-2: 18px;
+  --radius-3: 28px;
+  --shadow-depth-1: 0 12px 30px rgba(8, 12, 28, 0.6);
+  --shadow-depth-2: 0 22px 60px rgba(7, 10, 22, 0.7);
+  --shadow-depth-3: 0 38px 90px rgba(5, 8, 18, 0.78);
+  --shadow-glow: 0 0 24px rgba(91, 220, 255, 0.18);
 }
 
 /* ================================================
@@ -66,7 +76,10 @@ body {
   font-family: var(--font-sans);
   font-size: 16px;
   line-height: 1.6;
-  background: var(--paper);
+  background: radial-gradient(1200px 700px at 18% 12%, rgba(91, 220, 255, 0.12), transparent 55%),
+    radial-gradient(900px 600px at 85% 18%, rgba(123, 107, 255, 0.14), transparent 55%),
+    radial-gradient(700px 520px at 40% 85%, rgba(255, 127, 182, 0.12), transparent 50%),
+    var(--paper);
   color: var(--ink);
   min-height: 100vh;
   overflow-x: hidden;
@@ -74,41 +87,44 @@ body {
 
 .nx-page {
   min-height: 100vh;
-  background: var(--paper);
+  background: linear-gradient(180deg, rgba(15, 19, 36, 0.8), rgba(8, 11, 22, 0.96));
   color: var(--ink);
 }
 
 .nx-stage {
   width: 100%;
-  max-width: 1320px;
+  max-width: 1360px;
   margin: 0 auto;
-  padding: 24px 20px 64px;
+  padding: 28px 22px 72px;
 }
 
 @media (min-width: 768px) {
   .nx-stage {
-    padding: 32px 32px 72px;
+    padding: 36px 36px 84px;
   }
 }
 
 .nx-panel {
   position: relative;
-  background: var(--paper-2);
-  border: 1px solid rgba(230, 237, 243, 0.12);
-  box-shadow: 0 0 0 1px rgba(230, 237, 243, 0.04), 0 26px 70px rgba(0, 0, 0, 0.6);
-  transition: transform var(--steps-fast), background var(--steps-fast), border-color var(--steps-fast);
+  background: linear-gradient(145deg, rgba(22, 28, 50, 0.9), rgba(14, 20, 38, 0.96));
+  border: 1px solid rgba(91, 220, 255, 0.16);
+  border-radius: var(--radius-2);
+  box-shadow: 0 0 0 1px rgba(91, 220, 255, 0.04), var(--shadow-depth-2), var(--shadow-glow);
+  transition: transform var(--steps-fast), background var(--steps-fast), border-color var(--steps-fast), box-shadow var(--steps-fast);
 }
 
 .nx-panel:hover {
-  transform: translateY(-1px);
-  border-color: rgba(230, 237, 243, 0.22);
+  transform: translateY(-3px) scale(1.01);
+  border-color: rgba(91, 220, 255, 0.32);
+  box-shadow: 0 0 0 1px rgba(123, 107, 255, 0.08), var(--shadow-depth-3), 0 0 28px rgba(123, 107, 255, 0.22);
 }
 
 .nx-panel-static {
   position: relative;
-  background: var(--paper-2);
-  border: 1px solid rgba(230, 237, 243, 0.12);
-  box-shadow: 0 0 0 1px rgba(230, 237, 243, 0.04), 0 26px 70px rgba(0, 0, 0, 0.6);
+  background: linear-gradient(145deg, rgba(20, 26, 46, 0.92), rgba(12, 18, 34, 0.98));
+  border: 1px solid rgba(123, 107, 255, 0.16);
+  border-radius: var(--radius-2);
+  box-shadow: 0 0 0 1px rgba(123, 107, 255, 0.06), var(--shadow-depth-2);
 }
 
 .nx-blob {
@@ -116,7 +132,7 @@ body {
 }
 
 .nx-sharp {
-  border-radius: 0;
+  border-radius: var(--radius-1);
 }
 
 .nx-ink-muted {
@@ -135,71 +151,75 @@ body {
   background-image:
     linear-gradient(var(--wire) 1px, transparent 1px),
     linear-gradient(90deg, var(--wire) 1px, transparent 1px);
-  background-size: 46px 46px;
-  background-position: 14px 22px;
+  background-size: 54px 54px;
+  background-position: 18px 26px;
 }
 
 .nx-bg-dots {
   background-image: radial-gradient(var(--wire-2) 1.2px, transparent 1.2px);
-  background-size: 18px 18px;
-  background-position: 10px 12px;
+  background-size: 22px 22px;
+  background-position: 12px 14px;
 }
 
 .nx-bg-stripes {
   background-image: repeating-linear-gradient(
     90deg,
-    rgba(231, 234, 240, 0.04),
-    rgba(231, 234, 240, 0.04) 8px,
-    rgba(231, 234, 240, 0) 8px,
-    rgba(231, 234, 240, 0) 14px
+    rgba(123, 107, 255, 0.08),
+    rgba(123, 107, 255, 0.08) 10px,
+    rgba(123, 107, 255, 0) 10px,
+    rgba(123, 107, 255, 0) 18px
   );
 }
 
 .nx-asym-grid {
   display: grid;
-  gap: 24px;
+  gap: 28px;
 }
 
 @media (min-width: 1024px) {
   .nx-asym-grid {
-    grid-template-columns: minmax(220px, 0.85fr) minmax(360px, 1.4fr) minmax(240px, 0.95fr);
+    grid-template-columns: minmax(240px, 0.95fr) minmax(380px, 1.5fr) minmax(260px, 1fr);
     align-items: start;
   }
 }
 
 .nx-panel-core {
-  background: var(--paper-2);
-  border: 1px solid rgba(230, 237, 243, 0.16);
-  box-shadow: 0 0 0 1px rgba(230, 237, 243, 0.06), 0 28px 70px rgba(0, 0, 0, 0.65);
+  background: linear-gradient(160deg, rgba(28, 36, 62, 0.96), rgba(14, 20, 38, 0.98));
+  border: 1px solid rgba(91, 220, 255, 0.2);
+  border-radius: var(--radius-3);
+  box-shadow: 0 0 0 1px rgba(91, 220, 255, 0.08), var(--shadow-depth-3);
 }
 
 .nx-panel-rail {
-  background: var(--paper-3);
-  border: 1px solid rgba(230, 237, 243, 0.1);
-  box-shadow: 0 0 0 1px rgba(230, 237, 243, 0.03), 0 22px 60px rgba(0, 0, 0, 0.6);
+  background: linear-gradient(160deg, rgba(16, 22, 42, 0.95), rgba(10, 14, 28, 0.98));
+  border: 1px solid rgba(123, 107, 255, 0.18);
+  border-radius: var(--radius-2);
+  box-shadow: 0 0 0 1px rgba(123, 107, 255, 0.05), var(--shadow-depth-2);
 }
 
 .nx-panel-glass {
-  background: rgba(18, 21, 28, 0.7);
-  border: 1px solid rgba(230, 237, 243, 0.14);
-  box-shadow: 0 0 0 1px rgba(230, 237, 243, 0.04), 0 30px 80px rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(6px);
+  background: linear-gradient(145deg, rgba(21, 28, 48, 0.72), rgba(12, 18, 34, 0.86));
+  border: 1px solid rgba(91, 220, 255, 0.2);
+  border-radius: var(--radius-2);
+  box-shadow: 0 0 0 1px rgba(91, 220, 255, 0.08), var(--shadow-depth-2);
+  backdrop-filter: blur(10px);
 }
 
 .nx-line-rail {
   height: 1px;
-  background: linear-gradient(90deg, rgba(230, 237, 243, 0.35), rgba(230, 237, 243, 0));
+  background: linear-gradient(90deg, rgba(91, 220, 255, 0.5), rgba(91, 220, 255, 0));
 }
 
 .nx-rail {
-  border-left: 1px solid rgba(230, 237, 243, 0.12);
+  border-left: 1px solid rgba(123, 107, 255, 0.2);
 }
 
 .nx-icon-frame {
   width: 44px;
   height: 44px;
-  border: 1px solid rgba(230, 237, 243, 0.22);
-  background: rgba(230, 237, 243, 0.03);
+  border: 1px solid rgba(91, 220, 255, 0.3);
+  border-radius: var(--radius-1);
+  background: rgba(91, 220, 255, 0.08);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -209,7 +229,7 @@ body {
   position: relative;
   width: 20px;
   height: 20px;
-  border: 1px solid rgba(230, 237, 243, 0.7);
+  border: 1px solid rgba(233, 241, 255, 0.7);
 }
 
 .nx-icon-node::before,
@@ -218,8 +238,8 @@ body {
   position: absolute;
   width: 6px;
   height: 6px;
-  border: 1px solid rgba(230, 237, 243, 0.7);
-  background: rgba(45, 255, 138, 0.12);
+  border: 1px solid rgba(233, 241, 255, 0.7);
+  background: rgba(77, 255, 199, 0.18);
 }
 
 .nx-icon-node::before {
@@ -236,15 +256,15 @@ body {
   position: relative;
   width: 22px;
   height: 22px;
-  border: 1px solid rgba(230, 237, 243, 0.6);
+  border: 1px solid rgba(233, 241, 255, 0.6);
 }
 
 .nx-icon-trajectory::before {
   content: "";
   position: absolute;
   inset: 4px;
-  border-left: 2px solid rgba(45, 255, 138, 0.8);
-  border-bottom: 2px solid rgba(45, 255, 138, 0.8);
+  border-left: 2px solid rgba(91, 220, 255, 0.85);
+  border-bottom: 2px solid rgba(91, 220, 255, 0.85);
   transform: skewX(-10deg);
 }
 
@@ -252,7 +272,7 @@ body {
   position: relative;
   width: 22px;
   height: 22px;
-  border: 1px solid rgba(230, 237, 243, 0.6);
+  border: 1px solid rgba(233, 241, 255, 0.6);
 }
 
 .nx-icon-fracture::before,
@@ -260,7 +280,7 @@ body {
   content: "";
   position: absolute;
   height: 2px;
-  background: rgba(255, 122, 69, 0.75);
+  background: rgba(255, 155, 92, 0.78);
   left: 3px;
   right: 3px;
 }
@@ -279,7 +299,7 @@ body {
   position: absolute;
   width: 22px;
   height: 22px;
-  border: 1px solid rgba(231, 234, 240, 0.28);
+  border: 1px solid rgba(91, 220, 255, 0.3);
   pointer-events: none;
 }
 
@@ -287,7 +307,7 @@ body {
 .nx-crosshair::after {
   content: "";
   position: absolute;
-  background: rgba(231, 234, 240, 0.28);
+  background: rgba(91, 220, 255, 0.3);
 }
 
 .nx-crosshair::before {
@@ -320,8 +340,8 @@ body {
    ================================================ */
 
 ::selection {
-  background: var(--acid-lime);
-  color: #0b0b0c;
+  background: var(--spatial-violet);
+  color: #06070d;
 }
 
 ::-webkit-scrollbar {
@@ -334,13 +354,13 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(231, 234, 240, 0.18);
-  border-radius: 0;
+  background: rgba(91, 220, 255, 0.18);
+  border-radius: 999px;
   transition: background var(--steps-fast);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(231, 234, 240, 0.28);
+  background: rgba(123, 107, 255, 0.3);
 }
 
 /* ================================================
@@ -355,9 +375,10 @@ h5,
 h6 {
   font-family: var(--font-sans);
   font-weight: 700;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.03em;
   line-height: 1.1;
   color: var(--ink);
+  text-shadow: 0 8px 28px rgba(91, 220, 255, 0.18);
 }
 
 .font-mono {
@@ -558,13 +579,13 @@ h6 {
 .skeleton {
   background: linear-gradient(
     90deg,
-    rgba(231, 234, 240, 0.06) 25%,
-    rgba(231, 234, 240, 0.12) 50%,
-    rgba(231, 234, 240, 0.06) 75%
+    rgba(91, 220, 255, 0.06) 25%,
+    rgba(123, 107, 255, 0.16) 50%,
+    rgba(91, 220, 255, 0.06) 75%
   );
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
-  border-radius: 0;
+  border-radius: var(--radius-2);
 }
 
 /* ================================================
@@ -573,13 +594,13 @@ h6 {
 
 .divider {
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(231, 234, 240, 0.12), transparent);
+  background: linear-gradient(90deg, transparent, rgba(91, 220, 255, 0.22), transparent);
 }
 
 .divider-vertical {
   width: 1px;
   height: 100%;
-  background: linear-gradient(180deg, transparent, rgba(231, 234, 240, 0.12), transparent);
+  background: linear-gradient(180deg, transparent, rgba(123, 107, 255, 0.22), transparent);
 }
 
 /* ================================================
@@ -600,12 +621,13 @@ h6 {
   font-size: 12px;
   font-weight: 500;
   color: var(--ink);
-  background: var(--paper-2);
-  border-radius: 0;
+  background: rgba(15, 20, 38, 0.95);
+  border-radius: var(--radius-1);
   white-space: nowrap;
   opacity: 0;
   pointer-events: none;
   transition: all 140ms cubic-bezier(0.2, 0.85, 0.25, 1);
+  box-shadow: var(--shadow-depth-1);
 }
 
 .tooltip:hover::after {
@@ -618,8 +640,8 @@ h6 {
    ================================================ */
 
 :focus-visible {
-  outline: 2px solid var(--acid-lime);
-  outline-offset: 2px;
+  outline: 2px solid var(--spatial-cyan);
+  outline-offset: 3px;
 }
 
 /* ================================================
