@@ -422,7 +422,7 @@ export default function Arena() {
         <div className="absolute inset-0 pointer-events-none nx-bg-dots opacity-[0.22]" />
 
         <div className="nx-stage relative pt-16 md:pt-20">
-          <div className="nx-asym-grid">
+          <div className="space-y-6">
             <motion.div
               className="nx-panel nx-panel-rail nx-sharp px-6 py-7"
               initial={{ opacity: 0, y: -10 }}
@@ -441,100 +441,102 @@ export default function Arena() {
               <div className="mt-8 nx-line-rail" />
             </motion.div>
 
-            <motion.div
-              className="space-y-6"
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.08 }}
-            >
-              <motion.button
-                onClick={() => setGameMode('solo')}
-                className="group relative nx-panel nx-panel-core nx-sharp p-8 text-left transition-transform duration-150"
-                whileHover={{ y: -2 }}
-                whileTap={{ scale: 0.99 }}
+            <div className="grid gap-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] items-stretch">
+              <motion.div
+                className="flex flex-col gap-6 h-full"
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.08 }}
               >
-                <div className="relative">
-                  <div className="nx-crosshair -top-3 -left-3" />
-                  <div className="nx-crosshair -bottom-3 -right-3" />
-                  <div className="nx-icon-frame mb-6">
-                    <IconNode className="w-7 h-7 text-[var(--ink)]" />
-                  </div>
+                <motion.button
+                  onClick={() => setGameMode('solo')}
+                  className="group relative nx-panel nx-panel-core nx-sharp p-8 text-left transition-transform duration-150"
+                  whileHover={{ y: -2 }}
+                  whileTap={{ scale: 0.99 }}
+                >
+                  <div className="relative">
+                    <div className="nx-crosshair -top-3 -left-3" />
+                    <div className="nx-crosshair -bottom-3 -right-3" />
+                    <div className="nx-icon-frame mb-6">
+                      <IconNode className="w-7 h-7 text-[var(--ink)]" />
+                    </div>
 
-                  <h3 className="text-2xl font-black text-[var(--ink)] mb-3 tracking-[-0.04em]">
-                    Solo Arena
-                  </h3>
-                  <p className="text-[var(--ink-2)] mb-6 leading-relaxed">
-                    Hadapi masalah secara mandiri. Generate problem yang sesuai dengan level dan archetype-mu. Tingkatkan skill step-by-step.
-                  </p>
-
-                  <div className="flex items-center gap-2 text-[var(--ink)] font-semibold">
-                    <span>Mulai Solo</span>
-                    <IconTarget className="w-4 h-4 transition-transform duration-100 [transition-timing-function:steps(4,end)] group-hover:translate-x-1" />
-                  </div>
-                </div>
-              </motion.button>
-
-              <motion.button
-                onClick={() => setGameMode('multiplayer')}
-                className="group relative nx-panel nx-panel-rail nx-sharp p-8 text-left transition-transform duration-150"
-                whileHover={{ y: -2 }}
-                whileTap={{ scale: 0.99 }}
-              >
-                <div className="relative">
-                  <div className="nx-crosshair -top-3 -left-3" />
-                  <div className="nx-crosshair -bottom-3 -right-3" />
-                  <div className="nx-icon-frame mb-6">
-                    <IconLink className="w-7 h-7 text-[var(--ink)]" />
-                  </div>
-
-                  <div className="flex items-center gap-3 mb-3">
-                    <h3 className="text-2xl font-black text-[var(--ink)] tracking-[-0.04em]">
-                      Multiplayer
+                    <h3 className="text-2xl font-black text-[var(--ink)] mb-3 tracking-[-0.04em]">
+                      Solo Arena
                     </h3>
-                    <span className="px-2.5 py-1 bg-[rgba(230,237,243,0.04)] border border-[rgba(230,237,243,0.2)] text-xs font-black text-[var(--ink)] uppercase tracking-wider nx-mono">
-                      Soon
-                    </span>
-                  </div>
-                  <p className="text-[var(--ink-2)] mb-6 leading-relaxed">
-                    Compete atau collaborate dengan player lain dalam real-time battle. Uji skill-mu melawan sesama warrior.
-                  </p>
+                    <p className="text-[var(--ink-2)] mb-6 leading-relaxed">
+                      Hadapi masalah secara mandiri. Generate problem yang sesuai dengan level dan archetype-mu. Tingkatkan skill step-by-step.
+                    </p>
 
-                  <div className="flex items-center gap-2 text-[var(--ink)] font-semibold">
-                    <span>Lihat Preview</span>
-                    <IconClock className="w-4 h-4 transition-transform duration-100 [transition-timing-function:steps(4,end)] group-hover:translate-x-1" />
+                    <div className="flex items-center gap-2 text-[var(--ink)] font-semibold">
+                      <span>Mulai Solo</span>
+                      <IconTarget className="w-4 h-4 transition-transform duration-100 [transition-timing-function:steps(4,end)] group-hover:translate-x-1" />
+                    </div>
+                  </div>
+                </motion.button>
+
+                <motion.button
+                  onClick={() => setGameMode('multiplayer')}
+                  className="group relative nx-panel nx-panel-rail nx-sharp p-8 text-left transition-transform duration-150"
+                  whileHover={{ y: -2 }}
+                  whileTap={{ scale: 0.99 }}
+                >
+                  <div className="relative">
+                    <div className="nx-crosshair -top-3 -left-3" />
+                    <div className="nx-crosshair -bottom-3 -right-3" />
+                    <div className="nx-icon-frame mb-6">
+                      <IconLink className="w-7 h-7 text-[var(--ink)]" />
+                    </div>
+
+                    <div className="flex items-center gap-3 mb-3">
+                      <h3 className="text-2xl font-black text-[var(--ink)] tracking-[-0.04em]">
+                        Multiplayer
+                      </h3>
+                      <span className="px-2.5 py-1 bg-[rgba(230,237,243,0.04)] border border-[rgba(230,237,243,0.2)] text-xs font-black text-[var(--ink)] uppercase tracking-wider nx-mono">
+                        Soon
+                      </span>
+                    </div>
+                    <p className="text-[var(--ink-2)] mb-6 leading-relaxed">
+                      Compete atau collaborate dengan player lain dalam real-time battle. Uji skill-mu melawan sesama warrior.
+                    </p>
+
+                    <div className="flex items-center gap-2 text-[var(--ink)] font-semibold">
+                      <span>Lihat Preview</span>
+                      <IconClock className="w-4 h-4 transition-transform duration-100 [transition-timing-function:steps(4,end)] group-hover:translate-x-1" />
+                    </div>
+                  </div>
+                </motion.button>
+              </motion.div>
+
+              <motion.div
+                className="nx-panel nx-panel-glass nx-sharp px-6 py-7 h-full flex flex-col"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.16 }}
+              >
+                <div className="flex items-center justify-between mb-5">
+                  <div className="text-xs font-black tracking-widest uppercase nx-mono text-[var(--ink-2)]">Arena Selection</div>
+                  <div className="nx-icon-frame">
+                    <div className="nx-icon-trajectory" />
                   </div>
                 </div>
-              </motion.button>
-            </motion.div>
-
-            <motion.div
-              className="nx-panel nx-panel-glass nx-sharp px-6 py-7"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.16 }}
-            >
-              <div className="flex items-center justify-between mb-5">
-                <div className="text-xs font-black tracking-widest uppercase nx-mono text-[var(--ink-2)]">Arena Selection</div>
-                <div className="nx-icon-frame">
-                  <div className="nx-icon-trajectory" />
+                <div className="space-y-4 text-sm text-[var(--ink-2)]">
+                  <div className="flex items-center justify-between gap-3">
+                    <span>Quick</span>
+                    <span className="nx-mono text-[var(--ink)]">4-5 menit</span>
+                  </div>
+                  <div className="flex items-center justify-between gap-3">
+                    <span>Standard</span>
+                    <span className="nx-mono text-[var(--ink)]">15 menit</span>
+                  </div>
                 </div>
-              </div>
-              <div className="space-y-4 text-sm text-[var(--ink-2)]">
-                <div className="flex items-center justify-between gap-3">
-                  <span>Quick</span>
-                  <span className="nx-mono text-[var(--ink)]">4-5 menit</span>
+                <div className="mt-6 nx-line-rail" />
+                <div className="mt-6 text-xs uppercase tracking-[0.2em] nx-mono text-[var(--ink-3)]">Capability / Readiness</div>
+                <div className="mt-3 h-2 bg-[rgba(230,237,243,0.08)] border border-[rgba(230,237,243,0.14)]">
+                  <div className="h-full w-[62%] bg-[var(--acid-lime)]" />
                 </div>
-                <div className="flex items-center justify-between gap-3">
-                  <span>Standard</span>
-                  <span className="nx-mono text-[var(--ink)]">15 menit</span>
-                </div>
-              </div>
-              <div className="mt-6 nx-line-rail" />
-              <div className="mt-6 text-xs uppercase tracking-[0.2em] nx-mono text-[var(--ink-3)]">Capability / Readiness</div>
-              <div className="mt-3 h-2 bg-[rgba(230,237,243,0.08)] border border-[rgba(230,237,243,0.14)]">
-                <div className="h-full w-[62%] bg-[var(--acid-lime)]" />
-              </div>
-            </motion.div>
+              </motion.div>
+            </div>
           </div>
         </div>
       </div>
