@@ -79,13 +79,12 @@ export default function Home() {
       subtitleHighlight: "in your hands.",
       ctaCalibrate: "Start Calibration",
       ctaArena: "Enter Arena",
-      calibrationTime: "5-7 min calibration",
       readyBattle: "Ready to battle",
-      quote: "No comfort zone. Only growth zone.",
+      quote: "Growth engine environment.",
       features: [
-        { icon: IconTarget, title: "Adaptive Matching", description: "AI matches problems to your archetype + capability level." },
+        { icon: IconTarget, title: "Adaptive Personalization", description: "AI matches problems to your archetype + capability level." },
         { icon: IconTrend, title: "XP = Difficulty", description: "Progress comes from pressure, not grinding." },
-        { icon: IconShield, title: "Scar Badges", description: "Badges prove conflict survived, not participation." }
+        { icon: IconShield, title: "Scar Badges", description: "Badges prove conflict survived, not only participation." }
       ]
     },
     id: {
@@ -96,7 +95,6 @@ export default function Home() {
       subtitleHighlight: "di tanganmu.",
       ctaCalibrate: "Mulai Kalibrasi",
       ctaArena: "Masuk Arena",
-      calibrationTime: "5-7 menit kalibrasi",
       readyBattle: "Siap bertempur",
       quote: "Tidak ada zona nyaman. Hanya zona pertumbuhan.",
       features: [
