@@ -111,7 +111,7 @@ export default function Home() {
       <div className="absolute inset-0 pointer-events-none nx-bg-dots opacity-[0.24]" />
 
       <div className="nx-stage relative pt-10 md:pt-14">
-        <div className="nx-asym-grid">
+        <div className="grid grid-cols-1 gap-6 lg:gap-7">
           <div className="nx-panel nx-panel-rail nx-sharp px-5 py-6">
             <div className="nx-crosshair -top-3 -left-3" />
             <div className="nx-crosshair -bottom-3 -right-3" />
