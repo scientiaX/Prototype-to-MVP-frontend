@@ -74,30 +74,34 @@ export default function Login() {
 
     return (
         <div className="min-h-screen nx-page relative overflow-hidden">
-            <div className="absolute inset-0 pointer-events-none nx-bg-wires opacity-[0.7]" />
-            <div className="absolute inset-0 pointer-events-none nx-bg-dots opacity-[0.22]" />
+            <div className="absolute inset-0 pointer-events-none nx-bg-wires opacity-[0.55]" />
+            <div className="absolute inset-0 pointer-events-none nx-bg-stripes opacity-[0.14]" />
+            <div className="absolute inset-0 pointer-events-none nx-bg-dots opacity-[0.18]" />
 
-            <div className="nx-stage relative">
-                <div className="grid lg:grid-cols-12 gap-6 items-start">
-                    <div className="lg:col-span-5">
-                        <div className="nx-panel nx-sharp px-6 py-6">
-                            <div className="nx-crosshair -top-3 -left-3" />
-                            <div className="nx-crosshair -bottom-3 -right-3" />
-                            <div className="flex items-start justify-between gap-4">
-                                <div>
-                                    <h1 className="mt-2 text-3xl md:text-4xl font-black tracking-[-0.06em] leading-[0.95]">
-                                        {t.login.title}{" "}
-                                        <span className="bg-[rgba(51,209,122,0.14)] border border-[rgba(51,209,122,0.35)] px-1">
-                                            {t.login.titleHighlight}
-                                        </span>
-                                    </h1>
-                                    <p className="mt-3 nx-ink-muted max-w-sm">
-                                        {t.login.subtitle}
-                                    </p>
+            <div className="nx-stage relative py-16 md:py-20">
+                <div className="grid lg:grid-cols-12 gap-10 items-start">
+                    <div className="lg:col-span-5 lg:pt-4">
+                        <div className="space-y-8">
+                            <div className="nx-panel-static nx-sharp px-7 py-8 md:px-9 md:py-10">
+                                <div className="nx-crosshair -top-3 -left-3" />
+                                <div className="nx-crosshair -bottom-3 -right-3" />
+                                <h1 className="text-4xl md:text-5xl font-black tracking-[-0.06em] leading-[0.95]">
+                                    {t.login.title}{" "}
+                                    <span className="bg-[rgba(51,209,122,0.12)] border border-[rgba(51,209,122,0.32)] px-1.5">
+                                        {t.login.titleHighlight}
+                                    </span>
+                                </h1>
+                                <p className="mt-4 text-base md:text-lg nx-ink-muted max-w-sm">
+                                    {t.login.subtitle}
+                                </p>
+                            </div>
+                            <div className="nx-panel-static nx-sharp px-7 py-6 md:px-9 md:py-7 flex items-center gap-4">
+                                <div className="w-11 h-11 border border-[rgba(231,234,240,0.18)] bg-[rgba(231,234,240,0.04)] flex items-center justify-center">
+                                    <KeySquare className="w-5 h-5 text-[var(--ink)]" />
                                 </div>
-                                <div className="w-14 h-14 border border-[rgba(231,234,240,0.18)] bg-[rgba(231,234,240,0.04)] flex items-center justify-center">
-                                    <KeySquare className="w-7 h-7 text-[var(--ink)]" />
-                                </div>
+                                <p className="text-xs md:text-sm nx-mono nx-ink-faint">
+                                    {t.login.footer}
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -106,15 +110,19 @@ export default function Login() {
                         initial={{ opacity: 0, y: 18 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.18, ease: [0.9, 0.02, 0.2, 0.98] }}
-                        className="lg:col-span-7 lg:pt-6"
+                        className="lg:col-span-7"
                     >
-                        <div className="nx-panel nx-sharp px-6 py-6 md:px-8 md:py-8">
+                        <div className="nx-panel nx-sharp px-7 py-8 md:px-10 md:py-10">
                             <div className="nx-crosshair -top-3 -right-3" />
                             <div className="nx-crosshair -bottom-3 -left-3" />
+                            <div className="flex items-center gap-4 mb-8">
+                                <div className="w-11 h-11 border border-[rgba(231,234,240,0.18)] bg-[rgba(231,234,240,0.04)] flex items-center justify-center">
+                                    <KeySquare className="w-5 h-5 text-[var(--ink)]" />
+                                </div>
+                                <div className="divider-horizontal flex-1" />
+                            </div>
 
-                    {/* Form */}
-                    <form onSubmit={handleSubmit} className="space-y-4">
-                        {/* Name (only for register) */}
+                    <form onSubmit={handleSubmit} className="space-y-6">
                         {isRegister && (
                             <div>
                                 <label className="block text-sm font-bold text-[var(--ink)] mb-2">
@@ -133,14 +141,13 @@ export default function Login() {
                                         onChange={(e) => setName(e.target.value)}
                                         onFocus={() => setFocused('name')}
                                         onBlur={() => setFocused(null)}
-                                        className="w-full pl-12 pr-4 py-3.5 bg-[rgba(231,234,240,0.03)] border border-[rgba(231,234,240,0.18)] text-[var(--ink)] placeholder-[rgba(231,234,240,0.38)] focus:outline-none focus:border-[rgba(51,209,122,0.45)] transition-colors duration-150"
+                                        className="w-full pl-12 pr-4 py-4 bg-[rgba(231,234,240,0.02)] border border-[rgba(231,234,240,0.16)] text-[var(--ink)] placeholder-[rgba(231,234,240,0.38)] focus:outline-none focus:border-[rgba(174,182,194,0.9)] transition-colors duration-150"
                                         placeholder={t.login.namePlaceholder}
                                     />
                                 </div>
                             </div>
                         )}
 
-                        {/* Email */}
                         <div>
                             <label className="block text-sm font-bold text-[var(--ink)] mb-2">
                                 {t.login.emailLabel}
@@ -158,14 +165,13 @@ export default function Login() {
                                     onChange={(e) => setEmail(e.target.value)}
                                     onFocus={() => setFocused('email')}
                                     onBlur={() => setFocused(null)}
-                                    className="w-full pl-12 pr-4 py-3.5 bg-[rgba(231,234,240,0.03)] border border-[rgba(231,234,240,0.18)] text-[var(--ink)] placeholder-[rgba(231,234,240,0.38)] focus:outline-none focus:border-[rgba(51,209,122,0.45)] transition-colors duration-150"
+                                    className="w-full pl-12 pr-4 py-4 bg-[rgba(231,234,240,0.02)] border border-[rgba(231,234,240,0.16)] text-[var(--ink)] placeholder-[rgba(231,234,240,0.38)] focus:outline-none focus:border-[rgba(174,182,194,0.9)] transition-colors duration-150"
                                     placeholder={t.login.emailPlaceholder}
                                     autoFocus={!isRegister}
                                 />
                             </div>
                         </div>
 
-                        {/* Password */}
                         <div>
                             <label className="block text-sm font-bold text-[var(--ink)] mb-2">
                                 {t.login.passwordLabel}
@@ -183,7 +189,7 @@ export default function Login() {
                                     onChange={(e) => setPassword(e.target.value)}
                                     onFocus={() => setFocused('password')}
                                     onBlur={() => setFocused(null)}
-                                    className="w-full pl-12 pr-4 py-3.5 bg-[rgba(231,234,240,0.03)] border border-[rgba(231,234,240,0.18)] text-[var(--ink)] placeholder-[rgba(231,234,240,0.38)] focus:outline-none focus:border-[rgba(51,209,122,0.45)] transition-colors duration-150"
+                                    className="w-full pl-12 pr-4 py-4 bg-[rgba(231,234,240,0.02)] border border-[rgba(231,234,240,0.16)] text-[var(--ink)] placeholder-[rgba(231,234,240,0.38)] focus:outline-none focus:border-[rgba(174,182,194,0.9)] transition-colors duration-150"
                                     placeholder={t.login.passwordPlaceholder}
                                 />
                             </div>
@@ -197,7 +203,7 @@ export default function Login() {
                             type="submit"
                             variant="gradient"
                             size="xl"
-                            className="w-full mt-2 group"
+                            className="w-full mt-4 h-16 text-base md:text-lg font-black tracking-[0.04em] uppercase border-2 border-[var(--ink)] shadow-[6px_6px_0_var(--ink)] hover:translate-x-[-2px] hover:translate-y-[-2px] transition-all duration-100 [transition-timing-function:steps(4,end)] group"
                             disabled={loading}
                         >
                             {loading ? (
@@ -214,20 +220,17 @@ export default function Login() {
                         </Button>
                     </form>
 
-                    <div className="mt-6 pt-6 border-t-2 border-[var(--ink)]">
+                    <div className="mt-8 pt-8 border-t border-[rgba(231,234,240,0.14)]">
                         <button
                             type="button"
                             onClick={() => {
                                 setIsRegister(!isRegister);
                                 setError('');
                             }}
-                            className="w-full text-center text-sm font-semibold text-[var(--ink-2)] hover:text-[var(--ink)] transition-colors duration-150"
+                            className="w-full text-left text-sm font-semibold text-[var(--ink-2)] hover:text-[var(--ink)] transition-colors duration-150"
                         >
                             {isRegister ? t.login.switchToLogin : t.login.switchToRegister}
                         </button>
-                        <p className="text-center text-xs text-[var(--ink-3)] mt-4 nx-mono">
-                            {t.login.footer}
-                        </p>
                     </div>
                         </div>
                     </motion.div>
