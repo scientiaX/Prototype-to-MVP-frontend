@@ -5,17 +5,61 @@ import { useNavigate } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import CalibrationQuestion from '@/components/calibration/CalibrationQuestion';
 import OnboardingArena from '@/components/calibration/OnboardingArena';
-import { ChevronLeft, Globe, Hexagon, Loader2, Sparkles, Square, Triangle } from 'lucide-react';
 import {
   AGE_GROUPS,
   getQuestionsByAgeGroup
 } from '@/components/calibration/calibrationQuestionsByAge';
 
 // Age options for selection
+const IconChevron = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" strokeLinejoin="round" {...props}>
+    <path d="M14 6l-6 6 6 6" />
+  </svg>
+);
+
+const IconGlobe = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" strokeLinejoin="round" {...props}>
+    <circle cx="12" cy="12" r="9" />
+    <path d="M3 12h18" />
+    <path d="M12 3a15 15 0 0 1 0 18" />
+    <path d="M12 3a15 15 0 0 0 0 18" />
+  </svg>
+);
+
+const IconSpark = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" strokeLinejoin="round" {...props}>
+    <path d="M12 3l2.5 5.5L20 11l-5.5 2.5L12 19l-2.5-5.5L4 11l5.5-2.5L12 3z" />
+  </svg>
+);
+
+const IconSquare = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" strokeLinejoin="round" {...props}>
+    <rect x="5" y="5" width="14" height="14" />
+  </svg>
+);
+
+const IconTriangle = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" strokeLinejoin="round" {...props}>
+    <path d="M12 4l8 16H4z" />
+  </svg>
+);
+
+const IconHex = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" strokeLinejoin="round" {...props}>
+    <path d="M7 3h10l5 9-5 9H7l-5-9 5-9z" />
+  </svg>
+);
+
+const IconSpinner = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square" strokeLinejoin="round" {...props}>
+    <path d="M12 3a9 9 0 0 1 9 9" />
+  </svg>
+);
+
 const AGE_OPTIONS = [
-  { value: 'smp', label: '12-15 tahun (SMP)', icon: Square, ageGroup: AGE_GROUPS.SMP },
-  { value: 'sma', label: '16-18 tahun (SMA/SMK)', icon: Triangle, ageGroup: AGE_GROUPS.SMA },
-  { value: 'adult', label: '19+ tahun', icon: Hexagon, ageGroup: AGE_GROUPS.ADULT }
+  { value: 'smp', label: '12-15 tahun (SMP)', icon: IconSquare, ageGroup: AGE_GROUPS.SMP },
+  { value: 'sma', label: '16-18 tahun (SMA/SMK)', icon: IconTriangle, ageGroup: AGE_GROUPS.SMA },
+  { value: 'adult', label: '19+ tahun', icon: IconHex, ageGroup: AGE_GROUPS.ADULT }
 ];
 
 export default function Calibration() {
@@ -111,7 +155,7 @@ export default function Calibration() {
   if (isCheckingAuth) {
     return (
       <div className="min-h-screen nx-page flex items-center justify-center">
-        <Loader2 className="w-8 h-8 text-[var(--acid-orange)] animate-spin" />
+        <IconSpinner className="w-8 h-8 text-[var(--acid-orange)] animate-spin" />
       </div>
     );
   }
@@ -182,7 +226,7 @@ export default function Calibration() {
                       }}
                       transition={{ duration: 2, repeat: Infinity }}
                     >
-                      <Sparkles className="w-4 h-4 text-[var(--ink)]" />
+                      <IconSpark className="w-4 h-4 text-[var(--ink)]" />
                     </motion.div>
                   </motion.div>
                   <h1 className="text-4xl md:text-5xl text-[var(--ink)] font-bold mb-4">Choose Your Language</h1>
@@ -198,8 +242,8 @@ export default function Calibration() {
                     onClick={() => handleLanguageSelect('en')}
                     className="group relative nx-panel nx-sharp p-8 text-left transition-colors hover:border-[rgba(51,209,122,0.35)] hover:bg-[rgba(231,234,240,0.02)]"
                   >
-                    <div className="w-12 h-12 border border-[rgba(231,234,240,0.18)] bg-[rgba(231,234,240,0.04)] flex items-center justify-center mb-5">
-                      <Globe className="w-6 h-6 text-[var(--ink)]" />
+                    <div className="w-12 h-12 border border-[rgba(230,237,243,0.2)] bg-[rgba(230,237,243,0.04)] flex items-center justify-center mb-5">
+                      <IconGlobe className="w-6 h-6 text-[var(--ink)]" />
                     </div>
                     <h3 className="text-2xl font-bold text-[var(--ink)] mb-2">English</h3>
                     <p className="text-[var(--ink-2)]">Continue in English</p>
@@ -213,8 +257,8 @@ export default function Calibration() {
                     onClick={() => handleLanguageSelect('id')}
                     className="group relative nx-panel nx-sharp p-8 text-left transition-colors hover:border-[rgba(51,209,122,0.35)] hover:bg-[rgba(231,234,240,0.02)]"
                   >
-                    <div className="w-12 h-12 border border-[rgba(231,234,240,0.18)] bg-[rgba(231,234,240,0.04)] flex items-center justify-center mb-5">
-                      <Globe className="w-6 h-6 text-[var(--ink)]" />
+                    <div className="w-12 h-12 border border-[rgba(230,237,243,0.2)] bg-[rgba(230,237,243,0.04)] flex items-center justify-center mb-5">
+                      <IconGlobe className="w-6 h-6 text-[var(--ink)]" />
                     </div>
                     <h3 className="text-2xl font-bold text-[var(--ink)] mb-2">Bahasa Indonesia</h3>
                     <p className="text-[var(--ink-2)]">Lanjutkan dalam Bahasa Indonesia</p>
@@ -236,7 +280,7 @@ export default function Calibration() {
                   onClick={() => setView('language')}
                   className="flex items-center gap-1 text-[var(--ink-2)] hover:text-[var(--ink)] transition-colors text-sm font-medium mb-6"
                 >
-                  <ChevronLeft className="w-4 h-4" />
+                  <IconChevron className="w-4 h-4" />
                   {selectedLanguage === 'en' ? 'Back' : 'Kembali'}
                 </button>
 
@@ -247,7 +291,7 @@ export default function Calibration() {
                     transition={{ type: "spring", duration: 0.8 }}
                     className="w-20 h-20 bg-[rgba(231,234,240,0.04)] nx-sharp border border-[rgba(231,234,240,0.18)] flex items-center justify-center mx-auto mb-6"
                   >
-                    <Sparkles className="w-10 h-10 text-[var(--ink)]" />
+                    <IconSpark className="w-10 h-10 text-[var(--ink)]" />
                   </motion.div>
                   <h1 className="text-3xl font-bold text-[var(--ink)] mb-2">
                     {selectedLanguage === 'en' ? 'How old are you?' : 'Berapa usiamu?'}

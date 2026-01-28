@@ -1,14 +1,75 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import apiClient from '@/api/apiClient';
-import { BarChart3, Brain, Info, Target, TrendingUp, Users, Wrench, X, Zap } from 'lucide-react';
 import { cn } from "@/lib/utils";
 
+const IconBars = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" strokeLinejoin="round" {...props}>
+    <path d="M5 18V9" />
+    <path d="M12 18V6" />
+    <path d="M19 18v-4" />
+  </svg>
+);
+
+const IconPulse = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" strokeLinejoin="round" {...props}>
+    <path d="M3 12h4l2-4 4 8 2-4h6" />
+  </svg>
+);
+
+const IconCluster = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" strokeLinejoin="round" {...props}>
+    <circle cx="6" cy="6" r="3" />
+    <circle cx="18" cy="6" r="3" />
+    <circle cx="12" cy="18" r="3" />
+    <path d="M8.5 7.5l2.5 7" />
+    <path d="M15.5 7.5l-2.5 7" />
+  </svg>
+);
+
+const IconFrame = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" strokeLinejoin="round" {...props}>
+    <rect x="4" y="4" width="16" height="16" />
+    <path d="M8 8h8v8H8z" />
+  </svg>
+);
+
+const IconCompass = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" strokeLinejoin="round" {...props}>
+    <circle cx="12" cy="12" r="8" />
+    <path d="M14.5 9.5l-1.5 5-5 1.5 1.5-5 5-1.5z" />
+  </svg>
+);
+
+const IconUsers = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" strokeLinejoin="round" {...props}>
+    <circle cx="7" cy="9" r="3" />
+    <circle cx="17" cy="9" r="3" />
+    <path d="M3 20c1.5-3 8.5-3 10 0" />
+    <path d="M11 20c1.2-2 6.8-2 8 0" />
+  </svg>
+);
+
+const IconInfo = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" strokeLinejoin="round" {...props}>
+    <circle cx="12" cy="12" r="9" />
+    <path d="M12 10v6" />
+    <path d="M12 7h.01" />
+  </svg>
+);
+
+const IconClose = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" strokeLinejoin="round" {...props}>
+    <path d="M6 6l12 12" />
+    <path d="M18 6l-12 12" />
+  </svg>
+);
+
 const archetypeConfig = {
-  risk_taker: { icon: Zap, label: 'Risk Taker', color: 'text-[var(--ink)]', bg: 'bg-[rgba(231,234,240,0.04)]' },
-  analyst: { icon: Brain, label: 'Analyst', color: 'text-[var(--ink)]', bg: 'bg-[rgba(231,234,240,0.04)]' },
-  builder: { icon: Wrench, label: 'Builder', color: 'text-[var(--ink)]', bg: 'bg-[rgba(231,234,240,0.04)]' },
-  strategist: { icon: Target, label: 'Strategist', color: 'text-[var(--ink)]', bg: 'bg-[rgba(231,234,240,0.04)]' }
+  risk_taker: { icon: IconPulse, label: 'Risk Taker', color: 'text-[var(--ink)]', bg: 'bg-[rgba(230,237,243,0.04)]' },
+  analyst: { icon: IconBars, label: 'Analyst', color: 'text-[var(--ink)]', bg: 'bg-[rgba(230,237,243,0.04)]' },
+  builder: { icon: IconFrame, label: 'Builder', color: 'text-[var(--ink)]', bg: 'bg-[rgba(230,237,243,0.04)]' },
+  strategist: { icon: IconCompass, label: 'Strategist', color: 'text-[var(--ink)]', bg: 'bg-[rgba(230,237,243,0.04)]' }
 };
 
 export default function Leaderboard() {
@@ -82,8 +143,8 @@ export default function Leaderboard() {
           <div className="nx-panel nx-sharp px-8 py-8 text-center">
             <div className="nx-crosshair -top-3 -left-3" />
             <div className="nx-crosshair -bottom-3 -right-3" />
-            <div className="w-16 h-16 border border-[rgba(231,234,240,0.18)] bg-[rgba(231,234,240,0.04)] flex items-center justify-center mx-auto">
-              <BarChart3 className="w-8 h-8 text-[var(--ink)]" />
+            <div className="w-16 h-16 border border-[rgba(230,237,243,0.2)] bg-[rgba(230,237,243,0.04)] flex items-center justify-center mx-auto">
+              <IconBars className="w-8 h-8 text-[var(--ink)]" />
             </div>
             <p className="mt-4 text-[var(--ink-2)] font-semibold">Loading rankings...</p>
           </div>
@@ -104,8 +165,8 @@ export default function Leaderboard() {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <div className="inline-flex items-center gap-2.5 px-4 py-2 border border-[rgba(231,234,240,0.18)] bg-[rgba(231,234,240,0.04)] mb-4">
-            <BarChart3 className="w-3.5 h-3.5 text-[var(--ink)]" />
+          <div className="inline-flex items-center gap-2.5 px-4 py-2 border border-[rgba(230,237,243,0.2)] bg-[rgba(230,237,243,0.04)] mb-4">
+            <IconBars className="w-3.5 h-3.5 text-[var(--ink)]" />
             <span className="text-xs font-black text-[var(--ink)] tracking-wider uppercase nx-mono">Rankings</span>
           </div>
           <h1 className="text-3xl md:text-5xl font-black text-[var(--ink)] mb-3 tracking-[-0.06em]">
@@ -137,7 +198,7 @@ export default function Leaderboard() {
                   transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                 />
               )}
-              <TrendingUp className="w-4 h-4 relative z-10" />
+              <IconPulse className="w-4 h-4 relative z-10" />
               <span className="relative z-10">Growth (2 Weeks)</span>
             </button>
             <button
@@ -156,7 +217,7 @@ export default function Leaderboard() {
                   transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                 />
               )}
-              <BarChart3 className="w-4 h-4 relative z-10" />
+              <IconBars className="w-4 h-4 relative z-10" />
               <span className="relative z-10">All-Time</span>
             </button>
           </div>
@@ -179,7 +240,7 @@ export default function Leaderboard() {
             )}
           >
             <span className="flex items-center gap-2">
-              <Users className="w-4 h-4" />
+              <IconUsers className="w-4 h-4" />
               Semua
             </span>
           </button>
@@ -286,7 +347,7 @@ export default function Leaderboard() {
             animate={{ opacity: 1 }}
           >
             <div className="w-16 h-16 bg-[var(--paper-2)] border-[3px] border-[var(--ink)] mx-auto mb-4 flex items-center justify-center nx-sharp">
-              <Users className="w-8 h-8 text-[var(--ink)]" />
+              <IconUsers className="w-8 h-8 text-[var(--ink)]" />
             </div>
             <p className="text-lg nx-ink-muted">Belum ada data untuk ditampilkan.</p>
           </motion.div>
@@ -301,8 +362,8 @@ export default function Leaderboard() {
         >
           <div className="nx-panel nx-sharp p-6">
             <div className="flex items-start gap-3">
-              <div className="w-8 h-8 nx-sharp border border-[rgba(231,234,240,0.18)] bg-[rgba(231,234,240,0.04)] flex items-center justify-center shrink-0 mt-0.5">
-                <Info className="w-4 h-4 text-[var(--ink)]" />
+              <div className="w-8 h-8 nx-sharp border border-[rgba(230,237,243,0.2)] bg-[rgba(230,237,243,0.04)] flex items-center justify-center shrink-0 mt-0.5">
+                <IconInfo className="w-4 h-4 text-[var(--ink)]" />
               </div>
               <p className="text-sm nx-ink-muted">
                 <span className="text-[var(--ink)] font-semibold">Note: </span>
@@ -338,7 +399,7 @@ export default function Leaderboard() {
                     onClick={() => setSelectedProfile(null)}
                     className="absolute top-4 right-4 w-10 h-10 nx-sharp border-2 border-[var(--ink)] bg-[var(--paper)] flex items-center justify-center text-[var(--ink)] transition-transform duration-100 [transition-timing-function:steps(4,end)] hover:-translate-x-0.5 hover:-translate-y-0.5"
                   >
-                    <X className="w-4 h-4" />
+                    <IconClose className="w-4 h-4" />
                   </button>
                   <div className="flex items-center gap-4">
                     {(() => {

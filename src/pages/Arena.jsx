@@ -7,7 +7,7 @@ import ProblemCard from '@/components/arena/ProblemCard';
 import ArenaBattle from '@/components/arena/ArenaBattle';
 import ArenaResult from '@/components/arena/ArenaResult';
 import { ArenaEntryFlow } from '@/components/arena/entry';
-import { BarChart3, ChevronLeft, Clock, Gauge, Loader2, Lock, Sparkles, Swords, Target, User, Users, Zap } from 'lucide-react';
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
 // Session storage keys
@@ -40,6 +40,79 @@ export default function Arena() {
   const [activeStandardProblem, setActiveStandardProblem] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
+
+  const IconBack = (props) => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" strokeLinejoin="round" {...props}>
+      <path d="M14 6l-6 6 6 6" />
+    </svg>
+  );
+
+  const IconNode = (props) => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" strokeLinejoin="round" {...props}>
+      <rect x="5" y="5" width="14" height="14" />
+      <rect x="3" y="3" width="4" height="4" />
+      <rect x="17" y="17" width="4" height="4" />
+    </svg>
+  );
+
+  const IconLink = (props) => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" strokeLinejoin="round" {...props}>
+      <circle cx="6" cy="6" r="3" />
+      <circle cx="18" cy="18" r="3" />
+      <path d="M8.5 8.5l7 7" />
+      <path d="M18 6a3 3 0 0 0-3 3" />
+    </svg>
+  );
+
+  const IconClock = (props) => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" strokeLinejoin="round" {...props}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v6l4 2" />
+    </svg>
+  );
+
+  const IconBolt = (props) => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" strokeLinejoin="round" {...props}>
+      <path d="M13 2L5 14h6l-1 8 9-14h-6z" />
+    </svg>
+  );
+
+  const IconTarget = (props) => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" strokeLinejoin="round" {...props}>
+      <circle cx="12" cy="12" r="8" />
+      <circle cx="12" cy="12" r="3" />
+      <path d="M12 2v2M22 12h-2M12 22v-2M2 12h2" />
+    </svg>
+  );
+
+  const IconGauge = (props) => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" strokeLinejoin="round" {...props}>
+      <path d="M4 16a8 8 0 0 1 16 0" />
+      <path d="M12 12l3-4" />
+      <path d="M7 16h10" />
+    </svg>
+  );
+
+  const IconBars = (props) => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" strokeLinejoin="round" {...props}>
+      <path d="M5 18V9" />
+      <path d="M12 18V6" />
+      <path d="M19 18v-4" />
+    </svg>
+  );
+
+  const IconLock = (props) => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" strokeLinejoin="round" {...props}>
+      <rect x="5" y="10" width="14" height="10" />
+      <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+    </svg>
+  );
+
+  const IconSpark = (props) => (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" strokeLinejoin="round" {...props}>
+      <path d="M12 3l2.5 5.5L20 11l-5.5 2.5L12 19l-2.5-5.5L4 11l5.5-2.5L12 3z" />
+    </svg>
+  );
 
   // Save session state to sessionStorage whenever it changes
   const saveSessionState = useCallback(() => {
@@ -291,8 +364,8 @@ export default function Arena() {
           <div className="nx-panel nx-sharp px-8 py-8 text-center">
             <div className="nx-crosshair -top-3 -left-3" />
             <div className="nx-crosshair -bottom-3 -right-3" />
-            <div className="w-16 h-16 border border-[rgba(231,234,240,0.18)] bg-[rgba(231,234,240,0.04)] flex items-center justify-center mx-auto">
-              <Swords className="w-8 h-8 text-[var(--ink)]" />
+            <div className="w-16 h-16 border border-[rgba(230,237,243,0.2)] bg-[rgba(230,237,243,0.04)] flex items-center justify-center mx-auto">
+              <IconTarget className="w-8 h-8 text-[var(--ink)]" />
             </div>
             <p className="mt-4 text-[var(--ink-2)] font-semibold">Loading arena...</p>
           </div>
@@ -348,90 +421,120 @@ export default function Arena() {
         <div className="absolute inset-0 pointer-events-none nx-bg-wires opacity-[0.7]" />
         <div className="absolute inset-0 pointer-events-none nx-bg-dots opacity-[0.22]" />
 
-        <div className="nx-stage relative pt-24 md:pt-28">
-          <motion.div
-            className="text-center mb-12"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <div className="inline-flex items-center gap-2.5 px-4 py-2 border border-[rgba(231,234,240,0.18)] bg-[rgba(231,234,240,0.04)] mb-5">
-              <div className="w-2 h-2 bg-[var(--ink)]" />
-              <span className="text-xs font-black tracking-wider uppercase nx-mono">Choose Mode</span>
-            </div>
-            <h1 className="text-4xl md:text-5xl font-black text-[var(--ink)] mb-3 tracking-[-0.06em]">
-              NovaX Arena
-            </h1>
-            <p className="text-[var(--ink-2)] text-lg">Pilih arena untuk memulai tantangan</p>
-          </motion.div>
-
-          {/* Mode Cards */}
-          <div className="grid md:grid-cols-2 gap-6">
-            {/* Solo Mode */}
-            <motion.button
-              onClick={() => setGameMode('solo')}
-              className="group relative nx-panel nx-sharp p-8 text-left transition-transform duration-150 hover:-translate-y-0.5"
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+        <div className="nx-stage relative pt-16 md:pt-20">
+          <div className="nx-asym-grid">
+            <motion.div
+              className="nx-panel nx-panel-rail nx-sharp px-6 py-7"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
             >
-              <div className="relative">
-                <div className="nx-crosshair -top-3 -left-3" />
-                <div className="nx-crosshair -bottom-3 -right-3" />
-                <div className="w-16 h-16 bg-[rgba(231,234,240,0.04)] border border-[rgba(231,234,240,0.18)] flex items-center justify-center mb-6">
-                  <User className="w-8 h-8 text-[var(--ink)]" />
+              <div className="flex items-center gap-3 mb-6">
+                <div className="nx-icon-frame">
+                  <div className="nx-icon-node" />
                 </div>
-
-                <h3 className="text-2xl font-black text-[var(--ink)] mb-3 tracking-[-0.04em]">
-                  Solo Arena
-                </h3>
-                <p className="text-[var(--ink-2)] mb-6 leading-relaxed">
-                  Hadapi masalah secara mandiri. Generate problem yang sesuai dengan level dan archetype-mu. Tingkatkan skill step-by-step.
-                </p>
-
-                <div className="flex items-center gap-2 text-[var(--ink)] font-semibold">
-                  <span>Mulai Solo</span>
-                  <Swords className="w-4 h-4 transition-transform duration-100 [transition-timing-function:steps(4,end)] group-hover:translate-x-1" />
-                </div>
+                <span className="text-xs font-black tracking-wider uppercase nx-mono text-[var(--ink-2)]">Choose Mode</span>
               </div>
-            </motion.button>
+              <h1 className="text-4xl md:text-5xl font-black text-[var(--ink)] mb-4 tracking-[-0.06em]">
+                NovaX Arena
+              </h1>
+              <p className="text-[var(--ink-2)] text-base leading-relaxed">Pilih arena untuk memulai tantangan</p>
+              <div className="mt-8 nx-line-rail" />
+            </motion.div>
 
-            {/* Multiplayer Mode */}
-            <motion.button
-              onClick={() => setGameMode('multiplayer')}
-              className="group relative nx-panel nx-sharp p-8 text-left transition-transform duration-150 hover:-translate-y-0.5"
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3 }}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+            <motion.div
+              className="space-y-6"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.08 }}
             >
-              <div className="relative">
-                <div className="nx-crosshair -top-3 -left-3" />
-                <div className="nx-crosshair -bottom-3 -right-3" />
-                <div className="w-16 h-16 bg-[rgba(231,234,240,0.04)] border border-[rgba(231,234,240,0.18)] flex items-center justify-center mb-6">
-                  <Users className="w-8 h-8 text-[var(--ink)]" />
-                </div>
+              <motion.button
+                onClick={() => setGameMode('solo')}
+                className="group relative nx-panel nx-panel-core nx-sharp p-8 text-left transition-transform duration-150"
+                whileHover={{ y: -2 }}
+                whileTap={{ scale: 0.99 }}
+              >
+                <div className="relative">
+                  <div className="nx-crosshair -top-3 -left-3" />
+                  <div className="nx-crosshair -bottom-3 -right-3" />
+                  <div className="nx-icon-frame mb-6">
+                    <IconNode className="w-7 h-7 text-[var(--ink)]" />
+                  </div>
 
-                <div className="flex items-center gap-3 mb-3">
-                  <h3 className="text-2xl font-black text-[var(--ink)] tracking-[-0.04em]">
-                    Multiplayer
+                  <h3 className="text-2xl font-black text-[var(--ink)] mb-3 tracking-[-0.04em]">
+                    Solo Arena
                   </h3>
-                  <span className="px-2.5 py-1 bg-[rgba(231,234,240,0.04)] border border-[rgba(231,234,240,0.18)] text-xs font-black text-[var(--ink)] uppercase tracking-wider nx-mono">
-                    Soon
-                  </span>
-                </div>
-                <p className="text-[var(--ink-2)] mb-6 leading-relaxed">
-                  Compete atau collaborate dengan player lain dalam real-time battle. Uji skill-mu melawan sesama warrior.
-                </p>
+                  <p className="text-[var(--ink-2)] mb-6 leading-relaxed">
+                    Hadapi masalah secara mandiri. Generate problem yang sesuai dengan level dan archetype-mu. Tingkatkan skill step-by-step.
+                  </p>
 
-                <div className="flex items-center gap-2 text-[var(--ink)] font-semibold">
-                  <span>Lihat Preview</span>
-                  <Clock className="w-4 h-4 transition-transform duration-100 [transition-timing-function:steps(4,end)] group-hover:translate-x-1" />
+                  <div className="flex items-center gap-2 text-[var(--ink)] font-semibold">
+                    <span>Mulai Solo</span>
+                    <IconTarget className="w-4 h-4 transition-transform duration-100 [transition-timing-function:steps(4,end)] group-hover:translate-x-1" />
+                  </div>
+                </div>
+              </motion.button>
+
+              <motion.button
+                onClick={() => setGameMode('multiplayer')}
+                className="group relative nx-panel nx-panel-rail nx-sharp p-8 text-left transition-transform duration-150"
+                whileHover={{ y: -2 }}
+                whileTap={{ scale: 0.99 }}
+              >
+                <div className="relative">
+                  <div className="nx-crosshair -top-3 -left-3" />
+                  <div className="nx-crosshair -bottom-3 -right-3" />
+                  <div className="nx-icon-frame mb-6">
+                    <IconLink className="w-7 h-7 text-[var(--ink)]" />
+                  </div>
+
+                  <div className="flex items-center gap-3 mb-3">
+                    <h3 className="text-2xl font-black text-[var(--ink)] tracking-[-0.04em]">
+                      Multiplayer
+                    </h3>
+                    <span className="px-2.5 py-1 bg-[rgba(230,237,243,0.04)] border border-[rgba(230,237,243,0.2)] text-xs font-black text-[var(--ink)] uppercase tracking-wider nx-mono">
+                      Soon
+                    </span>
+                  </div>
+                  <p className="text-[var(--ink-2)] mb-6 leading-relaxed">
+                    Compete atau collaborate dengan player lain dalam real-time battle. Uji skill-mu melawan sesama warrior.
+                  </p>
+
+                  <div className="flex items-center gap-2 text-[var(--ink)] font-semibold">
+                    <span>Lihat Preview</span>
+                    <IconClock className="w-4 h-4 transition-transform duration-100 [transition-timing-function:steps(4,end)] group-hover:translate-x-1" />
+                  </div>
+                </div>
+              </motion.button>
+            </motion.div>
+
+            <motion.div
+              className="nx-panel nx-panel-glass nx-sharp px-6 py-7"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.16 }}
+            >
+              <div className="flex items-center justify-between mb-5">
+                <div className="text-xs font-black tracking-widest uppercase nx-mono text-[var(--ink-2)]">Arena Selection</div>
+                <div className="nx-icon-frame">
+                  <div className="nx-icon-trajectory" />
                 </div>
               </div>
-            </motion.button>
+              <div className="space-y-4 text-sm text-[var(--ink-2)]">
+                <div className="flex items-center justify-between gap-3">
+                  <span>Quick</span>
+                  <span className="nx-mono text-[var(--ink)]">4-5 menit</span>
+                </div>
+                <div className="flex items-center justify-between gap-3">
+                  <span>Standard</span>
+                  <span className="nx-mono text-[var(--ink)]">15 menit</span>
+                </div>
+              </div>
+              <div className="mt-6 nx-line-rail" />
+              <div className="mt-6 text-xs uppercase tracking-[0.2em] nx-mono text-[var(--ink-3)]">Capability / Readiness</div>
+              <div className="mt-3 h-2 bg-[rgba(230,237,243,0.08)] border border-[rgba(230,237,243,0.14)]">
+                <div className="h-full w-[62%] bg-[var(--acid-lime)]" />
+              </div>
+            </motion.div>
           </div>
         </div>
       </div>
@@ -445,21 +548,21 @@ export default function Arena() {
         <div className="absolute inset-0 pointer-events-none nx-bg-wires opacity-[0.7]" />
         <div className="absolute inset-0 pointer-events-none nx-bg-dots opacity-[0.22]" />
 
-        <div className="relative z-10 nx-stage max-w-2xl text-center">
+        <div className="relative z-10 nx-stage max-w-3xl text-center">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
           >
-            <div className="nx-panel nx-sharp px-8 py-8">
+            <div className="nx-panel nx-panel-core nx-sharp px-8 py-9">
               <div className="nx-crosshair -top-3 -left-3" />
               <div className="nx-crosshair -bottom-3 -right-3" />
               <div className="relative inline-block mb-8">
-                <div className="w-24 h-24 bg-[rgba(231,234,240,0.04)] border border-[rgba(231,234,240,0.18)] flex items-center justify-center mx-auto">
-                  <Users className="w-12 h-12 text-[var(--ink)]" />
+                <div className="w-24 h-24 bg-[rgba(230,237,243,0.04)] border border-[rgba(230,237,243,0.2)] flex items-center justify-center mx-auto">
+                  <IconLink className="w-12 h-12 text-[var(--ink)]" />
                 </div>
-                <div className="absolute -bottom-3 -right-3 w-11 h-11 bg-[rgba(231,234,240,0.04)] border border-[rgba(231,234,240,0.18)] flex items-center justify-center">
-                  <Lock className="w-5 h-5 text-[var(--ink)]" />
+                <div className="absolute -bottom-3 -right-3 w-11 h-11 bg-[rgba(230,237,243,0.04)] border border-[rgba(230,237,243,0.2)] flex items-center justify-center">
+                  <IconLock className="w-5 h-5 text-[var(--ink)]" />
                 </div>
               </div>
 
@@ -472,25 +575,25 @@ export default function Arena() {
 
               <div className="grid grid-cols-2 gap-4 mb-10 max-w-sm mx-auto">
                 <div className="nx-panel-static nx-sharp p-4">
-                  <Swords className="w-6 h-6 text-[var(--ink)] mx-auto mb-2" />
+                  <IconTarget className="w-6 h-6 text-[var(--ink)] mx-auto mb-2" />
                   <p className="text-sm nx-ink-muted">1v1 Battle</p>
                 </div>
                 <div className="nx-panel-static nx-sharp p-4">
-                  <Users className="w-6 h-6 text-[var(--ink)] mx-auto mb-2" />
+                  <IconLink className="w-6 h-6 text-[var(--ink)] mx-auto mb-2" />
                   <p className="text-sm nx-ink-muted">Team Mode</p>
                 </div>
                 <div className="nx-panel-static nx-sharp p-4">
-                  <BarChart3 className="w-6 h-6 text-[var(--ink)] mx-auto mb-2" />
+                  <IconBars className="w-6 h-6 text-[var(--ink)] mx-auto mb-2" />
                   <p className="text-sm nx-ink-muted">Ranked Match</p>
                 </div>
                 <div className="nx-panel-static nx-sharp p-4">
-                  <Zap className="w-6 h-6 text-[var(--ink)] mx-auto mb-2" />
+                  <IconBolt className="w-6 h-6 text-[var(--ink)] mx-auto mb-2" />
                   <p className="text-sm nx-ink-muted">Quick Match</p>
                 </div>
               </div>
 
               <Button onClick={() => setGameMode(null)} variant="outline" size="lg" className="group">
-                <Swords className="w-4 h-4 mr-2 transition-transform duration-100 [transition-timing-function:steps(4,end)] group-hover:-translate-x-1" />
+                <IconTarget className="w-4 h-4 mr-2 transition-transform duration-100 [transition-timing-function:steps(4,end)] group-hover:-translate-x-1" />
                 Kembali ke Mode Selection
               </Button>
             </div>
@@ -503,225 +606,240 @@ export default function Arena() {
   // Solo Mode - Original Arena Content
   return (
     <div className="min-h-screen nx-page nx-bg-wires relative">
-      {/* Background effects */}
       <div className="absolute inset-0 pointer-events-none nx-bg-dots opacity-[0.22]" />
 
-      <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-8 py-8">
-        {/* Header */}
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-10">
+      <div className="nx-stage relative pt-10 md:pt-12">
+        <div className="nx-asym-grid">
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
+            className="nx-panel nx-panel-rail nx-sharp px-6 py-7"
+            initial={{ opacity: 0, y: -12 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <div className="flex items-center gap-3 mb-4">
+            <div className="flex items-center gap-3 mb-5">
               <button
                 onClick={() => setGameMode(null)}
-                className="w-10 h-10 nx-sharp bg-[rgba(231,234,240,0.04)] border border-[rgba(231,234,240,0.18)] flex items-center justify-center text-[var(--ink)] transition-colors duration-150 hover:bg-[rgba(231,234,240,0.06)]"
+                className="w-10 h-10 nx-sharp bg-[rgba(230,237,243,0.04)] border border-[rgba(230,237,243,0.2)] flex items-center justify-center text-[var(--ink)] transition-colors duration-150 hover:bg-[rgba(230,237,243,0.08)]"
               >
-                <ChevronLeft className="w-5 h-5" />
+                <IconBack className="w-5 h-5" />
               </button>
-              <div className="inline-flex items-center gap-2.5 px-4 py-2 nx-sharp bg-[var(--paper)] border-[2px] border-[var(--ink)]">
-                <User className="w-3.5 h-3.5 text-[var(--ink)]" />
+              <div className="inline-flex items-center gap-2.5 px-4 py-2 nx-sharp bg-[var(--paper)] border border-[rgba(230,237,243,0.2)]">
+                <IconNode className="w-3.5 h-3.5 text-[var(--ink)]" />
                 <span className="text-xs font-semibold text-[var(--ink)] tracking-wider uppercase font-mono">Solo Arena</span>
               </div>
             </div>
-            <h1 className="text-3xl md:text-4xl font-bold text-[var(--ink)] mb-2">
+            <h1 className="text-3xl md:text-4xl font-black text-[var(--ink)] mb-2 tracking-[-0.04em]">
               NovaX Arena
             </h1>
-            <p className="text-[var(--ink-2)]">
+            <p className="text-[var(--ink-2)] text-sm">
               Hadapi masalah. Belajar. Naik level.
             </p>
+            <div className="mt-6 nx-line-rail" />
+            {profile && (
+              <motion.div
+                className="mt-6 space-y-4"
+                initial={{ opacity: 0, x: 10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.2 }}
+              >
+                <div className="nx-panel-static nx-sharp px-4 py-3 flex items-center gap-3">
+                  <div className="w-10 h-10 nx-sharp border border-[rgba(230,237,243,0.2)] bg-[rgba(230,237,243,0.04)] flex items-center justify-center">
+                    <IconGauge className="w-5 h-5 text-[var(--ink)]" />
+                  </div>
+                  <div>
+                    <p className="text-[var(--ink)] font-mono font-bold text-xl leading-none">
+                      Level {profile.current_difficulty}
+                    </p>
+                    <p className="text-xs text-[var(--ink-2)] mt-0.5">Current</p>
+                  </div>
+                </div>
+                <div className="nx-panel-static nx-sharp px-4 py-3 flex items-center gap-3">
+                  <div className="w-10 h-10 nx-sharp border border-[rgba(230,237,243,0.2)] bg-[rgba(230,237,243,0.04)] flex items-center justify-center">
+                    <IconBolt className="w-5 h-5 text-[var(--ink)]" />
+                  </div>
+                  <div>
+                    <p className="text-[var(--ink)] font-mono font-bold text-xl leading-none">{totalXp}</p>
+                    <p className="text-xs text-[var(--ink-2)] mt-0.5">Total XP</p>
+                  </div>
+                </div>
+              </motion.div>
+            )}
           </motion.div>
 
-          {profile && (
-            <motion.div
-              className="flex items-center gap-3"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
-            >
-              <div className="nx-panel-static nx-sharp px-5 py-3.5 flex items-center gap-3">
-                <div className="w-10 h-10 nx-sharp border border-[rgba(231,234,240,0.18)] bg-[rgba(231,234,240,0.04)] flex items-center justify-center">
-                  <Gauge className="w-5 h-5 text-[var(--ink)]" />
-                </div>
-                <div>
-                  <p className="text-[var(--ink)] font-mono font-bold text-xl leading-none">
-                    Level {profile.current_difficulty}
-                  </p>
-                  <p className="text-xs text-[var(--ink-2)] mt-0.5">Current</p>
-                </div>
-              </div>
-              <div className="nx-panel-static nx-sharp px-5 py-3.5 flex items-center gap-3">
-                <div className="w-10 h-10 nx-sharp border border-[rgba(231,234,240,0.18)] bg-[rgba(231,234,240,0.04)] flex items-center justify-center">
-                  <Zap className="w-5 h-5 text-[var(--ink)]" />
-                </div>
-                <div>
-                  <p className="text-[var(--ink)] font-mono font-bold text-xl leading-none">{totalXp}</p>
-                  <p className="text-xs text-[var(--ink-2)] mt-0.5">Total XP</p>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </div>
-
-        {/* Swipe Tabs - Quick / Standard */}
-        <motion.div
-          className="mb-8"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.25 }}
-        >
-          <div className="inline-flex bg-[rgba(231,234,240,0.03)] nx-sharp p-1 border border-[rgba(231,234,240,0.18)]">
-            <button
-              onClick={() => setArenaTab('quick')}
-              className={`relative px-6 py-2.5 nx-sharp text-sm font-semibold transition-colors duration-150 ${arenaTab === 'quick'
-                  ? 'text-[var(--ink)]'
-                  : 'text-[var(--ink-2)] hover:text-[var(--ink)]'
-                }`}
-            >
-              {arenaTab === 'quick' && (
-                <motion.div
-                  layoutId="activeTab"
-                  className="absolute left-3 right-3 -bottom-0.5 h-[2px] bg-[var(--acid-lime)]"
-                  transition={{ type: 'spring', bounce: 0.2, duration: 0.4 }}
-                />
-              )}
-              <span className="relative z-10 flex items-center gap-2">
-                <Zap className="w-4 h-4" />
-                Quick
-                <span className="text-xs opacity-70">4-5 min</span>
-              </span>
-            </button>
-            <button
-              onClick={() => setArenaTab('standard')}
-              className={`relative px-6 py-2.5 nx-sharp text-sm font-semibold transition-colors duration-150 ${arenaTab === 'standard'
-                  ? 'text-[var(--ink)]'
-                  : 'text-[var(--ink-2)] hover:text-[var(--ink)]'
-                }`}
-            >
-              {arenaTab === 'standard' && (
-                <motion.div
-                  layoutId="activeTab"
-                  className="absolute left-3 right-3 -bottom-0.5 h-[2px] bg-[var(--acid-orange)]"
-                  transition={{ type: 'spring', bounce: 0.2, duration: 0.4 }}
-                />
-              )}
-              <span className="relative z-10 flex items-center gap-2">
-                <Clock className="w-4 h-4" />
-                Standard
-                <span className="text-xs opacity-70">15 min</span>
-              </span>
-            </button>
-          </div>
-        </motion.div>
-
-        {/* Generate Button for Current Tab */}
-        <motion.div
-          className="mb-8"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-        >
-          <Button
-            onClick={() => generateProblem(arenaTab)}
-            disabled={isGenerating || (arenaTab === 'quick' ? !!activeQuickProblem : !!activeStandardProblem)}
-            variant={arenaTab === 'quick' ? 'success' : 'gradient'}
-            size="lg"
-            className="group"
+          <motion.div
+            className="nx-panel nx-panel-core nx-sharp px-6 py-7"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
           >
-            {isGenerating && generatingMode === arenaTab ? (
-              <>
-                <Loader2 className="w-4 h-4 animate-spin" />
-                Generating...
-              </>
-            ) : (arenaTab === 'quick' ? activeQuickProblem : activeStandardProblem) ? (
-              <>
-                {arenaTab === 'quick' ? <Zap className="w-4 h-4" /> : <Clock className="w-4 h-4" />}
-                <span>Selesaikan dulu</span>
-              </>
-            ) : (
-              <>
-                <Sparkles className="w-4 h-4" />
-                <span>Generate {arenaTab === 'quick' ? 'Quick' : 'Standard'} Problem</span>
-              </>
-            )}
-          </Button>
-        </motion.div>
+            <div className="flex items-center justify-between gap-4 mb-6">
+              <div className="inline-flex bg-[rgba(230,237,243,0.04)] nx-sharp p-1 border border-[rgba(230,237,243,0.2)]">
+                <button
+                  onClick={() => setArenaTab('quick')}
+                  className={cn(
+                    "relative px-6 py-2.5 nx-sharp text-sm font-semibold transition-colors duration-150",
+                    arenaTab === 'quick' ? "text-[var(--ink)]" : "text-[var(--ink-2)] hover:text-[var(--ink)]"
+                  )}
+                >
+                  {arenaTab === 'quick' && (
+                    <motion.div
+                      layoutId="activeTab"
+                      className="absolute left-3 right-3 -bottom-0.5 h-[2px] bg-[var(--acid-lime)]"
+                      transition={{ type: 'spring', bounce: 0.2, duration: 0.4 }}
+                    />
+                  )}
+                  <span className="relative z-10 flex items-center gap-2">
+                    <IconBolt className="w-4 h-4" />
+                    Quick
+                    <span className="text-xs opacity-70">4-5 min</span>
+                  </span>
+                </button>
+                <button
+                  onClick={() => setArenaTab('standard')}
+                  className={cn(
+                    "relative px-6 py-2.5 nx-sharp text-sm font-semibold transition-colors duration-150",
+                    arenaTab === 'standard' ? "text-[var(--ink)]" : "text-[var(--ink-2)] hover:text-[var(--ink)]"
+                  )}
+                >
+                  {arenaTab === 'standard' && (
+                    <motion.div
+                      layoutId="activeTab"
+                      className="absolute left-3 right-3 -bottom-0.5 h-[2px] bg-[var(--acid-orange)]"
+                      transition={{ type: 'spring', bounce: 0.2, duration: 0.4 }}
+                    />
+                  )}
+                  <span className="relative z-10 flex items-center gap-2">
+                    <IconClock className="w-4 h-4" />
+                    Standard
+                    <span className="text-xs opacity-70">15 min</span>
+                  </span>
+                </button>
+              </div>
 
-        {/* Problems Grid - Show based on current tab */}
-        <AnimatePresence mode="wait">
-          {arenaTab === 'quick' ? (
-            <motion.div
-              key="quick-problems"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 20 }}
-              transition={{ duration: 0.2 }}
-            >
-              {quickProblems.length > 0 ? (
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {quickProblems.map((problem, index) => (
-                    <motion.div
-                      key={problem.id || problem.problem_id}
-                      initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      transition={{ delay: index * 0.05, duration: 0.3 }}
-                    >
-                      <ProblemCard problem={problem} onStart={startProblem} />
-                    </motion.div>
-                  ))}
-                </div>
+              <Button
+                onClick={() => generateProblem(arenaTab)}
+                disabled={isGenerating || (arenaTab === 'quick' ? !!activeQuickProblem : !!activeStandardProblem)}
+                variant={arenaTab === 'quick' ? 'success' : 'gradient'}
+                size="lg"
+                className="group"
+              >
+                {isGenerating && generatingMode === arenaTab ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-[var(--ink)] border-t-transparent animate-spin" />
+                    Generating...
+                  </>
+                ) : (arenaTab === 'quick' ? activeQuickProblem : activeStandardProblem) ? (
+                  <>
+                    {arenaTab === 'quick' ? <IconBolt className="w-4 h-4" /> : <IconClock className="w-4 h-4" />}
+                    <span>Selesaikan dulu</span>
+                  </>
+                ) : (
+                  <>
+                    <IconSpark className="w-4 h-4" />
+                    <span>Generate {arenaTab === 'quick' ? 'Quick' : 'Standard'} Problem</span>
+                  </>
+                )}
+              </Button>
+            </div>
+
+            <AnimatePresence mode="wait">
+              {arenaTab === 'quick' ? (
+                <motion.div
+                  key="quick-problems"
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 20 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {quickProblems.length > 0 ? (
+                    <div className="grid md:grid-cols-2 gap-5">
+                      {quickProblems.map((problem, index) => (
+                        <motion.div
+                          key={problem.id || problem.problem_id}
+                          initial={{ opacity: 0, y: 20, scale: 0.96 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          transition={{ delay: index * 0.04, duration: 0.25 }}
+                        >
+                          <ProblemCard problem={problem} onStart={startProblem} />
+                        </motion.div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="nx-panel nx-sharp p-12 text-center">
+                      <div className="w-16 h-16 nx-sharp border border-[rgba(230,237,243,0.2)] bg-[rgba(230,237,243,0.04)] mx-auto mb-5 flex items-center justify-center">
+                        <IconBolt className="w-8 h-8 text-[var(--acid-lime)]" />
+                      </div>
+                      <p className="text-lg text-[var(--ink)] mb-2 font-medium">
+                        Belum ada Quick problem
+                      </p>
+                      <p className="text-[var(--ink-2)] mb-6 max-w-md mx-auto">
+                        Generate problem ringan untuk sesi 4-5 menit
+                      </p>
+                    </div>
+                  )}
+                </motion.div>
               ) : (
-                <div className="nx-panel nx-sharp p-16 text-center">
-                  <div className="w-20 h-20 nx-sharp border border-[rgba(231,234,240,0.18)] bg-[rgba(231,234,240,0.04)] mx-auto mb-6 flex items-center justify-center">
-                    <Zap className="w-10 h-10 text-[var(--acid-lime)]" />
-                  </div>
-                  <p className="text-xl text-[var(--ink)] mb-2 font-medium">
-                    Belum ada Quick problem
-                  </p>
-                  <p className="text-[var(--ink-2)] mb-6 max-w-md mx-auto">
-                    Generate problem ringan untuk sesi 4-5 menit
-                  </p>
-                </div>
+                <motion.div
+                  key="standard-problems"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {standardProblems.length > 0 ? (
+                    <div className="grid md:grid-cols-2 gap-5">
+                      {standardProblems.map((problem, index) => (
+                        <motion.div
+                          key={problem.id || problem.problem_id}
+                          initial={{ opacity: 0, y: 20, scale: 0.96 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          transition={{ delay: index * 0.04, duration: 0.25 }}
+                        >
+                          <ProblemCard problem={problem} onStart={startProblem} />
+                        </motion.div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="nx-panel nx-sharp p-12 text-center">
+                      <div className="w-16 h-16 nx-sharp border border-[rgba(230,237,243,0.2)] bg-[rgba(230,237,243,0.04)] mx-auto mb-5 flex items-center justify-center">
+                        <IconTarget className="w-8 h-8 text-[var(--acid-orange)]" />
+                      </div>
+                      <p className="text-lg text-[var(--ink)] mb-2 font-medium">
+                        Belum ada Standard problem
+                      </p>
+                      <p className="text-[var(--ink-2)] mb-6 max-w-md mx-auto">
+                        Generate problem standar untuk sesi 15 menit
+                      </p>
+                    </div>
+                  )}
+                </motion.div>
               )}
-            </motion.div>
-          ) : (
-            <motion.div
-              key="standard-problems"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.2 }}
-            >
-              {standardProblems.length > 0 ? (
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {standardProblems.map((problem, index) => (
-                    <motion.div
-                      key={problem.id || problem.problem_id}
-                      initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      transition={{ delay: index * 0.05, duration: 0.3 }}
-                    >
-                      <ProblemCard problem={problem} onStart={startProblem} />
-                    </motion.div>
-                  ))}
-                </div>
-              ) : (
-                <div className="nx-panel nx-sharp p-16 text-center">
-                  <div className="w-20 h-20 nx-sharp border border-[rgba(231,234,240,0.18)] bg-[rgba(231,234,240,0.04)] mx-auto mb-6 flex items-center justify-center">
-                    <Target className="w-10 h-10 text-[var(--acid-orange)]" />
-                  </div>
-                  <p className="text-xl text-[var(--ink)] mb-2 font-medium">
-                    Belum ada Standard problem
-                  </p>
-                  <p className="text-[var(--ink-2)] mb-6 max-w-md mx-auto">
-                    Generate problem standar untuk sesi 15 menit
-                  </p>
-                </div>
-              )}
-            </motion.div>
-          )}
-        </AnimatePresence>
+            </AnimatePresence>
+          </motion.div>
+
+          <motion.div
+            className="nx-panel nx-panel-glass nx-sharp px-6 py-7"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            <div className="text-xs font-black tracking-widest uppercase nx-mono text-[var(--ink-2)] mb-4">Arena Selection</div>
+            <div className="space-y-4 text-sm text-[var(--ink-2)]">
+              <div className="flex items-center justify-between gap-3">
+                <span>Quick</span>
+                <span className="nx-mono text-[var(--ink)]">4-5 menit</span>
+              </div>
+              <div className="flex items-center justify-between gap-3">
+                <span>Standard</span>
+                <span className="nx-mono text-[var(--ink)]">15 menit</span>
+              </div>
+            </div>
+            <div className="mt-6 nx-line-rail" />
+            <div className="mt-6 text-xs uppercase tracking-[0.2em] nx-mono text-[var(--ink-3)]">Capability / Readiness</div>
+            <div className="mt-3 h-2 bg-[rgba(230,237,243,0.08)] border border-[rgba(230,237,243,0.14)]">
+              <div className="h-full w-[68%] bg-[var(--acid-lime)]" />
+            </div>
+          </motion.div>
+        </div>
       </div>
     </div>
   );
