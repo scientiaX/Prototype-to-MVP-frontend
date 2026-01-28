@@ -6,14 +6,78 @@ import { createPageUrl } from '@/utils';
 import ArchetypeRadar from '@/components/profile/ArchetypeRadar';
 import BadgeDisplay from '@/components/profile/BadgeDisplay';
 import MonthlyProgress from '@/components/profile/MonthlyProgress';
-import { Archive, BarChart3, Gauge, Loader2, ShieldCheck, Target, User, Zap } from 'lucide-react';
 import { cn } from "@/lib/utils";
 
+const IconBars = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" strokeLinejoin="round" {...props}>
+    <path d="M5 18V9" />
+    <path d="M12 18V6" />
+    <path d="M19 18v-4" />
+  </svg>
+);
+
+const IconGauge = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" strokeLinejoin="round" {...props}>
+    <path d="M4 16a8 8 0 0 1 16 0" />
+    <path d="M12 12l3-4" />
+    <path d="M7 16h10" />
+  </svg>
+);
+
+const IconTarget = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" strokeLinejoin="round" {...props}>
+    <circle cx="12" cy="12" r="8" />
+    <circle cx="12" cy="12" r="3" />
+    <path d="M12 2v2M22 12h-2M12 22v-2M2 12h2" />
+  </svg>
+);
+
+const IconBolt = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" strokeLinejoin="round" {...props}>
+    <path d="M13 2L5 14h6l-1 8 9-14h-6z" />
+  </svg>
+);
+
+const IconUser = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" strokeLinejoin="round" {...props}>
+    <circle cx="12" cy="8" r="4" />
+    <path d="M4 20c2-4 14-4 16 0" />
+  </svg>
+);
+
+const IconShield = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" strokeLinejoin="round" {...props}>
+    <path d="M12 3l7 3v6c0 5-3.5 7.5-7 9-3.5-1.5-7-4-7-9V6l7-3z" />
+    <path d="M9 12l2 2 4-4" />
+  </svg>
+);
+
+const IconArchive = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" strokeLinejoin="round" {...props}>
+    <rect x="3" y="4" width="18" height="4" />
+    <rect x="5" y="8" width="14" height="12" />
+    <path d="M9 12h6" />
+  </svg>
+);
+
+const IconTrend = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="square" strokeLinejoin="round" {...props}>
+    <path d="M4 16l6-6 4 4 6-7" />
+    <path d="M18 7h4v4" />
+  </svg>
+);
+
+const IconSpinner = (props) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square" strokeLinejoin="round" {...props}>
+    <path d="M12 3a9 9 0 0 1 9 9" />
+  </svg>
+);
+
 const archetypeConfig = {
-  risk_taker: { icon: Zap, label: 'Risk Taker' },
-  analyst: { icon: BarChart3, label: 'Analyst' },
-  builder: { icon: Target, label: 'Builder' },
-  strategist: { icon: Gauge, label: 'Strategist' }
+  risk_taker: { icon: IconBolt, label: 'Risk Taker' },
+  analyst: { icon: IconBars, label: 'Analyst' },
+  builder: { icon: IconTarget, label: 'Builder' },
+  strategist: { icon: IconGauge, label: 'Strategist' }
 };
 
 export default function Profile() {
@@ -71,8 +135,8 @@ export default function Profile() {
           <div className="nx-panel nx-sharp px-8 py-8 text-center">
             <div className="nx-crosshair -top-3 -left-3" />
             <div className="nx-crosshair -bottom-3 -right-3" />
-            <div className="w-16 h-16 border border-[rgba(231,234,240,0.18)] bg-[rgba(231,234,240,0.04)] flex items-center justify-center mx-auto">
-              <User className="w-8 h-8 text-[var(--ink)]" />
+            <div className="w-16 h-16 border border-[rgba(230,237,243,0.2)] bg-[rgba(230,237,243,0.04)] flex items-center justify-center mx-auto">
+              <IconUser className="w-8 h-8 text-[var(--ink)]" />
             </div>
             <p className="mt-4 text-[var(--ink-2)] font-semibold">Loading profile...</p>
           </div>
@@ -87,10 +151,10 @@ export default function Profile() {
     (profile.xp_builder || 0) + (profile.xp_strategist || 0);
 
   const stats = [
-    { icon: Gauge, value: profile.current_difficulty, label: 'Current Level', accent: 'bg-[rgba(51,209,122,0.14)] border-[rgba(51,209,122,0.35)]' },
-    { icon: Zap, value: totalXp, label: 'Total XP', accent: 'bg-[rgba(231,234,240,0.04)] border-[rgba(231,234,240,0.18)]' },
-    { icon: BarChart3, value: profile.highest_difficulty_conquered || 0, label: 'Highest Conquered', accent: 'bg-[rgba(255,106,61,0.14)] border-[rgba(255,106,61,0.35)]' },
-    { icon: Target, value: profile.total_arenas_completed || 0, label: 'Arenas Completed', accent: 'bg-[rgba(231,234,240,0.04)] border-[rgba(231,234,240,0.18)]' }
+    { icon: IconGauge, value: profile.current_difficulty, label: 'Current Level', accent: 'bg-[rgba(45,255,138,0.14)] border-[rgba(45,255,138,0.35)]' },
+    { icon: IconBolt, value: totalXp, label: 'Total XP', accent: 'bg-[rgba(230,237,243,0.04)] border-[rgba(230,237,243,0.2)]' },
+    { icon: IconBars, value: profile.highest_difficulty_conquered || 0, label: 'Highest Conquered', accent: 'bg-[rgba(255,122,69,0.14)] border-[rgba(255,122,69,0.35)]' },
+    { icon: IconTarget, value: profile.total_arenas_completed || 0, label: 'Arenas Completed', accent: 'bg-[rgba(230,237,243,0.04)] border-[rgba(230,237,243,0.2)]' }
   ];
 
   return (
@@ -170,7 +234,7 @@ export default function Profile() {
         >
           <div className="flex items-center gap-3 mb-6">
             <div className="w-10 h-10 border border-[rgba(231,234,240,0.18)] bg-[rgba(231,234,240,0.04)] flex items-center justify-center nx-sharp">
-              <Target className="w-5 h-5 text-[var(--ink)]" />
+              <IconTarget className="w-5 h-5 text-[var(--ink)]" />
             </div>
             <h2 className="text-[var(--ink)] font-black text-xl tracking-[-0.04em]">Archetype Distribution</h2>
           </div>
@@ -208,7 +272,7 @@ export default function Profile() {
         >
           <div className="flex items-center gap-3 mb-6">
             <div className="w-10 h-10 border border-[rgba(231,234,240,0.18)] bg-[rgba(231,234,240,0.04)] flex items-center justify-center nx-sharp">
-              <ShieldCheck className="w-5 h-5 text-[var(--ink)]" />
+              <IconShield className="w-5 h-5 text-[var(--ink)]" />
             </div>
             <div>
               <h2 className="text-[var(--ink)] font-black text-xl tracking-[-0.04em]">Badges/Achievements</h2>
@@ -227,7 +291,7 @@ export default function Profile() {
         >
           <div className="flex items-center gap-3 mb-6">
             <div className="w-10 h-10 border border-[rgba(231,234,240,0.18)] bg-[rgba(231,234,240,0.04)] flex items-center justify-center nx-sharp">
-              <Archive className="w-5 h-5 text-[var(--ink)]" />
+              <IconArchive className="w-5 h-5 text-[var(--ink)]" />
             </div>
             <div>
               <h2 className="text-[var(--ink)] font-black text-xl tracking-[-0.04em]">Portfolio Artifacts</h2>
@@ -277,7 +341,7 @@ export default function Profile() {
 
                   {artifact.level_up_verified && (
                     <div className="flex items-center gap-1.5 mt-3">
-                      <TrendingUp className="w-3.5 h-3.5 text-[var(--ink)]" />
+                      <IconTrend className="w-3.5 h-3.5 text-[var(--ink)]" />
                       <span className="text-xs text-[var(--ink)] font-semibold">
                         Level Up Verified
                       </span>
@@ -289,7 +353,7 @@ export default function Profile() {
           ) : (
             <div className="text-center py-16">
               <div className="w-16 h-16 bg-[rgba(231,234,240,0.04)] border border-[rgba(231,234,240,0.18)] mx-auto mb-4 flex items-center justify-center nx-sharp">
-                <Archive className="w-8 h-8 text-[var(--ink)]" />
+              <IconArchive className="w-8 h-8 text-[var(--ink)]" />
               </div>
               <p className="text-lg text-[var(--ink)] font-semibold mb-2">
                 Belum ada artifact
