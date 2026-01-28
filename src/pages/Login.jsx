@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { motion } from 'framer-motion';
-import { ArrowRight, KeySquare, Loader2, Lock, Mail, Sparkles, User } from 'lucide-react';
+import { ArrowRight, KeySquare, Loader2, Lock, Mail, User } from 'lucide-react';
 import apiClient from '@/api/apiClient';
 import { getTranslation } from '@/components/utils/translations';
 import { cn } from "@/lib/utils";
@@ -85,9 +85,6 @@ export default function Login() {
                             <div className="nx-crosshair -bottom-3 -right-3" />
                             <div className="flex items-start justify-between gap-4">
                                 <div>
-                                    <div className="nx-mono text-[10px] text-[var(--ink-3)] uppercase tracking-[0.22em]">
-                                        ACCESS GATE / v0
-                                    </div>
                                     <h1 className="mt-2 text-3xl md:text-4xl font-black tracking-[-0.06em] leading-[0.95]">
                                         {t.login.title}{" "}
                                         <span className="bg-[rgba(51,209,122,0.14)] border border-[rgba(51,209,122,0.35)] px-1">
@@ -100,19 +97,6 @@ export default function Login() {
                                 </div>
                                 <div className="w-14 h-14 border border-[rgba(231,234,240,0.18)] bg-[rgba(231,234,240,0.04)] flex items-center justify-center">
                                     <KeySquare className="w-7 h-7 text-[var(--ink)]" />
-                                </div>
-                            </div>
-
-                            <div className="mt-6 border border-[rgba(231,234,240,0.18)] bg-[rgba(231,234,240,0.03)] px-4 py-3">
-                                <div className="flex items-center justify-between">
-                                    <div className="nx-mono text-[10px] uppercase tracking-[0.22em]">RULES</div>
-                                    <Sparkles className="w-5 h-5 text-[var(--ink)]" />
-                                </div>
-                                <div className="mt-2 text-sm nx-ink-muted">
-                                    No soft glow. No polite rounding. Just hard borders and decisions.
-                                </div>
-                                <div className="mt-3 nx-mono text-[10px] text-[var(--ink-3)]">
-                                    X:{String(132).padStart(3, "0")} / Y:{String(48).padStart(3, "0")} / Z:{String(isRegister ? 1 : 0).padStart(2, "0")}
                                 </div>
                             </div>
                         </div>
