@@ -185,9 +185,6 @@ export default function Home() {
                     <span>{hasProfile ? t.ctaArena : t.ctaCalibrate}</span>
                     <IconArrow className="w-5 h-5 transition-transform duration-150 group-hover:translate-x-1" />
                   </Button>
-                  <div className="mt-3 nx-mono text-[10px] text-[var(--ink-2)] border border-[rgba(230,237,243,0.2)] px-3 py-2 bg-[rgba(230,237,243,0.03)] text-center">
-                    {hasProfile ? t.readyBattle : t.calibrationTime}
-                  </div>
                 </div>
               </div>
             </div>
