@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { motion } from 'framer-motion';
-import { Loader2 } from 'lucide-react';
+import { Loader2, X } from 'lucide-react';
 import apiClient from '@/api/apiClient';
 import { getTranslation } from '@/components/utils/translations';
 import { cn } from "@/lib/utils";
+import { createPageUrl } from "@/utils";
 
 export default function Login() {
     const IconArrow = (props) => (
@@ -149,6 +150,14 @@ export default function Login() {
                         <div className="nx-panel nx-panel-core nx-sharp px-7 py-8 md:px-10 md:py-10">
                             <div className="nx-crosshair -top-3 -right-3" />
                             <div className="nx-crosshair -bottom-3 -left-3" />
+                            <button
+                                type="button"
+                                onClick={() => navigate(createPageUrl("Home"))}
+                                className="absolute top-4 right-4 w-10 h-10 border border-[rgba(230,237,243,0.2)] bg-[rgba(230,237,243,0.04)] text-[var(--ink-2)] flex items-center justify-center transition-colors duration-150 hover:text-[var(--ink)] hover:bg-[rgba(230,237,243,0.08)]"
+                                aria-label="Close"
+                            >
+                                <X className="w-5 h-5" />
+                            </button>
                             <div className="flex items-center gap-4 mb-8">
                                 <div className="w-11 h-11 border border-[rgba(230,237,243,0.2)] bg-[rgba(230,237,243,0.04)] flex items-center justify-center">
                                     <IconKey className="w-5 h-5 text-[var(--ink)]" />
