@@ -327,6 +327,12 @@ export const api = {
     getMetrics: async (sessionId) => {
       const response = await apiClient.get(`/arena/metrics/${sessionId}`);
       return response.data;
+    },
+
+    getMonthlyIndicator: async () => {
+      const user = await auth.me();
+      const response = await apiClient.get(`/arena/monthly-indicator/${user.email}`);
+      return response.data;
     }
   },
 

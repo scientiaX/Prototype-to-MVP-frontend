@@ -21,6 +21,7 @@ const ARENA_MODES = {
 
 export default function Arena() {
   const [profile, setProfile] = useState(null);
+  const [monthlyIndicator, setMonthlyIndicator] = useState(null);
   // Separate problem lists per mode
   const [quickProblems, setQuickProblems] = useState([]);
   const [standardProblems, setStandardProblems] = useState([]);
@@ -114,6 +115,23 @@ export default function Arena() {
     </svg>
   );
 
+  const getMonthlyIndicatorFromProfile = (profileData) => {
+    const currentMonth = new Date().toISOString().slice(0, 7);
+    const monthData = profileData?.monthly_arenas?.find(item => item.month === currentMonth);
+    const count = monthData?.count || 0;
+    const target = 20;
+    const progressPercent = Math.min((count / target) * 100, 100);
+
+    return {
+      month: currentMonth,
+      count,
+      target,
+      progress_percent: progressPercent,
+      current_streak: profileData?.current_streak || 0,
+      longest_streak: profileData?.longest_streak || 0
+    };
+  };
+
   // Save session state to sessionStorage whenever it changes
   const saveSessionState = useCallback(() => {
     if (currentSession && (view === 'entry' || view === 'battle')) {
@@ -202,7 +220,14 @@ export default function Arena() {
         return;
       }
 
-      setProfile(profiles[0]);
+      const profileData = profiles[0];
+      setProfile(profileData);
+      try {
+        const indicator = await apiClient.api.arena.getMonthlyIndicator();
+        setMonthlyIndicator(indicator);
+      } catch (error) {
+        setMonthlyIndicator(getMonthlyIndicatorFromProfile(profileData));
+      }
 
       // Try to restore previous session
       const restored = restoreSessionState();
@@ -297,6 +322,7 @@ export default function Arena() {
       );
 
       setProfile(response.updated_profile);
+      setMonthlyIndicator(getMonthlyIndicatorFromProfile(response.updated_profile));
       setResult({
         xp_earned: response.xp_earned,
         xp_breakdown: response.xp_breakdown,
@@ -413,6 +439,8 @@ export default function Arena() {
 
   const totalXp = (profile?.xp_risk_taker || 0) + (profile?.xp_analyst || 0) +
     (profile?.xp_builder || 0) + (profile?.xp_strategist || 0);
+  const indicator = monthlyIndicator || (profile ? getMonthlyIndicatorFromProfile(profile) : null);
+  const monthName = new Date().toLocaleDateString('id-ID', { month: 'long' });
 
   // Mode Selection Screen
   if (gameMode === null) {
@@ -535,6 +563,21 @@ export default function Arena() {
                 <div className="mt-3 h-2 bg-[rgba(230,237,243,0.08)] border border-[rgba(230,237,243,0.14)]">
                   <div className="h-full w-[62%] bg-[var(--acid-lime)]" />
                 </div>
+                {indicator && (
+                  <div className="mt-5">
+                    <div className="flex items-center justify-between text-xs text-[var(--ink-2)]">
+                      <span>Progres {monthName}</span>
+                      <span className="nx-mono text-[var(--ink)]">{indicator.count}/{indicator.target}</span>
+                    </div>
+                    <div className="mt-2 h-2 bg-[rgba(230,237,243,0.08)] border border-[rgba(230,237,243,0.14)]">
+                      <div
+                        className="h-full bg-[var(--acid-orange)]"
+                        style={{ width: `${indicator.progress_percent}%` }}
+                      />
+                    </div>
+                    <div className="mt-2 text-xs text-[var(--ink-3)]">Streak {indicator.current_streak} hari</div>
+                  </div>
+                )}
               </motion.div>
             </div>
           </div>
@@ -840,6 +883,21 @@ export default function Arena() {
             <div className="mt-3 h-2 bg-[rgba(230,237,243,0.08)] border border-[rgba(230,237,243,0.14)]">
               <div className="h-full w-[68%] bg-[var(--acid-lime)]" />
             </div>
+            {indicator && (
+              <div className="mt-5">
+                <div className="flex items-center justify-between text-xs text-[var(--ink-2)]">
+                  <span>Progres {monthName}</span>
+                  <span className="nx-mono text-[var(--ink)]">{indicator.count}/{indicator.target}</span>
+                </div>
+                <div className="mt-2 h-2 bg-[rgba(230,237,243,0.08)] border border-[rgba(230,237,243,0.14)]">
+                  <div
+                    className="h-full bg-[var(--acid-orange)]"
+                    style={{ width: `${indicator.progress_percent}%` }}
+                  />
+                </div>
+                <div className="mt-2 text-xs text-[var(--ink-3)]">Streak {indicator.current_streak} hari</div>
+              </div>
+            )}
           </motion.div>
         </div>
       </div>
