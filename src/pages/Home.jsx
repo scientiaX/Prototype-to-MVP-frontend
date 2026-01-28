@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import apiClient from "@/api/apiClient";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 
 export default function Home() {
   const IconArrow = (props) => (
@@ -68,42 +67,22 @@ export default function Home() {
     navigate(createPageUrl("Calibration"));
   };
 
-  const [lang, setLang] = useState("en");
-
   const t = {
-    en: {
-      badge: "Novax Trial",
-      headline1: "NovaX",
-      headline2: "Arena",
-      subtitle: "Real-world experiential learning",
-      subtitleHighlight: "in your hands.",
-      ctaCalibrate: "Start Calibration",
-      ctaArena: "Enter Arena",
-      readyBattle: "Ready to battle",
-      quote: "Growth engine environment.",
-      features: [
-        { icon: IconTarget, title: "Adaptive Personalization", description: "AI matches problems to your archetype + capability level." },
-        { icon: IconTrend, title: "XP = Difficulty", description: "Progress comes from pressure, not grinding." },
-        { icon: IconShield, title: "Scar Badges", description: "Badges prove conflict survived, not only participation." }
-      ]
-    },
-    id: {
-      badge: "Novax Trial",
-      headline1: "NovaX",
-      headline2: "Arena",
-      subtitle: "Belajar dari pengalaman dunia nyata",
-      subtitleHighlight: "di tanganmu.",
-      ctaCalibrate: "Mulai Kalibrasi",
-      ctaArena: "Masuk Arena",
-      readyBattle: "Siap bertempur",
-      quote: "Tidak ada zona nyaman. Hanya zona pertumbuhan.",
-      features: [
-        { icon: IconTarget, title: "Adaptive Matching", description: "AI mencocokkan masalah dengan arketipe + levelmu." },
-        { icon: IconTrend, title: "XP = Kesulitan", description: "Progres dari tekanan, bukan grinding." },
-        { icon: IconShield, title: "Scar Badges", description: "Badge bukti kamu selamat dari konflik." }
-      ]
-    }
-  }[lang];
+    badge: "Novax Trial",
+    headline1: "NovaX",
+    headline2: "Arena",
+    subtitle: "Real-world experiential learning",
+    subtitleHighlight: "in your hands.",
+    ctaCalibrate: "Start Calibration",
+    ctaArena: "Enter Arena",
+    readyBattle: "Ready to battle",
+    quote: "Growth engine environment.",
+    features: [
+      { icon: IconTarget, title: "Adaptive Personalization", description: "AI matches problems to your archetype + capability level." },
+      { icon: IconTrend, title: "XP = Difficulty", description: "Progress comes from pressure, not grinding." },
+      { icon: IconShield, title: "Scar Badges", description: "Badges prove conflict survived, not only participation." }
+    ]
+  };
 
   return (
     <div className="nx-page relative overflow-hidden">
@@ -134,31 +113,6 @@ export default function Home() {
                 <div className="border border-[rgba(230,237,243,0.2)] bg-[rgba(230,237,243,0.04)] px-3 py-1.5 nx-mono text-[10px] uppercase tracking-[0.2em]">
                   {t.badge}
                 </div>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => setLang("en")}
-                  className={cn(
-                    "border border-[rgba(230,237,243,0.2)] px-3 py-1.5 nx-mono text-[10px] tracking-[0.22em] transition-colors duration-150",
-                    lang === "en"
-                      ? "bg-[rgba(230,237,243,0.08)] text-[var(--ink)]"
-                      : "bg-transparent text-[var(--ink-2)] hover:text-[var(--ink)] hover:bg-[rgba(230,237,243,0.04)]"
-                  )}
-                >
-                  EN
-                </button>
-                <button
-                  onClick={() => setLang("id")}
-                  className={cn(
-                    "border border-[rgba(230,237,243,0.2)] px-3 py-1.5 nx-mono text-[10px] tracking-[0.22em] transition-colors duration-150",
-                    lang === "id"
-                      ? "bg-[rgba(230,237,243,0.08)] text-[var(--ink)]"
-                      : "bg-transparent text-[var(--ink-2)] hover:text-[var(--ink)] hover:bg-[rgba(230,237,243,0.04)]"
-                  )}
-                >
-                  ID
-                </button>
               </div>
             </div>
 
