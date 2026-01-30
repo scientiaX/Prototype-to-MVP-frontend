@@ -469,7 +469,7 @@ export default function Arena() {
               <div className="mt-8 nx-line-rail" />
             </motion.div>
 
-            <div className="grid gap-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] items-stretch">
+            <div className="grid gap-6">
               <motion.div
                 className="flex flex-col gap-6 h-full"
                 initial={{ opacity: 0, y: 12 }}
@@ -534,50 +534,6 @@ export default function Arena() {
                     </div>
                   </div>
                 </motion.button>
-              </motion.div>
-
-              <motion.div
-                className="nx-panel nx-panel-glass nx-sharp px-6 py-7 h-full flex flex-col"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.16 }}
-              >
-                <div className="flex items-center justify-between mb-5">
-                  <div className="text-xs font-black tracking-widest uppercase nx-mono text-[var(--ink-2)]">Arena Selection</div>
-                  <div className="nx-icon-frame">
-                    <div className="nx-icon-trajectory" />
-                  </div>
-                </div>
-                <div className="space-y-4 text-sm text-[var(--ink-2)]">
-                  <div className="flex items-center justify-between gap-3">
-                    <span>Quick</span>
-                    <span className="nx-mono text-[var(--ink)]">4-5 menit</span>
-                  </div>
-                  <div className="flex items-center justify-between gap-3">
-                    <span>Standard</span>
-                    <span className="nx-mono text-[var(--ink)]">15 menit</span>
-                  </div>
-                </div>
-                <div className="mt-6 nx-line-rail" />
-                <div className="mt-6 text-xs uppercase tracking-[0.2em] nx-mono text-[var(--ink-3)]">Capability / Readiness</div>
-                <div className="mt-3 h-2 bg-[rgba(230,237,243,0.08)] border border-[rgba(230,237,243,0.14)]">
-                  <div className="h-full w-[62%] bg-[var(--acid-lime)]" />
-                </div>
-                {indicator && (
-                  <div className="mt-5">
-                    <div className="flex items-center justify-between text-xs text-[var(--ink-2)]">
-                      <span>Progres {monthName}</span>
-                      <span className="nx-mono text-[var(--ink)]">{indicator.count}/{indicator.target}</span>
-                    </div>
-                    <div className="mt-2 h-2 bg-[rgba(230,237,243,0.08)] border border-[rgba(230,237,243,0.14)]">
-                      <div
-                        className="h-full bg-[var(--acid-orange)]"
-                        style={{ width: `${indicator.progress_percent}%` }}
-                      />
-                    </div>
-                    <div className="mt-2 text-xs text-[var(--ink-3)]">Streak {indicator.current_streak} hari</div>
-                  </div>
-                )}
               </motion.div>
             </div>
           </div>
@@ -654,7 +610,7 @@ export default function Arena() {
       <div className="absolute inset-0 pointer-events-none nx-bg-dots opacity-[0.22]" />
 
       <div className="nx-stage relative pt-10 md:pt-12">
-        <div className="nx-asym-grid">
+        <div className="space-y-6">
           <motion.div
             className="nx-panel nx-panel-rail nx-sharp px-6 py-7"
             initial={{ opacity: 0, y: -12 }}
@@ -710,12 +666,13 @@ export default function Arena() {
             )}
           </motion.div>
 
-          <motion.div
-            className="nx-panel nx-panel-core nx-sharp px-6 py-7"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-          >
+          <div className="grid gap-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)] items-start">
+            <motion.div
+              className="nx-panel nx-panel-core nx-sharp px-6 py-7"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+            >
             <div className="flex items-center justify-between gap-4 mb-6">
               <div className="inline-flex bg-[rgba(230,237,243,0.04)] nx-sharp p-1 border border-[rgba(230,237,243,0.2)]">
                 <button
@@ -859,46 +816,43 @@ export default function Arena() {
                 </motion.div>
               )}
             </AnimatePresence>
-          </motion.div>
+            </motion.div>
 
-          <motion.div
-            className="nx-panel nx-panel-glass nx-sharp px-6 py-7"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-          >
-            <div className="text-xs font-black tracking-widest uppercase nx-mono text-[var(--ink-2)] mb-4">Arena Selection</div>
-            <div className="space-y-4 text-sm text-[var(--ink-2)]">
-              <div className="flex items-center justify-between gap-3">
-                <span>Quick</span>
-                <span className="nx-mono text-[var(--ink)]">4-5 menit</span>
-              </div>
-              <div className="flex items-center justify-between gap-3">
-                <span>Standard</span>
-                <span className="nx-mono text-[var(--ink)]">15 menit</span>
-              </div>
-            </div>
-            <div className="mt-6 nx-line-rail" />
-            <div className="mt-6 text-xs uppercase tracking-[0.2em] nx-mono text-[var(--ink-3)]">Capability / Readiness</div>
-            <div className="mt-3 h-2 bg-[rgba(230,237,243,0.08)] border border-[rgba(230,237,243,0.14)]">
-              <div className="h-full w-[68%] bg-[var(--acid-lime)]" />
-            </div>
-            {indicator && (
-              <div className="mt-5">
-                <div className="flex items-center justify-between text-xs text-[var(--ink-2)]">
-                  <span>Progres {monthName}</span>
-                  <span className="nx-mono text-[var(--ink)]">{indicator.count}/{indicator.target}</span>
+            <motion.div
+              className="nx-panel nx-panel-glass nx-sharp px-6 py-7"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              <div className="text-xs font-black tracking-widest uppercase nx-mono text-[var(--ink-2)] mb-4">Arena Selection</div>
+              <div className="space-y-4 text-sm text-[var(--ink-2)]">
+                <div className="flex items-center justify-between gap-3">
+                  <span>Quick</span>
+                  <span className="nx-mono text-[var(--ink)]">4-5 menit</span>
                 </div>
-                <div className="mt-2 h-2 bg-[rgba(230,237,243,0.08)] border border-[rgba(230,237,243,0.14)]">
-                  <div
-                    className="h-full bg-[var(--acid-orange)]"
-                    style={{ width: `${indicator.progress_percent}%` }}
-                  />
+                <div className="flex items-center justify-between gap-3">
+                  <span>Standard</span>
+                  <span className="nx-mono text-[var(--ink)]">15 menit</span>
                 </div>
-                <div className="mt-2 text-xs text-[var(--ink-3)]">Streak {indicator.current_streak} hari</div>
               </div>
-            )}
-          </motion.div>
+              <div className="mt-6 nx-line-rail" />
+              {indicator && (
+                <div className="mt-5">
+                  <div className="flex items-center justify-between text-xs text-[var(--ink-2)]">
+                    <span>Progres {monthName}</span>
+                    <span className="nx-mono text-[var(--ink)]">{indicator.count}/{indicator.target}</span>
+                  </div>
+                  <div className="mt-2 h-2 bg-[rgba(230,237,243,0.08)] border border-[rgba(230,237,243,0.14)]">
+                    <div
+                      className="h-full bg-[var(--acid-orange)]"
+                      style={{ width: `${indicator.progress_percent}%` }}
+                    />
+                  </div>
+                  <div className="mt-2 text-xs text-[var(--ink-3)]">Streak {indicator.current_streak} hari</div>
+                </div>
+              )}
+            </motion.div>
+          </div>
         </div>
       </div>
     </div>
