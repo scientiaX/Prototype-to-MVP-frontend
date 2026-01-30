@@ -727,17 +727,17 @@ export default function Arena() {
                 {isGenerating && generatingMode === arenaTab ? (
                   <>
                     <div className="w-4 h-4 border-2 border-[var(--ink)] border-t-transparent animate-spin" />
-                    Generating...
+                    Build
                   </>
                 ) : (arenaTab === 'quick' ? activeQuickProblem : activeStandardProblem) ? (
                   <>
                     {arenaTab === 'quick' ? <IconBolt className="w-4 h-4" /> : <IconClock className="w-4 h-4" />}
-                    <span>Selesaikan dulu</span>
+                    <span>Build</span>
                   </>
                 ) : (
                   <>
                     <IconSpark className="w-4 h-4" />
-                    <span>Generate {arenaTab === 'quick' ? 'Quick' : 'Standard'} Problem</span>
+                    <span>Build</span>
                   </>
                 )}
               </Button>
